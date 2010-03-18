@@ -3,7 +3,7 @@
 	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 	id="WebApp_ID" version="2.5">
-	<display-name>algol-rpg</display-name>
+	<display-name>mesa11</display-name>
 	<servlet>
 		<servlet-name>hypersonic</servlet-name>
 		<servlet-class>br.servlet.HypersonicServlet</servlet-class>
@@ -22,12 +22,12 @@
 		<url-pattern>/hibernate</url-pattern>
 	</servlet-mapping>
 	<servlet>
-		<servlet-name>algol</servlet-name>
-		<servlet-class>br.servlet.ServletAlgol</servlet-class>
+		<servlet-name>mesa11</servlet-name>
+		<servlet-class>br.servlet.ServletMesa11</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>algol</servlet-name>
-		<url-pattern>/algol</url-pattern>
+		<servlet-name>mesa11</servlet-name>
+		<url-pattern>/mesa11</url-pattern>
 	</servlet-mapping>
 
 	<servlet>
@@ -42,7 +42,7 @@
 
 
 	<welcome-file-list>
-		<welcome-file>algol.jsp</welcome-file>
+		<welcome-file>mesa11.jsp</welcome-file>
 	</welcome-file-list>
 
 
