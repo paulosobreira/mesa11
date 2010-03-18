@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	<display-name>algol-rpg</display-name>
+	<servlet>
+		<servlet-name>hypersonic</servlet-name>
+		<servlet-class>br.servlet.HypersonicServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>hypersonic</servlet-name>
+		<url-pattern>/hypersonic</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>hibernate</servlet-name>
+		<servlet-class>br.servlet.HibernateServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>hibernate</servlet-name>
+		<url-pattern>/hibernate</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>algol</servlet-name>
+		<servlet-class>br.servlet.ServletAlgol</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>algol</servlet-name>
+		<url-pattern>/algol</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ServletBackUp</servlet-name>
+		<servlet-class>br.servlet.ServletBackUp</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ServletBackUp</servlet-name>
+		<url-pattern>/ServletBackUp</url-pattern>
+	</servlet-mapping>
+
+
+
+	<welcome-file-list>
+		<welcome-file>algol.jsp</welcome-file>
+	</welcome-file-list>
+
+
+</web-app>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ======================================================================
+     28/07/2007
+
+     project    Algol - RPG
+     description Build file padrão
+
+     Paulo Sobreira
+
+     ====================================================================== -->
+<project name="algol-rpg" default="targetPadrao">
+
+	<property environment="env" />
+	<path id="classpath.compilacao">
+		<fileset dir="${env.TOMCAT_HOME}/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="WebContent/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="build" />
+	</path>
+
+	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,sign_jar">
+	</target>
+
+	<target name="compilarClasses">
+		<javac destdir="build" srcdir="src" nowarn="true" optimize="true" >
+			<classpath refid="classpath.compilacao" />
+		</javac>
+	</target>
+
+	<target name="copiaRecursos">
+		<delete dir="build" />
+		<mkdir dir="build" />
+		<copy todir="build" verbose="true">
+			<fileset dir="src">
+				<exclude name=".*" />
+				<exclude name=".*/" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="criarJar">
+		<jar jarfile="WebContent/algol-rpg.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
+			<fileset dir="build">
+				<exclude name=".*" />
+				<exclude name=".*/" />
+				<exclude name="**/*.java" />
+				<exclude name="build.xml" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="sign_jar">
+		<signjar jar="WebContent/algol-rpg.jar" signedjar="WebContent/a-algol-rpg.jar" alias="algol-rpg-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+		<delete file="WebContent/algol-rpg.jar" />
+	</target>
+
+</project>

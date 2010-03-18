@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property>
+		<property name="hibernate.connection.password"></property>
+		<property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/hsqldb</property>
+		<property name="hibernate.connection.username">sa</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+		<mapping class="br.algol.dados.db.Usuario" />
+		<mapping class="br.algol.dados.db.Mapa"  />
+		<mapping class="br.algol.dados.db.Npc" />
+		<mapping class="br.algol.dados.db.Encontro" />
+		<mapping class="br.algol.dados.db.EncontroNpc" />		
+		<mapping class="br.algol.dados.db.Portal" />
+		<mapping class="br.algol.dados.db.Item" />
+		<mapping class="br.algol.dados.db.Cenario" />
+	</session-factory>
+</hibernate-configuration>
