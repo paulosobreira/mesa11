@@ -2,13 +2,13 @@
 <!-- ======================================================================
      28/07/2007
 
-     project    Algol - RPG
+     project    mesa11
      description Build file padrão
 
      Paulo Sobreira
 
      ====================================================================== -->
-<project name="algol-rpg" default="targetPadrao">
+<project name="mesa11" default="targetPadrao">
 
 	<property environment="env" />
 	<path id="classpath.compilacao">
@@ -43,7 +43,7 @@
 	</target>
 
 	<target name="criarJar">
-		<jar jarfile="WebContent/algol-rpg.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
+		<jar jarfile="WebContent/mesa11.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
 			<fileset dir="build">
 				<exclude name=".*" />
 				<exclude name=".*/" />
@@ -54,9 +54,9 @@
 	</target>
 
 	<target name="sign_jar">
-		<signjar jar="WebContent/algol-rpg.jar" signedjar="WebContent/a-algol-rpg.jar" alias="algol-rpg-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		<signjar jar="WebContent/mesa11.jar" signedjar="WebContent/a-mesa11.jar" alias="mesa11-key" keystore="jar-keystore" storepass="123456" keypass="123456">
 		</signjar>
-		<delete file="WebContent/algol-rpg.jar" />
+		<delete file="WebContent/mesa11.jar" />
 	</target>
 
 </project>
