@@ -20,7 +20,7 @@
 <a href="ServletBackUp"> Back Up </a>
 <br>
 
-<div align="left"><applet code="br.applet.AlgolApplet.class"
-	archive="a-algol-rpg.jar" width="200px" height="250px"></div>
+<div align="left"><applet code="br.applet.Mesa11Applet.class"
+	archive="a-mesa11.jar" width="200px" height="250px"></div>
 </body>
 </html>
