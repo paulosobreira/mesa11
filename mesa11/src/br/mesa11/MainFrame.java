@@ -52,7 +52,7 @@ public class MainFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				System.out.println("click");
-				if (mesaPanel.grandeAreaCima.contains(e.getPoint())) {
+				if (mesaPanel.getGrandeAreaCima().contains(e.getPoint())) {
 					System.out.println("grandeAreaCima");
 				}
 				super.mouseClicked(e);

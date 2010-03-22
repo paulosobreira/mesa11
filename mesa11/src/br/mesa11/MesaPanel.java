@@ -25,15 +25,51 @@ public class MesaPanel extends JPanel {
 	public static final int RAIO_CENTRO = 1000;
 	public static final int PENALTI = 586;
 	public static int ZOOM = 1;
-	public static Rectangle campoCima;
-	public static Rectangle campoBaixo;
-	public static Rectangle grandeAreaCima;
-	public static Rectangle grandeAreaBaixo;
-	public static Rectangle pequenaAreaCima;
-	public static Rectangle pequenaAreaBaixo;
-	public static Rectangle centro;
-	public static Rectangle penaltyCima;
-	public static Rectangle penaltyBaixo;
+	private Rectangle campoCima;
+	private Rectangle campoBaixo;
+	private Rectangle grandeAreaCima;
+	private Rectangle grandeAreaBaixo;
+	private Rectangle pequenaAreaCima;
+	private Rectangle pequenaAreaBaixo;
+	private Rectangle centro;
+	private Rectangle penaltyCima;
+	private Rectangle penaltyBaixo;
+
+	public Rectangle getCampoCima() {
+		return campoCima;
+	}
+
+	public Rectangle getCampoBaixo() {
+		return campoBaixo;
+	}
+
+	public Rectangle getGrandeAreaCima() {
+		return grandeAreaCima;
+	}
+
+	public Rectangle getGrandeAreaBaixo() {
+		return grandeAreaBaixo;
+	}
+
+	public Rectangle getPequenaAreaCima() {
+		return pequenaAreaCima;
+	}
+
+	public Rectangle getPequenaAreaBaixo() {
+		return pequenaAreaBaixo;
+	}
+
+	public Rectangle getCentro() {
+		return centro;
+	}
+
+	public Rectangle getPenaltyCima() {
+		return penaltyCima;
+	}
+
+	public Rectangle getPenaltyBaixo() {
+		return penaltyBaixo;
+	}
 
 	public MesaPanel() {
 		setSize(LARGURA_MESA, ALTURA_MESA);
