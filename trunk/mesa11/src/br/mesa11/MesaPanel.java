@@ -96,7 +96,9 @@ public class MesaPanel extends JPanel {
 		int y = 0;
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, LARGURA_MESA / ZOOM, ALTURA_MESA / ZOOM);
-		// Campo
+		/**
+		 * Campo
+		 */
 		g.setColor(Color.white);
 		g.fillRect(BORDA_CAMPO / ZOOM, BORDA_CAMPO / ZOOM,
 				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM,
@@ -106,7 +108,9 @@ public class MesaPanel extends JPanel {
 		g.fillRect((BORDA_CAMPO + LINHA) / ZOOM, (BORDA_CAMPO + LINHA) / ZOOM,
 				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) / ZOOM,
 				(ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) / ZOOM);
-		// Meia lua de cima
+		/**
+		 * Meia lua de cima
+		 */
 		g.setColor(Color.white);
 		x = (LARGURA_MESA / 2) - RAIO_CENTRO / 2;
 		y = BORDA_CAMPO;
@@ -115,7 +119,9 @@ public class MesaPanel extends JPanel {
 		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
 				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
 						/ ZOOM);
-		// Meia lua de Baixo
+		/**
+		 * Meia lua de Baixo
+		 */
 		g.setColor(Color.white);
 		x = (LARGURA_MESA / 2) - RAIO_CENTRO / 2;
 		y = ALTURA_MESA - BORDA_CAMPO - RAIO_CENTRO;
@@ -124,7 +130,9 @@ public class MesaPanel extends JPanel {
 		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
 				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
 						/ ZOOM);
-		// GdeArae Cima
+		/**
+		 * GdeArae Cima
+		 */
 		g.setColor(Color.white);
 		g.fillRect(ALTURA_GDE_AREA / ZOOM, BORDA_CAMPO / ZOOM,
 				(LARGURA_GDE_AREA) / ZOOM, (ALTURA_GDE_AREA) / ZOOM);
@@ -132,7 +140,9 @@ public class MesaPanel extends JPanel {
 		g.fillRect((ALTURA_GDE_AREA + LINHA) / ZOOM, (BORDA_CAMPO + LINHA)
 				/ ZOOM, (LARGURA_GDE_AREA - DOBRO_LINHA) / ZOOM,
 				(ALTURA_GDE_AREA - DOBRO_LINHA) / ZOOM);
-		// GdeArae Baixo
+		/**
+		 * GdeArae Baixo
+		 */
 		g.setColor(Color.white);
 		g.fillRect(ALTURA_GDE_AREA / ZOOM,
 				(ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) / ZOOM,
@@ -142,7 +152,9 @@ public class MesaPanel extends JPanel {
 				- ALTURA_GDE_AREA + LINHA)
 				/ ZOOM, (LARGURA_GDE_AREA - DOBRO_LINHA) / ZOOM,
 				(ALTURA_GDE_AREA - DOBRO_LINHA) / ZOOM);
-		// PQArae Cima
+		/**
+		 * PQArae Cima
+		 */
 		g.setColor(Color.white);
 		x = (LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2);
 		g.fillRect(x / ZOOM, BORDA_CAMPO / ZOOM, (LARGURA_PQ_AREA) / ZOOM,
@@ -151,7 +163,9 @@ public class MesaPanel extends JPanel {
 		g.fillRect((x + LINHA) / ZOOM, (BORDA_CAMPO + LINHA) / ZOOM,
 				(LARGURA_PQ_AREA - DOBRO_LINHA) / ZOOM,
 				(ALTURA_PQ_AREA - DOBRO_LINHA) / ZOOM);
-		// PQArae Baixo
+		/**
+		 * PQArae Baixo
+		 */
 		g.setColor(Color.white);
 		x = (LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2);
 		y = (ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA);
@@ -161,7 +175,9 @@ public class MesaPanel extends JPanel {
 		g.fillRect((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
 				(LARGURA_PQ_AREA - DOBRO_LINHA) / ZOOM,
 				(ALTURA_PQ_AREA - DOBRO_LINHA) / ZOOM);
-		// Circulo Centro
+		/**
+		 * Circulo Centro
+		 */
 		g.setColor(Color.white);
 		x = calculaXcentro();
 		y = calculaYcentro();
@@ -170,22 +186,30 @@ public class MesaPanel extends JPanel {
 		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
 				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
 						/ ZOOM);
-		// meio de campo
+		/**
+		 * meio de campo
+		 */
 		g.setColor(Color.white);
 		g.fillRect((BORDA_CAMPO) / ZOOM, (ALTURA_MESA / 2) / ZOOM,
 				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM, LINHA / ZOOM);
 
-		// Penalti cima
+		/**
+		 * Penalti cima
+		 */
 		g.setColor(Color.white);
 		g.fillOval((LARGURA_MESA / 2) / ZOOM, (BORDA_CAMPO + PENALTI) / ZOOM,
 				DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
 
-		// Penalti Baixo
+		/**
+		 * Penalti Baixo
+		 */
 		g.setColor(Color.white);
 		g.fillOval((LARGURA_MESA / 2) / ZOOM,
 				(ALTURA_MESA - BORDA_CAMPO - PENALTI) / ZOOM, DOBRO_LINHA
 						/ ZOOM, DOBRO_LINHA / ZOOM);
-		// Centro
+		/**
+		 * Centro
+		 */
 		g.setColor(Color.white);
 		g.fillOval((LARGURA_MESA / 2) / ZOOM, ((ALTURA_MESA - LINHA) / 2)
 				/ ZOOM, DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
