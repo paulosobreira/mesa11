@@ -16,8 +16,8 @@ import javax.swing.border.TitledBorder;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.MainFrame;
-import br.mesa11.Mesa11TO;
 import br.recursos.Lang;
+import br.tos.Mesa11TO;
 
 public class FormLogin {
 
