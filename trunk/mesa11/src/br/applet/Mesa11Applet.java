@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.cliente.ControleChatCliente;
 import br.nnpe.Logger;
 import br.nnpe.ZipUtil;
 import br.recursos.Lang;
@@ -37,7 +38,7 @@ public class Mesa11Applet extends JApplet {
 	private int latenciaMinima = 120;
 	private int latenciaReal;
 
-	private FormLogin controleLogin;
+	private ControleChatCliente controleChatCliente;
 
 	private List pacotes = new LinkedList();
 
@@ -119,7 +120,7 @@ public class Mesa11Applet extends JApplet {
 			properties.load(this.getClass().getResourceAsStream(
 					"client.properties"));
 			this.urlSufix = properties.getProperty("servidor");
-			controleLogin = new FormLogin(this);
+			controleChatCliente = new ControleChatCliente(this);
 
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
