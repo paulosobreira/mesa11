@@ -13,12 +13,18 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import br.applet.Mesa11Applet;
+import br.hibernate.Usuario;
 import br.mesa11.conceito.Botao;
 import br.mesa11.conceito.Mesa;
 
 public class MainFrame {
 
 	private static Point p = new Point(0, 0);
+
+	public MainFrame(Mesa11Applet mesa11Applet, Usuario usuario) {
+
+	}
 
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("mesa11");
@@ -81,5 +87,10 @@ public class MainFrame {
 		});
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+	}
+
+	public void setVisible(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 }
