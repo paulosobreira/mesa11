@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import br.applet.ErroServ;
 import br.hibernate.HibernateUtil;
 import br.hibernate.Usuario;
+import br.nnpe.Util;
 
 public class ControleLogin {
 
@@ -19,6 +20,9 @@ public class ControleLogin {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		try {
 			Transaction transaction = session.beginTransaction();
+			if (Util.isNullOrEmpty(usuario.getLoginCriador())) {
+				usuario.setLoginCriador(usuario.getLogin());
+			}
 			session.saveOrUpdate(usuario);
 			transaction.commit();
 		} catch (Exception e) {

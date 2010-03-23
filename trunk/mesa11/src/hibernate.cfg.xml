@@ -9,5 +9,6 @@
 		<property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/hsqldb</property>
 		<property name="hibernate.connection.username">sa</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
+		<mapping class="br.hibernate.Usuario" />
 	</session-factory>
 </hibernate-configuration>
