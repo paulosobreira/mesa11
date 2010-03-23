@@ -46,7 +46,7 @@ public class HibernateServlet extends HttpServlet {
 		} catch (Exception e) {
 			printWriter.println(e.getMessage());
 		}
-		printWriter.println("<br/><a href='algol.jsp'>back</a>");
+		printWriter.println("<br/><a href='mesa11.jsp'>back</a>");
 		printWriter.println("</body></html>");
 		response.flushBuffer();
 	}
