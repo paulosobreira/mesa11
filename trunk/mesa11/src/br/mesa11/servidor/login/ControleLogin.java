@@ -6,10 +6,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import br.applet.ErroServ;
 import br.hibernate.HibernateUtil;
 import br.hibernate.Usuario;
 import br.nnpe.Util;
+import br.tos.ErroServ;
 
 public class ControleLogin {
 

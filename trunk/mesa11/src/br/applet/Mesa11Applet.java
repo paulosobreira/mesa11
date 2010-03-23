@@ -23,6 +23,8 @@ import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.nnpe.ZipUtil;
 import br.recursos.Lang;
+import br.tos.ErroServ;
+import br.tos.MsgSrv;
 
 public class Mesa11Applet extends JApplet {
 

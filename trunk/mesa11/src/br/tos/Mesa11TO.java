@@ -1,4 +1,4 @@
-package br.mesa11;
+package br.tos;
 
 import java.io.Serializable;
 

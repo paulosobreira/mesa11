@@ -1,4 +1,4 @@
-package br.applet;
+package br.tos;
 
 import java.io.Serializable;
 
