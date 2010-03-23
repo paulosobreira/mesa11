@@ -21,9 +21,10 @@ import br.mesa11.conceito.Mesa;
 public class MainFrame {
 
 	private static Point p = new Point(0, 0);
+	private JFrame frame;
 
 	public MainFrame(Mesa11Applet mesa11Applet, Usuario usuario) {
-
+		frame = new JFrame("mesa11");
 	}
 
 	public static void main(String[] args) {
@@ -90,7 +91,6 @@ public class MainFrame {
 	}
 
 	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
+		frame.setVisible(b);
 	}
 }
