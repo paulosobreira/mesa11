@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AlgolDados implements Serializable {
+public abstract class Mesa11Dados implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,10 +48,10 @@ public abstract class AlgolDados implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof AlgolDados)) {
+		if (!(obj instanceof Mesa11Dados)) {
 			return false;
 		}
-		AlgolDados algolDados = (AlgolDados) obj;
+		Mesa11Dados algolDados = (Mesa11Dados) obj;
 		return id.equals(algolDados.getId());
 	}
 
