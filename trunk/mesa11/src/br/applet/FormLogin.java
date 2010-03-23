@@ -13,38 +13,39 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.MainFrame;
+import br.mesa11.Mesa11TO;
 import br.recursos.Lang;
 
 public class FormLogin {
 
 	private Mesa11Applet mesa11Applet;
 
-	// private Usuario usuario;
+	private Usuario usuario;
 
-	public FormLogin(Mesa11Applet algolApplet) {
-		this.mesa11Applet = algolApplet;
+	public FormLogin(Mesa11Applet mesa11Applet) {
+		this.mesa11Applet = mesa11Applet;
 		gerarMenuLogin();
 		if (ConstantesMesa11.debug) {
 			logarAdmin();
 		}
-		// algolApplet.play("ps1fm-cave.mid");
 	}
 
 	private void logarAdmin() {
-		// Usuario usuario = new Usuario();
-		// usuario.setLogin("admin");
-		// AlgolTO algolTO = new AlgolTO();
-		// algolTO.setComando(ConstantesAlgol.LOGAR);
-		// algolTO.setData(usuario);
-		// usuario = (Usuario) algolApplet.enviarObjeto(algolTO);
-		// if (usuario != null) {
-		// FormLogin.this.usuario = usuario;
-		// MainFrame mainFrame = new MainFrame(algolApplet,
-		// FormLogin.this.usuario);
-		// mainFrame.setVisible(true);
-		// }
+		Usuario usuario = new Usuario();
+		usuario.setLogin("admin");
+		Mesa11TO algolTO = new Mesa11TO();
+		algolTO.setComando(ConstantesMesa11.LOGAR);
+		algolTO.setData(usuario);
+		usuario = (Usuario) mesa11Applet.enviarObjeto(algolTO);
+		if (usuario != null) {
+			FormLogin.this.usuario = usuario;
+			MainFrame mainFrame = new MainFrame(mesa11Applet,
+					FormLogin.this.usuario);
+			mainFrame.setVisible(true);
+		}
 
 	}
 
@@ -83,18 +84,18 @@ public class FormLogin {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Usuario usuario = new Usuario();
-				// usuario.setLogin(login.getText());
-				// AlgolTO algolTO = new AlgolTO();
-				// algolTO.setComando(ConstantesAlgol.LOGAR);
-				// algolTO.setData(usuario);
-				// usuario = (Usuario) algolApplet.enviarObjeto(algolTO);
-				// if (usuario != null) {
-				// FormLogin.this.usuario = usuario;
-				// MainFrame mainFrame = new MainFrame(algolApplet,
-				// FormLogin.this.usuario);
-				// mainFrame.setVisible(true);
-				// }
+				Usuario usuario = new Usuario();
+				usuario.setLogin(login.getText());
+				Mesa11TO mesa11TO = new Mesa11TO();
+				mesa11TO.setComando(ConstantesMesa11.LOGAR);
+				mesa11TO.setData(usuario);
+				usuario = (Usuario) mesa11Applet.enviarObjeto(mesa11TO);
+				if (usuario != null) {
+					FormLogin.this.usuario = usuario;
+					MainFrame mainFrame = new MainFrame(mesa11Applet,
+							FormLogin.this.usuario);
+					mainFrame.setVisible(true);
+				}
 
 			}
 		});
@@ -107,21 +108,21 @@ public class FormLogin {
 		novoUsuario.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Usuario usuario = new Usuario();
-				// usuario.setLogin(login.getText());
-				// usuario.setEmail(email.getText());
-				// AlgolTO algolTO = new AlgolTO();
-				// algolTO.setComando(ConstantesAlgol.NOVO_USUARIO);
-				// algolTO.setData(usuario);
-				// usuario = (Usuario) algolApplet.enviarObjeto(algolTO);
-				// if (usuario != null) {
-				// FormLogin.this.usuario = usuario;
-				// JOptionPane.showMessageDialog(algolApplet, Lang
-				// .msg("usuarioCadastrado"));
-				// MainFrame mainFrame = new MainFrame(algolApplet,
-				// FormLogin.this.usuario);
-				// mainFrame.setVisible(true);
-				// }
+				Usuario usuario = new Usuario();
+				usuario.setLogin(login.getText());
+				usuario.setEmail(email.getText());
+				Mesa11TO mesa11TO = new Mesa11TO();
+				mesa11TO.setComando(ConstantesMesa11.NOVO_USUARIO);
+				mesa11TO.setData(usuario);
+				usuario = (Usuario) mesa11Applet.enviarObjeto(mesa11TO);
+				if (usuario != null) {
+					FormLogin.this.usuario = usuario;
+					JOptionPane.showMessageDialog(mesa11Applet, Lang
+							.msg("usuarioCadastrado"));
+					MainFrame mainFrame = new MainFrame(mesa11Applet,
+							FormLogin.this.usuario);
+					mainFrame.setVisible(true);
+				}
 			}
 		});
 		jPanel.add(novoUsuario);
@@ -135,14 +136,6 @@ public class FormLogin {
 		});
 		jPanel.add(som);
 		mesa11Applet.getContentPane().add(jPanel, BorderLayout.CENTER);
-	}
-
-	public Mesa11Applet getAlgolApplet() {
-		return mesa11Applet;
-	}
-
-	public void setAlgolApplet(Mesa11Applet algolApplet) {
-		this.mesa11Applet = algolApplet;
 	}
 
 }
