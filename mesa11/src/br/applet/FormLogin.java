@@ -22,11 +22,14 @@ import br.tos.Mesa11TO;
 public class FormLogin {
 
 	private Mesa11Applet mesa11Applet;
+	
+	private JPanel panel;
 
 	private Usuario usuario;
 
-	public FormLogin(Mesa11Applet mesa11Applet) {
+	public FormLogin(Mesa11Applet mesa11Applet,JPanel panel) {
 		this.mesa11Applet = mesa11Applet;
+		this.panel = panel;
 		gerarMenuLogin();
 		if (ConstantesMesa11.debug) {
 			logarAdmin();
@@ -135,7 +138,7 @@ public class FormLogin {
 			}
 		});
 		jPanel.add(som);
-		mesa11Applet.getContentPane().add(jPanel, BorderLayout.CENTER);
+		panel.add(jPanel, BorderLayout.CENTER);
 	}
 
 }

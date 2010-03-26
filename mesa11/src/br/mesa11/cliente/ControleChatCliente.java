@@ -3,6 +3,7 @@ package br.mesa11.cliente;
 import java.awt.BorderLayout;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import br.applet.ChatWindow;
 import br.applet.FormLogin;
@@ -20,13 +21,15 @@ public class ControleChatCliente {
 		chatWindow = new ChatWindow(this);
 
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
+		logar();
 	}
 
 	public void logar() {
-		formLogin = new FormLogin(mesa11Applet);
+		JPanel panelLogin = new JPanel();
+		formLogin = new FormLogin(mesa11Applet,panelLogin);
 		//formLogin.setToolTipText(Lang.msg("066"));
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				formLogin, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
+				panelLogin, Lang.msg("066"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
 			// registrarUsuario(formEntrada);
