@@ -21,6 +21,6 @@
 <br>
 
 <div align="left"><applet code="br.applet.Mesa11Applet.class"
-	archive="a-mesa11.jar" width="200px" height="250px"></div>
+	archive="a-mesa11.jar" width="70%" height="70%"></div>
 </body>
 </html>

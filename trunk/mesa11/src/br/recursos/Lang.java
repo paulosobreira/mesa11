@@ -106,9 +106,14 @@ public class Lang {
 			if (key == null || "".equals(key)) {
 				return "";
 			}
-			MessageFormat messageFormat = new MessageFormat(bundle
-					.getString(key));
-			return messageFormat.format(strings);
+			try {
+				MessageFormat messageFormat = new MessageFormat(bundle
+						.getString(key));
+				return messageFormat.format(strings);
+			} catch (Exception e) {
+				Logger.logarExept(e);
+				return key;
+			}
 		}
 	}
 
