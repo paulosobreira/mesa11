@@ -78,7 +78,6 @@ public class Lang {
 			try {
 				return bundle.getString(key);
 			} catch (Exception e) {
-				Logger.logarExept(e);
 				return key;
 			}
 
@@ -111,7 +110,6 @@ public class Lang {
 						.getString(key));
 				return messageFormat.format(strings);
 			} catch (Exception e) {
-				Logger.logarExept(e);
 				return key;
 			}
 		}
