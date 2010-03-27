@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -20,9 +21,11 @@ import javax.swing.WindowConstants;
 
 import br.mesa11.conceito.Botao;
 import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
 
 public class MesaApplet extends JApplet {
 	private Point p = new Point(0, 0);
+	List botoes = new ArrayList();
 
 	@Override
 	public void init() {
@@ -30,7 +33,7 @@ public class MesaApplet extends JApplet {
 
 		JFrame frame = new JFrame("mesa11");
 		frame.getContentPane().setLayout(new BorderLayout());
-		List botoes = new ArrayList();
+
 		Botao botao = new Botao();
 		botao.setPosition(new Point(1400, 2600));
 		botoes.add(botao);
@@ -82,6 +85,21 @@ public class MesaApplet extends JApplet {
 				List reta = GeoUtil.drawBresenhamLine(p1, p2);
 				jogada.clear();
 				jogada.addAll(reta);
+				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+					Botao botao = (Botao) iterator.next();
+					List retaBota = GeoUtil.drawBresenhamLine(p1, botao
+							.getCentro());
+					if (retaBota.size() <= botao.getRaio()) {
+						double angulo = GeoUtil.calculaAngulo(p1, botao
+								.getCentro());
+						Logger.logar(angulo);
+						Point destino = GeoUtil.calculaPonto(angulo, reta
+								.size() * 2, botao.getCentro());
+						botao.setDestino(destino);
+						break;
+					}
+
+				}
 				mesaPanel.repaint();
 			}
 
@@ -134,5 +152,4 @@ public class MesaApplet extends JApplet {
 		frame.requestFocus();
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
-
 }
