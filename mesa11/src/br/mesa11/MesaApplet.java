@@ -4,13 +4,22 @@ import java.awt.BorderLayout;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+
+import br.mesa11.conceito.Botao;
+import br.nnpe.GeoUtil;
 
 public class MesaApplet extends JApplet {
 	private Point p = new Point(0, 0);
@@ -21,13 +30,18 @@ public class MesaApplet extends JApplet {
 
 		JFrame frame = new JFrame("mesa11");
 		frame.getContentPane().setLayout(new BorderLayout());
-		final MesaPanel mesaPanel = new MesaPanel();
+		List botoes = new ArrayList();
+		Botao botao = new Botao();
+		botao.setPosition(new Point(1400, 2600));
+		botoes.add(botao);
+		final List jogada = new LinkedList();
+		final MesaPanel mesaPanel = new MesaPanel(botoes, jogada);
 		final JScrollPane scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(800, 600);
-		frame.setSize(600, 800);
+		frame.setSize(1200, 700);
+
 		p = mesaPanel.pointCentro();
 		scrollPane.getViewport().setViewPosition(p);
 		mesaPanel.addMouseWheelListener(new MouseWheelListener() {
@@ -43,6 +57,59 @@ public class MesaApplet extends JApplet {
 				mesaPanel.repaint();
 			}
 		});
+		mesaPanel.addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				jogada.add(e.getPoint());
+			}
+
+		});
+		mesaPanel.addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				if (jogada.isEmpty())
+					return;
+				Point p1 = (Point) jogada.get(0);
+				Point p2 = (Point) jogada.get(jogada.size() - 1);
+				List reta = GeoUtil.drawBresenhamLine(p1, p2);
+				jogada.clear();
+				jogada.addAll(reta);
+				mesaPanel.repaint();
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				jogada.clear();
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		frame.addKeyListener(new KeyAdapter() {
 
 			@Override

@@ -6,9 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPanel;
+
+import br.mesa11.conceito.Botao;
 
 public class MesaPanel extends JPanel {
 
@@ -34,6 +37,8 @@ public class MesaPanel extends JPanel {
 	private Rectangle centro;
 	private Rectangle penaltyCima;
 	private Rectangle penaltyBaixo;
+	private List botoes;
+	private List jogada;
 
 	public Rectangle getCampoCima() {
 		return campoCima;
@@ -84,6 +89,12 @@ public class MesaPanel extends JPanel {
 		penaltyBaixo = new Rectangle(0, 0);
 	}
 
+	public MesaPanel(List botoes, List jogada) {
+		this();
+		this.botoes = botoes;
+		this.jogada = jogada;
+	}
+
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(LARGURA_MESA / ZOOM, ALTURA_MESA / ZOOM);
@@ -92,6 +103,23 @@ public class MesaPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		desenhaCampo(g);
+		if (botoes != null) {
+			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+				Botao botao = (Botao) iterator.next();
+				g.setColor(Color.BLUE);
+				g
+						.drawOval(botao.getPosition().x, botao.getPosition().y,
+								50, 50);
+			}
+		}
+		for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
+			Point point = (Point) iterator.next();
+			g.drawOval(point.x, point.y, 1, 1);
+		}
+	}
+
+	private void desenhaCampo(Graphics g) {
 		int x = 0;
 		int y = 0;
 		g.setColor(Color.LIGHT_GRAY);
