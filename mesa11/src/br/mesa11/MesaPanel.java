@@ -108,9 +108,14 @@ public class MesaPanel extends JPanel {
 			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
 				Botao botao = (Botao) iterator.next();
 				g.setColor(Color.BLUE);
-				g
-						.drawOval(botao.getPosition().x, botao.getPosition().y,
-								50, 50);
+				g.drawOval(botao.getPosition().x, botao.getPosition().y, botao
+						.getDiamentro(), botao.getDiamentro());
+				g.fillOval(botao.getCentro().x, botao.getCentro().y, 2, 2);
+				g.setColor(Color.RED);
+				if (botao.getDestino() != null) {
+					g.drawLine(botao.getCentro().x, botao.getCentro().y, botao
+							.getDestino().x, botao.getDestino().y);
+				}
 			}
 		}
 		for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
