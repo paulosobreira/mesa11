@@ -28,6 +28,10 @@ public class Botao {
 				+ (diamentro / 2));
 	}
 
+	public void setCentro(Point p) {
+		position = new Point(p.x - (diamentro / 2), p.y - (diamentro / 2));
+	}
+
 	public int getDiamentro() {
 		return diamentro;
 	}
