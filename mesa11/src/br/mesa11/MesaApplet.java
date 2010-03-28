@@ -26,6 +26,7 @@ import br.nnpe.Logger;
 public class MesaApplet extends JApplet {
 	private Point p = new Point(0, 0);
 	List botoes = new ArrayList();
+	MesaPanel mesaPanel;
 
 	@Override
 	public void init() {
@@ -36,9 +37,16 @@ public class MesaApplet extends JApplet {
 
 		Botao botao = new Botao();
 		botao.setPosition(new Point(1400, 2600));
+		Botao botao2 = new Botao();
+		botao2.setPosition(new Point(1400, 2500));
+		Botao botao3 = new Botao();
+		botao3.setPosition(new Point(1300, 2500));
+		
 		botoes.add(botao);
+		botoes.add(botao2);
+		botoes.add(botao3);
 		final List jogada = new LinkedList();
-		final MesaPanel mesaPanel = new MesaPanel(botoes, jogada);
+		mesaPanel = new MesaPanel(botoes, jogada);
 		final JScrollPane scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -87,15 +95,16 @@ public class MesaApplet extends JApplet {
 				jogada.addAll(reta);
 				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
 					Botao botao = (Botao) iterator.next();
-					List retaBota = GeoUtil.drawBresenhamLine(p1, botao
+					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
-					if (retaBota.size() <= botao.getRaio()) {
+					if (raioPonto.size() <= botao.getRaio()) {
 						double angulo = GeoUtil.calculaAngulo(p1, botao
-								.getCentro());
+								.getCentro(), 90);
 						Logger.logar(angulo);
 						Point destino = GeoUtil.calculaPonto(angulo, reta
 								.size() * 2, botao.getCentro());
 						botao.setDestino(destino);
+						propagaColisao(botao,botao);
 						break;
 					}
 
@@ -151,5 +160,36 @@ public class MesaApplet extends JApplet {
 		frame.setVisible(true);
 		frame.requestFocus();
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+	}
+
+	protected void propagaColisao(Botao botao, Botao causador) {
+		List retaBota = GeoUtil.drawBresenhamLine(botao.getCentro(), botao
+				.getDestino());
+		for (Iterator iReta = retaBota.iterator(); iReta.hasNext();) {
+			Point point = (Point) iReta.next();
+			mesaPanel.repaint();
+			botao.setCentro(point);
+			mesaPanel.repaint();
+			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+				Botao botaoList = (Botao) iterator.next();
+				if (botao.equals(botaoList)) {
+					continue;
+				}
+				if (causador.equals(botaoList)) {
+					continue;
+				}
+				List raioPonto = GeoUtil.drawBresenhamLine(point, botaoList
+						.getCentro());
+				if (raioPonto.size() == (botaoList.getRaio() * 2)) {
+					double angulo = GeoUtil.calculaAngulo(point, botaoList
+							.getCentro(), 90);
+					Point destino = GeoUtil.calculaPonto(angulo, retaBota
+							.size() / 2, botaoList.getCentro());
+					botaoList.setDestino(destino);
+					propagaColisao(botaoList, botao);
+					break;
+				}
+			}
+		}
 	}
 }
