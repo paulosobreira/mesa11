@@ -1,4 +1,4 @@
-package br.applet;
+package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

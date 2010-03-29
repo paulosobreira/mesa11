@@ -1,4 +1,4 @@
-package br.mesa11.servidor.login;
+package br.mesa11.servidor;
 
 import java.util.List;
 

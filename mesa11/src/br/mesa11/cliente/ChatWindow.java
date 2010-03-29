@@ -1,14 +1,16 @@
-package br.applet;
+package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -128,7 +130,7 @@ public class ChatWindow {
 		mainPanel = new JPanel(new BorderLayout());
 		if (controleChatApplet != null) {
 			this.controleChatCliente = controleChatApplet;
-			//controleChatApplet.setChatWindow(this);
+			controleChatApplet.setChatWindow(this);
 		}
 		gerarLayout();
 		gerarAcoes();

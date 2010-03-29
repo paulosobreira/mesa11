@@ -1,7 +1,7 @@
 package br.mesa11;
 
 import br.hibernate.Usuario;
-import br.mesa11.servidor.login.ControleLogin;
+import br.mesa11.servidor.ControleLogin;
 import br.tos.Mesa11TO;
 
 public class ProxyComandos {
