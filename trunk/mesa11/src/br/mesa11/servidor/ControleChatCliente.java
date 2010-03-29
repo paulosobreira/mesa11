@@ -3,7 +3,6 @@ package br.mesa11.servidor;
 import java.awt.BorderLayout;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 import br.applet.Mesa11Applet;
 import br.mesa11.cliente.ChatWindow;
