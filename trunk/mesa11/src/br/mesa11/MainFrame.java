@@ -14,9 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
 import br.applet.Mesa11Applet;
+import br.hibernate.Botao;
 import br.hibernate.Usuario;
-import br.mesa11.conceito.Botao;
-import br.mesa11.conceito.Mesa;
+import br.mesa11.visao.MesaPanel;
 
 public class MainFrame {
 
@@ -30,8 +30,8 @@ public class MainFrame {
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("mesa11");
 		frame.getContentPane().setLayout(new BorderLayout());
-		Mesa mesa = new Mesa();
-		final MesaPanel mesaPanel = mesa.getMesaPanel();
+
+		final MesaPanel mesaPanel = new MesaPanel();
 		final JScrollPane scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

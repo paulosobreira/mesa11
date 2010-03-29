@@ -19,7 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import br.mesa11.conceito.Botao;
+import br.hibernate.Botao;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
