@@ -18,7 +18,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
-import br.mesa11.MesaPanel;
+import br.hibernate.Botao;
+import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 

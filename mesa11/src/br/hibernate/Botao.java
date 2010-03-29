@@ -1,11 +1,11 @@
-package br.mesa11.conceito;
+package br.hibernate;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-public class Botao {
+public class Botao extends Mesa11Dados {
 
-	private BufferedImage imgBotao;
+	private transient BufferedImage imgBotao;
 
 	private int diamentro = 50;
 	private Point position;

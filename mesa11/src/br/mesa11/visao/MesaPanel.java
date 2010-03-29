@@ -1,4 +1,4 @@
-package br.mesa11;
+package br.mesa11.visao;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -11,7 +11,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import br.mesa11.conceito.Botao;
+import br.hibernate.Botao;
 
 public class MesaPanel extends JPanel {
 
