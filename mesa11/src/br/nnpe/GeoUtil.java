@@ -131,7 +131,7 @@ public class GeoUtil {
 		int dy = b.y - a.y;
 		// double tan = Math.atan((double) dy / dx);
 		double tan = Math.atan2(dy, dx);
-		Logger.logar("Tangete" + tan);
+		//Logger.logar("Tangete" + tan);
 		// return tan;
 		return Math.toDegrees(tan) + fator;
 		// 2 quadrantes, -pi/2 até pi/2
