@@ -51,8 +51,8 @@ public abstract class Mesa11Dados implements Serializable {
 		if (!(obj instanceof Mesa11Dados)) {
 			return false;
 		}
-		Mesa11Dados algolDados = (Mesa11Dados) obj;
-		return id.equals(algolDados.getId());
+		Mesa11Dados mesa11Dados = (Mesa11Dados) obj;
+		return id.equals(mesa11Dados.getId());
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -24,8 +25,9 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 
 public class ControleJogo {
-	List botoes = new ArrayList();
+	private List botoes = new ArrayList();
 	private Point p = new Point(0, 0);
+	private Animacao animacao;
 
 	private MesaPanel mesaPanel;
 
@@ -34,11 +36,11 @@ public class ControleJogo {
 		JFrame frame = new JFrame("mesa11");
 		frame.getContentPane().setLayout(new BorderLayout());
 
-		Botao botao = new Botao();
+		Botao botao = new Botao(1);
 		botao.setPosition(new Point(1400, 2600));
-		Botao botao2 = new Botao();
+		Botao botao2 = new Botao(2);
 		botao2.setPosition(new Point(1400, 2500));
-		Botao botao3 = new Botao();
+		Botao botao3 = new Botao(3);
 		botao3.setPosition(new Point(1300, 2500));
 
 		botoes.add(botao);
@@ -103,12 +105,22 @@ public class ControleJogo {
 						Point destino = GeoUtil.calculaPonto(angulo, reta
 								.size() * 2, botao.getCentro());
 						botao.setDestino(destino);
-						propagaColisao(botao, botao);
+						animacao = new Animacao();
+						animacao.setObjetoAnimacao(botao);
+						animacao.setPontosAnimacao(botao.getTrajetoria());
+						propagaColisao(animacao, botao);
 						break;
 					}
 
 				}
-				mesaPanel.repaint();
+				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+					Botao botao = (Botao) iterator.next();
+					if (botao.getCentroInicio() != null)
+						botao.setCentro(botao.getCentroInicio());
+				}
+				Animador animador = new Animador(animacao, mesaPanel);
+				Thread thread = new Thread(animador);
+				thread.start();
 			}
 
 			@Override
@@ -161,35 +173,44 @@ public class ControleJogo {
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
 
-	protected void propagaColisao(Botao botao, Botao causador) {
-		List retaBota = GeoUtil.drawBresenhamLine(botao.getCentro(), botao
-				.getDestino());
-		for (Iterator iReta = retaBota.iterator(); iReta.hasNext();) {
-			Point point = (Point) iReta.next();
-			mesaPanel.repaint();
-			botao.setCentro(point);
-			mesaPanel.repaint();
-			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-				Botao botaoList = (Botao) iterator.next();
-				if (botao.equals(botaoList)) {
-					continue;
+	protected void propagaColisao(Animacao animacao, Botao causador) {
+		Botao botao = animacao.getObjetoAnimacao();
+		Logger.logar(botao);
+		List trajetoriaBotao = animacao.getPontosAnimacao();
+		for (int i = 0; i < trajetoriaBotao.size(); i++) {
+			Object objTrajetoria = trajetoriaBotao.get(i);
+			if (objTrajetoria instanceof Point) {
+				Point point = (Point) objTrajetoria;
+				botao.setCentro(point);
+				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+					Botao botaoAtingido = (Botao) iterator.next();
+					if (botao.equals(botaoAtingido)) {
+						continue;
+					}
+					if (causador.equals(botaoAtingido)) {
+						continue;
+					}
+					List raioPonto = GeoUtil.drawBresenhamLine(point,
+							botaoAtingido.getCentro());
+					if (raioPonto.size() == (botaoAtingido.getRaio() * 2)) {
+						double angulo = GeoUtil.calculaAngulo(point,
+								botaoAtingido.getCentro(), 90);
+						Point destino = GeoUtil.calculaPonto(angulo,
+								trajetoriaBotao.size() / 2, botaoAtingido
+										.getCentro());
+						botaoAtingido.setDestino(destino);
+						animacao = new Animacao();
+						animacao.setObjetoAnimacao(botaoAtingido);
+						animacao.setPontosAnimacao(botaoAtingido
+								.getTrajetoria());
+						propagaColisao(animacao, botao);
+						trajetoriaBotao.set(i, animacao);
+						break;
+					}
 				}
-				if (causador.equals(botaoList)) {
-					continue;
-				}
-				List raioPonto = GeoUtil.drawBresenhamLine(point, botaoList
-						.getCentro());
-				if (raioPonto.size() == (botaoList.getRaio() * 2)) {
-					double angulo = GeoUtil.calculaAngulo(point, botaoList
-							.getCentro(), 90);
-					Point destino = GeoUtil.calculaPonto(angulo, retaBota
-							.size() / 2, botaoList.getCentro());
-					botaoList.setDestino(destino);
-					propagaColisao(botaoList, botao);
-					break;
-				}
+			} else if (objTrajetoria instanceof Animacao) {
+				System.out.println("teste");
 			}
 		}
 	}
-
 }

@@ -2,14 +2,27 @@ package br.hibernate;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.util.List;
+
+import br.nnpe.GeoUtil;
 
 public class Botao extends Mesa11Dados {
 
 	private transient BufferedImage imgBotao;
 
-	private int diamentro = 50;
-	private Point position;
-	private Point destino;
+	private transient int diamentro = 50;
+	private transient Point position;
+	private transient Point centroInicio;
+
+	public Point getCentroInicio() {
+		return centroInicio;
+	}
+
+	public void setCentroInicio(Point controInicio) {
+		this.centroInicio = controInicio;
+	}
+
+	private transient Point destino;
 
 	public Point getDestino() {
 		return destino;
@@ -52,6 +65,14 @@ public class Botao extends Mesa11Dados {
 		imgBotao = null;
 	}
 
+	public Botao(Long id) {
+		this.id = id;
+	}
+
+	public Botao(int id) {
+		this.id = new Long(id);
+	}
+
 	public BufferedImage getImgBotao() {
 		return imgBotao;
 	}
@@ -61,5 +82,14 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public static void main(String[] args) {
+	}
+
+	public List getTrajetoria() {
+		return GeoUtil.drawBresenhamLine(getCentro(), getDestino());
+	}
+
+	@Override
+	public String toString() {
+		return "Id :" + getId();
 	}
 }

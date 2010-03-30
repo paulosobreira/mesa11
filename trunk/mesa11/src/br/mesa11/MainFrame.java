@@ -16,6 +16,7 @@ import javax.swing.WindowConstants;
 import br.applet.Mesa11Applet;
 import br.hibernate.Botao;
 import br.hibernate.Usuario;
+import br.mesa11.conceito.ControleJogo;
 import br.mesa11.visao.MesaPanel;
 
 public class MainFrame {
@@ -28,66 +29,8 @@ public class MainFrame {
 	}
 
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("mesa11");
-		frame.getContentPane().setLayout(new BorderLayout());
-
-		final MesaPanel mesaPanel = new MesaPanel();
-		final JScrollPane scrollPane = new JScrollPane(mesaPanel,
-				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(600, 800);
-		p = mesaPanel.pointCentro();
-		Botao botao = new Botao();
-		// mesaPanel.add(botao.getImgBotao());
-		scrollPane.getViewport().setViewPosition(p);
-		mesaPanel.addMouseWheelListener(new MouseWheelListener() {
-
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				MesaPanel.ZOOM += e.getWheelRotation();
-				if (MesaPanel.ZOOM <= 0) {
-					MesaPanel.ZOOM = 1;
-				}
-				p = mesaPanel.pointCentro();
-				scrollPane.getViewport().setViewPosition(p);
-				mesaPanel.repaint();
-			}
-		});
-		mesaPanel.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("click");
-				if (mesaPanel.getGrandeAreaCima().contains(e.getPoint())) {
-					System.out.println("grandeAreaCima");
-				}
-				super.mouseClicked(e);
-			}
-
-		});
-		frame.addKeyListener(new KeyAdapter() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int keycode = e.getKeyCode();
-				if (keycode == KeyEvent.VK_LEFT) {
-					p.x -= 10;
-				} else if (keycode == KeyEvent.VK_RIGHT) {
-					p.x += 10;
-				} else if (keycode == KeyEvent.VK_UP) {
-					p.y -= 10;
-				} else if (keycode == KeyEvent.VK_DOWN) {
-					p.y += 10;
-				}
-				scrollPane.getViewport().setViewPosition(p);
-				mesaPanel.repaint();
-				super.keyPressed(e);
-			}
-
-		});
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		ControleJogo controleJogo = new ControleJogo();
+		controleJogo.test();
 	}
 
 	public void setVisible(boolean b) {

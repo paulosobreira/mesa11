@@ -118,9 +118,11 @@ public class MesaPanel extends JPanel {
 				}
 			}
 		}
-		for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
-			Point point = (Point) iterator.next();
-			g.drawOval(point.x, point.y, 1, 1);
+		if (jogada != null) {
+			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
+				Point point = (Point) iterator.next();
+				g.drawOval(point.x, point.y, 1, 1);
+			}
 		}
 	}
 
