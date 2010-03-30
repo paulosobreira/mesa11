@@ -52,7 +52,7 @@ public class ControleJogo {
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(1200, 700);
+		frame.setSize(500, 500);
 
 		p = mesaPanel.pointCentro();
 		scrollPane.getViewport().setViewPosition(p);
@@ -101,7 +101,7 @@ public class ControleJogo {
 					if (raioPonto.size() <= botao.getRaio()) {
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
-						Logger.logar(angulo);
+
 						Point destino = GeoUtil.calculaPonto(angulo, reta
 								.size() * 2, botao.getCentro());
 						botao.setDestino(destino);
@@ -203,8 +203,23 @@ public class ControleJogo {
 						animacao.setObjetoAnimacao(botaoAtingido);
 						animacao.setPontosAnimacao(botaoAtingido
 								.getTrajetoria());
-						propagaColisao(animacao, botao);
+
 						trajetoriaBotao.set(i, animacao);
+						while (i + 1 < trajetoriaBotao.size()) {
+							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
+						}
+						propagaColisao(animacao, botao);
+						angulo = GeoUtil.calculaAngulo(point,
+								botao.getCentro(), 180);
+						destino = GeoUtil.calculaPonto(angulo, trajetoriaBotao
+								.size(), botao.getCentro());
+						botao.setDestino(destino);
+						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
+								destino);
+						for (Iterator iterator2 = novaTrajetoria.iterator(); iterator2
+								.hasNext();) {
+							trajetoriaBotao.add(iterator2.next());
+						}
 						break;
 					}
 				}
