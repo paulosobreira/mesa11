@@ -37,22 +37,28 @@ public class ControleJogo {
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		Botao botao = new Botao(1);
-		botao.setPosition(new Point(1400, 2600));
+		botao.setPosition(new Point(1500, 2300));
 		Botao botao2 = new Botao(2);
-		botao2.setPosition(new Point(1400, 2500));
+		botao2.setPosition(new Point(1500, 2500));
 		Botao botao3 = new Botao(3);
 		botao3.setPosition(new Point(1300, 2500));
+		Botao botao4 = new Botao(4);
+		botao4.setPosition(new Point(1700, 2200));
+		Botao botao5 = new Botao(5);
+		botao5.setPosition(new Point(1600, 2900));
 
 		botoes.add(botao);
 		botoes.add(botao2);
 		botoes.add(botao3);
+		botoes.add(botao4);
+		botoes.add(botao5);
 		final List jogada = new LinkedList();
 		mesaPanel = new MesaPanel(botoes, jogada);
 		final JScrollPane scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(500, 500);
+		frame.setSize(900, 900);
 
 		p = mesaPanel.pointCentro();
 		scrollPane.getViewport().setViewPosition(p);
@@ -208,11 +214,10 @@ public class ControleJogo {
 						while (i + 1 < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
-						propagaColisao(animacao, botao);
 						angulo = GeoUtil.calculaAngulo(point,
-								botao.getCentro(), 180);
+								botao.getCentro(), 90);
 						destino = GeoUtil.calculaPonto(angulo, trajetoriaBotao
-								.size(), botao.getCentro());
+								.size() / 3, botao.getCentro());
 						botao.setDestino(destino);
 						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
 								destino);
@@ -220,6 +225,8 @@ public class ControleJogo {
 								.hasNext();) {
 							trajetoriaBotao.add(iterator2.next());
 						}
+						propagaColisao(animacao, botao);
+
 						break;
 					}
 				}
