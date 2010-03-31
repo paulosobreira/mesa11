@@ -36,8 +36,8 @@ public class Animador implements Runnable {
 				botao.setCentro(point);
 				panel.repaint();
 				try {
-					if (i % 2 == 0)
-						Thread.sleep(15);
+					if (i % 3 == 0)
+						Thread.sleep(10);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
