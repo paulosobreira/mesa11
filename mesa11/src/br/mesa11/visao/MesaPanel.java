@@ -6,12 +6,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import br.hibernate.Botao;
+import br.recursos.CarregadorRecursos;
 
 public class MesaPanel extends JPanel {
 
@@ -39,6 +41,7 @@ public class MesaPanel extends JPanel {
 	private Rectangle penaltyBaixo;
 	private List botoes;
 	private List jogada;
+	private BufferedImage botaoImg;
 
 	public Rectangle getCampoCima() {
 		return campoCima;
@@ -87,6 +90,7 @@ public class MesaPanel extends JPanel {
 		centro = new Rectangle(0, 0);
 		penaltyCima = new Rectangle(0, 0);
 		penaltyBaixo = new Rectangle(0, 0);
+		botaoImg = CarregadorRecursos.carregaImg("cruz2.png");
 	}
 
 	public MesaPanel(List botoes, List jogada) {
@@ -108,14 +112,17 @@ public class MesaPanel extends JPanel {
 			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
 				Botao botao = (Botao) iterator.next();
 				g.setColor(Color.BLUE);
-				g.drawOval(botao.getPosition().x, botao.getPosition().y, botao
-						.getDiamentro(), botao.getDiamentro());
 				g.fillOval(botao.getCentro().x, botao.getCentro().y, 2, 2);
 				g.setColor(Color.RED);
 				if (botao.getDestino() != null) {
 					g.drawLine(botao.getCentro().x, botao.getCentro().y, botao
 							.getDestino().x, botao.getDestino().y);
 				}
+				g.drawImage(botaoImg, botao.getPosition().x , botao
+						.getPosition().y , null);
+				g.drawOval(botao.getPosition().x, botao.getPosition().y, botao
+						.getDiamentro(), botao.getDiamentro());
+
 			}
 		}
 		if (jogada != null) {

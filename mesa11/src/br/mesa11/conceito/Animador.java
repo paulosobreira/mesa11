@@ -37,7 +37,7 @@ public class Animador implements Runnable {
 				panel.repaint();
 				try {
 					if (i % 2 == 0)
-						Thread.sleep(30);
+						Thread.sleep(15);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
