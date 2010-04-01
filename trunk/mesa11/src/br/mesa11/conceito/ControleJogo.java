@@ -33,7 +33,7 @@ public class ControleJogo {
 
 	public void test() {
 
-		JFrame frame = new JFrame("mesa11");
+		final JFrame frame = new JFrame("mesa11");
 		frame.getContentPane().setLayout(new BorderLayout());
 
 		Botao botao = new Botao(1);
@@ -68,16 +68,15 @@ public class ControleJogo {
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				MesaPanel.ZOOM += e.getWheelRotation() / 100.0;
 				Logger.logar(MesaPanel.ZOOM);
-				if (MesaPanel.ZOOM <= 0.1) {
-					MesaPanel.ZOOM = 0.1;
+				if (MesaPanel.ZOOM <= 0.5) {
+					MesaPanel.ZOOM = 0.5;
 				}
 				if (MesaPanel.ZOOM >= 1) {
 					MesaPanel.ZOOM = 1;
 				}
-				p = mesaPanel.pointCentro();
+//				p = mesaPanel.pointCentro();
+//				scrollPane.getViewport().setViewPosition(p);
 				mesaPanel.repaint();
-				scrollPane.getViewport().setViewPosition(p);
-
 			}
 		});
 		mesaPanel.addMouseMotionListener(new MouseMotionListener() {
@@ -90,11 +89,11 @@ public class ControleJogo {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-			    jogada.add(e.getPoint());
-//				jogada.add(new Point(e.getPoint().x
-//						- (int) (e.getPoint().x * MesaPanel.ZOOM),
-//						e.getPoint().y
-//								- (int) (e.getPoint().y * MesaPanel.ZOOM)));
+				jogada.add(e.getPoint());
+				// jogada.add(new Point(e.getPoint().x
+				// - (int) (e.getPoint().x * MesaPanel.ZOOM),
+				// e.getPoint().y
+				// - (int) (e.getPoint().y * MesaPanel.ZOOM)));
 			}
 
 		});
