@@ -358,7 +358,6 @@ public class MesaPanel extends JPanel {
 		int x = (int) (calculaXcentro() * ZOOM);
 		int y = (int) (calculaYcentro() * ZOOM);
 		Point point = new Point(x, y);
-		System.out.println(point);
 		return point;
 	}
 }
