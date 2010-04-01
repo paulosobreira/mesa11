@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +31,7 @@ public class MesaPanel extends JPanel {
 	public static final int ALTURA_PQ_AREA = 314;
 	public static final int RAIO_CENTRO = 1000;
 	public static final int PENALTI = 586;
-	public static int ZOOM = 1;
+	public static double ZOOM = 1;
 	private Rectangle campoCima;
 	private Rectangle campoBaixo;
 	private Rectangle grandeAreaCima;
@@ -101,7 +103,8 @@ public class MesaPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(LARGURA_MESA / ZOOM, ALTURA_MESA / ZOOM);
+		return new Dimension((int) (LARGURA_MESA * ZOOM),
+				(int) (ALTURA_MESA * ZOOM));
 	}
 
 	@Override
@@ -112,23 +115,38 @@ public class MesaPanel extends JPanel {
 			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
 				Botao botao = (Botao) iterator.next();
 				g.setColor(Color.BLUE);
-				g.fillOval(botao.getCentro().x, botao.getCentro().y, 2, 2);
+				g.fillOval((int) (botao.getCentro().x * ZOOM), (int) (botao
+						.getCentro().y * ZOOM), 2, 2);
 				g.setColor(Color.RED);
 				if (botao.getDestino() != null) {
-					g.drawLine(botao.getCentro().x, botao.getCentro().y, botao
-							.getDestino().x, botao.getDestino().y);
+					g.drawLine((int) (botao.getCentro().x * ZOOM), (int) (botao
+							.getCentro().y * ZOOM),
+							(int) (botao.getDestino().x * ZOOM), (int) (botao
+									.getDestino().y * ZOOM));
 				}
-				g.drawImage(botaoImg, botao.getPosition().x , botao
-						.getPosition().y , null);
-				g.drawOval(botao.getPosition().x, botao.getPosition().y, botao
-						.getDiamentro(), botao.getDiamentro());
+				AffineTransform affineTransform = AffineTransform
+						.getScaleInstance(ZOOM, ZOOM);
+				AffineTransformOp affineTransformOp = new AffineTransformOp(
+						affineTransform, AffineTransformOp.TYPE_BILINEAR);
+				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
+						.getWidth() * ZOOM),
+						(int) (botaoImg.getHeight() * ZOOM),
+						BufferedImage.TYPE_INT_ARGB);
+
+				affineTransformOp.filter(botaoImg, zoomBuffer);
+				g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
+						(int) (botao.getPosition().y * ZOOM), null);
+				g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
+						.getPosition().y * ZOOM),
+						(int) (botao.getDiamentro() * ZOOM), (int) (botao
+								.getDiamentro() * ZOOM));
 
 			}
 		}
 		if (jogada != null) {
 			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
-				g.drawOval(point.x, point.y, 1, 1);
+				g.drawOval((int) (point.x), (int) (point.y), 1, 1);
 			}
 		}
 	}
@@ -137,159 +155,184 @@ public class MesaPanel extends JPanel {
 		int x = 0;
 		int y = 0;
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, LARGURA_MESA / ZOOM, ALTURA_MESA / ZOOM);
+		g.fillRect(0, 0, (int) (LARGURA_MESA * ZOOM),
+				(int) (ALTURA_MESA * ZOOM));
 		/**
 		 * Campo
 		 */
 		g.setColor(Color.white);
-		g.fillRect(BORDA_CAMPO / ZOOM, BORDA_CAMPO / ZOOM,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM,
-				(ALTURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM);
+		g.fillRect((int) (BORDA_CAMPO * ZOOM), (int) (BORDA_CAMPO * ZOOM),
+				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
+				(int) ((ALTURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM));
 
 		g.setColor(Color.green);
-		g.fillRect((BORDA_CAMPO + LINHA) / ZOOM, (BORDA_CAMPO + LINHA) / ZOOM,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) / ZOOM,
-				(ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) / ZOOM);
+		g.fillRect((int) ((BORDA_CAMPO + LINHA) * ZOOM),
+				(int) ((BORDA_CAMPO + LINHA) * ZOOM), (int) ((LARGURA_MESA
+						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * ZOOM),
+				(int) ((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * ZOOM));
 		/**
 		 * Meia lua de cima
 		 */
 		g.setColor(Color.white);
 		x = (LARGURA_MESA / 2) - RAIO_CENTRO / 2;
 		y = BORDA_CAMPO;
-		g.fillOval(x / ZOOM, y / ZOOM, RAIO_CENTRO / ZOOM, RAIO_CENTRO / ZOOM);
+		g.fillOval((int) (x * ZOOM), (int) (y * ZOOM),
+				(int) (RAIO_CENTRO * ZOOM), (int) (RAIO_CENTRO * ZOOM));
 		g.setColor(Color.green);
-		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
-				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
-						/ ZOOM);
+		g.fillOval((int) ((x + LINHA) * ZOOM), (int) ((y + LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM));
 		/**
 		 * Meia lua de Baixo
 		 */
 		g.setColor(Color.white);
 		x = (LARGURA_MESA / 2) - RAIO_CENTRO / 2;
 		y = ALTURA_MESA - BORDA_CAMPO - RAIO_CENTRO;
-		g.fillOval(x / ZOOM, y / ZOOM, RAIO_CENTRO / ZOOM, RAIO_CENTRO / ZOOM);
+		g.fillOval((int) (x * ZOOM), (int) (y * ZOOM),
+				(int) (RAIO_CENTRO * ZOOM), (int) (RAIO_CENTRO * ZOOM));
 		g.setColor(Color.green);
-		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
-				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
-						/ ZOOM);
+		g.fillOval((int) ((x + LINHA) * ZOOM), (int) ((y + LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM));
 		/**
 		 * GdeArae Cima
 		 */
 		g.setColor(Color.white);
-		g.fillRect(ALTURA_GDE_AREA / ZOOM, BORDA_CAMPO / ZOOM,
-				(LARGURA_GDE_AREA) / ZOOM, (ALTURA_GDE_AREA) / ZOOM);
+		g.fillRect((int) (ALTURA_GDE_AREA * ZOOM), (int) (BORDA_CAMPO * ZOOM),
+				(int) ((LARGURA_GDE_AREA) * ZOOM),
+				(int) ((ALTURA_GDE_AREA) * ZOOM));
 		g.setColor(Color.green);
-		g.fillRect((ALTURA_GDE_AREA + LINHA) / ZOOM, (BORDA_CAMPO + LINHA)
-				/ ZOOM, (LARGURA_GDE_AREA - DOBRO_LINHA) / ZOOM,
-				(ALTURA_GDE_AREA - DOBRO_LINHA) / ZOOM);
+		g.fillRect((int) ((ALTURA_GDE_AREA + LINHA) * ZOOM),
+				(int) ((BORDA_CAMPO + LINHA) * ZOOM),
+				(int) ((LARGURA_GDE_AREA - DOBRO_LINHA) * ZOOM),
+				(int) ((ALTURA_GDE_AREA - DOBRO_LINHA) * ZOOM));
 		/**
 		 * GdeArae Baixo
 		 */
 		g.setColor(Color.white);
-		g.fillRect(ALTURA_GDE_AREA / ZOOM,
-				(ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) / ZOOM,
-				(LARGURA_GDE_AREA) / ZOOM, (ALTURA_GDE_AREA) / ZOOM);
+		g.fillRect((int) (ALTURA_GDE_AREA * ZOOM), (int) ((ALTURA_MESA
+				- BORDA_CAMPO - ALTURA_GDE_AREA) * ZOOM),
+				(int) ((LARGURA_GDE_AREA) * ZOOM),
+				(int) ((ALTURA_GDE_AREA) * ZOOM));
 		g.setColor(Color.green);
-		g.fillRect((ALTURA_GDE_AREA + LINHA) / ZOOM, (ALTURA_MESA - BORDA_CAMPO
-				- ALTURA_GDE_AREA + LINHA)
-				/ ZOOM, (LARGURA_GDE_AREA - DOBRO_LINHA) / ZOOM,
-				(ALTURA_GDE_AREA - DOBRO_LINHA) / ZOOM);
+		g
+				.fillRect(
+						(int) ((ALTURA_GDE_AREA + LINHA) * ZOOM),
+						(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA + LINHA) * ZOOM),
+						(int) ((LARGURA_GDE_AREA - DOBRO_LINHA) * ZOOM),
+						(int) ((ALTURA_GDE_AREA - DOBRO_LINHA) * ZOOM));
 		/**
 		 * PQArae Cima
 		 */
 		g.setColor(Color.white);
 		x = (LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2);
-		g.fillRect(x / ZOOM, BORDA_CAMPO / ZOOM, (LARGURA_PQ_AREA) / ZOOM,
-				(ALTURA_PQ_AREA) / ZOOM);
+		g.fillRect((int) (x * ZOOM), (int) (BORDA_CAMPO * ZOOM),
+				(int) ((LARGURA_PQ_AREA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA) * ZOOM));
 		g.setColor(Color.green);
-		g.fillRect((x + LINHA) / ZOOM, (BORDA_CAMPO + LINHA) / ZOOM,
-				(LARGURA_PQ_AREA - DOBRO_LINHA) / ZOOM,
-				(ALTURA_PQ_AREA - DOBRO_LINHA) / ZOOM);
+		g.fillRect((int) ((x + LINHA) * ZOOM),
+				(int) ((BORDA_CAMPO + LINHA) * ZOOM),
+				(int) ((LARGURA_PQ_AREA - DOBRO_LINHA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA - DOBRO_LINHA) * ZOOM));
 		/**
 		 * PQArae Baixo
 		 */
 		g.setColor(Color.white);
 		x = (LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2);
 		y = (ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA);
-		g.fillRect(x / ZOOM, y / ZOOM, (LARGURA_PQ_AREA) / ZOOM,
-				(ALTURA_PQ_AREA) / ZOOM);
+		g.fillRect((int) (x * ZOOM), (int) (y * ZOOM),
+				(int) ((LARGURA_PQ_AREA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA) * ZOOM));
 		g.setColor(Color.green);
-		g.fillRect((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
-				(LARGURA_PQ_AREA - DOBRO_LINHA) / ZOOM,
-				(ALTURA_PQ_AREA - DOBRO_LINHA) / ZOOM);
+		g.fillRect((int) ((x + LINHA) * ZOOM), (int) ((y + LINHA) * ZOOM),
+				(int) ((LARGURA_PQ_AREA - DOBRO_LINHA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA - DOBRO_LINHA) * ZOOM));
 		/**
 		 * Circulo Centro
 		 */
 		g.setColor(Color.white);
 		x = calculaXcentro();
 		y = calculaYcentro();
-		g.fillOval(x / ZOOM, y / ZOOM, RAIO_CENTRO / ZOOM, RAIO_CENTRO / ZOOM);
+		g.fillOval((int) (x * ZOOM), (int) (y * ZOOM),
+				(int) (RAIO_CENTRO * ZOOM), (int) (RAIO_CENTRO * ZOOM));
 		g.setColor(Color.green);
-		g.fillOval((x + LINHA) / ZOOM, (y + LINHA) / ZOOM,
-				(RAIO_CENTRO - DOBRO_LINHA) / ZOOM, (RAIO_CENTRO - DOBRO_LINHA)
-						/ ZOOM);
+		g.fillOval((int) ((x + LINHA) * ZOOM), (int) ((y + LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM),
+				(int) ((RAIO_CENTRO - DOBRO_LINHA) * ZOOM));
 		/**
 		 * meio de campo
 		 */
 		g.setColor(Color.white);
-		g.fillRect((BORDA_CAMPO) / ZOOM, (ALTURA_MESA / 2) / ZOOM,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM, LINHA / ZOOM);
+		g.fillRect((int) ((BORDA_CAMPO) * ZOOM),
+				(int) ((ALTURA_MESA / 2) * ZOOM),
+				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
+				(int) (LINHA * ZOOM));
 
 		/**
 		 * Penalti cima
 		 */
 		g.setColor(Color.white);
-		g.fillOval((LARGURA_MESA / 2) / ZOOM, (BORDA_CAMPO + PENALTI) / ZOOM,
-				DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
+		g.fillOval((int) ((LARGURA_MESA / 2) * ZOOM),
+				(int) ((BORDA_CAMPO + PENALTI) * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
 
 		/**
 		 * Penalti Baixo
 		 */
 		g.setColor(Color.white);
-		g.fillOval((LARGURA_MESA / 2) / ZOOM,
-				(ALTURA_MESA - BORDA_CAMPO - PENALTI) / ZOOM, DOBRO_LINHA
-						/ ZOOM, DOBRO_LINHA / ZOOM);
+		g.fillOval((int) ((LARGURA_MESA / 2) * ZOOM), (int) ((ALTURA_MESA
+				- BORDA_CAMPO - PENALTI) * ZOOM), (int) (DOBRO_LINHA * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM));
 		/**
 		 * Centro
 		 */
 		g.setColor(Color.white);
-		g.fillOval((LARGURA_MESA / 2) / ZOOM, ((ALTURA_MESA - LINHA) / 2)
-				/ ZOOM, DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
+		g.fillOval((int) ((LARGURA_MESA / 2) * ZOOM),
+				(int) (((ALTURA_MESA - LINHA) / 2) * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
 		Graphics2D graphics2D = (Graphics2D) g;
 		desenhaFiguras(graphics2D);
 	}
 
 	private void desenhaFiguras(Graphics2D g) {
 		g.setColor(Color.BLACK);
-		campoCima.setBounds(BORDA_CAMPO / ZOOM, BORDA_CAMPO / ZOOM,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM,
-				((ALTURA_MESA / 2) - BORDA_CAMPO) / ZOOM);
-		campoBaixo.setBounds(BORDA_CAMPO / ZOOM, ((ALTURA_MESA / 2)) / ZOOM,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO) / ZOOM,
-				((ALTURA_MESA / 2) - BORDA_CAMPO) / ZOOM);
-		grandeAreaCima.setBounds(ALTURA_GDE_AREA / ZOOM, BORDA_CAMPO / ZOOM,
-				(LARGURA_GDE_AREA) / ZOOM, (ALTURA_GDE_AREA) / ZOOM);
+		campoCima.setBounds((int) (BORDA_CAMPO * ZOOM),
+				(int) (BORDA_CAMPO * ZOOM),
+				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
+				(int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * ZOOM));
+		campoBaixo.setBounds((int) (BORDA_CAMPO * ZOOM),
+				(int) (((ALTURA_MESA / 2)) * ZOOM),
+				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
+				(int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * ZOOM));
+		grandeAreaCima.setBounds((int) (ALTURA_GDE_AREA * ZOOM),
+				(int) (BORDA_CAMPO * ZOOM), (int) ((LARGURA_GDE_AREA) * ZOOM),
+				(int) ((ALTURA_GDE_AREA) * ZOOM));
 
-		grandeAreaBaixo.setBounds(ALTURA_GDE_AREA / ZOOM, (ALTURA_MESA
-				- BORDA_CAMPO - ALTURA_GDE_AREA)
-				/ ZOOM, (LARGURA_GDE_AREA) / ZOOM, (ALTURA_GDE_AREA) / ZOOM);
+		grandeAreaBaixo.setBounds((int) (ALTURA_GDE_AREA * ZOOM),
+				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) * ZOOM),
+				(int) ((LARGURA_GDE_AREA) * ZOOM),
+				(int) ((ALTURA_GDE_AREA) * ZOOM));
 
-		pequenaAreaCima.setBounds((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2)
-				/ ZOOM, BORDA_CAMPO / ZOOM, (LARGURA_PQ_AREA) / ZOOM,
-				(ALTURA_PQ_AREA) / ZOOM);
-		pequenaAreaBaixo.setBounds((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2)
-				/ ZOOM, (ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA) / ZOOM,
-				(LARGURA_PQ_AREA) / ZOOM, (ALTURA_PQ_AREA) / ZOOM);
+		pequenaAreaCima.setBounds(
+				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * ZOOM),
+				(int) (BORDA_CAMPO * ZOOM), (int) ((LARGURA_PQ_AREA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA) * ZOOM));
+		pequenaAreaBaixo.setBounds(
+				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * ZOOM),
+				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA) * ZOOM),
+				(int) ((LARGURA_PQ_AREA) * ZOOM),
+				(int) ((ALTURA_PQ_AREA) * ZOOM));
 
-		centro.setBounds((LARGURA_MESA / 2) / ZOOM, (ALTURA_MESA / 2) / ZOOM,
-				DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
+		centro.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
+				(int) ((ALTURA_MESA / 2) * ZOOM), (int) (DOBRO_LINHA * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM));
 
-		penaltyCima.setBounds((LARGURA_MESA / 2) / ZOOM,
-				(BORDA_CAMPO + PENALTI) / ZOOM, DOBRO_LINHA / ZOOM, DOBRO_LINHA
-						/ ZOOM);
-		penaltyBaixo.setBounds((LARGURA_MESA / 2) / ZOOM, (ALTURA_MESA
-				- BORDA_CAMPO - PENALTI)
-				/ ZOOM, DOBRO_LINHA / ZOOM, DOBRO_LINHA / ZOOM);
+		penaltyCima.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
+				(int) ((BORDA_CAMPO + PENALTI) * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
+		penaltyBaixo.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
+				(int) ((ALTURA_MESA - BORDA_CAMPO - PENALTI) * ZOOM),
+				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
 		g.draw(campoCima);
 		g.draw(campoBaixo);
 		g.draw(grandeAreaCima);
@@ -312,8 +355,8 @@ public class MesaPanel extends JPanel {
 
 	public Point pointCentro() {
 
-		int x = calculaXcentro() / ZOOM;
-		int y = calculaYcentro() / ZOOM;
+		int x = (int) (calculaXcentro() * ZOOM);
+		int y = (int) (calculaYcentro() * ZOOM);
 		Point point = new Point(x, y);
 		System.out.println(point);
 		return point;

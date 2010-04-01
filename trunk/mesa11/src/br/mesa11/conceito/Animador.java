@@ -23,9 +23,15 @@ public class Animador implements Runnable {
 	@Override
 	public void run() {
 		animar(animacao);
+		if (animacao != null)
+			animacao.setValida(false);
 	}
 
 	private void animar(Animacao anim) {
+		if (anim == null)
+			return;
+		if (!anim.isValida())
+			return;
 		Botao botao = anim.getObjetoAnimacao();
 		List elements = anim.getPontosAnimacao();
 		for (int i = 0; i < elements.size(); i++) {
