@@ -13,6 +13,7 @@ public class Botao extends Mesa11Dados {
 	private transient int diamentro = 128;
 	private transient Point position;
 	private transient Point centroInicio;
+	private transient Point destino;
 
 	public Point getCentroInicio() {
 		return centroInicio;
@@ -21,8 +22,6 @@ public class Botao extends Mesa11Dados {
 	public void setCentroInicio(Point controInicio) {
 		this.centroInicio = controInicio;
 	}
-
-	private transient Point destino;
 
 	public Point getDestino() {
 		return destino;
@@ -33,16 +32,17 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public int getRaio() {
-		return diamentro / 2;
+		return getDiamentro() / 2;
 	}
 
 	public Point getCentro() {
-		return new Point(position.x + (diamentro / 2), position.y
-				+ (diamentro / 2));
+		return new Point(getPosition().x + (getDiamentro() / 2),
+				getPosition().y + (getDiamentro() / 2));
 	}
 
 	public void setCentro(Point p) {
-		position = new Point(p.x - (diamentro / 2), p.y - (diamentro / 2));
+		position = new Point(p.x - (getDiamentro() / 2), p.y
+				- (getDiamentro() / 2));
 	}
 
 	public int getDiamentro() {
@@ -92,4 +92,5 @@ public class Botao extends Mesa11Dados {
 	public String toString() {
 		return "Id :" + getId();
 	}
+
 }

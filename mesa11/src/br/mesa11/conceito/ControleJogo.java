@@ -66,13 +66,18 @@ public class ControleJogo {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				MesaPanel.ZOOM += e.getWheelRotation();
-				if (MesaPanel.ZOOM <= 0) {
+				MesaPanel.ZOOM += e.getWheelRotation() / 100.0;
+				Logger.logar(MesaPanel.ZOOM);
+				if (MesaPanel.ZOOM <= 0.1) {
+					MesaPanel.ZOOM = 0.1;
+				}
+				if (MesaPanel.ZOOM >= 1) {
 					MesaPanel.ZOOM = 1;
 				}
 				p = mesaPanel.pointCentro();
-				scrollPane.getViewport().setViewPosition(p);
 				mesaPanel.repaint();
+				scrollPane.getViewport().setViewPosition(p);
+
 			}
 		});
 		mesaPanel.addMouseMotionListener(new MouseMotionListener() {
@@ -85,7 +90,11 @@ public class ControleJogo {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				jogada.add(e.getPoint());
+			    jogada.add(e.getPoint());
+//				jogada.add(new Point(e.getPoint().x
+//						- (int) (e.getPoint().x * MesaPanel.ZOOM),
+//						e.getPoint().y
+//								- (int) (e.getPoint().y * MesaPanel.ZOOM)));
 			}
 
 		});
@@ -104,7 +113,7 @@ public class ControleJogo {
 					Botao botao = (Botao) iterator.next();
 					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
-					if (raioPonto.size() <= botao.getRaio()) {
+					if (raioPonto.size() * MesaPanel.ZOOM <= botao.getRaio()) {
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
 
@@ -124,6 +133,7 @@ public class ControleJogo {
 					if (botao.getCentroInicio() != null)
 						botao.setCentro(botao.getCentroInicio());
 				}
+				mesaPanel.repaint();
 				Animador animador = new Animador(animacao, mesaPanel);
 				Thread thread = new Thread(animador);
 				thread.start();
@@ -181,7 +191,6 @@ public class ControleJogo {
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
 		Botao botao = animacao.getObjetoAnimacao();
-		Logger.logar(botao);
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		for (int i = 0; i < trajetoriaBotao.size(); i++) {
 			Object objTrajetoria = trajetoriaBotao.get(i);
