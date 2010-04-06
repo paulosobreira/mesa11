@@ -21,7 +21,7 @@ import br.nnpe.Logger;
 
 public class CarregadorRecursos {
 
-	private static Map bufferCarros = new HashMap();
+	private static Map bufferImages = new HashMap();
 
 	public static URL carregarImagem(String imagem) {
 		return CarregadorRecursos.class.getResource(imagem);
@@ -103,12 +103,14 @@ public class CarregadorRecursos {
 	}
 
 	public static BufferedImage carregaImg(String img) {
-		BufferedImage bufferedImage = (BufferedImage) bufferCarros.get(img);
+		BufferedImage bufferedImage = (BufferedImage) bufferImages.get(img);
 		if (bufferedImage != null) {
 			return bufferedImage;
 		}
-		bufferedImage = carregaBufferedImageTranspareciaBranca(img);
-		bufferCarros.put(img, bufferedImage);
+		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
+				.getResource(img));
+		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
+		bufferImages.put(img, bufferedImage);
 		return bufferedImage;
 	}
 }

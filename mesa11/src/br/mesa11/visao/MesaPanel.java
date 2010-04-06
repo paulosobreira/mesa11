@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -43,7 +44,6 @@ public class MesaPanel extends JPanel {
 	private Rectangle penaltyBaixo;
 	private List botoes;
 	private List jogada;
-	private BufferedImage botaoImg;
 
 	public Rectangle getCampoCima() {
 		return campoCima;
@@ -92,13 +92,17 @@ public class MesaPanel extends JPanel {
 		centro = new Rectangle(0, 0);
 		penaltyCima = new Rectangle(0, 0);
 		penaltyBaixo = new Rectangle(0, 0);
-		botaoImg = CarregadorRecursos.carregaImg("cruz2.png");
+
 	}
 
 	public MesaPanel(List botoes, List jogada) {
 		this();
 		this.botoes = botoes;
 		this.jogada = jogada;
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			botao.setImgBotao(CarregadorRecursos.carregaImg(botao.getImagem()));
+		}
 	}
 
 	@Override
@@ -128,24 +132,34 @@ public class MesaPanel extends JPanel {
 						.getScaleInstance(ZOOM, ZOOM);
 				AffineTransformOp affineTransformOp = new AffineTransformOp(
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
+				BufferedImage botaoImg = botao.getImgBotao();
+				if (botaoImg == null)
+					continue;
 				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
 						.getWidth() * ZOOM),
 						(int) (botaoImg.getHeight() * ZOOM),
 						BufferedImage.TYPE_INT_ARGB);
 
 				affineTransformOp.filter(botaoImg, zoomBuffer);
+				Ellipse2D ellipse2D = new Ellipse2D.Float((int) (botao
+						.getPosition().x * ZOOM),
+						(int) (botao.getPosition().y * ZOOM), (int) (botao
+								.getDiamentro() * ZOOM), (int) (botao
+								.getDiamentro() * ZOOM));
+				g.setClip(ellipse2D);
 				g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
 						(int) (botao.getPosition().y * ZOOM), null);
-				g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
-						.getPosition().y * ZOOM),
-						(int) (botao.getDiamentro() * ZOOM), (int) (botao
-								.getDiamentro() * ZOOM));
+				// g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
+				// .getPosition().y * ZOOM),
+				// (int) (botao.getDiamentro() * ZOOM), (int) (botao
+				// .getDiamentro() * ZOOM));
 
 			}
 		}
 		if (jogada != null) {
 			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
+				g.setClip(null);
 				g.drawOval((int) (point.x), (int) (point.y), 1, 1);
 			}
 		}
