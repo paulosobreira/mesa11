@@ -276,10 +276,24 @@ public class ControleJogo {
 	}
 
 	public void atualizaCentro() {
-		p = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
+
+		Point ori = new Point(
+				(int) (scrollPane.getViewport().getViewPosition().x * mesaPanel.ZOOM)
+						- (scrollPane.getViewport().getWidth() / 2),
+				(int) (scrollPane.getViewport().getViewPosition().y * mesaPanel.ZOOM)
+						- (scrollPane.getViewport().getHeight() / 2));
+		Point des = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
 				.getCentro().y * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getHeight() / 2));
+		List reta = GeoUtil.drawBresenhamLine(ori, des);
+		if (!reta.isEmpty()) {
+			if (reta.size() > 1) {
+				p = (Point) reta.get(1);
+			} else {
+				p = (Point) reta.get(0);
+			}
+		}
 		scrollPane.getViewport().setViewPosition(p);
 		mesaPanel.repaint();
 
