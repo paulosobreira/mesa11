@@ -13,11 +13,13 @@ public class Animador implements Runnable {
 	private Animacao animacao;
 	private JPanel panel;
 	private boolean ativo;
+	private ControleJogo controleJogo;
 
-	public Animador(Animacao animacao, JPanel panel) {
+	public Animador(Animacao animacao, JPanel panel, ControleJogo controleJogo) {
 		super();
 		this.animacao = animacao;
 		this.panel = panel;
+		this.controleJogo = controleJogo;
 	}
 
 	@Override
@@ -42,18 +44,25 @@ public class Animador implements Runnable {
 				botao.setCentro(point);
 				panel.repaint();
 				try {
-					if (i % 3 == 0)
-						Thread.sleep(10);
+					if (botao instanceof Bola) {
+						if (i % 3 == 0) {
+							Thread.sleep(5);
+							controleJogo.atualizaCentro();
+						}
+
+					} else {
+						if (i % 3 == 0)
+							Thread.sleep(10);
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			} else if (object instanceof Animacao) {
 				Animacao animIn = (Animacao) object;
-				Animador animador = new Animador(animIn, panel);
+				Animador animador = new Animador(animIn, panel, controleJogo);
 				Thread thread = new Thread(animador);
 				thread.start();
 			}
 		}
 	}
-
 }

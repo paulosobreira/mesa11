@@ -94,6 +94,9 @@ public class ImageUtil {
 	 * @return
 	 */
 	public static boolean hasAlpha(Image image) {
+		if(true){
+			return false;
+		}
 		// If buffered image, the color model is readily available
 		if (image instanceof BufferedImage) {
 			BufferedImage bimage = (BufferedImage) image;
