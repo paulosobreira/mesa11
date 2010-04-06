@@ -45,8 +45,8 @@ public class Animador implements Runnable {
 				panel.repaint();
 				try {
 					if (botao instanceof Bola) {
-						if (i % 3 == 0) {
-							Thread.sleep(5);
+						if (i % 4 == 0) {
+							Thread.sleep(10);
 							controleJogo.atualizaCentro();
 						}
 

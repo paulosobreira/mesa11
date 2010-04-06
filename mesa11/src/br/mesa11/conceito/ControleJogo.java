@@ -195,8 +195,9 @@ public class ControleJogo {
 		frame.setVisible(true);
 		frame.requestFocus();
 		bola.setPosition(new Point(mesaPanel.pointCentro().x
-				+ (frame.getWidth() / 2), mesaPanel.pointCentro().y
-				+ (frame.getHeight() / 2)));
+				+ (scrollPane.getViewport().getWidth() / 2), mesaPanel
+				.pointCentro().y
+				+ (scrollPane.getViewport().getHeight() / 2)));
 		p = bola.getCentro();
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
