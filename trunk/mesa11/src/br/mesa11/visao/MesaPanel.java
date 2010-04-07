@@ -20,6 +20,7 @@ import br.recursos.CarregadorRecursos;
 
 public class MesaPanel extends JPanel {
 
+	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
 	public static final int ALTURA_MESA = 5286;
 	public static final int BORDA_CAMPO = 230;
@@ -82,7 +83,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	public MesaPanel() {
-		setSize(LARGURA_MESA, ALTURA_MESA);
+		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
 		campoCima = new Rectangle(0, 0);
 		campoBaixo = new Rectangle(0, 0);
 		grandeAreaCima = new Rectangle(0, 0);
@@ -160,7 +161,9 @@ public class MesaPanel extends JPanel {
 			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
 				Point point = (Point) iterator.next();
 				g.setClip(null);
-				g.drawOval((int) (point.x), (int) (point.y), 1, 1);
+				g
+						.drawOval((int) (point.x * ZOOM),
+								(int) (point.y * ZOOM), 1, 1);
 			}
 		}
 	}
@@ -169,8 +172,8 @@ public class MesaPanel extends JPanel {
 		int x = 0;
 		int y = 0;
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, (int) (LARGURA_MESA * ZOOM),
-				(int) (ALTURA_MESA * ZOOM));
+		g.fillRect(0, 0, (int) ((LARGURA_MESA) * ZOOM),
+				(int) ((ALTURA_MESA) * ZOOM));
 		/**
 		 * Campo
 		 */
@@ -347,15 +350,16 @@ public class MesaPanel extends JPanel {
 		penaltyBaixo.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
 				(int) ((ALTURA_MESA - BORDA_CAMPO - PENALTI) * ZOOM),
 				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
-		g.draw(campoCima);
-		g.draw(campoBaixo);
-		g.draw(grandeAreaCima);
-		g.draw(grandeAreaBaixo);
-		g.draw(pequenaAreaCima);
-		g.draw(pequenaAreaBaixo);
-		g.draw(centro);
-		g.draw(penaltyCima);
-		g.draw(penaltyBaixo);
+		
+		//g.fill(campoCima);
+		// g.fill(campoBaixo);
+		// g.fill(grandeAreaCima);
+		// g.fill(grandeAreaBaixo);
+		// g.fill(pequenaAreaCima);
+		//g.fill(pequenaAreaBaixo);
+		// g.fill(centro);
+		// g.fill(penaltyCima);
+		// g.fill(penaltyBaixo);
 
 	}
 
@@ -369,9 +373,9 @@ public class MesaPanel extends JPanel {
 
 	public Point pointCentro() {
 
-		int x = (int) (calculaXcentro() * ZOOM);
-		int y = (int) (calculaYcentro() * ZOOM);
-		Point point = new Point(x, y);
-		return point;
+		return new Point((int) ((LARGURA_MESA / 2) * ZOOM)
+				- (int) (DOBRO_LINHA * ZOOM / 2),
+				(int) ((ALTURA_MESA / 2) * ZOOM)
+						- (int) (DOBRO_LINHA * ZOOM / 2));
 	}
 }

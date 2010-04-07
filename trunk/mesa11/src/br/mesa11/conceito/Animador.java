@@ -1,12 +1,15 @@
 package br.mesa11.conceito;
 
 import java.awt.Point;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import br.hibernate.Botao;
+import br.mesa11.visao.MesaPanel;
 
 public class Animador implements Runnable {
 
@@ -52,7 +55,7 @@ public class Animador implements Runnable {
 
 					} else {
 						if (i % 3 == 0)
-							Thread.sleep(10);
+							Thread.sleep(15);
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -62,6 +65,7 @@ public class Animador implements Runnable {
 				Animador animador = new Animador(animIn, panel, controleJogo);
 				Thread thread = new Thread(animador);
 				thread.start();
+
 			}
 		}
 	}
