@@ -190,10 +190,10 @@ public class ControleJogo {
 				if (p.x < 0 || p.y < 0) {
 					return;
 				}
-//				if (p.x > mesaPanel.getPreferredSize().width
-//						|| p.y > mesaPanel.getPreferredSize().height) {
-//					return;
-//				}
+				// if (p.x > mesaPanel.getPreferredSize().width
+				// || p.y > mesaPanel.getPreferredSize().height) {
+				// return;
+				// }
 				scrollPane.getViewport().setViewPosition(p);
 				mesaPanel.repaint();
 				super.keyPressed(e);
@@ -304,7 +304,9 @@ public class ControleJogo {
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			if (reta.size() > 4)
+			if (reta.size() > 5)
+				p = (Point) reta.get(4);
+			else if (reta.size() > 4)
 				p = (Point) reta.get(3);
 			else if (reta.size() > 3)
 				p = (Point) reta.get(2);

@@ -45,17 +45,20 @@ public class Animador implements Runnable {
 				Point point = (Point) object;
 				botao.setCentroInicio(point);
 				botao.setCentro(point);
-				panel.repaint();
+
 				try {
 					if (botao instanceof Bola) {
-						if (i % 4 == 0) {
-							Thread.sleep(10);
+						if (i % 6 == 0) {
+							
 							controleJogo.atualizaCentro();
+							Thread.sleep(15);
 						}
 
 					} else {
-						if (i % 3 == 0)
+						if (i % 4 == 0) {
 							Thread.sleep(15);
+							panel.repaint();
+						}
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
