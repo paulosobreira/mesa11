@@ -9,14 +9,15 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import br.hibernate.Botao;
@@ -26,7 +27,6 @@ import br.nnpe.Logger;
 
 public class ControleJogo {
 	private List botoes = new ArrayList();
-	private Point p = new Point(0, 0);
 	private Animacao animacao;
 	private Botao bola;
 	private MesaPanel mesaPanel;
@@ -68,23 +68,22 @@ public class ControleJogo {
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(900, 900);
+		frame.setSize(800, 600);
 
-		p = mesaPanel.pointCentro();
-		scrollPane.getViewport().setViewPosition(p);
+		scrollPane.getViewport().setViewPosition(mesaPanel.pointCentro());
 		mesaPanel.addMouseWheelListener(new MouseWheelListener() {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				MesaPanel.ZOOM += e.getWheelRotation() / 100.0;
-				Logger.logar(MesaPanel.ZOOM);
-				if (MesaPanel.ZOOM <= 0.5) {
-					MesaPanel.ZOOM = 0.5;
+				// Logger.logar(MesaPanel.ZOOM);
+				if (MesaPanel.ZOOM <= 0.3) {
+					MesaPanel.ZOOM = 0.3;
 				}
 				if (MesaPanel.ZOOM >= 1) {
 					MesaPanel.ZOOM = 1;
 				}
-				atualizaCentro();
+				centralizaBola();
 			}
 		});
 		mesaPanel.addMouseMotionListener(new MouseMotionListener() {
@@ -97,11 +96,9 @@ public class ControleJogo {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				jogada.add(e.getPoint());
-				// jogada.add(new Point(e.getPoint().x
-				// - (int) (e.getPoint().x * MesaPanel.ZOOM),
-				// e.getPoint().y
-				// - (int) (e.getPoint().y * MesaPanel.ZOOM)));
+				// jogada.add(e.getPoint());
+				jogada.add(new Point((int) (e.getPoint().x / MesaPanel.ZOOM),
+						(int) (e.getPoint().y / MesaPanel.ZOOM)));
 			}
 
 		});
@@ -177,6 +174,10 @@ public class ControleJogo {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				int keycode = e.getKeyCode();
+				Point p = new Point((int) (scrollPane.getViewport()
+						.getViewPosition().x), (int) (scrollPane.getViewport()
+						.getViewPosition().y));
+
 				if (keycode == KeyEvent.VK_LEFT) {
 					p.x -= 10;
 				} else if (keycode == KeyEvent.VK_RIGHT) {
@@ -186,6 +187,13 @@ public class ControleJogo {
 				} else if (keycode == KeyEvent.VK_DOWN) {
 					p.y += 10;
 				}
+				if (p.x < 0 || p.y < 0) {
+					return;
+				}
+//				if (p.x > mesaPanel.getPreferredSize().width
+//						|| p.y > mesaPanel.getPreferredSize().height) {
+//					return;
+//				}
 				scrollPane.getViewport().setViewPosition(p);
 				mesaPanel.repaint();
 				super.keyPressed(e);
@@ -194,12 +202,21 @@ public class ControleJogo {
 		});
 		frame.setVisible(true);
 		frame.requestFocus();
-		bola.setPosition(new Point(mesaPanel.pointCentro().x
-				+ (scrollPane.getViewport().getWidth() / 2), mesaPanel
-				.pointCentro().y
-				+ (scrollPane.getViewport().getHeight() / 2)));
-		p = bola.getCentro();
+		bola.setPosition(mesaPanel.pointCentro());
+		centralizaBola();
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+	}
+
+	protected void centralizaBola() {
+		Point des = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
+				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
+				.getCentro().y * mesaPanel.ZOOM)
+				- (scrollPane.getViewport().getHeight() / 2));
+		if (des.x < 0 || des.y < 0) {
+			return;
+		}
+		scrollPane.getViewport().setViewPosition(des);
+
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
@@ -278,24 +295,28 @@ public class ControleJogo {
 	public void atualizaCentro() {
 
 		Point ori = new Point(
-				(int) (scrollPane.getViewport().getViewPosition().x * mesaPanel.ZOOM)
-						- (scrollPane.getViewport().getWidth() / 2),
-				(int) (scrollPane.getViewport().getViewPosition().y * mesaPanel.ZOOM)
-						- (scrollPane.getViewport().getHeight() / 2));
+				(int) (scrollPane.getViewport().getViewPosition().x),
+				(int) (scrollPane.getViewport().getViewPosition().y));
 		Point des = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
 				.getCentro().y * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getHeight() / 2));
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
+		Point p = des;
 		if (!reta.isEmpty()) {
-			if (reta.size() > 1) {
+			if (reta.size() > 4)
+				p = (Point) reta.get(3);
+			else if (reta.size() > 3)
+				p = (Point) reta.get(2);
+			else if (reta.size() > 2)
 				p = (Point) reta.get(1);
-			} else {
+			else
 				p = (Point) reta.get(0);
-			}
+		}
+		if (p.x < 0 || p.y < 0) {
+			return;
 		}
 		scrollPane.getViewport().setViewPosition(p);
-		mesaPanel.repaint();
 
 	}
 }
