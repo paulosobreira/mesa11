@@ -12,6 +12,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JPanel;
 
@@ -43,7 +44,7 @@ public class MesaPanel extends JPanel {
 	private Rectangle centro;
 	private Rectangle penaltyCima;
 	private Rectangle penaltyBaixo;
-	private List botoes;
+	private Map botoes;
 	private List jogada;
 
 	public Rectangle getCampoCima() {
@@ -96,12 +97,13 @@ public class MesaPanel extends JPanel {
 
 	}
 
-	public MesaPanel(List botoes, List jogada) {
+	public MesaPanel(Map botoes, List jogada) {
 		this();
 		this.botoes = botoes;
 		this.jogada = jogada;
-		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-			Botao botao = (Botao) iterator.next();
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoes.get(id);
 			botao.setImgBotao(CarregadorRecursos.carregaImg(botao.getImagem()));
 		}
 	}
@@ -117,8 +119,10 @@ public class MesaPanel extends JPanel {
 		super.paintComponent(g);
 		desenhaCampo(g);
 		if (botoes != null) {
-			for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-				Botao botao = (Botao) iterator.next();
+			for (Iterator iterator = botoes.keySet().iterator(); iterator
+					.hasNext();) {
+				Long id = (Long) iterator.next();
+				Botao botao = (Botao) botoes.get(id);
 				g.setColor(Color.BLUE);
 				g.fillOval((int) (botao.getCentro().x * ZOOM), (int) (botao
 						.getCentro().y * ZOOM), 2, 2);
@@ -350,13 +354,13 @@ public class MesaPanel extends JPanel {
 		penaltyBaixo.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
 				(int) ((ALTURA_MESA - BORDA_CAMPO - PENALTI) * ZOOM),
 				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
-		
-		//g.fill(campoCima);
+
+		// g.fill(campoCima);
 		// g.fill(campoBaixo);
 		// g.fill(grandeAreaCima);
 		// g.fill(grandeAreaBaixo);
 		// g.fill(pequenaAreaCima);
-		//g.fill(pequenaAreaBaixo);
+		// g.fill(pequenaAreaBaixo);
 		// g.fill(centro);
 		// g.fill(penaltyCima);
 		// g.fill(penaltyBaixo);

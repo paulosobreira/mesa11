@@ -217,7 +217,7 @@ public class ControleJogo {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(10);
+						Thread.sleep(30);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -345,7 +345,13 @@ public class ControleJogo {
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			if (reta.size() > 4)
+			if (reta.size() > 7)
+				p = (Point) reta.get(6);
+			else if (reta.size() > 6)
+				p = (Point) reta.get(5);
+			else if (reta.size() > 5)
+				p = (Point) reta.get(4);
+			else if (reta.size() > 4)
 				p = (Point) reta.get(3);
 			else if (reta.size() > 3)
 				p = (Point) reta.get(2);
