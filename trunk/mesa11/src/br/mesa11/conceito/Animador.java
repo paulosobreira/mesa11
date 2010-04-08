@@ -50,12 +50,12 @@ public class Animador implements Runnable {
 					if (botao instanceof Bola) {
 						if (i % 5 == 0) {
 							controleJogo.atualizaCentro();
-							Thread.sleep(15);
+							Thread.sleep(7);
 						}
 
 					} else {
 						if (i % 3 == 0) {
-							Thread.sleep(15);
+							Thread.sleep(10);
 						}
 					}
 				} catch (InterruptedException e) {
