@@ -9,28 +9,28 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
-import br.nnpe.Logger;
 
 public class ControleJogo {
-	private List botoes = new ArrayList();
+	private Map botoes = new HashMap();
 	private Animacao animacao;
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
+	private Point oldp;
+	private Point newp;
 
 	public void test() {
 
@@ -56,12 +56,12 @@ public class ControleJogo {
 		bola = new Bola(0);
 		bola.setImagem("bola.png");
 
-		botoes.add(botao);
-		botoes.add(botao2);
-		botoes.add(botao3);
-		botoes.add(botao4);
-		botoes.add(botao5);
-		botoes.add(bola);
+		botoes.put(botao.getId(), botao);
+		botoes.put(botao2.getId(), botao2);
+		botoes.put(botao3.getId(), botao3);
+		botoes.put(botao4.getId(), botao4);
+		botoes.put(botao5.getId(), botao5);
+		botoes.put(bola.getId(), bola);
 		final List jogada = new LinkedList();
 		mesaPanel = new MesaPanel(botoes, jogada);
 		scrollPane = new JScrollPane(mesaPanel,
@@ -70,7 +70,6 @@ public class ControleJogo {
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setSize(800, 600);
 
-		scrollPane.getViewport().setViewPosition(mesaPanel.pointCentro());
 		mesaPanel.addMouseWheelListener(new MouseWheelListener() {
 
 			@Override
@@ -113,11 +112,16 @@ public class ControleJogo {
 				List reta = GeoUtil.drawBresenhamLine(p1, p2);
 				jogada.clear();
 				jogada.addAll(reta);
-				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-					Botao botao = (Botao) iterator.next();
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					Botao botao = (Botao) botoes.get(id);
 					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
 					if (raioPonto.size() <= botao.getRaio()) {
+						if (botao instanceof Bola) {
+							return;
+						}
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
 
@@ -132,8 +136,10 @@ public class ControleJogo {
 					}
 
 				}
-				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-					Botao botao = (Botao) iterator.next();
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					Botao botao = (Botao) botoes.get(id);
 					if (botao.getCentroInicio() != null)
 						botao.setCentro(botao.getCentroInicio());
 				}
@@ -190,12 +196,13 @@ public class ControleJogo {
 				if (p.x < 0 || p.y < 0) {
 					return;
 				}
-				// if (p.x > mesaPanel.getPreferredSize().width
-				// || p.y > mesaPanel.getPreferredSize().height) {
-				// return;
-				// }
-				scrollPane.getViewport().setViewPosition(p);
-				mesaPanel.repaint();
+				if (p.x > ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
+						.getViewport().getWidth())
+						|| p.y > ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
+								.getViewport().getHeight()))) {
+					return;
+				}
+				newp = p;
 				super.keyPressed(e);
 			}
 
@@ -204,19 +211,51 @@ public class ControleJogo {
 		frame.requestFocus();
 		bola.setPosition(mesaPanel.pointCentro());
 		centralizaBola();
+		Thread thread2 = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					if (oldp != newp) {
+						scrollPane.getViewport().setViewPosition(newp);
+						oldp = newp;
+					}
+					mesaPanel.repaint();
+				}
+
+			}
+		});
+		thread2.start();
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	protected void centralizaBola() {
-		Point des = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
+		Point p = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
 				.getCentro().y * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getHeight() / 2));
-		if (des.x < 0 || des.y < 0) {
-			return;
+		System.out.println(p);
+		System.out.println(((mesaPanel.getWidth() - scrollPane.getViewport()
+				.getWidth()))
+				+ " - "
+				+ ((mesaPanel.getHeight() - scrollPane.getViewport()
+						.getHeight())));
+		int xori = (int) ((p.x / mesaPanel.ZOOM) + (scrollPane.getViewport()
+				.getWidth() / 2));
+		int yori = (int) ((p.y / mesaPanel.ZOOM) + (scrollPane.getViewport()
+				.getHeight() / 2));
+		if (!(p.x < 0
+				|| p.y < 0
+				|| (xori > (mesaPanel.getWidth() - scrollPane.getViewport()
+						.getWidth())) || (yori > (mesaPanel.getHeight() - scrollPane
+				.getViewport().getHeight())))) {
+			newp = p;
 		}
-		scrollPane.getViewport().setViewPosition(des);
-
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
@@ -227,8 +266,10 @@ public class ControleJogo {
 			if (objTrajetoria instanceof Point) {
 				Point point = (Point) objTrajetoria;
 				botao.setCentro(point);
-				for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-					Botao botaoAnalisado = (Botao) iterator.next();
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					Botao botaoAnalisado = (Botao) botoes.get(id);
 					if (botao.equals(botaoAnalisado)) {
 						continue;
 					}
@@ -304,9 +345,7 @@ public class ControleJogo {
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			if (reta.size() > 5)
-				p = (Point) reta.get(4);
-			else if (reta.size() > 4)
+			if (reta.size() > 4)
 				p = (Point) reta.get(3);
 			else if (reta.size() > 3)
 				p = (Point) reta.get(2);
@@ -315,10 +354,11 @@ public class ControleJogo {
 			else
 				p = (Point) reta.get(0);
 		}
-		if (p.x < 0 || p.y < 0) {
-			return;
+		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
+				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
+				.getViewport().getHeight()))))) {
+			newp = p;
+			// scrollPane.getViewport().setViewPosition(p);
 		}
-		scrollPane.getViewport().setViewPosition(p);
-
 	}
 }
