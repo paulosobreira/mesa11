@@ -339,7 +339,7 @@ public class ControleJogo {
 							int dest = 0;
 							if ((botao instanceof Bola)) {
 								angulo = GeoUtil.calculaAngulo(botaoAnalisado
-										.getCentro(), botao.getCentro(), 180);
+										.getCentro(),point, 90);
 								System.out.println(angulo);
 								dest = trajetoriaBotao.size();
 							} else {
