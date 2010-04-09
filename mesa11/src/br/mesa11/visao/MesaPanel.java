@@ -21,6 +21,8 @@ import br.recursos.CarregadorRecursos;
 
 public class MesaPanel extends JPanel {
 
+	public static final Long zero = new Long(0);
+	public final static Color green2 = new Color(0, 200, 0);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
 	public static final int ALTURA_MESA = 5286;
@@ -34,6 +36,10 @@ public class MesaPanel extends JPanel {
 	public static final int ALTURA_PQ_AREA = 314;
 	public static final int RAIO_CENTRO = 1000;
 	public static final int PENALTI = 586;
+	public static final int FAIXAS = 14;
+	public static final int ALTURA_FAIXA = (ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA)
+			/ FAIXAS;
+
 	public static double ZOOM = 1;
 	private Rectangle campoCima;
 	private Rectangle campoBaixo;
@@ -110,8 +116,7 @@ public class MesaPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension((int) (LARGURA_MESA * ZOOM),
-				(int) (ALTURA_MESA * ZOOM));
+		return new Dimension((int) (LARGURA_MESA), (int) (ALTURA_MESA));
 	}
 
 	@Override
@@ -122,6 +127,9 @@ public class MesaPanel extends JPanel {
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
 				Long id = (Long) iterator.next();
+				if (zero.equals(id)) {
+					continue;
+				}
 				Botao botao = (Botao) botoes.get(id);
 				g.setColor(Color.BLUE);
 				g.fillOval((int) (botao.getCentro().x * ZOOM), (int) (botao
@@ -133,33 +141,14 @@ public class MesaPanel extends JPanel {
 							(int) (botao.getDestino().x * ZOOM), (int) (botao
 									.getDestino().y * ZOOM));
 				}
-				AffineTransform affineTransform = AffineTransform
-						.getScaleInstance(ZOOM, ZOOM);
-				AffineTransformOp affineTransformOp = new AffineTransformOp(
-						affineTransform, AffineTransformOp.TYPE_BILINEAR);
-				BufferedImage botaoImg = botao.getImgBotao();
-				if (botaoImg == null)
-					continue;
-				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
-						.getWidth() * ZOOM),
-						(int) (botaoImg.getHeight() * ZOOM),
-						BufferedImage.TYPE_INT_ARGB);
-
-				affineTransformOp.filter(botaoImg, zoomBuffer);
-				Ellipse2D ellipse2D = new Ellipse2D.Float((int) (botao
-						.getPosition().x * ZOOM),
-						(int) (botao.getPosition().y * ZOOM), (int) (botao
-								.getDiamentro() * ZOOM), (int) (botao
-								.getDiamentro() * ZOOM));
-				g.setClip(ellipse2D);
-				g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
-						(int) (botao.getPosition().y * ZOOM), null);
+				desenhaBotao(botao, g);
 				// g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
 				// .getPosition().y * ZOOM),
 				// (int) (botao.getDiamentro() * ZOOM), (int) (botao
 				// .getDiamentro() * ZOOM));
 
 			}
+			desenhaBotao((Botao) botoes.get(new Long(0)), g);
 		}
 		if (jogada != null) {
 			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
@@ -170,6 +159,31 @@ public class MesaPanel extends JPanel {
 								(int) (point.y * ZOOM), 1, 1);
 			}
 		}
+	}
+
+	private void desenhaBotao(Botao botao, Graphics g) {
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(
+				ZOOM, ZOOM);
+		AffineTransformOp affineTransformOp = new AffineTransformOp(
+				affineTransform, AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage botaoImg = botao.getImgBotao();
+		if (botaoImg == null)
+			return;
+		BufferedImage zoomBuffer = new BufferedImage(
+				(int) (botaoImg.getWidth() * ZOOM),
+				(int) (botaoImg.getHeight() * ZOOM),
+				BufferedImage.TYPE_INT_ARGB);
+
+		affineTransformOp.filter(botaoImg, zoomBuffer);
+		Ellipse2D ellipse2D = new Ellipse2D.Float(
+				(int) (botao.getPosition().x * ZOOM), (int) (botao
+						.getPosition().y * ZOOM),
+				(int) (botao.getDiamentro() * ZOOM), (int) (botao
+						.getDiamentro() * ZOOM));
+		g.setClip(ellipse2D);
+		g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
+				(int) (botao.getPosition().y * ZOOM), null);
+
 	}
 
 	private void desenhaCampo(Graphics g) {
@@ -191,6 +205,19 @@ public class MesaPanel extends JPanel {
 				(int) ((BORDA_CAMPO + LINHA) * ZOOM), (int) ((LARGURA_MESA
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * ZOOM),
 				(int) ((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * ZOOM));
+		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
+		for (int i = 0; i < FAIXAS; i++) {
+			if (i % 2 == 0) {
+				g.setColor(green2);
+				g.fillRect((int) ((BORDA_CAMPO + LINHA) * ZOOM),
+						(int) ((alturaBordaAtual) * ZOOM), (int) ((LARGURA_MESA
+								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * ZOOM),
+						(int) ((ALTURA_FAIXA) * ZOOM));
+				// alturaBordaAtual += (ALTURA_FAIXA - LINHA);
+				// continue;
+			}
+			alturaBordaAtual += (ALTURA_FAIXA);
+		}
 		/**
 		 * Meia lua de cima
 		 */

@@ -15,6 +15,15 @@ public class Botao extends Mesa11Dados {
 	private transient Point centroInicio;
 	private transient Point destino;
 	private transient String imagem;
+	private transient double angulo;
+
+	public double getAngulo() {
+		return angulo;
+	}
+
+	public void setAngulo(double angulo) {
+		this.angulo = angulo;
+	}
 
 	public String getImagem() {
 		return imagem;
