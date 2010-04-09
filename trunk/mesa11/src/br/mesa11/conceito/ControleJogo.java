@@ -295,10 +295,10 @@ public class ControleJogo {
 							botaoAnalisado.getCentro());
 					if ((raioPonto.size() - (botao.getRaio())) == (botaoAnalisado
 							.getRaio())) {
-						if ((botao instanceof Bola) && Math.random() > .7) {
-							bolaIngnora.add(botaoAnalisado);
-							continue;
-						}
+						// if ((botao instanceof Bola) && Math.random() > .7) {
+						// bolaIngnora.add(botaoAnalisado);
+						// continue;
+						// }
 						double angulo = GeoUtil.calculaAngulo(point,
 								botaoAnalisado.getCentro(), 90);
 						Point destino = null;
@@ -335,11 +335,19 @@ public class ControleJogo {
 								trajetoriaBotao
 										.remove(trajetoriaBotao.size() - 1);
 							}
-							angulo = GeoUtil.calculaAngulo(point, botao
-									.getCentro(), 90);
-							destino = GeoUtil.calculaPonto(angulo,
-									trajetoriaBotao.size() / 3, botao
-											.getCentro());
+
+							int dest = 0;
+							if ((botao instanceof Bola)) {
+								angulo = GeoUtil.calculaAngulo(botaoAnalisado
+										.getCentro(), botao.getCentro(), 180);
+								System.out.println(angulo);
+								dest = trajetoriaBotao.size();
+							} else {
+								angulo = GeoUtil.calculaAngulo(point, botao
+										.getCentro(), 90);
+							}
+							destino = GeoUtil.calculaPonto(angulo, dest, botao
+									.getCentro());
 							botao.setDestino(destino);
 							List novaTrajetoria = GeoUtil.drawBresenhamLine(
 									point, destino);
