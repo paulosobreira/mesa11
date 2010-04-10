@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import br.hibernate.Botao;
+import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 
 public class MesaPanel extends JPanel {
@@ -50,6 +51,14 @@ public class MesaPanel extends JPanel {
 	private Rectangle centro;
 	private Rectangle penaltyCima;
 	private Rectangle penaltyBaixo;
+	private Rectangle hasteDireitaGolCima;
+	private Rectangle hasteEsquerdaGolCima;
+	private Rectangle hasteTopoGolCima;
+
+	private Rectangle hasteDireitaGolBaixo;
+	private Rectangle hasteEsquerdaGolBaixo;
+	private Rectangle hasteTopoGolBaixo;
+
 	private Map botoes;
 	private List jogada;
 
@@ -100,7 +109,13 @@ public class MesaPanel extends JPanel {
 		centro = new Rectangle(0, 0);
 		penaltyCima = new Rectangle(0, 0);
 		penaltyBaixo = new Rectangle(0, 0);
+		hasteDireitaGolCima = new Rectangle(0, 0);
+		hasteEsquerdaGolCima = new Rectangle(0, 0);
+		hasteTopoGolCima = new Rectangle(0, 0);
 
+		hasteDireitaGolBaixo = new Rectangle(0, 0);
+		hasteEsquerdaGolBaixo = new Rectangle(0, 0);
+		hasteTopoGolBaixo = new Rectangle(0, 0);
 	}
 
 	public MesaPanel(Map botoes, List jogada) {
@@ -365,11 +380,53 @@ public class MesaPanel extends JPanel {
 				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * ZOOM),
 				(int) (BORDA_CAMPO * ZOOM), (int) ((LARGURA_PQ_AREA) * ZOOM),
 				(int) ((ALTURA_PQ_AREA) * ZOOM));
+
 		pequenaAreaBaixo.setBounds(
 				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * ZOOM),
 				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA) * ZOOM),
 				(int) ((LARGURA_PQ_AREA) * ZOOM),
 				(int) ((ALTURA_PQ_AREA) * ZOOM));
+
+		hasteEsquerdaGolCima.setBounds(Util.inte(pequenaAreaCima.getX()
+				+ (110 * ZOOM)), Util.inte(pequenaAreaCima.getY()
+				- (pequenaAreaCima.getHeight() * .50)), Util.inte(10 * ZOOM),
+				Util.inte(pequenaAreaCima.getHeight() * .50));
+		g.fill(hasteEsquerdaGolCima);
+
+		hasteDireitaGolCima.setBounds(Util.inte(pequenaAreaCima.getX()
+				+ pequenaAreaCima.getWidth() - (110 * ZOOM)), Util
+				.inte(pequenaAreaCima.getY()
+						- (pequenaAreaCima.getHeight() * .50)), Util
+				.inte(10 * ZOOM), Util.inte(pequenaAreaCima.getHeight() * .50));
+		g.fill(hasteDireitaGolCima);
+
+		hasteTopoGolCima.setBounds(Util.inte(hasteEsquerdaGolCima.getX()), Util
+				.inte(hasteDireitaGolCima.getY()),
+				Util.inte(hasteDireitaGolCima.getX()
+						- hasteEsquerdaGolCima.getX()), Util.inte(10 * ZOOM));
+		g.fill(hasteTopoGolCima);
+
+		hasteEsquerdaGolBaixo.setBounds(Util.inte(hasteEsquerdaGolCima.getX()),
+				Util.inte(pequenaAreaBaixo.getY()
+						+ pequenaAreaBaixo.getHeight()), Util.inte(10 * ZOOM),
+				Util.inte(pequenaAreaBaixo.getHeight()
+						- (pequenaAreaBaixo.getHeight() * .50)));
+		g.fill(hasteEsquerdaGolBaixo);
+
+		hasteDireitaGolBaixo.setBounds(Util.inte(hasteDireitaGolCima.getX()),
+				Util.inte(pequenaAreaBaixo.getY()
+						+ pequenaAreaBaixo.getHeight()), Util.inte(10 * ZOOM),
+				Util.inte(pequenaAreaBaixo.getHeight()
+						- (pequenaAreaBaixo.getHeight() * .50)));
+		g.fill(hasteDireitaGolBaixo);
+
+		hasteTopoGolBaixo.setBounds(Util.inte(hasteEsquerdaGolBaixo.getX()),
+				Util.inte(hasteDireitaGolBaixo.getY()
+						+ hasteDireitaGolBaixo.getHeight()), Util
+						.inte(hasteDireitaGolBaixo.getX()
+								- hasteEsquerdaGolBaixo.getX()
+								+ Util.inte(10 * ZOOM)), Util.inte(10 * ZOOM));
+		g.fill(hasteTopoGolBaixo);
 
 		centro.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
 				(int) ((ALTURA_MESA / 2) * ZOOM), (int) (DOBRO_LINHA * ZOOM),
