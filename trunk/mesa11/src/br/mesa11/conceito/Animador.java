@@ -62,9 +62,18 @@ public class Animador implements Runnable {
 					e.printStackTrace();
 				}
 			} else if (object instanceof Animacao) {
+
 				Animacao animIn = (Animacao) object;
+				Thread threadRodando = (Thread) controleJogo
+						.getBotoesComThread().get(animIn.getObjetoAnimacao());
+				if (threadRodando != null) {
+					threadRodando.interrupt();
+					System.out.println("Matou th" + animIn.getObjetoAnimacao());
+				}
 				Animador animador = new Animador(animIn, panel, controleJogo);
 				Thread thread = new Thread(animador);
+				controleJogo.getBotoesComThread().put(
+						animIn.getObjetoAnimacao(), thread);
 				thread.start();
 
 			}

@@ -1,7 +1,6 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -28,6 +27,7 @@ import br.nnpe.GeoUtil;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
+	private Map botoesComThread = new HashMap();
 	private Animacao animacao;
 	private Botao bola;
 	private MesaPanel mesaPanel;
@@ -155,10 +155,11 @@ public class ControleJogo {
 					if (botao.getCentroInicio() != null)
 						botao.setCentro(botao.getCentroInicio());
 				}
-				mesaPanel.repaint();
+				botoesComThread.clear();
 				Animador animador = new Animador(animacao, mesaPanel,
 						ControleJogo.this);
 				Thread thread = new Thread(animador);
+				botoesComThread.put(animacao.getObjetoAnimacao(), thread);
 				thread.start();
 			}
 
@@ -256,6 +257,14 @@ public class ControleJogo {
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
+	public Map getBotoesComThread() {
+		return botoesComThread;
+	}
+
+	public void setBotoesComThread(Map botoesComThread) {
+		this.botoesComThread = botoesComThread;
+	}
+
 	protected void centralizaBola() {
 		Point p = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
@@ -338,14 +347,13 @@ public class ControleJogo {
 
 							int dest = 0;
 							if ((botao instanceof Bola)) {
-								angulo = GeoUtil.calculaAngulo(botaoAnalisado
-										.getCentro(),point, 90);
-								System.out.println(angulo);
 								dest = trajetoriaBotao.size();
-							} else {
-								angulo = GeoUtil.calculaAngulo(point, botao
-										.getCentro(), 90);
+							}else{
+								dest = trajetoriaBotao.size()/3;
 							}
+							angulo = GeoUtil.calculaAngulo(botaoAnalisado
+									.getCentro(), point, 0);
+
 							destino = GeoUtil.calculaPonto(angulo, dest, botao
 									.getCentro());
 							botao.setDestino(destino);

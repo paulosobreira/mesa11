@@ -831,4 +831,8 @@ public class Util {
 		return ret;
 	}
 
+	public static int inte(double d) {
+		return (int) d;
+	}
+
 }
