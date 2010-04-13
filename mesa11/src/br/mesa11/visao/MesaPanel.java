@@ -1,5 +1,6 @@
 package br.mesa11.visao;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import br.hibernate.Botao;
+import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 
@@ -59,6 +61,8 @@ public class MesaPanel extends JPanel {
 	private Rectangle hasteEsquerdaGolBaixo;
 	private Rectangle hasteTopoGolBaixo;
 
+	private ControleJogo controleJogo;
+
 	private Map botoes;
 	private List jogada;
 
@@ -98,7 +102,7 @@ public class MesaPanel extends JPanel {
 		return penaltyBaixo;
 	}
 
-	public MesaPanel() {
+	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
 		campoCima = new Rectangle(0, 0);
 		campoBaixo = new Rectangle(0, 0);
@@ -112,16 +116,12 @@ public class MesaPanel extends JPanel {
 		hasteDireitaGolCima = new Rectangle(0, 0);
 		hasteEsquerdaGolCima = new Rectangle(0, 0);
 		hasteTopoGolCima = new Rectangle(0, 0);
-
+		this.controleJogo = controleJogo;
 		hasteDireitaGolBaixo = new Rectangle(0, 0);
 		hasteEsquerdaGolBaixo = new Rectangle(0, 0);
 		hasteTopoGolBaixo = new Rectangle(0, 0);
-	}
-
-	public MesaPanel(Map botoes, List jogada) {
-		this();
-		this.botoes = botoes;
-		this.jogada = jogada;
+		this.botoes = controleJogo.getBotoes();
+		this.jogada = controleJogo.getJogada();
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -174,6 +174,7 @@ public class MesaPanel extends JPanel {
 								(int) (point.y * ZOOM), 1, 1);
 			}
 		}
+
 	}
 
 	private void desenhaBotao(Botao botao, Graphics g) {
@@ -190,15 +191,24 @@ public class MesaPanel extends JPanel {
 				BufferedImage.TYPE_INT_ARGB);
 
 		affineTransformOp.filter(botaoImg, zoomBuffer);
-		Ellipse2D ellipse2D = new Ellipse2D.Float(
+
+		Ellipse2D externo = new Ellipse2D.Float(
 				(int) (botao.getPosition().x * ZOOM), (int) (botao
 						.getPosition().y * ZOOM),
 				(int) (botao.getDiamentro() * ZOOM), (int) (botao
 						.getDiamentro() * ZOOM));
-		g.setClip(ellipse2D);
+
+		g.setClip(externo);
+
+		Graphics2D graphics2d = (Graphics2D) zoomBuffer.getGraphics();
+		Ellipse2D interno = new Ellipse2D.Float((int) ((22 * ZOOM)),
+				(int) ((20) * ZOOM), (int) (84 * ZOOM), (int) (84 * ZOOM));
+		graphics2d.setComposite(AlphaComposite.getInstance(
+				AlphaComposite.CLEAR, 0.5f));
+		graphics2d.fill(interno);
+
 		g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
 				(int) (botao.getPosition().y * ZOOM), null);
-
 	}
 
 	private void desenhaCampo(Graphics g) {
