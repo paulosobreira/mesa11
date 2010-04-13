@@ -49,7 +49,8 @@ public class Animador implements Runnable {
 				try {
 					if (botao instanceof Bola) {
 						if (i % 5 == 0) {
-							controleJogo.atualizaCentro();
+							controleJogo
+									.centralizaBotao(controleJogo.getBola());
 							Thread.sleep(7);
 						}
 
