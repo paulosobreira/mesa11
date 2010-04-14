@@ -2,6 +2,7 @@ package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -25,6 +26,7 @@ import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
+import br.recursos.CarregadorRecursos;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
@@ -43,7 +45,7 @@ public class ControleJogo {
 		final JFrame frame = new JFrame("mesa11");
 		frame.setResizable(false);
 		frame.getContentPane().setLayout(new BorderLayout());
-
+		mesaPanel = new MesaPanel(this);
 		Botao botao = new Botao(1);
 		botao.setImagem("azul.png");
 		botao.setPosition(new Point(1500, 2300));
@@ -59,6 +61,14 @@ public class ControleJogo {
 		Botao botao5 = new Botao(5);
 		botao5.setImagem("azul.png");
 		botao5.setPosition(new Point(1600, 2900));
+		Botao botao6 = new Botao(6);
+		botao6.setImagem("vermelho.png");
+		botao6.setPosition(new Point(mesaPanel.getPenaltyCima().x, mesaPanel
+				.getPenaltyCima().y + 200));
+		Botao botao7 = new Botao(7);
+		botao7.setImagem("verde.png");
+		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
+				.getPenaltyBaixo().y - 200));
 
 		bola = new Bola(0);
 		bola.setImagem("bola.png");
@@ -68,8 +78,14 @@ public class ControleJogo {
 		botoes.put(botao3.getId(), botao3);
 		botoes.put(botao4.getId(), botao4);
 		botoes.put(botao5.getId(), botao5);
+		botoes.put(botao6.getId(), botao6);
+		botoes.put(botao7.getId(), botao7);
 		botoes.put(bola.getId(), bola);
-		mesaPanel = new MesaPanel(this);
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
+		}
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -83,32 +99,7 @@ public class ControleJogo {
 				if ((System.currentTimeMillis() - lastScrool) < 50)
 					return;
 				double newzoom = MesaPanel.ZOOM;
-				newzoom += e.getWheelRotation() / 25.0;
-				// if (newp.x < 0) {
-				// }
-				// if (newp.y < 0) {
-				// }
-				// double maxX = ((mesaPanel.getWidth() * newzoom) - scrollPane
-				// .getViewport().getWidth());
-				// if (newp.x > maxX) {
-				// System.out.println("newp.x" + newp.x);
-				// System.out.println("maxX" + maxX);
-				// newp.x = Util.inte(maxX * newzoom) - 1;
-				// System.out.println("newp.x'" + newp.x);
-				// }
-				// if (newp.y > ((mesaPanel.getHeight() * newzoom) - (scrollPane
-				// .getViewport().getHeight()))) {
-				// }
-				// // if (((newp.x < 0 || newp.y < 0) || (newp.x > ((mesaPanel
-				// // .getWidth() * newzoom) - scrollPane.getViewport()
-				// // .getWidth()) || newp.y > ((mesaPanel.getHeight() *
-				// newzoom) -
-				// // (scrollPane
-				// // .getViewport().getHeight()))))) {
-				// // centralizaBotao(getBola());
-				// // return;
-				// // }
-
+				newzoom += e.getWheelRotation() / 20.0;
 				MesaPanel.ZOOM = newzoom;
 				if (MesaPanel.ZOOM <= 0.3) {
 					MesaPanel.ZOOM = 0.3;
@@ -153,9 +144,9 @@ public class ControleJogo {
 					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
 					if (raioPonto.size() <= botao.getRaio()) {
-						if (botao instanceof Bola) {
-							return;
-						}
+						// if (botao instanceof Bola) {
+						// return;
+						// }
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
 
@@ -244,7 +235,9 @@ public class ControleJogo {
 		});
 		frame.setVisible(true);
 		frame.requestFocus();
-		bola.setPosition(mesaPanel.pointCentro());
+		bola.setPosition(mesaPanel.getPenaltyCima().getLocation());
+		bola.setPosition(mesaPanel.getPenaltyBaixo().getLocation());
+		// bola.setPosition(mesaPanel.getCentro().getLocation());
 		centralizaBola();
 		Thread thread2 = new Thread(new Runnable() {
 
@@ -315,11 +308,41 @@ public class ControleJogo {
 		Botao botao = animacao.getObjetoAnimacao();
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
+		boolean bolaBateu = false;
 		for (int i = 0; i < trajetoriaBotao.size(); i++) {
 			Object objTrajetoria = trajetoriaBotao.get(i);
 			if (objTrajetoria instanceof Point) {
 				Point point = (Point) objTrajetoria;
+
+				if (botao instanceof Bola) {
+					Rectangle rectangle = new Rectangle(point.x
+							- bola.getRaio(), point.y - bola.getRaio(), bola
+							.getDiamentro(), bola.getDiamentro());
+					if (!bolaBateu
+							&& mesaPanel.verificaIntersectsGol(rectangle)) {
+						bolaBateu = true;
+						System.out.println("intercet");
+						double angulo = GeoUtil.calculaAngulo(point, botao
+								.getDestino(), 0);
+						// trajetoriaBotao.remove(point);
+						while (i < trajetoriaBotao.size()) {
+							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
+						}
+						Point destino = GeoUtil.calculaPonto(angulo, Util
+								.inte(trajetoriaBotao.size() * 0.7), botao
+								.getCentro());
+						botao.setDestino(destino);
+						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
+								destino);
+						trajetoriaBotao.addAll(novaTrajetoria);
+					} else {
+						bolaBateu = false;
+					}
+				}
 				botao.setCentro(point);
+				/**
+				 * Colisão com botões
+				 */
 				for (Iterator iterator = botoes.keySet().iterator(); iterator
 						.hasNext();) {
 					Long id = (Long) iterator.next();
@@ -381,22 +404,27 @@ public class ControleJogo {
 
 							int dest = 0;
 							if ((botao instanceof Bola)) {
+								angulo = GeoUtil.calculaAngulo(botaoAnalisado
+										.getCentro(), point, 0);
 								dest = trajetoriaBotao.size();
 							} else {
+								angulo = GeoUtil.calculaAngulo(botaoAnalisado
+										.getCentro(), point, 90);
+								// System.out.println(angulo);
 								dest = trajetoriaBotao.size() / 3;
 							}
-							angulo = GeoUtil.calculaAngulo(botaoAnalisado
-									.getCentro(), point, 0);
 
 							destino = GeoUtil.calculaPonto(angulo, dest, botao
 									.getCentro());
 							botao.setDestino(destino);
 							List novaTrajetoria = GeoUtil.drawBresenhamLine(
 									point, destino);
-							for (Iterator iterator2 = novaTrajetoria.iterator(); iterator2
-									.hasNext();) {
-								trajetoriaBotao.add(iterator2.next());
-							}
+							trajetoriaBotao.addAll(novaTrajetoria);
+							// for (Iterator iterator2 =
+							// novaTrajetoria.iterator(); iterator2
+							// .hasNext();) {
+							// trajetoriaBotao.add(iterator2.next());
+							// }
 						}
 
 						propagaColisao(animacao, botao);

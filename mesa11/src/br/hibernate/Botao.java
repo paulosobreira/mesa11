@@ -10,7 +10,7 @@ public class Botao extends Mesa11Dados {
 
 	private transient BufferedImage imgBotao;
 
-	private transient int diamentro = 128;
+	private transient int diamentro = 130;
 	private transient Point position;
 	private transient Point centroInicio;
 	private transient Point destino;
