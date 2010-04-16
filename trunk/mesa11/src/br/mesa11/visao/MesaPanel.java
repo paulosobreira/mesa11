@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -18,6 +19,7 @@ import java.util.Map;
 import javax.swing.JPanel;
 
 import br.hibernate.Botao;
+import br.hibernate.Goleiro;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
@@ -143,13 +145,13 @@ public class MesaPanel extends JPanel {
 				(int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
 		hasteDireitaGolCima = new Rectangle(Util.inte(pequenaAreaCima.getX()
 				+ pequenaAreaCima.getWidth() - (110 * ZOOM)), Util
-				.inte(pequenaAreaCima.getY()
+				.inte(pequenaAreaCima.getY() + (LINHA * ZOOM)
 						- (pequenaAreaCima.getHeight() * .50)), Util
 				.inte(10 * ZOOM), Util.inte(pequenaAreaCima.getHeight() * .50));
 		hasteEsquerdaGolCima = new Rectangle(Util.inte(pequenaAreaCima.getX()
 				+ (110 * ZOOM)), Util.inte(pequenaAreaCima.getY()
-				- (pequenaAreaCima.getHeight() * .50)), Util.inte(10 * ZOOM),
-				Util.inte(pequenaAreaCima.getHeight() * .50));
+				+ (LINHA * ZOOM) - (pequenaAreaCima.getHeight() * .50)), Util
+				.inte(10 * ZOOM), Util.inte(pequenaAreaCima.getHeight() * .50));
 		hasteTopoGolCima = new Rectangle(
 				Util.inte(hasteEsquerdaGolCima.getX()), Util
 						.inte(hasteDireitaGolCima.getY()), Util
@@ -157,12 +159,12 @@ public class MesaPanel extends JPanel {
 								- hasteEsquerdaGolCima.getX()), Util
 						.inte(10 * ZOOM));
 		hasteDireitaGolBaixo = new Rectangle(Util.inte(hasteDireitaGolCima
-				.getX()), Util.inte(pequenaAreaBaixo.getY()
+				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA * ZOOM)
 				+ pequenaAreaBaixo.getHeight()), Util.inte(10 * ZOOM), Util
 				.inte(pequenaAreaBaixo.getHeight()
 						- (pequenaAreaBaixo.getHeight() * .50)));
 		hasteEsquerdaGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolCima
-				.getX()), Util.inte(pequenaAreaBaixo.getY()
+				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA * ZOOM)
 				+ pequenaAreaBaixo.getHeight()), Util.inte(10 * ZOOM), Util
 				.inte(pequenaAreaBaixo.getHeight()
 						- (pequenaAreaBaixo.getHeight() * .50)));
@@ -202,7 +204,12 @@ public class MesaPanel extends JPanel {
 							(int) (botao.getDestino().x * ZOOM), (int) (botao
 									.getDestino().y * ZOOM));
 				}
-				desenhaBotao(botao, g);
+				if (botao instanceof Goleiro) {
+					Goleiro goleiro = (Goleiro) botao;
+					desenhaGoleiro(goleiro, g);
+				} else {
+					desenhaBotao(botao, g);
+				}
 				// g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
 				// .getPosition().y * ZOOM),
 				// (int) (botao.getDiamentro() * ZOOM), (int) (botao
@@ -223,6 +230,13 @@ public class MesaPanel extends JPanel {
 
 	}
 
+	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(Color.BLACK);
+		g2d.fill(goleiro.getRetangulo());
+
+	}
+
 	private void desenhaBotao(Botao botao, Graphics g) {
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				ZOOM, ZOOM);
@@ -238,22 +252,30 @@ public class MesaPanel extends JPanel {
 
 		affineTransformOp.filter(botaoImg, zoomBuffer);
 
-		Ellipse2D externo = new Ellipse2D.Float(
-				(int) (botao.getPosition().x * ZOOM), (int) (botao
-						.getPosition().y * ZOOM),
-				(int) (botao.getDiamentro() * ZOOM), (int) (botao
-						.getDiamentro() * ZOOM));
+		// Ellipse2D externo = new Ellipse2D.Float(
+		// (int) (botao.getPosition().x * ZOOM), (int) (botao
+		// .getPosition().y * ZOOM),
+		// (int) (botao.getDiamentro() * ZOOM), (int) (botao
+		// .getDiamentro() * ZOOM));
 
-		g.setClip(externo);
+		// g.setClip(externo);
 
-		Graphics2D graphics2d = (Graphics2D) zoomBuffer.getGraphics();
-		Ellipse2D interno = new Ellipse2D.Float((int) ((23 * ZOOM)),
-				(int) ((22) * ZOOM), (int) (84 * ZOOM), (int) (84 * ZOOM));
+
+		BufferedImage newBuffer = new BufferedImage(
+				(int) (botaoImg.getWidth() * ZOOM),
+				(int) (botaoImg.getHeight() * ZOOM),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		Ellipse2D externo = new Ellipse2D.Double(0, 0,
+				(botao.getDiamentro() * ZOOM), (botao.getDiamentro() * ZOOM));
+		Ellipse2D interno = new Ellipse2D.Double(((23 * ZOOM)), ((22) * ZOOM),
+				(85 * ZOOM), (85 * ZOOM));
+		graphics2d.setClip(externo);
+		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		graphics2d.setComposite(AlphaComposite.getInstance(
 				AlphaComposite.CLEAR, 0.5f));
 		graphics2d.fill(interno);
-
-		g.drawImage(zoomBuffer, (int) (botao.getPosition().x * ZOOM),
+		g.drawImage(newBuffer, (int) (botao.getPosition().x * ZOOM),
 				(int) (botao.getPosition().y * ZOOM), null);
 	}
 
@@ -415,6 +437,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desengaGol(Graphics2D g) {
+		g.setColor(Color.black);
 		Rectangle pequenaAreaCimaTemp = new Rectangle();
 		pequenaAreaCimaTemp.setBounds(
 				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * ZOOM),
@@ -429,14 +452,14 @@ public class MesaPanel extends JPanel {
 		Rectangle hasteEsquerdaGolCimaTemp = new Rectangle();
 		hasteEsquerdaGolCimaTemp.setBounds(Util.inte(pequenaAreaCimaTemp.getX()
 				+ (110 * ZOOM)), Util.inte(pequenaAreaCimaTemp.getY()
-				- (pequenaAreaCimaTemp.getHeight() * .50)), Util
-				.inte(10 * ZOOM), Util
-				.inte(pequenaAreaCimaTemp.getHeight() * .50));
+				+ (LINHA * ZOOM) - (pequenaAreaCimaTemp.getHeight() * .50)),
+				Util.inte(10 * ZOOM), Util
+						.inte(pequenaAreaCimaTemp.getHeight() * .50));
 		g.fill(hasteEsquerdaGolCimaTemp);
 		Rectangle hasteDireitaGolCimaTemp = new Rectangle();
 		hasteDireitaGolCimaTemp.setBounds(Util.inte(pequenaAreaCimaTemp.getX()
 				+ pequenaAreaCimaTemp.getWidth() - (110 * ZOOM)), Util
-				.inte(pequenaAreaCimaTemp.getY()
+				.inte(pequenaAreaCimaTemp.getY() + (LINHA * ZOOM)
 						- (pequenaAreaCimaTemp.getHeight() * .50)), Util
 				.inte(10 * ZOOM), Util
 				.inte(pequenaAreaCimaTemp.getHeight() * .50));
@@ -451,16 +474,16 @@ public class MesaPanel extends JPanel {
 		Rectangle hasteEsquerdaGolBaixoTemp = new Rectangle();
 		hasteEsquerdaGolBaixoTemp.setBounds(Util.inte(hasteEsquerdaGolCimaTemp
 				.getX()), Util.inte(pequenaAreaBaixoTemp.getY()
-				+ pequenaAreaBaixoTemp.getHeight()), Util.inte(10 * ZOOM), Util
-				.inte(pequenaAreaBaixoTemp.getHeight()
-						- (pequenaAreaBaixoTemp.getHeight() * .50)));
+				- (LINHA * ZOOM) + pequenaAreaBaixoTemp.getHeight()), Util
+				.inte(10 * ZOOM), Util.inte(pequenaAreaBaixoTemp.getHeight()
+				- (pequenaAreaBaixoTemp.getHeight() * .50)));
 		g.fill(hasteEsquerdaGolBaixoTemp);
 		Rectangle hasteDireitaGolBaixoTemp = new Rectangle();
 		hasteDireitaGolBaixoTemp.setBounds(Util.inte(hasteDireitaGolCimaTemp
 				.getX()), Util.inte(pequenaAreaBaixoTemp.getY()
-				+ pequenaAreaBaixoTemp.getHeight()), Util.inte(10 * ZOOM), Util
-				.inte(pequenaAreaBaixoTemp.getHeight()
-						- (pequenaAreaBaixoTemp.getHeight() * .50)));
+				- (LINHA * ZOOM) + pequenaAreaBaixoTemp.getHeight()), Util
+				.inte(10 * ZOOM), Util.inte(pequenaAreaBaixoTemp.getHeight()
+				- (pequenaAreaBaixoTemp.getHeight() * .50)));
 		g.fill(hasteDireitaGolBaixoTemp);
 		Rectangle hasteTopoGolBaixoTemp = new Rectangle();
 		hasteTopoGolBaixoTemp.setBounds(Util.inte(hasteEsquerdaGolBaixoTemp

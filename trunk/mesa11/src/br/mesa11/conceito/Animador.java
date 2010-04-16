@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
 
