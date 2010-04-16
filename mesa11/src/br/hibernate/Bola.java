@@ -1,6 +1,5 @@
-package br.mesa11.conceito;
+package br.hibernate;
 
-import br.hibernate.Botao;
 
 public class Bola extends Botao {
 

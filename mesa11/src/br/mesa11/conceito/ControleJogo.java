@@ -22,7 +22,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
+import br.hibernate.Bola;
 import br.hibernate.Botao;
+import br.hibernate.Goleiro;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
@@ -69,6 +71,8 @@ public class ControleJogo {
 		botao7.setImagem("verde.png");
 		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
 				.getPenaltyBaixo().y - 200));
+		Goleiro goleiro = new Goleiro(8);
+		goleiro.setPosition(mesaPanel.getPequenaAreaBaixo().getLocation());
 
 		bola = new Bola(0);
 		bola.setImagem("bola.png");
@@ -81,9 +85,13 @@ public class ControleJogo {
 		botoes.put(botao6.getId(), botao6);
 		botoes.put(botao7.getId(), botao7);
 		botoes.put(bola.getId(), bola);
+		botoes.put(goleiro.getId(), goleiro);
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao b = (Botao) botoes.get(id);
+			if (b instanceof Goleiro) {
+				continue;
+			}
 			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
 		}
 		scrollPane = new JScrollPane(mesaPanel,
@@ -268,6 +276,7 @@ public class ControleJogo {
 
 			}
 		});
+		thread2.setPriority(Thread.MIN_PRIORITY);
 		thread2.start();
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
