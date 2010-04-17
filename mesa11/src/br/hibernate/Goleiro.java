@@ -3,6 +3,8 @@ package br.hibernate;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
 import org.hibernate.loader.custom.Return;
@@ -10,11 +12,7 @@ import org.hibernate.loader.custom.Return;
 public class Goleiro extends Botao {
 
 	private transient int diamentro = 400;
-	private int rotacao;
-
-	public int getRotacao() {
-		return rotacao;
-	}
+	private double rotacao;
 
 	public int getDiamentro() {
 		return diamentro;
@@ -24,7 +22,11 @@ public class Goleiro extends Botao {
 		this.diamentro = diamentro;
 	}
 
-	public void setRotacao(int rotacao) {
+	public double getRotacao() {
+		return rotacao;
+	}
+
+	public void setRotacao(double rotacao) {
 		this.rotacao = rotacao;
 	}
 
@@ -33,8 +35,16 @@ public class Goleiro extends Botao {
 	}
 
 	public Shape getRetangulo() {
-		return new Rectangle2D.Double(getPosition().x, getPosition().y,
-				getDiamentro(), 80);
+		Rectangle2D r2D = new Rectangle2D.Double(getPosition().x,
+				getPosition().y, getDiamentro(), 80);
+		GeneralPath generalPath = new GeneralPath(r2D);
+
+		AffineTransform affineTransform = AffineTransform
+				.getScaleInstance(1, 1);
+		double rad = Math.toRadians((double) rotacao);
+		affineTransform.setToRotation(rad, r2D.getCenterX(), r2D.getCenterY());
+
+		return generalPath.createTransformedShape(affineTransform);
 	}
 
 	public Point getCentro() {
