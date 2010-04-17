@@ -126,6 +126,18 @@ public class GeoUtil {
 		return new Point(p1.x + x, p1.y - y);
 	}
 
+	public static double calculaAnguloRad(Point a, Point b) {
+		int dx = b.x - a.x;
+		int dy = b.y - a.y;
+		// double tan = Math.atan((double) dy / dx);
+		double tan = Math.atan2(dy, dx);
+		//Logger.logar("Tangete" + tan);
+		// return tan;
+		return tan;
+		// 2 quadrantes, -pi/2 até pi/2
+		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
+	}
+	
 	public static double calculaAngulo(Point a, Point b, int fator) {
 		int dx = b.x - a.x;
 		int dy = b.y - a.y;

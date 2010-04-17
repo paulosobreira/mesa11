@@ -153,7 +153,16 @@ public class ControleJogo {
 					if (botao instanceof Goleiro) {
 						Goleiro goleiro = (Goleiro) botao;
 						if (goleiro.getRetangulo().contains(p1)) {
-							goleiro.setCentro(p2);
+							// int x = p1.x;
+							// if(x>)
+//							goleiro.setRotacao(GeoUtil.calculaAnguloRad(goleiro
+//							 .getCentro(), p2));
+							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
+									.getCentro(), p2, 0));
+							System.out.println(Math.toRadians(goleiro.getRotacao()));
+							System.out.println(GeoUtil.calculaAngulo(goleiro
+									.getCentro(), p2, 0));
+							// goleiro.setCentro(p2);
 							return;
 						}
 					}

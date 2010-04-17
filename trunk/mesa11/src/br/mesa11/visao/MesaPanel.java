@@ -9,6 +9,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -260,7 +261,6 @@ public class MesaPanel extends JPanel {
 
 		// g.setClip(externo);
 
-
 		BufferedImage newBuffer = new BufferedImage(
 				(int) (botaoImg.getWidth() * ZOOM),
 				(int) (botaoImg.getHeight() * ZOOM),
@@ -272,9 +272,9 @@ public class MesaPanel extends JPanel {
 				(85 * ZOOM), (85 * ZOOM));
 		graphics2d.setClip(externo);
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
-		graphics2d.setComposite(AlphaComposite.getInstance(
-				AlphaComposite.CLEAR, 0.5f));
-		graphics2d.fill(interno);
+		// graphics2d.setComposite(AlphaComposite.getInstance(
+		// AlphaComposite.CLEAR, 0.5f));
+		// graphics2d.fill(interno);
 		g.drawImage(newBuffer, (int) (botao.getPosition().x * ZOOM),
 				(int) (botao.getPosition().y * ZOOM), null);
 	}
