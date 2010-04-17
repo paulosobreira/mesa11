@@ -104,7 +104,7 @@ public class ControleJogo {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				if ((System.currentTimeMillis() - lastScrool) < 50)
+				if ((System.currentTimeMillis() - lastScrool) < 60)
 					return;
 				double newzoom = MesaPanel.ZOOM;
 				newzoom += e.getWheelRotation() / 20.0;
@@ -129,6 +129,7 @@ public class ControleJogo {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
+
 				jogada.add(new Point((int) (e.getPoint().x / MesaPanel.ZOOM),
 						(int) (e.getPoint().y / MesaPanel.ZOOM)));
 			}
@@ -149,12 +150,22 @@ public class ControleJogo {
 						.hasNext();) {
 					Long id = (Long) iterator.next();
 					Botao botao = (Botao) botoes.get(id);
+					if (botao instanceof Goleiro) {
+						Goleiro goleiro = (Goleiro) botao;
+						if (goleiro.getRetangulo().contains(p1)) {
+							goleiro.setCentro(p2);
+							return;
+						}
+					}
 					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
 					if (raioPonto.size() <= botao.getRaio()) {
 						// if (botao instanceof Bola) {
 						// return;
 						// }
+						if (botao instanceof Goleiro) {
+							return;
+						}
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
 
@@ -322,7 +333,9 @@ public class ControleJogo {
 			Object objTrajetoria = trajetoriaBotao.get(i);
 			if (objTrajetoria instanceof Point) {
 				Point point = (Point) objTrajetoria;
-
+				/**
+				 * Bola
+				 */
 				if (botao instanceof Bola) {
 					Rectangle rectangle = new Rectangle(point.x
 							- bola.getRaio(), point.y - bola.getRaio(), bola
@@ -366,10 +379,14 @@ public class ControleJogo {
 							&& bolaIngnora.contains(botaoAnalisado)) {
 						continue;
 					}
+					if (botaoAnalisado instanceof Goleiro) {
+						continue;
+					}
 					List raioPonto = GeoUtil.drawBresenhamLine(point,
 							botaoAnalisado.getCentro());
 					if ((raioPonto.size() - (botao.getRaio())) == (botaoAnalisado
 							.getRaio())) {
+
 						// if ((botao instanceof Bola) && Math.random() > .7) {
 						// bolaIngnora.add(botaoAnalisado);
 						// continue;
