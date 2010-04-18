@@ -234,7 +234,7 @@ public class MesaPanel extends JPanel {
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.BLACK);
-		g2d.fill(goleiro.getRetangulo());
+		g2d.fill(goleiro.getRetangulo(ZOOM));
 
 	}
 

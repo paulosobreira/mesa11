@@ -72,7 +72,11 @@ public class ControleJogo {
 		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
 				.getPenaltyBaixo().y - 200));
 		Goleiro goleiro = new Goleiro(8);
-		goleiro.setPosition(mesaPanel.getPequenaAreaBaixo().getLocation());
+		Point p = new Point(Util.inte(mesaPanel.getPequenaAreaBaixo()
+				.getLocation().x + 200), Util.inte(mesaPanel
+				.getPequenaAreaBaixo().getLocation().y
+				+ mesaPanel.getPequenaAreaBaixo().getHeight()-20));
+		goleiro.setPosition(p);
 
 		bola = new Bola(0);
 		bola.setImagem("bola.png");
@@ -107,7 +111,7 @@ public class ControleJogo {
 				if ((System.currentTimeMillis() - lastScrool) < 60)
 					return;
 				double newzoom = MesaPanel.ZOOM;
-				newzoom += e.getWheelRotation() / 20.0;
+				newzoom += e.getWheelRotation() / 100.0;
 				MesaPanel.ZOOM = newzoom;
 				if (MesaPanel.ZOOM <= 0.3) {
 					MesaPanel.ZOOM = 0.3;
@@ -152,17 +156,15 @@ public class ControleJogo {
 					Botao botao = (Botao) botoes.get(id);
 					if (botao instanceof Goleiro) {
 						Goleiro goleiro = (Goleiro) botao;
-						if (goleiro.getRetangulo().contains(p1)) {
-							// int x = p1.x;
-							// if(x>)
-//							goleiro.setRotacao(GeoUtil.calculaAnguloRad(goleiro
-//							 .getCentro(), p2));
-							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
-									.getCentro(), p2, 0));
-							System.out.println(Math.toRadians(goleiro.getRotacao()));
-							System.out.println(GeoUtil.calculaAngulo(goleiro
-									.getCentro(), p2, 0));
-							// goleiro.setCentro(p2);
+						if (goleiro.getRetangulo(1).contains(p1)) {
+							List retaGoleiro = GeoUtil.drawBresenhamLine(
+									goleiro.getCentro(), p1);
+							if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
+								goleiro.setRotacao(GeoUtil.calculaAngulo(
+										goleiro.getCentro(), p2, 0));
+							} else {
+								goleiro.setCentro(p2);
+							}
 							return;
 						}
 					}
@@ -350,12 +352,10 @@ public class ControleJogo {
 							- bola.getRaio(), point.y - bola.getRaio(), bola
 							.getDiamentro(), bola.getDiamentro());
 					if (!bolaBateu
-							&& mesaPanel.verificaIntersectsGol(rectangle)) {
+							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro(rectangle))) {
 						bolaBateu = true;
-						System.out.println("intercet");
 						double angulo = GeoUtil.calculaAngulo(point, botao
 								.getDestino(), 0);
-						// trajetoriaBotao.remove(point);
 						while (i < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
@@ -455,11 +455,6 @@ public class ControleJogo {
 							List novaTrajetoria = GeoUtil.drawBresenhamLine(
 									point, destino);
 							trajetoriaBotao.addAll(novaTrajetoria);
-							// for (Iterator iterator2 =
-							// novaTrajetoria.iterator(); iterator2
-							// .hasNext();) {
-							// trajetoriaBotao.add(iterator2.next());
-							// }
 						}
 
 						propagaColisao(animacao, botao);
@@ -469,6 +464,20 @@ public class ControleJogo {
 				}
 			}
 		}
+	}
+
+	private boolean defesaGoleiro(Rectangle r) {
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoes.get(id);
+			if (botao instanceof Goleiro) {
+				Goleiro goleiro = (Goleiro) botao;
+				if (goleiro.getRetangulo(1).intersects(r)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void centralizaBotao(Botao b) {
