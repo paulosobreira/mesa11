@@ -138,7 +138,7 @@ public class GeoUtil {
 		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
 	}
 	
-	public static double calculaAngulo(Point a, Point b, int fator) {
+	public static double calculaAngulo(Point a, Point b, double fator) {
 		int dx = b.x - a.x;
 		int dy = b.y - a.y;
 		// double tan = Math.atan((double) dy / dx);

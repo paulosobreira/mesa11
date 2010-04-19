@@ -52,6 +52,6 @@ public class Goleiro extends Botao {
 	}
 
 	public void setCentro(Point p) {
-		setPosition(new Point(p.x - (getDiamentro() / 2), p.y - 40));
+		setPosition(new Point(p.x - (getDiamentro() / 2), p.y - 30));
 	}
 }
