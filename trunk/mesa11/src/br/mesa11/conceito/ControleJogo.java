@@ -72,11 +72,10 @@ public class ControleJogo {
 		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
 				.getPenaltyBaixo().y - 200));
 		Goleiro goleiro = new Goleiro(8);
-		Point p = new Point(Util.inte(mesaPanel.getPequenaAreaBaixo()
-				.getLocation().x + 200), Util.inte(mesaPanel
-				.getPequenaAreaBaixo().getLocation().y
-				+ mesaPanel.getPequenaAreaBaixo().getHeight()-20));
-		goleiro.setPosition(p);
+		Point p = new Point(Util.inte(mesaPanel.getPenaltyBaixo().x), Util
+				.inte(mesaPanel.getPequenaAreaBaixo().getLocation().y
+						+ mesaPanel.getPequenaAreaBaixo().getHeight() - 20));
+		goleiro.setCentro(p);
 
 		bola = new Bola(0);
 		bola.setImagem("bola.png");
