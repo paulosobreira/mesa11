@@ -44,6 +44,9 @@ public class Animador implements Runnable {
 			Object object = (Object) elements.get(i);
 			if (object instanceof Point) {
 				Point point = (Point) object;
+				if (controleJogo.verificaForaDosLimites(point)) {
+					return;
+				}
 				botao.setCentroInicio(point);
 				botao.setCentro(point);
 
