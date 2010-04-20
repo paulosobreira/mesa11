@@ -52,13 +52,12 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
-		iniciaJogo();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setSize(1024, 740);
 		frame.setVisible(true);
 		frame.requestFocus();
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		centralizaBola();
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		centroCampo();
 		Thread atualizadorTela = new Thread(new Runnable() {
 
 			@Override
@@ -263,7 +262,7 @@ public class ControleJogo {
 		frame.getContentPane().setLayout(new BorderLayout());
 	}
 
-	public void iniciaJogo() {
+	public void iniciaJogoLivre() {
 		Botao botao = new Botao(1);
 		botao.setImagem("azul.png");
 		botao.setPosition(new Point(1500, 2300));
@@ -313,10 +312,7 @@ public class ControleJogo {
 			}
 			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
 		}
-		bola.setPosition(mesaPanel.getPenaltyCima().getLocation());
-		bola.setPosition(mesaPanel.getPenaltyBaixo().getLocation());
-		// bola.setPosition(mesaPanel.getCentro().getLocation());
-		centralizaBola();
+		bolaCentro();
 	}
 
 	public Map getBotoesComThread() {
@@ -328,6 +324,10 @@ public class ControleJogo {
 	}
 
 	protected void centralizaBola() {
+		if (bola == null) {
+			centroCampo();
+			return;
+		}
 		Point p = new Point((int) (bola.getCentro().x * mesaPanel.zoom)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
 				.getCentro().y * mesaPanel.zoom)
@@ -349,6 +349,14 @@ public class ControleJogo {
 			p.y = Util.inte(maxY) - 1;
 		}
 		newp = p;
+	}
+
+	protected void centroCampo() {
+		newp = new Point(
+				(int) (mesaPanel.getCentro().getLocation().x * mesaPanel.zoom)
+						- (scrollPane.getViewport().getWidth() / 2),
+				(int) (mesaPanel.getCentro().getLocation().y * mesaPanel.zoom)
+						- (scrollPane.getViewport().getHeight() / 2));
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
@@ -563,6 +571,28 @@ public class ControleJogo {
 
 	public List getJogada() {
 		return jogada;
+	}
+
+	public void bolaPenaltiCima() {
+		if (bola == null || mesaPanel == null) {
+			return;
+		}
+		bola.setPosition(mesaPanel.getPenaltyCima().getLocation());
+		centralizaBola();
+
+	}
+
+	public void bolaPenaltiBaixo() {
+		if (bola == null || mesaPanel == null) {
+			return;
+		}
+		bola.setPosition(mesaPanel.getPenaltyBaixo().getLocation());
+		centralizaBola();
+	}
+
+	public void bolaCentro() {
+		bola.setPosition(mesaPanel.getCentro().getLocation());
+		centralizaBola();
 	}
 
 }
