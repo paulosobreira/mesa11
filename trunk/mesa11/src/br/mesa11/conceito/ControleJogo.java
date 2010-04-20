@@ -132,7 +132,7 @@ public class ControleJogo {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				if ((System.currentTimeMillis() - lastScrool) < 60)
+				if ((System.currentTimeMillis() - lastScrool) < 40)
 					return;
 				double newzoom = mesaPanel.zoom;
 				newzoom += e.getWheelRotation() / 100.0;
@@ -352,11 +352,25 @@ public class ControleJogo {
 	}
 
 	protected void centroCampo() {
-		newp = new Point(
+		Point p = new Point(
 				(int) (mesaPanel.getCentro().getLocation().x * mesaPanel.zoom)
 						- (scrollPane.getViewport().getWidth() / 2),
 				(int) (mesaPanel.getCentro().getLocation().y * mesaPanel.zoom)
 						- (scrollPane.getViewport().getHeight() / 2));
+		double maxX = ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+				.getViewport().getWidth());
+		if (p.x > maxX) {
+			p.x = Util.inte(maxX) - 1;
+		}
+		if (p.y < 0) {
+			p.y = 1;
+		}
+		double maxY = ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
+				.getViewport().getHeight()));
+		if (p.y > maxY) {
+			p.y = Util.inte(maxY) - 1;
+		}
+		newp = p;
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
@@ -469,7 +483,6 @@ public class ControleJogo {
 							} else {
 								angulo = GeoUtil.calculaAngulo(botaoAnalisado
 										.getCentro(), point, 90);
-								// System.out.println(angulo);
 								dest = trajetoriaBotao.size() / 3;
 							}
 
@@ -488,6 +501,22 @@ public class ControleJogo {
 				}
 			}
 		}
+	}
+
+	boolean verificaForaDosLimites(Point point) {
+		if (point.x < (mesaPanel.BORDA_CAMPO / 2)) {
+			return true;
+		}
+		if (point.x > (mesaPanel.LARGURA_MESA - (mesaPanel.BORDA_CAMPO / 2))) {
+			return true;
+		}
+		if (point.y < (mesaPanel.BORDA_CAMPO / 2)) {
+			return true;
+		}
+		if (point.y > (mesaPanel.ALTURA_MESA - (mesaPanel.BORDA_CAMPO / 2))) {
+			return true;
+		}
+		return false;
 	}
 
 	private boolean defesaGoleiro(Rectangle r) {
