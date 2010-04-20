@@ -1,6 +1,7 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyAdapter;
@@ -41,82 +42,107 @@ public class ControleJogo {
 	private Point newp;
 	private List jogada = new LinkedList();
 	private long lastScrool = System.currentTimeMillis();
+	private JFrame frame;
 
-	public void test() {
-
-		final JFrame frame = new JFrame("mesa11");
-		frame.setResizable(false);
-		frame.getContentPane().setLayout(new BorderLayout());
+	public ControleJogo(JFrame frame) {
+		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
-		Botao botao = new Botao(1);
-		botao.setImagem("azul.png");
-		botao.setPosition(new Point(1500, 2300));
-		Botao botao2 = new Botao(2);
-		botao2.setImagem("azul.png");
-		botao2.setPosition(new Point(1500, 2500));
-		Botao botao3 = new Botao(3);
-		botao3.setImagem("azul.png");
-		botao3.setPosition(new Point(1300, 2500));
-		Botao botao4 = new Botao(4);
-		botao4.setImagem("azul.png");
-		botao4.setPosition(new Point(1700, 2200));
-		Botao botao5 = new Botao(5);
-		botao5.setImagem("azul.png");
-		botao5.setPosition(new Point(1600, 2900));
-		Botao botao6 = new Botao(6);
-		botao6.setImagem("vermelho.png");
-		botao6.setPosition(new Point(mesaPanel.getPenaltyCima().x, mesaPanel
-				.getPenaltyCima().y + 200));
-		Botao botao7 = new Botao(7);
-		botao7.setImagem("verde.png");
-		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
-				.getPenaltyBaixo().y - 200));
-		Goleiro goleiro = new Goleiro(8);
-		Point p = new Point(Util.inte(mesaPanel.getPenaltyBaixo().x), Util
-				.inte(mesaPanel.getPequenaAreaBaixo().getLocation().y
-						+ mesaPanel.getPequenaAreaBaixo().getHeight() - 20));
-		goleiro.setCentro(p);
-
-		bola = new Bola(0);
-		bola.setImagem("bola.png");
-
-		botoes.put(botao.getId(), botao);
-		botoes.put(botao2.getId(), botao2);
-		botoes.put(botao3.getId(), botao3);
-		botoes.put(botao4.getId(), botao4);
-		botoes.put(botao5.getId(), botao5);
-		botoes.put(botao6.getId(), botao6);
-		botoes.put(botao7.getId(), botao7);
-		botoes.put(bola.getId(), bola);
-		botoes.put(goleiro.getId(), goleiro);
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
-			Long id = (Long) iterator.next();
-			Botao b = (Botao) botoes.get(id);
-			if (b instanceof Goleiro) {
-				continue;
-			}
-			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
-		}
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		adicinaListentesEventosMouse();
+		adicinaListentesEventosTeclado();
+		iniciaJogo();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.setSize(1024, 740);
+		frame.setVisible(true);
+		frame.requestFocus();
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		centralizaBola();
+		Thread atualizadorTela = new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(20);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					try {
+						if (oldp != newp) {
+							scrollPane.getViewport().setViewPosition(newp);
+							oldp = newp;
+						}
+						mesaPanel.repaint();
+					} catch (Exception e) {
+						e.printStackTrace();
+						try {
+							Thread.sleep(20);
+						} catch (InterruptedException e2) {
+
+						}
+					}
+
+				}
+
+			}
+		});
+		atualizadorTela.setPriority(Thread.MIN_PRIORITY);
+		atualizadorTela.start();
+
+	}
+
+	private void adicinaListentesEventosTeclado() {
+		frame.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keycode = e.getKeyCode();
+				Point p = new Point((int) (scrollPane.getViewport()
+						.getViewPosition().x), (int) (scrollPane.getViewport()
+						.getViewPosition().y));
+
+				if (keycode == KeyEvent.VK_LEFT) {
+					p.x -= 10;
+				} else if (keycode == KeyEvent.VK_RIGHT) {
+					p.x += 10;
+				} else if (keycode == KeyEvent.VK_UP) {
+					p.y -= 10;
+				} else if (keycode == KeyEvent.VK_DOWN) {
+					p.y += 10;
+				}
+				if (p.x < 0 || p.y < 0) {
+					return;
+				}
+				if (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+						.getViewport().getWidth())
+						|| p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
+								.getViewport().getHeight()))) {
+					return;
+				}
+				newp = p;
+				super.keyPressed(e);
+			}
+
+		});
+	}
+
+	private void adicinaListentesEventosMouse() {
 		mesaPanel.addMouseWheelListener(new MouseWheelListener() {
 
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				if ((System.currentTimeMillis() - lastScrool) < 60)
 					return;
-				double newzoom = MesaPanel.ZOOM;
+				double newzoom = mesaPanel.zoom;
 				newzoom += e.getWheelRotation() / 100.0;
-				MesaPanel.ZOOM = newzoom;
-				if (MesaPanel.ZOOM <= 0.3) {
-					MesaPanel.ZOOM = 0.3;
+				mesaPanel.zoom = newzoom;
+				if (mesaPanel.zoom <= 0.3) {
+					mesaPanel.zoom = 0.3;
 				}
-				if (MesaPanel.ZOOM >= 1) {
-					MesaPanel.ZOOM = 1;
+				if (mesaPanel.zoom >= 1) {
+					mesaPanel.zoom = 1;
 				}
 				centralizaBola();
 				lastScrool = System.currentTimeMillis();
@@ -132,9 +158,8 @@ public class ControleJogo {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-
-				jogada.add(new Point((int) (e.getPoint().x / MesaPanel.ZOOM),
-						(int) (e.getPoint().y / MesaPanel.ZOOM)));
+				jogada.add(new Point((int) (e.getPoint().x / mesaPanel.zoom),
+						(int) (e.getPoint().y / mesaPanel.zoom)));
 			}
 
 		});
@@ -229,77 +254,69 @@ public class ControleJogo {
 
 			}
 		});
+	}
 
-		frame.addKeyListener(new KeyAdapter() {
+	public void test() {
 
-			@Override
-			public void keyPressed(KeyEvent e) {
-				int keycode = e.getKeyCode();
-				Point p = new Point((int) (scrollPane.getViewport()
-						.getViewPosition().x), (int) (scrollPane.getViewport()
-						.getViewPosition().y));
+		final JFrame frame = new JFrame("mesa11");
+		frame.setResizable(false);
+		frame.getContentPane().setLayout(new BorderLayout());
+	}
 
-				if (keycode == KeyEvent.VK_LEFT) {
-					p.x -= 10;
-				} else if (keycode == KeyEvent.VK_RIGHT) {
-					p.x += 10;
-				} else if (keycode == KeyEvent.VK_UP) {
-					p.y -= 10;
-				} else if (keycode == KeyEvent.VK_DOWN) {
-					p.y += 10;
-				}
-				if (p.x < 0 || p.y < 0) {
-					return;
-				}
-				if (p.x > ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
-						.getViewport().getWidth())
-						|| p.y > ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
-								.getViewport().getHeight()))) {
-					return;
-				}
-				newp = p;
-				super.keyPressed(e);
+	public void iniciaJogo() {
+		Botao botao = new Botao(1);
+		botao.setImagem("azul.png");
+		botao.setPosition(new Point(1500, 2300));
+		Botao botao2 = new Botao(2);
+		botao2.setImagem("azul.png");
+		botao2.setPosition(new Point(1500, 2500));
+		Botao botao3 = new Botao(3);
+		botao3.setImagem("azul.png");
+		botao3.setPosition(new Point(1300, 2500));
+		Botao botao4 = new Botao(4);
+		botao4.setImagem("azul.png");
+		botao4.setPosition(new Point(1700, 2200));
+		Botao botao5 = new Botao(5);
+		botao5.setImagem("azul.png");
+		botao5.setPosition(new Point(1600, 2900));
+		Botao botao6 = new Botao(6);
+		botao6.setImagem("vermelho.png");
+		botao6.setPosition(new Point(mesaPanel.getPenaltyCima().x, mesaPanel
+				.getPenaltyCima().y + 200));
+		Botao botao7 = new Botao(7);
+		botao7.setImagem("verde.png");
+		botao7.setPosition(new Point(mesaPanel.getPenaltyBaixo().x, mesaPanel
+				.getPenaltyBaixo().y - 200));
+		Goleiro goleiro = new Goleiro(8);
+		Point p = new Point(Util.inte(mesaPanel.getPenaltyBaixo().x), Util
+				.inte(mesaPanel.getPequenaAreaBaixo().getLocation().y
+						+ mesaPanel.getPequenaAreaBaixo().getHeight() - 20));
+		goleiro.setCentro(p);
+
+		bola = new Bola(0);
+		bola.setImagem("bola.png");
+
+		botoes.put(botao.getId(), botao);
+		botoes.put(botao2.getId(), botao2);
+		botoes.put(botao3.getId(), botao3);
+		botoes.put(botao4.getId(), botao4);
+		botoes.put(botao5.getId(), botao5);
+		botoes.put(botao6.getId(), botao6);
+		botoes.put(botao7.getId(), botao7);
+		botoes.put(bola.getId(), bola);
+		botoes.put(goleiro.getId(), goleiro);
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			if (b instanceof Goleiro) {
+				continue;
 			}
-
-		});
-		frame.setVisible(true);
-		frame.requestFocus();
+			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
+		}
 		bola.setPosition(mesaPanel.getPenaltyCima().getLocation());
 		bola.setPosition(mesaPanel.getPenaltyBaixo().getLocation());
 		// bola.setPosition(mesaPanel.getCentro().getLocation());
 		centralizaBola();
-		Thread thread2 = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(20);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (oldp != newp) {
-							scrollPane.getViewport().setViewPosition(newp);
-							oldp = newp;
-						}
-						mesaPanel.repaint();
-					} catch (Exception e) {
-						e.printStackTrace();
-						try {
-							Thread.sleep(20);
-						} catch (InterruptedException e2) {
-
-						}
-					}
-
-				}
-
-			}
-		});
-		thread2.setPriority(Thread.MIN_PRIORITY);
-		thread2.start();
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}
 
 	public Map getBotoesComThread() {
@@ -311,14 +328,14 @@ public class ControleJogo {
 	}
 
 	protected void centralizaBola() {
-		Point p = new Point((int) (bola.getCentro().x * mesaPanel.ZOOM)
+		Point p = new Point((int) (bola.getCentro().x * mesaPanel.zoom)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
-				.getCentro().y * mesaPanel.ZOOM)
+				.getCentro().y * mesaPanel.zoom)
 				- (scrollPane.getViewport().getHeight() / 2));
 		if (p.x < 0) {
 			p.x = 1;
 		}
-		double maxX = ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
+		double maxX = ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
 				.getViewport().getWidth());
 		if (p.x > maxX) {
 			p.x = Util.inte(maxX) - 1;
@@ -326,7 +343,7 @@ public class ControleJogo {
 		if (p.y < 0) {
 			p.y = 1;
 		}
-		double maxY = ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
+		double maxY = ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 				.getViewport().getHeight()));
 		if (p.y > maxY) {
 			p.y = Util.inte(maxY) - 1;
@@ -484,9 +501,9 @@ public class ControleJogo {
 		Point ori = new Point(
 				(int) (scrollPane.getViewport().getViewPosition().x),
 				(int) (scrollPane.getViewport().getViewPosition().y));
-		Point des = new Point((int) (b.getCentro().x * mesaPanel.ZOOM)
+		Point des = new Point((int) (b.getCentro().x * mesaPanel.zoom)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (b
-				.getCentro().y * mesaPanel.ZOOM)
+				.getCentro().y * mesaPanel.zoom)
 				- (scrollPane.getViewport().getHeight() / 2));
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
@@ -499,8 +516,8 @@ public class ControleJogo {
 			}
 
 		}
-		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
-				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
+		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 				.getViewport().getHeight()))))) {
 			newp = p;
 		}
@@ -511,17 +528,17 @@ public class ControleJogo {
 		Point ori = new Point(
 				(int) (scrollPane.getViewport().getViewPosition().x),
 				(int) (scrollPane.getViewport().getViewPosition().y));
-		Point des = new Point((int) (b.getCentro().x * mesaPanel.ZOOM)
+		Point des = new Point((int) (b.getCentro().x * mesaPanel.zoom)
 				- (scrollPane.getViewport().getWidth() / 2), (int) (b
-				.getCentro().y * mesaPanel.ZOOM)
+				.getCentro().y * mesaPanel.zoom)
 				- (scrollPane.getViewport().getHeight() / 2));
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
 			p = (Point) reta.get(reta.size() - 1);
 		}
-		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.ZOOM) - scrollPane
-				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.ZOOM) - (scrollPane
+		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 				.getViewport().getHeight()))))) {
 			newp = p;
 		}

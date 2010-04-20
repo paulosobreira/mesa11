@@ -9,8 +9,8 @@ public class MesaApplet extends JApplet {
 	@Override
 	public void init() {
 		super.init();
-		ControleJogo controleJogo = new ControleJogo();
-		controleJogo.test();
+//		ControleJogo controleJogo = new ControleJogo(null, null);
+//		controleJogo.test();
 	}
 
 }
