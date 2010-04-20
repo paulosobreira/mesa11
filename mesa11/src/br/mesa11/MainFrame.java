@@ -1,36 +1,39 @@
 package br.mesa11;
 
-import java.awt.BorderLayout;
-import java.awt.Point;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 
 import br.applet.Mesa11Applet;
-import br.hibernate.Botao;
 import br.hibernate.Usuario;
 import br.mesa11.conceito.ControleJogo;
-import br.mesa11.visao.MesaPanel;
+import br.recursos.Lang;
 
 public class MainFrame {
 
-	private static Point p = new Point(0, 0);
 	private JFrame frame;
 
 	public MainFrame(Mesa11Applet mesa11Applet, Usuario usuario) {
 		frame = new JFrame("mesa11");
+		gerarMenus();
+		ControleJogo controleJogo = new ControleJogo(frame);
+	}
+
+	private void gerarMenus() {
+		JMenuBar bar = new JMenuBar();
+		frame.setJMenuBar(bar);
+		JMenu menuJogo = new JMenu() {
+			public String getText() {
+				return Lang.msg("menuJogo");
+			}
+
+		};
+
+		bar.add(menuJogo);
 	}
 
 	public static void main(String[] args) {
-		ControleJogo controleJogo = new ControleJogo();
-		controleJogo.test();
+		MainFrame frame = new MainFrame(null, null);
 	}
 
 	public void setVisible(boolean b) {
