@@ -352,6 +352,10 @@ public class ControleJogo {
 	}
 
 	protected void centroCampo() {
+		System.out.println("scrollPane.getViewport().getWidth()"
+				+ scrollPane.getViewport().getWidth());
+		System.out.println("scrollPane.getViewport().getHeight()"
+				+ scrollPane.getViewport().getHeight());
 		Point p = new Point(
 				(int) (mesaPanel.getCentro().getLocation().x * mesaPanel.zoom)
 						- (scrollPane.getViewport().getWidth() / 2),
