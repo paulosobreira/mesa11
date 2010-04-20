@@ -252,6 +252,8 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaBotao(Botao botao, Graphics g) {
+		if (botao == null)
+			return;
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				zoom, zoom);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
