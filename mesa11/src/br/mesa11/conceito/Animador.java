@@ -15,14 +15,15 @@ import br.mesa11.visao.MesaPanel;
 public class Animador implements Runnable {
 
 	private Animacao animacao;
-	private JPanel panel;
+	private MesaPanel mesaPanel;
 	private boolean ativo;
 	private ControleJogo controleJogo;
 
-	public Animador(Animacao animacao, JPanel panel, ControleJogo controleJogo) {
+	public Animador(Animacao animacao, MesaPanel mesaPanel,
+			ControleJogo controleJogo) {
 		super();
 		this.animacao = animacao;
-		this.panel = panel;
+		this.mesaPanel = mesaPanel;
 		this.controleJogo = controleJogo;
 	}
 
@@ -52,6 +53,13 @@ public class Animador implements Runnable {
 
 				try {
 					if (botao instanceof Bola) {
+						if (controleJogo.getLateral() == null
+								&& !mesaPanel.getCampoBaixo().contains(
+										botao.getCentro())
+								&& !mesaPanel.getCampoCima().contains(
+										botao.getCentro())) {
+							controleJogo.setLateral(botao.getCentro());
+						}
 						if (i % 5 == 0) {
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
@@ -75,7 +83,8 @@ public class Animador implements Runnable {
 					threadRodando.interrupt();
 					System.out.println("Matou th" + animIn.getObjetoAnimacao());
 				}
-				Animador animador = new Animador(animIn, panel, controleJogo);
+				Animador animador = new Animador(animIn, mesaPanel,
+						controleJogo);
 				Thread thread = new Thread(animador);
 				controleJogo.getBotoesComThread().put(
 						animIn.getObjetoAnimacao(), thread);

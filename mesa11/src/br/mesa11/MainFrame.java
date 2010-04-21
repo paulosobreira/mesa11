@@ -96,6 +96,111 @@ public class MainFrame {
 			}
 		});
 		menuJogo.add(bolaCentro);
+		JMenuItem escCimaDir = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("escCimaDir");
+			}
+
+		};
+		escCimaDir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.escCimaDir();
+			}
+		});
+		menuJogo.add(escCimaDir);
+
+		JMenuItem escCimaEsc = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("escCimaEsc");
+			}
+
+		};
+		escCimaEsc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.escCimaEsc();
+			}
+		});
+		menuJogo.add(escCimaEsc);
+
+		JMenuItem escBaixoDir = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("escBaixoDir");
+			}
+
+		};
+		escBaixoDir.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.escBaixoDir();
+			}
+		});
+		menuJogo.add(escBaixoDir);
+
+		JMenuItem escBaixoEsc = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("escBaixoEsc");
+			}
+
+		};
+		escBaixoEsc.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.escBaixoEsc();
+			}
+		});
+		menuJogo.add(escBaixoEsc);
+
+		JMenuItem metaCima = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("metaCima");
+			}
+
+		};
+		metaCima.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.metaCima();
+			}
+		});
+		menuJogo.add(metaCima);
+
+		JMenuItem metaBaixo = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("metaBaixo");
+			}
+
+		};
+		metaBaixo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.metaBaixo();
+			}
+		});
+		menuJogo.add(metaBaixo);
+
+		JMenuItem lateral = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("lateral");
+			}
+
+		};
+		lateral.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				controleJogo.lateral();
+			}
+		});
+		menuJogo.add(lateral);
+
 	}
 
 	public static void main(String[] args) {

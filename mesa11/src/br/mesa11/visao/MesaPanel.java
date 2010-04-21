@@ -578,4 +578,17 @@ public class MesaPanel extends JPanel {
 				|| hasteTopoGolBaixo.intersects(r)
 				|| hasteTopoGolCima.intersects(r);
 	}
+
+	public Point golBaixo() {
+		Point p = new Point(Util.inte(getPenaltyBaixo().x), Util
+				.inte(getPequenaAreaBaixo().getLocation().y
+						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2)));
+		return p;
+	}
+
+	public Point golCima() {
+		Point p = new Point(Util.inte(getPenaltyCima().x), Util
+				.inte(getPequenaAreaCima().getLocation().y - 20));
+		return p;
+	}
 }
