@@ -76,6 +76,7 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public void setPosition(Point position) {
+		setCentroInicio(null);
 		this.position = position;
 	}
 
