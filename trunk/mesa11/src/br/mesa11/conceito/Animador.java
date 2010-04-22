@@ -29,7 +29,11 @@ public class Animador implements Runnable {
 
 	@Override
 	public void run() {
-		animar(animacao);
+		try {
+			animar(animacao);
+		} finally {
+			controleJogo.setAnimando(false);
+		}
 		if (animacao != null)
 			animacao.setValida(false);
 	}
@@ -60,7 +64,7 @@ public class Animador implements Runnable {
 										botao.getCentro())) {
 							controleJogo.setLateral(botao.getCentro());
 						}
-						if (i % 5 == 0) {
+						if (i % 2 == 0) {
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
 							Thread.sleep(7);
@@ -89,7 +93,7 @@ public class Animador implements Runnable {
 				controleJogo.getBotoesComThread().put(
 						animIn.getObjetoAnimacao(), thread);
 				thread.start();
-
+				controleJogo.setAnimando(true);
 			}
 		}
 		try {
