@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -44,6 +45,7 @@ public class ControleJogo {
 	private long lastScrool = System.currentTimeMillis();
 	private Point lateral;
 	private JFrame frame;
+	private boolean animando;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -185,7 +187,7 @@ public class ControleJogo {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				if (jogada.isEmpty())
+				if (jogada.isEmpty() || animando)
 					return;
 				Point p1 = (Point) jogada.get(0);
 				Point p2 = (Point) jogada.get(jogada.size() - 1);
@@ -223,8 +225,8 @@ public class ControleJogo {
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
 
-						Point destino = GeoUtil.calculaPonto(angulo, reta
-								.size() * 2, botao.getCentro());
+						Point destino = GeoUtil.calculaPonto(angulo, Util
+								.inte(reta.size() * 10), botao.getCentro());
 						botao.setDestino(destino);
 						animacao = new Animacao();
 						animacao.setObjetoAnimacao(botao);
@@ -247,6 +249,7 @@ public class ControleJogo {
 				Thread thread = new Thread(animador);
 				botoesComThread.put(animacao.getObjetoAnimacao(), thread);
 				thread.start();
+				animando = true;
 			}
 
 			@Override
@@ -273,6 +276,14 @@ public class ControleJogo {
 
 			}
 		});
+	}
+
+	public boolean isAnimando() {
+		return animando;
+	}
+
+	public void setAnimando(boolean animando) {
+		this.animando = animando;
 	}
 
 	public void test() {
@@ -574,9 +585,9 @@ public class ControleJogo {
 								botaoAnalisado.getCentro(), 90);
 						Point destino = null;
 						if ((botaoAnalisado instanceof Bola)) {
-							destino = GeoUtil.calculaPonto(angulo,
-									trajetoriaBotao.size() * 2, botaoAnalisado
-											.getCentro());
+							destino = GeoUtil.calculaPonto(angulo, Util
+									.inte(trajetoriaBotao.size() * .7),
+									botaoAnalisado.getCentro());
 						} else {
 							int div = 2;
 							if (botaoAnalisado instanceof Bola) {
@@ -596,17 +607,8 @@ public class ControleJogo {
 						animacao.setPontosAnimacao(botaoAnalisado
 								.getTrajetoria());
 						trajetoriaBotao.set(i, animacao);
-						if ((botaoAnalisado instanceof Bola)) {
-							while (i + 1 < (trajetoriaBotao.size() / 2)) {
-								trajetoriaBotao
-										.remove(trajetoriaBotao.size() - 1);
-							}
-						} else {
-							while (i + 1 < trajetoriaBotao.size()) {
-								trajetoriaBotao
-										.remove(trajetoriaBotao.size() - 1);
-							}
-
+						List novaTrajetoria = new ArrayList();
+						if (!(botaoAnalisado instanceof Bola)) {
 							int dest = 0;
 							if ((botao instanceof Bola)) {
 								angulo = GeoUtil.calculaAngulo(botaoAnalisado
@@ -621,11 +623,14 @@ public class ControleJogo {
 							destino = GeoUtil.calculaPonto(angulo, dest, botao
 									.getCentro());
 							botao.setDestino(destino);
-							List novaTrajetoria = GeoUtil.drawBresenhamLine(
-									point, destino);
-							trajetoriaBotao.addAll(novaTrajetoria);
-						}
+							novaTrajetoria = GeoUtil.drawBresenhamLine(point,
+									destino);
 
+						}
+						while (i + 1 < trajetoriaBotao.size()) {
+							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
+						}
+						trajetoriaBotao.addAll(novaTrajetoria);
 						propagaColisao(animacao, botao);
 
 						break;
@@ -652,7 +657,6 @@ public class ControleJogo {
 	}
 
 	private boolean defesaGoleiro(Rectangle r, Set bolaIngnora) {
-		// TODO Frango
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -662,7 +666,7 @@ public class ControleJogo {
 					return false;
 				}
 				if (goleiro.getRetangulo(1).intersects(r)) {
-					if (Math.random() > .2) {
+					if (Math.random() > .7) {
 						bolaIngnora.add(goleiro);
 						System.out.println("frango");
 						return false;
@@ -686,7 +690,7 @@ public class ControleJogo {
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			for (int i = 25; i > 0; i--) {
+			for (int i = 20; i > 0; i--) {
 				if (reta.size() > i) {
 					p = (Point) reta.get(i);
 					break;
