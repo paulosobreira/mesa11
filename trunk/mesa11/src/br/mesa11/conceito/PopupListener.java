@@ -1,19 +1,15 @@
-package br.nnpe;
+package br.mesa11.conceito;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPopupMenu;
 
-import br.mesa11.conceito.ControleJogo;
-
 public class PopupListener extends MouseAdapter {
-	private JPopupMenu popup;
-	private ControleJogo controleJogo;
+	JPopupMenu popup;
 
-	public PopupListener(JPopupMenu popupMenu, ControleJogo controleJogo) {
-		this.popup = popupMenu;
-		this.controleJogo = controleJogo;
+	public PopupListener(JPopupMenu popupMenu) {
+		popup = popupMenu;
 	}
 
 	public void mousePressed(MouseEvent e) {

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -21,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
 
@@ -29,8 +33,10 @@ import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
+import br.nnpe.PopupListener;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
+import br.recursos.Lang;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
@@ -46,10 +52,14 @@ public class ControleJogo {
 	private Point lateral;
 	private JFrame frame;
 	private boolean animando;
+	private Botao botaoSelecionado;
+	private Point pontoClicado;
+	private boolean carregaBotao;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
+		criarPopupMenu();
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -140,10 +150,6 @@ public class ControleJogo {
 				double newzoom = mesaPanel.zoom;
 				newzoom += e.getWheelRotation() / 100.0;
 
-				// System.out.println("scrollPane.getViewport().getWidth()"
-				// + scrollPane.getViewport().getWidth());
-				// System.out.println("mesaPanel.LARGURA_MESA * newzoom"
-				// + mesaPanel.LARGURA_MESA * newzoom);
 				if ((mesaPanel.LARGURA_MESA * newzoom) < scrollPane
 						.getViewport().getWidth()) {
 					mesaPanel.zoom -= e.getWheelRotation() / 100.0;
@@ -254,6 +260,26 @@ public class ControleJogo {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				pontoClicado = new Point(
+						(int) (e.getPoint().x / mesaPanel.zoom), (int) (e
+								.getPoint().y / mesaPanel.zoom));
+				System.out.println("pontoClicado" + pontoClicado);
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					Botao botao = (Botao) botoes.get(id);
+					if (botao instanceof Bola || botao instanceof Goleiro) {
+						continue;
+					}
+					List raioPonto = GeoUtil.drawBresenhamLine(pontoClicado,
+							botao.getCentro());
+					if (raioPonto.size() <= botao.getRaio()) {
+						botaoSelecionado = botao;
+						System.out.println("botaoSelecionado"
+								+ botaoSelecionado);
+						break;
+					}
+				}
 				jogada.clear();
 
 			}
@@ -860,4 +886,67 @@ public class ControleJogo {
 		this.lateral = lateral;
 	}
 
+	public void criarPopupMenu() {
+
+		JPopupMenu popup = new JPopupMenu();
+		JMenuItem moverBotao = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("moverBotao");
+			}
+		};
+		popup.add(moverBotao);
+		moverBotao.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				moverBotao();
+			}
+		});
+		JMenuItem soltarBotao = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("soltarBotao");
+			}
+		};
+		popup.add(soltarBotao);
+		soltarBotao.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				soltarBotao();
+			}
+		});
+
+		JMenuItem chutarGol = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("chutarGol");
+			}
+		};
+		popup.add(chutarGol);
+		chutarGol.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				chutarGol();
+			}
+		});
+		MouseListener popupListener = new PopupListener(popup, this);
+		mesaPanel.addMouseListener(popupListener);
+	}
+
+	protected void soltarBotao() {
+		if (botaoSelecionado != null && pontoClicado != null) {
+			botaoSelecionado.setCentro(pontoClicado);
+		}
+
+	}
+
+	protected void chutarGol() {
+		// TODO Auto-generated method stub
+
+	}
+
+	protected void moverBotao() {
+		carregaBotao = true;
+
+	}
 }
