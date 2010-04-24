@@ -33,6 +33,7 @@ import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
 import br.nnpe.PopupListener;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
@@ -178,7 +179,11 @@ public class ControleJogo {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				// TODO Auto-generated method stub
+				Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
+						(int) (e.getPoint().y / mesaPanel.zoom));
+				if (botaoSelecionado != null && carregaBotao) {
+					botaoSelecionado.setCentro(p);
+				}
 
 			}
 
@@ -615,15 +620,17 @@ public class ControleJogo {
 									.inte(trajetoriaBotao.size() * .7),
 									botaoAnalisado.getCentro());
 						} else {
-							int div = 2;
+							double per = 0.05;
 							if (botaoAnalisado instanceof Bola) {
-								div = 1;
+								Logger.logar("Botão Acerta Bola");
+								per = 0.3;
 							}
 							if ((botao instanceof Bola)) {
-								div = 100;
+								Logger.logar("Bola Acerta Botão");
+								per = 0.02;
 							}
-							destino = GeoUtil.calculaPonto(angulo,
-									trajetoriaBotao.size() / div,
+							destino = GeoUtil.calculaPonto(angulo, Util
+									.inte(trajetoriaBotao.size() * per),
 									botaoAnalisado.getCentro());
 						}
 
@@ -634,25 +641,28 @@ public class ControleJogo {
 								.getTrajetoria());
 						trajetoriaBotao.set(i, animacao);
 						List novaTrajetoria = new ArrayList();
-						if (!(botaoAnalisado instanceof Bola)) {
-							int dest = 0;
-							if ((botao instanceof Bola)) {
-								angulo = GeoUtil.calculaAngulo(botaoAnalisado
-										.getCentro(), point, 0);
-								dest = trajetoriaBotao.size();
-							} else {
-								angulo = GeoUtil.calculaAngulo(botaoAnalisado
-										.getCentro(), point, 90);
-								dest = trajetoriaBotao.size() / 3;
-							}
 
-							destino = GeoUtil.calculaPonto(angulo, dest, botao
-									.getCentro());
-							botao.setDestino(destino);
-							novaTrajetoria = GeoUtil.drawBresenhamLine(point,
-									destino);
-
+						int dest = 0;
+						if ((botao instanceof Bola)) {
+							angulo = GeoUtil.calculaAngulo(botaoAnalisado
+									.getCentro(), point, 0);
+							dest = trajetoriaBotao.size();
+						} else if ((botaoAnalisado instanceof Bola)) {
+							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
+									botao.getDestino(), 90);
+							dest = Util.inte(trajetoriaBotao.size() * .3);
+						} else {
+							angulo = GeoUtil.calculaAngulo(botaoAnalisado
+									.getCentro(), point, 90);
+							dest = Util.inte(trajetoriaBotao.size() * .1);
+							Logger.logar("Botão Com Botão");
 						}
+
+						destino = GeoUtil.calculaPonto(angulo, dest, botao
+								.getCentro());
+						botao.setDestino(destino);
+						novaTrajetoria = GeoUtil.drawBresenhamLine(point,
+								destino);
 						while (i + 1 < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
@@ -936,6 +946,7 @@ public class ControleJogo {
 	protected void soltarBotao() {
 		if (botaoSelecionado != null && pontoClicado != null) {
 			botaoSelecionado.setCentro(pontoClicado);
+			carregaBotao = false;
 		}
 
 	}
