@@ -64,15 +64,15 @@ public class Animador implements Runnable {
 										botao.getCentro())) {
 							controleJogo.setLateral(botao.getCentro());
 						}
-						if (i % 2 == 0) {
+						if (i % 3 == 0) {
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
-							Thread.sleep(7);
+							Thread.sleep(10);
 						}
 
 					} else {
 						if (i % 3 == 0) {
-							Thread.sleep(10);
+							Thread.sleep(15);
 						}
 					}
 				} catch (InterruptedException e) {

@@ -1,7 +1,6 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -56,6 +55,7 @@ public class ControleJogo {
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
 	private boolean carregaBotao;
+	private boolean chutaBola;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -235,6 +235,10 @@ public class ControleJogo {
 						}
 						double angulo = GeoUtil.calculaAngulo(p1, botao
 								.getCentro(), 90);
+						if (chutaBola) {
+							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
+									getBola().getCentro(), 90);
+						}
 
 						Point destino = GeoUtil.calculaPonto(angulo, Util
 								.inte(reta.size() * 10), botao.getCentro());
@@ -730,6 +734,8 @@ public class ControleJogo {
 				if (reta.size() > i) {
 					p = (Point) reta.get(i);
 					break;
+				}else{
+					p = (Point) reta.get(0);
 				}
 			}
 
@@ -926,17 +932,18 @@ public class ControleJogo {
 			}
 		});
 
-		JMenuItem chutarGol = new JMenuItem() {
+		JMenuItem chutarBola = new JMenuItem() {
 			public String getText() {
-				return Lang.msg("chutarGol");
+				return Lang.msg("chutarBola")
+						+ (chutaBola ? Lang.msg("sim") : Lang.msg("nao"));
 			}
 		};
-		popup.add(chutarGol);
-		chutarGol.addActionListener(new ActionListener() {
+		popup.add(chutarBola);
+		chutarBola.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				chutarGol();
+				chutarBola();
 			}
 		});
 		MouseListener popupListener = new PopupListener(popup, this);
@@ -951,8 +958,8 @@ public class ControleJogo {
 
 	}
 
-	protected void chutarGol() {
-		// TODO Auto-generated method stub
+	protected void chutarBola() {
+		chutaBola = !chutaBola;
 
 	}
 
