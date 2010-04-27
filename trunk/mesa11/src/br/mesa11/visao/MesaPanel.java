@@ -211,13 +211,13 @@ public class MesaPanel extends JPanel {
 					continue;
 				}
 				Botao botao = (Botao) botoes.get(id);
-				g.setColor(Color.RED);
-				if (botao.getDestino() != null) {
-					g.drawLine((int) (botao.getCentro().x * zoom), (int) (botao
-							.getCentro().y * zoom),
-							(int) (botao.getDestino().x * zoom), (int) (botao
-									.getDestino().y * zoom));
-				}
+//				g.setColor(Color.RED);
+//				if (botao.getDestino() != null) {
+//					g.drawLine((int) (botao.getCentro().x * zoom), (int) (botao
+//							.getCentro().y * zoom),
+//							(int) (botao.getDestino().x * zoom), (int) (botao
+//									.getDestino().y * zoom));
+//				}
 				if (botao instanceof Goleiro) {
 					Goleiro goleiro = (Goleiro) botao;
 					desenhaGoleiro(goleiro, g);
@@ -283,8 +283,8 @@ public class MesaPanel extends JPanel {
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		Ellipse2D externo = new Ellipse2D.Double(0, 0,
 				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-		Ellipse2D interno = new Ellipse2D.Double(((23 * zoom)), ((22) * zoom),
-				(85 * zoom), (85 * zoom));
+//		Ellipse2D interno = new Ellipse2D.Double(((23 * zoom)), ((22) * zoom),
+//				(85 * zoom), (85 * zoom));
 		graphics2d.setClip(externo);
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		// graphics2d.setComposite(AlphaComposite.getInstance(

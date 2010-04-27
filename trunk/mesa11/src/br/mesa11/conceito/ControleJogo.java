@@ -1,6 +1,7 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -12,20 +13,32 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.PropertyResourceBundle;
 import java.util.Set;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.WindowConstants;
+import javax.swing.border.TitledBorder;
 
 import br.hibernate.Bola;
 import br.hibernate.Botao;
@@ -56,10 +69,27 @@ public class ControleJogo {
 	private Point pontoClicado;
 	private boolean carregaBotao;
 	private boolean chutaBola;
+	private Hashtable times;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
+		final Properties properties = new Properties();
+
+		try {
+			times = new Hashtable();
+			properties.load(CarregadorRecursos
+					.recursoComoStream("times.properties"));
+
+			Enumeration propName = properties.propertyNames();
+			while (propName.hasMoreElements()) {
+				final String name = (String) propName.nextElement();
+				times.put(name, properties.getProperty(name));
+
+			}
+		} catch (IOException e) {
+			Logger.logarExept(e);
+		}
 		criarPopupMenu();
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
@@ -329,17 +359,70 @@ public class ControleJogo {
 	}
 
 	public void iniciaJogoLivre() {
+		GridLayout gridLayout = new GridLayout(2, 4);
+		gridLayout.setHgap(15);
+		gridLayout.setVgap(5);
+		JPanel escolhaTimesPanel = new JPanel(gridLayout);
+		JComboBox timesCima = new JComboBox();
+		JComboBox timesBaixo = new JComboBox();
+		JRadioButton bolaCima = new JRadioButton();
+		JRadioButton bolaBaixo = new JRadioButton();
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(bolaCima);
+		buttonGroup.add(bolaBaixo);
+		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			timesCima.addItem(times.get(key));
+			timesBaixo.addItem(times.get(key));
+		}
+		escolhaTimesPanel.setBorder(new TitledBorder("baterCentro"));
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("timeCima");
+			}
+		});
+		escolhaTimesPanel.add(timesCima);
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("bateCentroCima");
+			}
+		});
+		escolhaTimesPanel.add(bolaCima);
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("timeBaixo");
+			}
+		});
+		escolhaTimesPanel.add(timesBaixo);
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("bateCentroBaixo");
+			}
+		});
+		escolhaTimesPanel.add(bolaBaixo);
+		int val = JOptionPane.showConfirmDialog(frame, escolhaTimesPanel, Lang
+				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+		if (val != JOptionPane.YES_OPTION) {
+			return;
+		}
 		Long cima[] = new Long[10];
 		for (int i = 0; i < 10; i++) {
 			cima[i] = new Long(i + 1);
 		}
-		desenhaTimeCima("azul.png", cima);
+		posicionaTimeCima(obterKey((String) timesCima.getSelectedItem()), cima,
+				bolaCima.isSelected());
 
 		Long baixo[] = new Long[10];
 		for (int i = 0; i < 10; i++) {
 			baixo[i] = new Long(i + 11);
 		}
-		desenhaTimeBaixo("vermelho.png", baixo);
+		posicionaTimeBaixo(obterKey((String) timesBaixo.getSelectedItem()),
+				baixo, bolaBaixo.isSelected());
 
 		Goleiro goleiro1 = new Goleiro(100);
 		goleiro1.setCentro(mesaPanel.golCima());
@@ -362,7 +445,18 @@ public class ControleJogo {
 		bolaCentro();
 	}
 
-	private void desenhaTimeCima(String imagem, Long ids[]) {
+	private String obterKey(String value) {
+		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			String val = (String) times.get(key);
+			if (value.equals(val)) {
+				return key;
+			}
+		}
+		return null;
+	}
+
+	private void posicionaTimeCima(String imagem, Long ids[], boolean centro) {
 		int distHCima = (int) (mesaPanel.getCampoCima().getWidth() / 5);
 		int distVCima = (int) (mesaPanel.getCampoCima().getHeight() / 2);
 		int xpenal = mesaPanel.getPenaltyCima().x;
@@ -407,26 +501,41 @@ public class ControleJogo {
 		botao7.setImagem(imagem);
 		botoes.put(botao7.getId(), botao7);
 
-		Botao botao8 = new Botao(ids[7]);
-		botao8.setCentro(new Point(xpenal - (distHCima), Util
-				.inte(distVCima * 2)));
-		botao8.setImagem(imagem);
-		botoes.put(botao8.getId(), botao8);
-
 		Botao botao9 = new Botao(ids[8]);
 		botao9.setCentro(new Point(xpenal + (2 * distHCima), Util
 				.inte(distVCima * 2)));
 		botao9.setImagem(imagem);
 		botoes.put(botao9.getId(), botao9);
+		if (centro) {
+			Point c = mesaPanel.getCentro().getLocation();
+			Botao botao8 = new Botao(ids[7]);
+			botao8.setCentro(new Point(c.x
+					- Util.inte(botao8.getDiamentro() * 1.5), c.y));
+			botao8.setImagem(imagem);
+			botoes.put(botao8.getId(), botao8);
 
-		Botao botao10 = new Botao(ids[9]);
-		botao10.setCentro(new Point(xpenal + (distHCima), Util
-				.inte(distVCima * 2)));
-		botao10.setImagem(imagem);
-		botoes.put(botao10.getId(), botao10);
+			Botao botao10 = new Botao(ids[9]);
+			botao10.setCentro(new Point(c.x
+					+ Util.inte(botao8.getDiamentro() * 1.5), c.y));
+			botao10.setImagem(imagem);
+			botoes.put(botao10.getId(), botao10);
+		} else {
+			Botao botao8 = new Botao(ids[7]);
+			botao8.setCentro(new Point(xpenal - (distHCima), Util
+					.inte(distVCima * 2)));
+			botao8.setImagem(imagem);
+			botoes.put(botao8.getId(), botao8);
+
+			Botao botao10 = new Botao(ids[9]);
+			botao10.setCentro(new Point(xpenal + (distHCima), Util
+					.inte(distVCima * 2)));
+			botao10.setImagem(imagem);
+			botoes.put(botao10.getId(), botao10);
+
+		}
 	}
 
-	private void desenhaTimeBaixo(String imagem, Long ids[]) {
+	private void posicionaTimeBaixo(String imagem, Long ids[], boolean centro) {
 		int distHBaixo = (int) (mesaPanel.getCampoCima().getWidth() / 5);
 		int distVBaixo = (int) (mesaPanel.getCampoCima().getHeight() / 2);
 		int y = mesaPanel.golBaixo().y + 200;
@@ -472,23 +581,39 @@ public class ControleJogo {
 		botao7.setImagem(imagem);
 		botoes.put(botao7.getId(), botao7);
 
-		Botao botao8 = new Botao(ids[7]);
-		botao8.setCentro(new Point(xpenal - (distHBaixo), y
-				- Util.inte(distVBaixo * 2)));
-		botao8.setImagem(imagem);
-		botoes.put(botao8.getId(), botao8);
-
 		Botao botao9 = new Botao(ids[8]);
 		botao9.setCentro(new Point(xpenal + (2 * distHBaixo), y
 				- Util.inte(distVBaixo * 2)));
 		botao9.setImagem(imagem);
 		botoes.put(botao9.getId(), botao9);
 
-		Botao botao10 = new Botao(ids[9]);
-		botao10.setCentro(new Point(xpenal + (distHBaixo), y
-				- Util.inte(distVBaixo * 2)));
-		botao10.setImagem(imagem);
-		botoes.put(botao10.getId(), botao10);
+		if (centro) {
+			Point c = mesaPanel.getCentro().getLocation();
+			Botao botao8 = new Botao(ids[7]);
+			botao8.setCentro(new Point(c.x
+					- Util.inte(botao8.getDiamentro() * 1.5), c.y));
+			botao8.setImagem(imagem);
+			botoes.put(botao8.getId(), botao8);
+
+			Botao botao10 = new Botao(ids[9]);
+			botao10.setCentro(new Point(c.x
+					+ Util.inte(botao8.getDiamentro() * 1.5), c.y));
+			botao10.setImagem(imagem);
+			botoes.put(botao10.getId(), botao10);
+		} else {
+			Botao botao8 = new Botao(ids[7]);
+			botao8.setCentro(new Point(xpenal - (distHBaixo), y
+					- Util.inte(distVBaixo * 2)));
+			botao8.setImagem(imagem);
+			botoes.put(botao8.getId(), botao8);
+
+			Botao botao10 = new Botao(ids[9]);
+			botao10.setCentro(new Point(xpenal + (distHBaixo), y
+					- Util.inte(distVBaixo * 2)));
+			botao10.setImagem(imagem);
+			botoes.put(botao10.getId(), botao10);
+		}
+
 	}
 
 	public Map getBotoesComThread() {
@@ -612,10 +737,10 @@ public class ControleJogo {
 					if ((raioPonto.size() - (botao.getRaio())) == (botaoAnalisado
 							.getRaio())) {
 
-						if ((botao instanceof Bola) && Math.random() > .5) {
-							bolaIngnora.add(botaoAnalisado);
-							continue;
-						}
+						// if ((botao instanceof Bola) && Math.random() > .7) {
+						// bolaIngnora.add(botaoAnalisado);
+						// continue;
+						// }
 						double angulo = GeoUtil.calculaAngulo(point,
 								botaoAnalisado.getCentro(), 90);
 						Point destino = null;
@@ -647,9 +772,13 @@ public class ControleJogo {
 						List novaTrajetoria = new ArrayList();
 
 						int dest = 0;
+						/**
+						 * Rebatimento de bola em botão
+						 */
 						if ((botao instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
-									.getCentro(), point, 0);
+									.getCentro(), bola.getCentro(), 90);
+							bolaIngnora.add(botaoAnalisado);
 							dest = trajetoriaBotao.size();
 						} else if ((botaoAnalisado instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
@@ -734,7 +863,7 @@ public class ControleJogo {
 				if (reta.size() > i) {
 					p = (Point) reta.get(i);
 					break;
-				}else{
+				} else {
 					p = (Point) reta.get(0);
 				}
 			}
@@ -745,28 +874,6 @@ public class ControleJogo {
 				.getViewport().getHeight()))))) {
 			newp = p;
 		}
-	}
-
-	protected void centralizaBotao2(Botao b) {
-		System.out.println("centralizaBotao2");
-		Point ori = new Point(
-				(int) (scrollPane.getViewport().getViewPosition().x),
-				(int) (scrollPane.getViewport().getViewPosition().y));
-		Point des = new Point((int) (b.getCentro().x * mesaPanel.zoom)
-				- (scrollPane.getViewport().getWidth() / 2), (int) (b
-				.getCentro().y * mesaPanel.zoom)
-				- (scrollPane.getViewport().getHeight() / 2));
-		List reta = GeoUtil.drawBresenhamLine(ori, des);
-		Point p = des;
-		if (!reta.isEmpty()) {
-			p = (Point) reta.get(reta.size() - 1);
-		}
-		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
-				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
-				.getViewport().getHeight()))))) {
-			newp = p;
-		}
-
 	}
 
 	public Botao getBola() {
@@ -953,6 +1060,7 @@ public class ControleJogo {
 	protected void soltarBotao() {
 		if (botaoSelecionado != null && pontoClicado != null) {
 			botaoSelecionado.setCentro(pontoClicado);
+			botaoSelecionado.setCentroInicio(pontoClicado);
 			carregaBotao = false;
 		}
 
