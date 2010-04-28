@@ -3,12 +3,14 @@ package br.mesa11;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JApplet;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
-import br.applet.Mesa11Applet;
 import br.hibernate.Usuario;
 import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
@@ -17,26 +19,63 @@ public class MainFrame {
 
 	private JFrame frame;
 	private ControleJogo controleJogo;
+	private JApplet mesa11Applet;
 
-	public MainFrame(Mesa11Applet mesa11Applet, Usuario usuario) {
+	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
 		frame = new JFrame("mesa11");
+		if (mesa11Applet == null) {
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		} else {
+			frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		}
+
+		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
 		controleJogo = new ControleJogo(frame);
+		frame.setSize(1024, 740);
+		frame.setVisible(true);
+		controleJogo.centroCampo();
 	}
 
 	private void gerarMenus() {
 		JMenuBar bar = new JMenuBar();
 		frame.setJMenuBar(bar);
-		JMenu menuJogo = new JMenu() {
+		JMenu menuJogoLivre = new JMenu() {
 			public String getText() {
-				return Lang.msg("menuJogo");
+				return Lang.msg("menuJogoLivre");
 			}
 
 		};
 
-		bar.add(menuJogo);
+		bar.add(menuJogoLivre);
+		gerarMenusJogoLivre(menuJogoLivre);
+		JMenu info = new JMenu() {
+			public String getText() {
+				return Lang.msg("info");
+			}
 
-		gerarMenusJogoLivre(menuJogo);
+		};
+		bar.add(info);
+		gerarMenusSobre(info);
+	}
+
+	private void gerarMenusSobre(JMenu menu2) {
+		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
+			public String getText() {
+				return Lang.msg("sobreAutor");
+			}
+
+		};
+		sobre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String msg = Lang.msg("feitoPor")
+						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
+						+ "http://sowbreira.appspot.com \n" + "2008-2010";
+				JOptionPane.showMessageDialog(frame, msg, Lang
+						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		menu2.add(sobre);
 	}
 
 	private void gerarMenusJogoLivre(JMenu menuJogo) {
