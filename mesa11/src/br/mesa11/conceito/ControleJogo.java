@@ -24,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.PropertyResourceBundle;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
@@ -97,11 +96,6 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setSize(1024, 740);
-		frame.setVisible(true);
-		frame.requestFocus();
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		centroCampo();
 		Thread atualizadorTela = new Thread(new Runnable() {
 
 			@Override
@@ -256,9 +250,9 @@ public class ControleJogo {
 					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
 							.getCentro());
 					if (raioPonto.size() <= botao.getRaio()) {
-						// if (botao instanceof Bola) {
-						// return;
-						// }
+						if (botao instanceof Bola) {
+							return;
+						}
 						setLateral(null);
 						if (botao instanceof Goleiro) {
 							return;
@@ -652,7 +646,7 @@ public class ControleJogo {
 		newp = p;
 	}
 
-	protected void centroCampo() {
+	public void centroCampo() {
 
 		Point p = new Point(
 				(int) (mesaPanel.getCentro().getLocation().x * mesaPanel.zoom)
@@ -737,10 +731,10 @@ public class ControleJogo {
 					if ((raioPonto.size() - (botao.getRaio())) == (botaoAnalisado
 							.getRaio())) {
 
-						// if ((botao instanceof Bola) && Math.random() > .7) {
-						// bolaIngnora.add(botaoAnalisado);
-						// continue;
-						// }
+						if ((botao instanceof Bola) && Math.random() > .8) {
+							bolaIngnora.add(botaoAnalisado);
+							continue;
+						}
 						double angulo = GeoUtil.calculaAngulo(point,
 								botaoAnalisado.getCentro(), 90);
 						Point destino = null;
@@ -1041,8 +1035,8 @@ public class ControleJogo {
 
 		JMenuItem chutarBola = new JMenuItem() {
 			public String getText() {
-				return Lang.msg("chutarBola")
-						+ (chutaBola ? Lang.msg("sim") : Lang.msg("nao"));
+				return Lang.msg("chutarBola", new String[] { (chutaBola ? Lang
+						.msg("sim") : Lang.msg("nao")) });
 			}
 		};
 		popup.add(chutarBola);

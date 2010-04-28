@@ -232,15 +232,15 @@ public class MesaPanel extends JPanel {
 			}
 			desenhaBotao((Botao) botoes.get(new Long(0)), g);
 		}
-		if (jogada != null) {
-			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
-				Point point = (Point) iterator.next();
-				g.setClip(null);
-				g
-						.drawOval((int) (point.x * zoom),
-								(int) (point.y * zoom), 1, 1);
-			}
-		}
+//		if (jogada != null) {
+//			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
+//				Point point = (Point) iterator.next();
+//				g.setClip(null);
+//				g
+//						.drawOval((int) (point.x * zoom),
+//								(int) (point.y * zoom), 1, 1);
+//			}
+//		}
 
 	}
 
