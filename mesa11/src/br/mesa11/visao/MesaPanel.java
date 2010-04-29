@@ -323,7 +323,7 @@ public class MesaPanel extends JPanel {
 		g.setColor(Color.LIGHT_GRAY);
 		zoomedMesa = new Rectangle2D.Double(0, 0, ((LARGURA_MESA) * zoom),
 				((ALTURA_MESA) * zoom));
-		g.draw(zoomedMesa);
+		g.fill(zoomedMesa);
 		/**
 		 * Campo
 		 */
@@ -332,7 +332,7 @@ public class MesaPanel extends JPanel {
 				(BORDA_CAMPO * zoom),
 				((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO) * zoom));
-		g.draw(zoomedBorda);
+		g.fill(zoomedBorda);
 
 		g.setColor(Color.green);
 		zoomedGrama = new Rectangle2D.Double(((BORDA_CAMPO + LINHA) * zoom),
@@ -340,20 +340,20 @@ public class MesaPanel extends JPanel {
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom));
 
-		g.draw(zoomedGrama);
+		g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
-		for (int i = 0; i < FAIXAS; i++) {
-			if (i % 2 == 0) {
-				g.setColor(green2);
-				g.fillRect((int) ((BORDA_CAMPO + LINHA) * zoom),
-						(int) ((alturaBordaAtual) * zoom), (int) ((LARGURA_MESA
-								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
-						(int) ((ALTURA_FAIXA) * zoom));
-				// alturaBordaAtual += (ALTURA_FAIXA - LINHA);
-				// continue;
-			}
-			alturaBordaAtual += (ALTURA_FAIXA);
-		}
+		// for (int i = 0; i < FAIXAS; i++) {
+		// if (i % 2 == 0) {
+		// g.setColor(green2);
+		// g.fillRect((int) ((BORDA_CAMPO + LINHA) * zoom),
+		// (int) ((alturaBordaAtual) * zoom), (int) ((LARGURA_MESA
+		// - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
+		// (int) ((ALTURA_FAIXA) * zoom));
+		// // alturaBordaAtual += (ALTURA_FAIXA - LINHA);
+		// // continue;
+		// }
+		// alturaBordaAtual += (ALTURA_FAIXA);
+		// }
 		/**
 		 * Meia lua de cima
 		 */
@@ -362,12 +362,12 @@ public class MesaPanel extends JPanel {
 		y = BORDA_CAMPO;
 		zoomedMeiaLuaCimaBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.draw(zoomedMeiaLuaCimaBorda);
+		g.fill(zoomedMeiaLuaCimaBorda);
 		g.setColor(Color.green);
 		zoomedMeiaLuaCimaGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.draw(zoomedMeiaLuaCimaGrama);
+		g.fill(zoomedMeiaLuaCimaGrama);
 		/**
 		 * Meia lua de Baixo
 		 */
@@ -376,12 +376,12 @@ public class MesaPanel extends JPanel {
 		y = ALTURA_MESA - BORDA_CAMPO - RAIO_CENTRO;
 		zoomedMeiaLuaBaixoBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.draw(zoomedMeiaLuaBaixoBorda);
+		g.fill(zoomedMeiaLuaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedMeiaLuaBaixoGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.draw(zoomedMeiaLuaBaixoGrama);
+		g.fill(zoomedMeiaLuaBaixoGrama);
 		/**
 		 * GdeArae Cima
 		 */
@@ -390,7 +390,7 @@ public class MesaPanel extends JPanel {
 				(ALTURA_GDE_AREA * zoom), (BORDA_CAMPO * zoom),
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
 
-		g.draw(zoomedGdeAreaCimaBorda);
+		g.fill(zoomedGdeAreaCimaBorda);
 		g.setColor(Color.green);
 		zoomedGdeAreaCimaGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom),
@@ -398,7 +398,7 @@ public class MesaPanel extends JPanel {
 				((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
 
-		g.draw(zoomedGdeAreaCimaGrama);
+		g.fill(zoomedGdeAreaCimaGrama);
 		/**
 		 * GdeArae Baixo
 		 */
@@ -408,14 +408,14 @@ public class MesaPanel extends JPanel {
 				((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) * zoom),
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
 
-		g.draw(zoomedGdeAreaBaixoBorda);
+		g.fill(zoomedGdeAreaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedGdeAreaBaixoGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom), ((ALTURA_MESA - BORDA_CAMPO
 						- ALTURA_GDE_AREA + LINHA) * zoom),
 				((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
-		g.draw(zoomedGdeAreaBaixoGrama);
+		g.fill(zoomedGdeAreaBaixoGrama);
 		/**
 		 * PQArae Cima
 		 */
@@ -425,13 +425,13 @@ public class MesaPanel extends JPanel {
 		zoomedpqAreaCimaBorda = new Rectangle2D.Double((x * zoom),
 				(BORDA_CAMPO * zoom), ((LARGURA_PQ_AREA) * zoom),
 				((ALTURA_PQ_AREA) * zoom));
-		g.draw(zoomedpqAreaCimaBorda);
+		g.fill(zoomedpqAreaCimaBorda);
 		g.setColor(Color.green);
 		zoomedpqAreaCimaGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
 				((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
-		g.draw(zoomedpqAreaCimaGrama);
+		g.fill(zoomedpqAreaCimaGrama);
 		/**
 		 * PQArae Baixo
 		 */
@@ -440,12 +440,12 @@ public class MesaPanel extends JPanel {
 		y = (ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA);
 		zoomedpqAreaBaixoBorda = new Rectangle2D.Double((x * zoom), (y * zoom),
 				((LARGURA_PQ_AREA) * zoom), ((ALTURA_PQ_AREA) * zoom));
-		g.draw(zoomedpqAreaBaixoBorda);
+		g.fill(zoomedpqAreaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedpqAreaBaixoGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
-		g.draw(zoomedpqAreaBaixoGrama);
+		g.fill(zoomedpqAreaBaixoGrama);
 		/**
 		 * Circulo Centro
 		 */
@@ -454,12 +454,12 @@ public class MesaPanel extends JPanel {
 		y = calculaYcentro();
 		zoomedcentroBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.draw(zoomedcentroBorda);
+		g.fill(zoomedcentroBorda);
 		g.setColor(Color.green);
 		zoomedcentroGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.draw(zoomedcentroGrama);
+		g.fill(zoomedcentroGrama);
 		/**
 		 * meio de campo
 		 */
@@ -467,7 +467,7 @@ public class MesaPanel extends JPanel {
 		zoomedMeioCampoBorda = new Rectangle2D.Double(((BORDA_CAMPO) * zoom),
 				((ALTURA_MESA / 2) * zoom),
 				((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom), (LINHA * zoom));
-		g.draw(zoomedMeioCampoBorda);
+		g.fill(zoomedMeioCampoBorda);
 
 		/**
 		 * Penalti cima
@@ -476,7 +476,7 @@ public class MesaPanel extends JPanel {
 		zoomedPenaltiCima = new Rectangle2D.Double(((LARGURA_MESA / 2) * zoom),
 				((BORDA_CAMPO + PENALTI) * zoom), (DOBRO_LINHA * zoom),
 				(int) (DOBRO_LINHA * zoom));
-		g.draw(zoomedPenaltiCima);
+		g.fill(zoomedPenaltiCima);
 		/**
 		 * Penalti Baixo
 		 */
@@ -485,7 +485,7 @@ public class MesaPanel extends JPanel {
 				((LARGURA_MESA / 2) * zoom),
 				((ALTURA_MESA - BORDA_CAMPO - PENALTI) * zoom),
 				(DOBRO_LINHA * zoom), (DOBRO_LINHA * zoom));
-		g.draw(zoomedPenaltiBaixo);
+		g.fill(zoomedPenaltiBaixo);
 		/**
 		 * Centro
 		 */
@@ -493,7 +493,7 @@ public class MesaPanel extends JPanel {
 		zoomedCentro = new Rectangle2D.Double(((LARGURA_MESA / 2) * zoom),
 				(((ALTURA_MESA - LINHA) / 2) * zoom), (DOBRO_LINHA * zoom),
 				(DOBRO_LINHA * zoom));
-		g.draw(zoomedCentro);
+		g.fill(zoomedCentro);
 	}
 
 	private void desengaGol(Graphics2D g) {
