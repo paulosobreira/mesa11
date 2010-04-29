@@ -43,6 +43,7 @@ public class MesaPanel extends JPanel {
 	public static final int RAIO_CENTRO = 1000;
 	public static final int PENALTI = 586;
 	public static final int FAIXAS = 14;
+
 	public static final int ALTURA_FAIXA = (ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA)
 			/ FAIXAS;
 
@@ -89,46 +90,8 @@ public class MesaPanel extends JPanel {
 	private Double zoomedPenaltiCima;
 	private Double zoomedPenaltiBaixo;
 	private Double zoomedCentro;
-
-	public Rectangle getHasteTopoGolCima() {
-		return hasteTopoGolCima;
-	}
-
-	public Rectangle getCampoCima() {
-		return campoCima;
-	}
-
-	public Rectangle getCampoBaixo() {
-		return campoBaixo;
-	}
-
-	public Rectangle getGrandeAreaCima() {
-		return grandeAreaCima;
-	}
-
-	public Rectangle getGrandeAreaBaixo() {
-		return grandeAreaBaixo;
-	}
-
-	public Rectangle getPequenaAreaCima() {
-		return pequenaAreaCima;
-	}
-
-	public Rectangle getPequenaAreaBaixo() {
-		return pequenaAreaBaixo;
-	}
-
-	public Rectangle getCentro() {
-		return centro;
-	}
-
-	public Rectangle getPenaltyCima() {
-		return penaltyCima;
-	}
-
-	public Rectangle getPenaltyBaixo() {
-		return penaltyBaixo;
-	}
+	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS / 2];
+	private Shape limitesViewPort;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
@@ -222,6 +185,11 @@ public class MesaPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		limitesViewPort = controleJogo.limitesViewPort();
+		if (limitesViewPort == null) {
+			limitesViewPort = new Rectangle2D.Double(0, 0,
+					((LARGURA_MESA) * zoom), ((ALTURA_MESA) * zoom));
+		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		desenhaCampo(g2d);
@@ -271,9 +239,8 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
-		if (!controleJogo.limitesViewPort().contains(
-				new Point(Util.inte(goleiro.getCentro().x * zoom), Util
-						.inte(goleiro.getCentro().y * zoom)))) {
+		if (!limitesViewPort.contains(new Point(Util.inte(goleiro.getCentro().x
+				* zoom), Util.inte(goleiro.getCentro().y * zoom)))) {
 			return;
 		}
 		Graphics2D g2d = (Graphics2D) g;
@@ -288,8 +255,8 @@ public class MesaPanel extends JPanel {
 			return;
 		int botx = (int) (botao.getPosition().x * zoom);
 		int boty = (int) (botao.getPosition().y * zoom);
-		if (!controleJogo.limitesViewPort().contains(
-				new Point(botx + botao.getRaio(), boty + botao.getRaio()))) {
+		if (!limitesViewPort.contains(new Point(botx + botao.getRaio(), boty
+				+ botao.getRaio()))) {
 			return;
 		}
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
@@ -342,18 +309,22 @@ public class MesaPanel extends JPanel {
 
 		g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
-		// for (int i = 0; i < FAIXAS; i++) {
-		// if (i % 2 == 0) {
-		// g.setColor(green2);
-		// g.fillRect((int) ((BORDA_CAMPO + LINHA) * zoom),
-		// (int) ((alturaBordaAtual) * zoom), (int) ((LARGURA_MESA
-		// - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
-		// (int) ((ALTURA_FAIXA) * zoom));
-		// // alturaBordaAtual += (ALTURA_FAIXA - LINHA);
-		// // continue;
-		// }
-		// alturaBordaAtual += (ALTURA_FAIXA);
-		// }
+		int contFaixas = 0;
+		for (int i = 0; i < FAIXAS; i++) {
+			if (i % 2 == 0) {
+				g.setColor(green2);
+				zoomedFaixasGrama[contFaixas] = new Rectangle2D.Double(
+						((BORDA_CAMPO + LINHA) * zoom),
+						((alturaBordaAtual) * zoom), ((LARGURA_MESA
+								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
+						((ALTURA_FAIXA) * zoom));
+				g.fill(zoomedFaixasGrama[contFaixas]);
+				contFaixas++;
+				alturaBordaAtual += (ALTURA_FAIXA - LINHA);
+				continue;
+			}
+			alturaBordaAtual += (ALTURA_FAIXA);
+		}
 		/**
 		 * Meia lua de cima
 		 */
@@ -635,5 +606,54 @@ public class MesaPanel extends JPanel {
 		Point p = new Point(Util.inte(getPenaltyCima().x), Util
 				.inte(getPequenaAreaCima().getLocation().y - 20));
 		return p;
+	}
+
+	public Rectangle getHasteTopoGolCima() {
+		return hasteTopoGolCima;
+	}
+
+	public Rectangle getCampoCima() {
+		return campoCima;
+	}
+
+	public Rectangle getCampoBaixo() {
+		return campoBaixo;
+	}
+
+	public Rectangle getGrandeAreaCima() {
+		return grandeAreaCima;
+	}
+
+	public Rectangle getGrandeAreaBaixo() {
+		return grandeAreaBaixo;
+	}
+
+	public Rectangle getPequenaAreaCima() {
+		return pequenaAreaCima;
+	}
+
+	public Rectangle getPequenaAreaBaixo() {
+		return pequenaAreaBaixo;
+	}
+
+	public Rectangle getCentro() {
+		return centro;
+	}
+
+	public Rectangle getPenaltyCima() {
+		return penaltyCima;
+	}
+
+	public Rectangle getPenaltyBaixo() {
+		return penaltyBaixo;
+	}
+
+	public static void main(String[] args) {
+		for (int i = 0; i < FAIXAS; i++) {
+			if (i % 2 == 0) {
+				System.out.println(i);
+			}
+		}
+
 	}
 }
