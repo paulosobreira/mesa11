@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -53,7 +54,6 @@ import br.recursos.Lang;
 public class ControleJogo {
 	private Map botoes = new HashMap();
 	private Map botoesComThread = new HashMap();
-	private Animacao animacao;
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
@@ -102,13 +102,17 @@ public class ControleJogo {
 			public void run() {
 				while (true) {
 					try {
-						Thread.sleep(20);
+						if (animando)
+							Thread.sleep(20);
+						else
+							Thread.sleep(100);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					try {
 						if (oldp != newp) {
 							scrollPane.getViewport().setViewPosition(newp);
+							Thread.sleep(10);
 							oldp = newp;
 						}
 						mesaPanel.repaint();
@@ -218,123 +222,15 @@ public class ControleJogo {
 			}
 
 		});
-		mesaPanel.addMouseListener(new MouseListener() {
+		mesaPanel.addMouseListener(new MesaMouseListener(this));
+	}
 
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				if (jogada.isEmpty() || animando)
-					return;
-				Point p1 = (Point) jogada.get(0);
-				Point p2 = (Point) jogada.get(jogada.size() - 1);
-				List reta = GeoUtil.drawBresenhamLine(p1, p2);
-				jogada.clear();
-				jogada.addAll(reta);
-				for (Iterator iterator = botoes.keySet().iterator(); iterator
-						.hasNext();) {
-					Long id = (Long) iterator.next();
-					Botao botao = (Botao) botoes.get(id);
-					if (botao instanceof Goleiro) {
-						Goleiro goleiro = (Goleiro) botao;
-						if (goleiro.getRetangulo(1).contains(p1)) {
-							List retaGoleiro = GeoUtil.drawBresenhamLine(
-									goleiro.getCentro(), p1);
-							if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
-								goleiro.setRotacao(GeoUtil.calculaAngulo(
-										goleiro.getCentro(), p2, 0));
-							} else {
-								goleiro.setCentro(p2);
-							}
-							return;
-						}
-					}
-					List raioPonto = GeoUtil.drawBresenhamLine(p1, botao
-							.getCentro());
-					if (raioPonto.size() <= botao.getRaio()) {
-						if (botao instanceof Bola) {
-							return;
-						}
-						setLateral(null);
-						if (botao instanceof Goleiro) {
-							return;
-						}
-						double angulo = GeoUtil.calculaAngulo(p1, botao
-								.getCentro(), 90);
-						if (chutaBola) {
-							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
-									getBola().getCentro(), 90);
-						}
+	public boolean isChutaBola() {
+		return chutaBola;
+	}
 
-						Point destino = GeoUtil.calculaPonto(angulo, Util
-								.inte(reta.size() * 10), botao.getCentro());
-						botao.setDestino(destino);
-						animacao = new Animacao();
-						animacao.setObjetoAnimacao(botao);
-						animacao.setPontosAnimacao(botao.getTrajetoria());
-						propagaColisao(animacao, botao);
-						break;
-					}
-
-				}
-				for (Iterator iterator = botoes.keySet().iterator(); iterator
-						.hasNext();) {
-					Long id = (Long) iterator.next();
-					Botao botao = (Botao) botoes.get(id);
-					if (botao.getCentroInicio() != null)
-						botao.setCentro(botao.getCentroInicio());
-				}
-				botoesComThread.clear();
-				Animador animador = new Animador(animacao, mesaPanel,
-						ControleJogo.this);
-				Thread thread = new Thread(animador);
-				botoesComThread.put(animacao.getObjetoAnimacao(), thread);
-				thread.start();
-				animando = true;
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				pontoClicado = new Point(
-						(int) (e.getPoint().x / mesaPanel.zoom), (int) (e
-								.getPoint().y / mesaPanel.zoom));
-				System.out.println("pontoClicado" + pontoClicado);
-				for (Iterator iterator = botoes.keySet().iterator(); iterator
-						.hasNext();) {
-					Long id = (Long) iterator.next();
-					Botao botao = (Botao) botoes.get(id);
-					if (botao instanceof Bola || botao instanceof Goleiro) {
-						continue;
-					}
-					List raioPonto = GeoUtil.drawBresenhamLine(pontoClicado,
-							botao.getCentro());
-					if (raioPonto.size() <= botao.getRaio()) {
-						botaoSelecionado = botao;
-						System.out.println("botaoSelecionado"
-								+ botaoSelecionado);
-						break;
-					}
-				}
-				jogada.clear();
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-		});
+	public void setChutaBola(boolean chutaBola) {
+		this.chutaBola = chutaBola;
 	}
 
 	public boolean isAnimando() {
@@ -644,6 +540,16 @@ public class ControleJogo {
 			p.y = Util.inte(maxY) - 1;
 		}
 		newp = p;
+	}
+
+	public Shape limitesViewPort() {
+		if (oldp == null) {
+			return null;
+		}
+		Rectangle rectangle = scrollPane.getViewport().getBounds();
+		rectangle.x = oldp.x;
+		rectangle.y = oldp.y;
+		return rectangle;
 	}
 
 	public void centroCampo() {
@@ -1067,6 +973,27 @@ public class ControleJogo {
 
 	protected void moverBotao() {
 		carregaBotao = true;
+	}
+
+	public MesaPanel getMesaPanel() {
+		return mesaPanel;
 
 	}
+
+	public Point getPontoClicado() {
+		return pontoClicado;
+	}
+
+	public void setPontoClicado(Point pontoClicado) {
+		this.pontoClicado = pontoClicado;
+	}
+
+	public Botao getBotaoSelecionado() {
+		return botaoSelecionado;
+	}
+
+	public void setBotaoSelecionado(Botao botaoSelecionado) {
+		this.botaoSelecionado = botaoSelecionado;
+	}
+
 }

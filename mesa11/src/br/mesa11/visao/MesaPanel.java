@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -196,6 +197,7 @@ public class MesaPanel extends JPanel {
 				RenderingHints.VALUE_DITHER_ENABLE);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
 	}
 
 	@Override
@@ -211,13 +213,13 @@ public class MesaPanel extends JPanel {
 					continue;
 				}
 				Botao botao = (Botao) botoes.get(id);
-//				g.setColor(Color.RED);
-//				if (botao.getDestino() != null) {
-//					g.drawLine((int) (botao.getCentro().x * zoom), (int) (botao
-//							.getCentro().y * zoom),
-//							(int) (botao.getDestino().x * zoom), (int) (botao
-//									.getDestino().y * zoom));
-//				}
+				// g.setColor(Color.RED);
+				// if (botao.getDestino() != null) {
+				// g.drawLine((int) (botao.getCentro().x * zoom), (int) (botao
+				// .getCentro().y * zoom),
+				// (int) (botao.getDestino().x * zoom), (int) (botao
+				// .getDestino().y * zoom));
+				// }
 				if (botao instanceof Goleiro) {
 					Goleiro goleiro = (Goleiro) botao;
 					desenhaGoleiro(goleiro, g);
@@ -232,28 +234,42 @@ public class MesaPanel extends JPanel {
 			}
 			desenhaBotao((Botao) botoes.get(new Long(0)), g);
 		}
-//		if (jogada != null) {
-//			for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
-//				Point point = (Point) iterator.next();
-//				g.setClip(null);
-//				g
-//						.drawOval((int) (point.x * zoom),
-//								(int) (point.y * zoom), 1, 1);
-//			}
-//		}
-
+		// if (jogada != null) {
+		// for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
+		// Point point = (Point) iterator.next();
+		// g.setClip(null);
+		// g
+		// .drawOval((int) (point.x * zoom),
+		// (int) (point.y * zoom), 1, 1);
+		// }
+		// }
+		// Graphics2D g2d = (Graphics2D) g;
+		// if (controleJogo.limitesViewPort() != null)
+		// g2d.draw(controleJogo.limitesViewPort());
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
+		if (!controleJogo.limitesViewPort().contains(
+				new Point(Util.inte(goleiro.getCentro().x * zoom), Util
+						.inte(goleiro.getCentro().y * zoom)))) {
+			return;
+		}
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.BLACK);
-		g2d.fill(goleiro.getRetangulo(zoom));
+		Shape goleroShape = goleiro.getRetangulo(zoom);
+		g2d.fill(goleroShape);
 
 	}
 
 	private void desenhaBotao(Botao botao, Graphics g) {
 		if (botao == null)
 			return;
+		int botx = (int) (botao.getPosition().x * zoom);
+		int boty = (int) (botao.getPosition().y * zoom);
+		if (!controleJogo.limitesViewPort().contains(
+				new Point(botx + botao.getRaio(), boty + botao.getRaio()))) {
+			return;
+		}
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				zoom, zoom);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
@@ -267,15 +283,6 @@ public class MesaPanel extends JPanel {
 				BufferedImage.TYPE_INT_ARGB);
 
 		affineTransformOp.filter(botaoImg, zoomBuffer);
-
-		// Ellipse2D externo = new Ellipse2D.Float(
-		// (int) (botao.getPosition().x * ZOOM), (int) (botao
-		// .getPosition().y * ZOOM),
-		// (int) (botao.getDiamentro() * ZOOM), (int) (botao
-		// .getDiamentro() * ZOOM));
-
-		// g.setClip(externo);
-
 		BufferedImage newBuffer = new BufferedImage(
 				(int) (botaoImg.getWidth() * zoom),
 				(int) (botaoImg.getHeight() * zoom),
@@ -283,15 +290,9 @@ public class MesaPanel extends JPanel {
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		Ellipse2D externo = new Ellipse2D.Double(0, 0,
 				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-//		Ellipse2D interno = new Ellipse2D.Double(((23 * zoom)), ((22) * zoom),
-//				(85 * zoom), (85 * zoom));
 		graphics2d.setClip(externo);
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
-		// graphics2d.setComposite(AlphaComposite.getInstance(
-		// AlphaComposite.CLEAR, 0.5f));
-		// graphics2d.fill(interno);
-		g.drawImage(newBuffer, (int) (botao.getPosition().x * zoom),
-				(int) (botao.getPosition().y * zoom), null);
+		g.drawImage(newBuffer, botx, boty, null);
 	}
 
 	private void desenhaCampo(Graphics g) {
