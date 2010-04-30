@@ -10,12 +10,10 @@ import br.mesa11.visao.MesaPanel;
 public class MesaMouseMotionListener implements MouseMotionListener {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
-	private List jogada;
 
 	public MesaMouseMotionListener(ControleJogo controleJogo) {
 		this.controleJogo = controleJogo;
 		this.mesaPanel = controleJogo.getMesaPanel();
-		this.jogada = controleJogo.getJogada();
 	}
 
 	@Override
@@ -26,13 +24,15 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 				&& controleJogo.isCarregaBotao()) {
 			controleJogo.getBotaoSelecionado().setCentro(p);
 		}
+		controleJogo.setPontoPasando(p);
 
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		jogada.add(new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
-				.getPoint().y / mesaPanel.zoom)));
+		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
+				.getPoint().y / mesaPanel.zoom));
+		controleJogo.setPontoPasando(p);
 	}
 
 }

@@ -9,11 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -37,7 +35,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import br.hibernate.Bola;
@@ -57,18 +54,20 @@ public class ControleJogo {
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
-	private Point oldp;
-	private Point newp;
-	private List jogada = new LinkedList();
+	private Point velhoPontoTela;
+	private Point novoPontoTela;
 	private long lastScrool = System.currentTimeMillis();
+	private long delayAtualiacao;
 	private Point lateral;
 	private JFrame frame;
 	private boolean animando;
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
+	private Point pontoPasando;
 	private boolean carregaBotao;
 	private boolean chutaBola;
 	private Hashtable times;
+	private boolean telaAtualizando = true;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -96,39 +95,51 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		Thread atualizadorTela = new Thread(new Runnable() {
+		frame.addWindowListener(new WindowListener() {
 
 			@Override
-			public void run() {
-				while (true) {
-					try {
-						if (animando)
-							Thread.sleep(20);
-						else
-							Thread.sleep(60);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					try {
-						if (oldp != newp) {
-							scrollPane.getViewport().setViewPosition(newp);
-							Thread.sleep(10);
-							oldp = newp;
-						}
-						mesaPanel.repaint();
-					} catch (Exception e) {
-						e.printStackTrace();
-						try {
-							Thread.sleep(20);
-						} catch (InterruptedException e2) {
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
 
-						}
-					}
+			}
 
-				}
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				setTelaAtualizando(false);
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
 
 			}
 		});
+		Thread atualizadorTela = new Thread(new AtualizadorVisual(this));
 		atualizadorTela.setPriority(Thread.MIN_PRIORITY);
 		atualizadorTela.start();
 
@@ -162,7 +173,7 @@ public class ControleJogo {
 								.getViewport().getHeight()))) {
 					return;
 				}
-				newp = p;
+				novoPontoTela = p;
 				super.keyPressed(e);
 			}
 
@@ -282,14 +293,6 @@ public class ControleJogo {
 		return null;
 	}
 
-	public Map getBotoesComThread() {
-		return botoesComThread;
-	}
-
-	public void setBotoesComThread(Map botoesComThread) {
-		this.botoesComThread = botoesComThread;
-	}
-
 	protected void centralizaBola() {
 		if (bola == null) {
 			centroCampo();
@@ -315,16 +318,16 @@ public class ControleJogo {
 		if (p.y > maxY) {
 			p.y = Util.inte(maxY) - 1;
 		}
-		newp = p;
+		novoPontoTela = p;
 	}
 
 	public Shape limitesViewPort() {
-		if (oldp == null) {
+		if (velhoPontoTela == null) {
 			return null;
 		}
 		Rectangle rectangle = scrollPane.getViewport().getBounds();
-		rectangle.x = oldp.x;
-		rectangle.y = oldp.y;
+		rectangle.x = velhoPontoTela.x;
+		rectangle.y = velhoPontoTela.y;
 		return rectangle;
 	}
 
@@ -348,7 +351,7 @@ public class ControleJogo {
 		if (p.y > maxY) {
 			p.y = Util.inte(maxY) - 1;
 		}
-		newp = p;
+		novoPontoTela = p;
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
@@ -425,17 +428,15 @@ public class ControleJogo {
 									.inte(trajetoriaBotao.size() * .7),
 									botaoAnalisado.getCentro());
 						} else {
-							double per = 0.05;
 							if (botaoAnalisado instanceof Bola) {
 								Logger.logar("Botão Acerta Bola");
-								per = 0.3;
 							}
 							if ((botao instanceof Bola)) {
 								Logger.logar("Bola Acerta Botão");
-								per = 0.02;
 							}
-							destino = GeoUtil.calculaPonto(angulo, Util
-									.inte(trajetoriaBotao.size() * per),
+							destino = GeoUtil.calculaPonto(angulo, GeoUtil
+									.drawBresenhamLine(botao.getCentro(),
+											botao.getDestino()).size(),
 									botaoAnalisado.getCentro());
 						}
 
@@ -455,7 +456,7 @@ public class ControleJogo {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
 									.getCentro(), bola.getCentro(), 90);
 							bolaIngnora.add(botaoAnalisado);
-							dest = Util.inte(trajetoriaBotao.size() * .5);
+							dest = Util.inte(trajetoriaBotao.size() * .2);
 						} else if ((botaoAnalisado instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
 									botao.getDestino(), 90);
@@ -535,20 +536,23 @@ public class ControleJogo {
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			for (int i = 20; i > 0; i--) {
-				if (reta.size() > i) {
-					p = (Point) reta.get(i);
-					break;
+			for (int i = reta.size() - 1; i > 0; i -= Util
+					.inte(20 / mesaPanel.zoom)) {
+				p = (Point) reta.get(i);
+				if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+						.getViewport().getWidth()) || p.y > ((mesaPanel
+						.getHeight() * mesaPanel.zoom) - (scrollPane
+						.getViewport().getHeight()))))) {
+					continue;
 				} else {
-					p = (Point) reta.get(0);
+					break;
 				}
 			}
-
 		}
 		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
 				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 				.getViewport().getHeight()))))) {
-			newp = p;
+			novoPontoTela = p;
 		}
 	}
 
@@ -718,9 +722,9 @@ public class ControleJogo {
 	}
 
 	protected void soltarBotao() {
-		if (botaoSelecionado != null && pontoClicado != null) {
-			botaoSelecionado.setCentro(pontoClicado);
-			botaoSelecionado.setCentroInicio(pontoClicado);
+		if (botaoSelecionado != null) {
+			botaoSelecionado.setCentroInicio(botaoSelecionado.getCentro());
+			botaoSelecionado = null;
 			carregaBotao = false;
 		}
 
@@ -792,19 +796,48 @@ public class ControleJogo {
 		this.animando = animando;
 	}
 
-	public Point getOldp() {
-		return oldp;
-	}
-
-	public Point getNewp() {
-		return newp;
-	}
-
 	public Map getBotoes() {
 		return botoes;
 	}
 
-	public List getJogada() {
-		return jogada;
+	public Point getVelhoPontoTela() {
+		return velhoPontoTela;
 	}
+
+	public void setVelhoPontoTela(Point velhoPontoTela) {
+		this.velhoPontoTela = velhoPontoTela;
+	}
+
+	public Point getNovoPontoTela() {
+		return novoPontoTela;
+	}
+
+	public void setNovoPontoTela(Point novoPontoTela) {
+		this.novoPontoTela = novoPontoTela;
+	}
+
+	public boolean isTelaAtualizando() {
+		return telaAtualizando;
+	}
+
+	public void setTelaAtualizando(boolean telaAtualizando) {
+		this.telaAtualizando = telaAtualizando;
+	}
+
+	public Map getBotoesComThread() {
+		return botoesComThread;
+	}
+
+	public void setBotoesComThread(Map botoesComThread) {
+		this.botoesComThread = botoesComThread;
+	}
+
+	public Point getPontoPasando() {
+		return pontoPasando;
+	}
+
+	public void setPontoPasando(Point pontoPasando) {
+		this.pontoPasando = pontoPasando;
+	}
+
 }

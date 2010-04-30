@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.GeoUtil;
 import br.nnpe.Util;
 
 public class MesaPanel extends JPanel {
@@ -68,7 +69,6 @@ public class MesaPanel extends JPanel {
 	private ControleJogo controleJogo;
 
 	private Map botoes;
-	private List jogada;
 	private Rectangle2D zoomedMesa;
 	private Rectangle2D zoomedBorda;
 	private Rectangle2D zoomedGrama;
@@ -161,7 +161,6 @@ public class MesaPanel extends JPanel {
 				Util.inte(10 * zoom));
 		this.controleJogo = controleJogo;
 		this.botoes = controleJogo.getBotoes();
-		this.jogada = controleJogo.getJogada();
 
 	}
 
@@ -229,21 +228,46 @@ public class MesaPanel extends JPanel {
 			}
 			desenhaBotao((Botao) botoes.get(new Long(0)), g);
 		}
-		// if (jogada != null) {
-		// for (Iterator iterator = jogada.iterator(); iterator.hasNext();) {
-		// Point point = (Point) iterator.next();
-		// g.setClip(null);
-		// g
-		// .drawOval((int) (point.x * zoom),
-		// (int) (point.y * zoom), 1, 1);
-		// }
-		// }
+		simulaRota(g2d);
 		// Graphics2D g2d = (Graphics2D) g;
 		if (limitesViewPort != null) {
-
 			// g2d.draw(limitesViewPort);
 		}
 
+	}
+
+	private void simulaRota(Graphics2D g2d) {
+		if (controleJogo.getPontoClicado() != null
+				&& controleJogo.getPontoPasando() != null) {
+			g2d.setColor(Color.BLACK);
+			Point p0 = (Point) controleJogo.getPontoClicado();
+			Point pAtual = (Point) controleJogo.getPontoPasando();
+			g2d.drawLine(Util.inte(p0.x * zoom), Util.inte(p0.y * zoom), Util
+					.inte(pAtual.x * zoom), Util.inte(pAtual.y * zoom));
+			for (Iterator iterator = botoes.keySet().iterator(); iterator
+					.hasNext();) {
+				Long id = (Long) iterator.next();
+				Botao botao = (Botao) botoes.get(id);
+				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
+						.getCentro());
+				if (raioPonto.size() <= botao.getRaio()) {
+					if (botao instanceof Goleiro) {
+						continue;
+					}
+					double angulo = GeoUtil.calculaAngulo(botao.getCentro(),
+							pAtual, 270);
+					Point destino = GeoUtil.calculaPonto(angulo,
+							Util.inte(GeoUtil.drawBresenhamLine(p0, pAtual)
+									.size() * 10), botao.getCentro());
+					g2d.drawLine(Util.inte(botao.getCentro().x * zoom), Util
+							.inte(botao.getCentro().y * zoom), Util
+							.inte(destino.x * zoom), Util
+							.inte(destino.y * zoom));
+					break;
+				}
+			}
+
+		}
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {

@@ -104,7 +104,12 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public List getTrajetoria() {
-		return GeoUtil.drawBresenhamLine(getCentro(), getDestino());
+		List reta = GeoUtil.drawBresenhamLine(getCentro(), getDestino());
+		while (reta.size() > 3000) {
+			reta.remove(reta.size() - 1);
+		}
+		setDestino((Point) reta.get(reta.size() - 1));
+		return reta;
 	}
 
 	@Override
