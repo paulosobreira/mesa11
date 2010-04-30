@@ -86,10 +86,10 @@ public class MesaPanel extends JPanel {
 	private Rectangle2D zoomedpqAreaBaixoGrama;
 	private Ellipse2D zoomedcentroBorda;
 	private Ellipse2D zoomedcentroGrama;
-	private Double zoomedMeioCampoBorda;
-	private Double zoomedPenaltiCima;
-	private Double zoomedPenaltiBaixo;
-	private Double zoomedCentro;
+	private Ellipse2D zoomedMeioCampoBorda;
+	private Ellipse2D zoomedPenaltiCima;
+	private Ellipse2D zoomedPenaltiBaixo;
+	private Ellipse2D zoomedCentro;
 	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS / 2];
 	private Shape limitesViewPort;
 
@@ -187,8 +187,13 @@ public class MesaPanel extends JPanel {
 		super.paintComponent(g);
 		limitesViewPort = controleJogo.limitesViewPort();
 		if (limitesViewPort == null) {
-			limitesViewPort = new Rectangle2D.Double(0, 0,
-					((LARGURA_MESA) * zoom), ((ALTURA_MESA) * zoom));
+			limitesViewPort = new Rectangle(0, 0, LARGURA_MESA, ALTURA_MESA);
+		} else {
+			// Rectangle rectangle = (Rectangle) limitesViewPort;
+			// rectangle.width -= 100;
+			// rectangle.height -= 100;
+			// rectangle.x += 50;
+			// rectangle.y += 50;
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
@@ -234,8 +239,11 @@ public class MesaPanel extends JPanel {
 		// }
 		// }
 		// Graphics2D g2d = (Graphics2D) g;
-		// if (controleJogo.limitesViewPort() != null)
-		// g2d.draw(controleJogo.limitesViewPort());
+		if (limitesViewPort != null) {
+
+			// g2d.draw(limitesViewPort);
+		}
+
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
@@ -290,7 +298,8 @@ public class MesaPanel extends JPanel {
 		g.setColor(Color.LIGHT_GRAY);
 		zoomedMesa = new Rectangle2D.Double(0, 0, ((LARGURA_MESA) * zoom),
 				((ALTURA_MESA) * zoom));
-		g.fill(zoomedMesa);
+		if (limitesViewPort.intersects(zoomedMesa))
+			g.fill(zoomedMesa);
 		/**
 		 * Campo
 		 */
@@ -299,15 +308,16 @@ public class MesaPanel extends JPanel {
 				(BORDA_CAMPO * zoom),
 				((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO) * zoom));
-		g.fill(zoomedBorda);
+		if (limitesViewPort.intersects(zoomedBorda))
+			g.fill(zoomedBorda);
 
 		g.setColor(Color.green);
 		zoomedGrama = new Rectangle2D.Double(((BORDA_CAMPO + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom), ((LARGURA_MESA
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom));
-
-		g.fill(zoomedGrama);
+		if (limitesViewPort.intersects(zoomedGrama))
+			g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
 		int contFaixas = 0;
 		for (int i = 0; i < FAIXAS; i++) {
@@ -318,7 +328,8 @@ public class MesaPanel extends JPanel {
 						((alturaBordaAtual) * zoom), ((LARGURA_MESA
 								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 						((ALTURA_FAIXA) * zoom));
-				g.fill(zoomedFaixasGrama[contFaixas]);
+				if (limitesViewPort.intersects(zoomedFaixasGrama[contFaixas]))
+					g.fill(zoomedFaixasGrama[contFaixas]);
 				contFaixas++;
 				alturaBordaAtual += (ALTURA_FAIXA - LINHA);
 				continue;
@@ -333,12 +344,14 @@ public class MesaPanel extends JPanel {
 		y = BORDA_CAMPO;
 		zoomedMeiaLuaCimaBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.fill(zoomedMeiaLuaCimaBorda);
+		if (zoomedMeiaLuaCimaBorda.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedMeiaLuaCimaBorda);
 		g.setColor(Color.green);
 		zoomedMeiaLuaCimaGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.fill(zoomedMeiaLuaCimaGrama);
+		if (zoomedMeiaLuaCimaGrama.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedMeiaLuaCimaGrama);
 		/**
 		 * Meia lua de Baixo
 		 */
@@ -347,12 +360,14 @@ public class MesaPanel extends JPanel {
 		y = ALTURA_MESA - BORDA_CAMPO - RAIO_CENTRO;
 		zoomedMeiaLuaBaixoBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.fill(zoomedMeiaLuaBaixoBorda);
+		if (zoomedMeiaLuaBaixoBorda.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedMeiaLuaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedMeiaLuaBaixoGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.fill(zoomedMeiaLuaBaixoGrama);
+		if (zoomedMeiaLuaBaixoGrama.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedMeiaLuaBaixoGrama);
 		/**
 		 * GdeArae Cima
 		 */
@@ -360,16 +375,16 @@ public class MesaPanel extends JPanel {
 		zoomedGdeAreaCimaBorda = new Rectangle2D.Double(
 				(ALTURA_GDE_AREA * zoom), (BORDA_CAMPO * zoom),
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
-
-		g.fill(zoomedGdeAreaCimaBorda);
+		if (limitesViewPort.intersects(zoomedGdeAreaCimaBorda))
+			g.fill(zoomedGdeAreaCimaBorda);
 		g.setColor(Color.green);
 		zoomedGdeAreaCimaGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
 				((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
-
-		g.fill(zoomedGdeAreaCimaGrama);
+		if (limitesViewPort.intersects(zoomedGdeAreaCimaGrama))
+			g.fill(zoomedGdeAreaCimaGrama);
 		/**
 		 * GdeArae Baixo
 		 */
@@ -378,15 +393,16 @@ public class MesaPanel extends JPanel {
 				(ALTURA_GDE_AREA * zoom),
 				((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) * zoom),
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
-
-		g.fill(zoomedGdeAreaBaixoBorda);
+		if (limitesViewPort.intersects(zoomedGdeAreaBaixoBorda))
+			g.fill(zoomedGdeAreaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedGdeAreaBaixoGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom), ((ALTURA_MESA - BORDA_CAMPO
 						- ALTURA_GDE_AREA + LINHA) * zoom),
 				((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
-		g.fill(zoomedGdeAreaBaixoGrama);
+		if (limitesViewPort.intersects(zoomedGdeAreaBaixoGrama))
+			g.fill(zoomedGdeAreaBaixoGrama);
 		/**
 		 * PQArae Cima
 		 */
@@ -396,13 +412,15 @@ public class MesaPanel extends JPanel {
 		zoomedpqAreaCimaBorda = new Rectangle2D.Double((x * zoom),
 				(BORDA_CAMPO * zoom), ((LARGURA_PQ_AREA) * zoom),
 				((ALTURA_PQ_AREA) * zoom));
-		g.fill(zoomedpqAreaCimaBorda);
+		if (limitesViewPort.intersects(zoomedpqAreaCimaBorda))
+			g.fill(zoomedpqAreaCimaBorda);
 		g.setColor(Color.green);
 		zoomedpqAreaCimaGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
 				((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
-		g.fill(zoomedpqAreaCimaGrama);
+		if (limitesViewPort.intersects(zoomedpqAreaCimaGrama))
+			g.fill(zoomedpqAreaCimaGrama);
 		/**
 		 * PQArae Baixo
 		 */
@@ -411,12 +429,14 @@ public class MesaPanel extends JPanel {
 		y = (ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA);
 		zoomedpqAreaBaixoBorda = new Rectangle2D.Double((x * zoom), (y * zoom),
 				((LARGURA_PQ_AREA) * zoom), ((ALTURA_PQ_AREA) * zoom));
-		g.fill(zoomedpqAreaBaixoBorda);
+		if (limitesViewPort.intersects(zoomedpqAreaBaixoBorda))
+			g.fill(zoomedpqAreaBaixoBorda);
 		g.setColor(Color.green);
 		zoomedpqAreaBaixoGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
-		g.fill(zoomedpqAreaBaixoGrama);
+		if (limitesViewPort.intersects(zoomedpqAreaBaixoGrama))
+			g.fill(zoomedpqAreaBaixoGrama);
 		/**
 		 * Circulo Centro
 		 */
@@ -425,46 +445,51 @@ public class MesaPanel extends JPanel {
 		y = calculaYcentro();
 		zoomedcentroBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		g.fill(zoomedcentroBorda);
+		if (zoomedcentroBorda.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedcentroBorda);
 		g.setColor(Color.green);
 		zoomedcentroGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		g.fill(zoomedcentroGrama);
+		if (zoomedcentroGrama.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedcentroGrama);
 		/**
 		 * meio de campo
 		 */
 		g.setColor(Color.white);
-		zoomedMeioCampoBorda = new Rectangle2D.Double(((BORDA_CAMPO) * zoom),
+		zoomedMeioCampoBorda = new Ellipse2D.Double(((BORDA_CAMPO) * zoom),
 				((ALTURA_MESA / 2) * zoom),
 				((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom), (LINHA * zoom));
-		g.fill(zoomedMeioCampoBorda);
+		if (zoomedMeioCampoBorda.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedMeioCampoBorda);
 
 		/**
 		 * Penalti cima
 		 */
 		g.setColor(Color.white);
-		zoomedPenaltiCima = new Rectangle2D.Double(((LARGURA_MESA / 2) * zoom),
+		zoomedPenaltiCima = new Ellipse2D.Double(((LARGURA_MESA / 2) * zoom),
 				((BORDA_CAMPO + PENALTI) * zoom), (DOBRO_LINHA * zoom),
 				(int) (DOBRO_LINHA * zoom));
-		g.fill(zoomedPenaltiCima);
+		if (zoomedPenaltiCima.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedPenaltiCima);
 		/**
 		 * Penalti Baixo
 		 */
 		g.setColor(Color.white);
-		zoomedPenaltiBaixo = new Rectangle2D.Double(
-				((LARGURA_MESA / 2) * zoom),
+		zoomedPenaltiBaixo = new Ellipse2D.Double(((LARGURA_MESA / 2) * zoom),
 				((ALTURA_MESA - BORDA_CAMPO - PENALTI) * zoom),
 				(DOBRO_LINHA * zoom), (DOBRO_LINHA * zoom));
-		g.fill(zoomedPenaltiBaixo);
+		if (zoomedPenaltiBaixo.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedPenaltiBaixo);
 		/**
 		 * Centro
 		 */
 		g.setColor(Color.white);
-		zoomedCentro = new Rectangle2D.Double(((LARGURA_MESA / 2) * zoom),
+		zoomedCentro = new Ellipse2D.Double(((LARGURA_MESA / 2) * zoom),
 				(((ALTURA_MESA - LINHA) / 2) * zoom), (DOBRO_LINHA * zoom),
 				(DOBRO_LINHA * zoom));
-		g.fill(zoomedCentro);
+		if (zoomedCentro.intersects((Rectangle) limitesViewPort))
+			g.fill(zoomedCentro);
 	}
 
 	private void desengaGol(Graphics2D g) {
