@@ -18,26 +18,26 @@ public class MesaMouseListener implements MouseListener {
 
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
-	private List jogada;
 	private Map botoes;
 
 	public MesaMouseListener(ControleJogo controleJogo) {
 		super();
 		this.controleJogo = controleJogo;
 		this.mesaPanel = controleJogo.getMesaPanel();
-		this.jogada = controleJogo.getJogada();
 		this.botoes = controleJogo.getBotoes();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (controleJogo.getJogada().isEmpty() || controleJogo.isAnimando())
+		if (controleJogo.isAnimando() || controleJogo.getPontoClicado() == null
+				&& controleJogo.getPontoPasando() == null) {
+			controleJogo.setPontoClicado(null);
 			return;
-		Point p1 = (Point) jogada.get(0);
-		Point p2 = (Point) jogada.get(jogada.size() - 1);
+		}
+
+		Point p1 = controleJogo.getPontoClicado();
+		Point p2 = controleJogo.getPontoPasando();
 		List reta = GeoUtil.drawBresenhamLine(p1, p2);
-		jogada.clear();
-		jogada.addAll(reta);
 		Animacao animacao = null;
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
@@ -65,8 +65,8 @@ public class MesaMouseListener implements MouseListener {
 				if (botao instanceof Goleiro) {
 					return;
 				}
-				double angulo = GeoUtil
-						.calculaAngulo(p1, botao.getCentro(), 90);
+				double angulo = GeoUtil.calculaAngulo(botao.getCentro(), p2,
+						270);
 				if (controleJogo.isChutaBola()) {
 					angulo = GeoUtil.calculaAngulo(botao.getCentro(),
 							controleJogo.getBola().getCentro(), 90);
@@ -99,10 +99,15 @@ public class MesaMouseListener implements MouseListener {
 				thread);
 		thread.start();
 		controleJogo.setAnimando(true);
+		controleJogo.setPontoClicado(null);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		selecionaBotao(e);
+	}
+
+	private void selecionaBotao(MouseEvent e) {
 		Point pontoClicado = new Point((int) (e.getPoint().x / mesaPanel.zoom),
 				(int) (e.getPoint().y / mesaPanel.zoom));
 		controleJogo.setPontoClicado(pontoClicado);
@@ -119,7 +124,6 @@ public class MesaMouseListener implements MouseListener {
 				break;
 			}
 		}
-		jogada.clear();
 	}
 
 	@Override
@@ -136,8 +140,7 @@ public class MesaMouseListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		selecionaBotao(e);
 	}
 
 }

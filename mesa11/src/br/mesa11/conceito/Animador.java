@@ -82,16 +82,18 @@ public class Animador implements Runnable {
 				Animacao animIn = (Animacao) object;
 				Thread threadRodando = (Thread) controleJogo
 						.getBotoesComThread().get(animIn.getObjetoAnimacao());
-				if (threadRodando != null) {
-					threadRodando.interrupt();
-					System.out.println("Matou th" + animIn.getObjetoAnimacao());
+				if (threadRodando == null) {
+					// threadRodando.interrupt();
+					// System.out.println("Matou th" +
+					// animIn.getObjetoAnimacao());
+					Animador animador = new Animador(animIn, controleJogo);
+					Thread thread = new Thread(animador);
+					controleJogo.getBotoesComThread().put(
+							animIn.getObjetoAnimacao(), thread);
+					thread.start();
+					controleJogo.setAnimando(true);
 				}
-				Animador animador = new Animador(animIn, controleJogo);
-				Thread thread = new Thread(animador);
-				controleJogo.getBotoesComThread().put(
-						animIn.getObjetoAnimacao(), thread);
-				thread.start();
-				controleJogo.setAnimando(true);
+
 			}
 		}
 	}
