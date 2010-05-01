@@ -537,7 +537,7 @@ public class ControleJogo {
 		Point p = des;
 		if (!reta.isEmpty()) {
 			for (int i = reta.size() - 1; i > 0; i -= Util
-					.inte(20 / mesaPanel.zoom)) {
+					.inte(40 / mesaPanel.zoom)) {
 				p = (Point) reta.get(i);
 				if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
 						.getViewport().getWidth()) || p.y > ((mesaPanel
