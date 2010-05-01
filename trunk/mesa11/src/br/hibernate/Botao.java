@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 
 import br.nnpe.GeoUtil;
+import br.nnpe.Logger;
 
 public class Botao extends Mesa11Dados {
 
@@ -105,10 +106,12 @@ public class Botao extends Mesa11Dados {
 
 	public List getTrajetoria() {
 		List reta = GeoUtil.drawBresenhamLine(getCentro(), getDestino());
-		while (reta.size() > 3000) {
-			reta.remove(reta.size() - 1);
+		if (reta.size() > 1500) {
+			Logger.logar("getTrajetoria()" + reta.size());
+			Point novoP = (Point) reta.get(1500);
+			reta = GeoUtil.drawBresenhamLine(getCentro(), novoP);
+			setDestino(novoP);
 		}
-		setDestino((Point) reta.get(reta.size() - 1));
 		return reta;
 	}
 

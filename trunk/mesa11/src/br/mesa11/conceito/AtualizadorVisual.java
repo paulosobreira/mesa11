@@ -17,6 +17,14 @@ public class AtualizadorVisual implements Runnable {
 	public void run() {
 		while (controleJogo.isTelaAtualizando()) {
 			try {
+				try {
+					if (controleJogo.isAnimando())
+						Thread.sleep(contAnimando / 2);
+					else
+						Thread.sleep(cont / 2);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 				if (controleJogo.getVelhoPontoTela() != controleJogo
 						.getNovoPontoTela()) {
 					controleJogo.getScrollPane().getViewport().setViewPosition(
@@ -26,9 +34,9 @@ public class AtualizadorVisual implements Runnable {
 				}
 				try {
 					if (controleJogo.isAnimando())
-						Thread.sleep(contAnimando);
+						Thread.sleep(contAnimando / 2);
 					else
-						Thread.sleep(cont);
+						Thread.sleep(cont / 2);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -38,9 +46,9 @@ public class AtualizadorVisual implements Runnable {
 				try {
 					Thread.sleep(20);
 					if (cont < 180)
-						cont++;
+						cont += 10;
 					if (contAnimando < 60)
-						contAnimando++;
+						contAnimando += 10;
 					Logger.logar("cont" + cont);
 					Logger.logar("contAnimando" + contAnimando);
 				} catch (InterruptedException e2) {
