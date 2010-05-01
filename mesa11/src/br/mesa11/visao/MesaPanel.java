@@ -242,8 +242,6 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(Color.BLACK);
 			Point p0 = (Point) controleJogo.getPontoClicado();
 			Point pAtual = (Point) controleJogo.getPontoPasando();
-			g2d.drawLine(Util.inte(p0.x * zoom), Util.inte(p0.y * zoom), Util
-					.inte(pAtual.x * zoom), Util.inte(pAtual.y * zoom));
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
 				Long id = (Long) iterator.next();
@@ -251,6 +249,9 @@ public class MesaPanel extends JPanel {
 				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
 						.getCentro());
 				if (raioPonto.size() <= botao.getRaio()) {
+					g2d.drawLine(Util.inte(p0.x * zoom),
+							Util.inte(p0.y * zoom), Util.inte(pAtual.x * zoom),
+							Util.inte(pAtual.y * zoom));
 					if (botao instanceof Goleiro) {
 						continue;
 					}
