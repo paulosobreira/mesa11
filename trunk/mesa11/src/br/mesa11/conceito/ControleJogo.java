@@ -37,6 +37,8 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
+import sun.management.resources.agent;
+
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
@@ -326,6 +328,8 @@ public class ControleJogo {
 			return null;
 		}
 		Rectangle rectangle = scrollPane.getViewport().getBounds();
+		rectangle.width += 100;
+		rectangle.height += 100;
 		rectangle.x = velhoPontoTela.x;
 		rectangle.y = velhoPontoTela.y;
 		return rectangle;
@@ -370,18 +374,26 @@ public class ControleJogo {
 					Rectangle rectangle = new Rectangle(point.x
 							- bola.getRaio(), point.y - bola.getRaio(), bola
 							.getDiamentro(), bola.getDiamentro());
+					boolean defesaGoleiro = defesaGoleiro(rectangle,
+							bolaIngnora);
 					if (!bolaBateu
-							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro(
-									rectangle, bolaIngnora))) {
+							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro)) {
 						bolaBateu = true;
 						double angulo = GeoUtil.calculaAngulo(point, botao
 								.getDestino(), 0);
+						if (defesaGoleiro) {
+							angulo = GeoUtil.calculaAngulo(botao
+									.getCentroInicio(), point, 90);
+							angulo = 180 - angulo;
+						}
+						double rebatimentoBola = trajetoriaBotao.size();
 						while (i < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
-						Point destino = GeoUtil.calculaPonto(angulo, Util
-								.inte(trajetoriaBotao.size() * 0.2), botao
-								.getCentro());
+						Point destino = GeoUtil
+								.calculaPonto(angulo, Util
+										.inte(rebatimentoBola * 0.7), botao
+										.getCentro());
 						botao.setDestino(destino);
 						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
 								destino);
@@ -404,42 +416,45 @@ public class ControleJogo {
 					if (causador.equals(botaoAnalisado)) {
 						continue;
 					}
-					if ((botao instanceof Bola)
-							&& bolaIngnora.contains(botaoAnalisado)) {
-						continue;
-					}
 					if (botaoAnalisado instanceof Goleiro) {
 						continue;
 					}
+					if ((botao instanceof Bola && bolaIngnora
+							.contains(botaoAnalisado))
+							|| (botaoAnalisado instanceof Bola && bolaIngnora
+									.contains(botao))) {
+						continue;
+					}
+
 					List raioPonto = GeoUtil.drawBresenhamLine(point,
 							botaoAnalisado.getCentro());
-					if ((raioPonto.size() - (botao.getRaio())) == (botaoAnalisado
+					if ((raioPonto.size() - (botao.getRaio())) <= (botaoAnalisado
 							.getRaio())) {
 
 						if ((botao instanceof Bola) && Math.random() > .8) {
+							Logger.logar("Passou pelo jogador");
 							bolaIngnora.add(botaoAnalisado);
 							continue;
 						}
 						double angulo = GeoUtil.calculaAngulo(point,
 								botaoAnalisado.getCentro(), 90);
 						Point destino = null;
+						double detAtingido = trajetoriaBotao.size();
 						if ((botaoAnalisado instanceof Bola)) {
-							destino = GeoUtil.calculaPonto(angulo, Util
-									.inte(trajetoriaBotao.size() * .7),
-									botaoAnalisado.getCentro());
+							Logger.logar("Botão Acerta Bola");
+							bolaIngnora.add(botao);
+							detAtingido *= 0.7;
 						} else {
-							if (botaoAnalisado instanceof Bola) {
-								Logger.logar("Botão Acerta Bola");
-							}
 							if ((botao instanceof Bola)) {
 								Logger.logar("Bola Acerta Botão");
+								detAtingido *= 0.05;
+							} else {
+								detAtingido *= 0.3;
 							}
-							destino = GeoUtil.calculaPonto(angulo, GeoUtil
-									.drawBresenhamLine(botao.getCentro(),
-											botao.getDestino()).size(),
-									botaoAnalisado.getCentro());
-						}
 
+						}
+						destino = GeoUtil.calculaPonto(angulo, Util
+								.inte(detAtingido), botaoAnalisado.getCentro());
 						botaoAnalisado.setDestino(destino);
 						animacao = new Animacao();
 						animacao.setObjetoAnimacao(botaoAnalisado);
@@ -448,14 +463,13 @@ public class ControleJogo {
 						trajetoriaBotao.set(i, animacao);
 						List novaTrajetoria = new ArrayList();
 
-						int dest = 0;
 						/**
 						 * Rebatimento de bola em botão
 						 */
+						int dest = 0;
 						if ((botao instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
 									.getCentro(), bola.getCentro(), 90);
-							bolaIngnora.add(botaoAnalisado);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
 						} else if ((botaoAnalisado instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
@@ -486,6 +500,23 @@ public class ControleJogo {
 		}
 	}
 
+	private boolean verificaPosseGoleiro(Botao botao) {
+		if (!(botao instanceof Bola))
+			return false;
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao g = (Botao) botoes.get(id);
+			if (g instanceof Goleiro) {
+				Goleiro goleiro = (Goleiro) g;
+				if (GeoUtil.drawBresenhamLine(botao.getCentro(),
+						goleiro.getCentro()).size() < goleiro.getRaio()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	boolean verificaForaDosLimites(Point point) {
 		if (point.x < (mesaPanel.BORDA_CAMPO / 2)) {
 			return true;
@@ -512,11 +543,12 @@ public class ControleJogo {
 					return false;
 				}
 				if (goleiro.getRetangulo(1).intersects(r)) {
-					if (Math.random() > .7) {
-						bolaIngnora.add(goleiro);
-						System.out.println("frango");
-						return false;
-					}
+					// if (Math.random() > .7) {
+					// bolaIngnora.add(goleiro);
+					// System.out.println("frango");
+					// return false;
+					// }
+					Logger.logar("Goleiro Defendeu");
 					return true;
 				}
 			}
@@ -838,6 +870,12 @@ public class ControleJogo {
 
 	public void setPontoPasando(Point pontoPasando) {
 		this.pontoPasando = pontoPasando;
+	}
+
+	public void setZoom(double d) {
+		mesaPanel.zoom = d;
+		centralizaBola();
+
 	}
 
 }

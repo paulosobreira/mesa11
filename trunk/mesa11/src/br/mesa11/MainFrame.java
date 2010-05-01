@@ -32,9 +32,10 @@ public class MainFrame {
 		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
 		controleJogo = new ControleJogo(frame);
-		frame.setSize(1024, 740);
+		frame.setSize(800, 600);
 		frame.setVisible(true);
 		controleJogo.centroCampo();
+		controleJogo.setZoom(0.3);
 	}
 
 	private void gerarMenus() {

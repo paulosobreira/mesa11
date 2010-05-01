@@ -30,7 +30,8 @@ public class MesaMouseListener implements MouseListener {
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (controleJogo.isAnimando() || controleJogo.getPontoClicado() == null
-				&& controleJogo.getPontoPasando() == null) {
+				&& controleJogo.getPontoPasando() == null
+				|| (MouseEvent.BUTTON1 != e.getButton())) {
 			controleJogo.setPontoClicado(null);
 			return;
 		}
@@ -53,6 +54,7 @@ public class MesaMouseListener implements MouseListener {
 					} else {
 						goleiro.setCentro(p2);
 					}
+					controleJogo.setPontoClicado(null);
 					return;
 				}
 			}
