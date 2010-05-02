@@ -70,6 +70,7 @@ public class ControleJogo {
 	private boolean chutaBola;
 	private Hashtable times;
 	private boolean telaAtualizando = true;
+	private int numRecursoes;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -359,6 +360,10 @@ public class ControleJogo {
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
+		if (numRecursoes > 20) {
+			return;
+		}
+		numRecursoes++;
 		Botao botao = animacao.getObjetoAnimacao();
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
@@ -392,7 +397,7 @@ public class ControleJogo {
 						}
 						Point destino = GeoUtil
 								.calculaPonto(angulo, Util
-										.inte(rebatimentoBola * 0.7), botao
+										.inte(rebatimentoBola * 0.3), botao
 										.getCentro());
 						botao.setDestino(destino);
 						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
@@ -442,7 +447,7 @@ public class ControleJogo {
 						double detAtingido = trajetoriaBotao.size();
 						if ((botaoAnalisado instanceof Bola)) {
 							Logger.logar("Botão Acerta Bola");
-							bolaIngnora.add(botao);
+
 							detAtingido *= 0.7;
 						} else {
 							if ((botao instanceof Bola)) {
@@ -518,16 +523,16 @@ public class ControleJogo {
 	}
 
 	boolean verificaForaDosLimites(Point point) {
-		if (point.x < (mesaPanel.BORDA_CAMPO / 2)) {
+		if (point.x < (mesaPanel.BORDA_CAMPO / 4)) {
 			return true;
 		}
-		if (point.x > (mesaPanel.LARGURA_MESA - (mesaPanel.BORDA_CAMPO / 2))) {
+		if (point.x > (mesaPanel.LARGURA_MESA - (mesaPanel.BORDA_CAMPO / 4))) {
 			return true;
 		}
-		if (point.y < (mesaPanel.BORDA_CAMPO / 2)) {
+		if (point.y < (mesaPanel.BORDA_CAMPO / 4)) {
 			return true;
 		}
-		if (point.y > (mesaPanel.ALTURA_MESA - (mesaPanel.BORDA_CAMPO / 2))) {
+		if (point.y > (mesaPanel.ALTURA_MESA - (mesaPanel.BORDA_CAMPO / 4))) {
 			return true;
 		}
 		return false;
@@ -876,6 +881,14 @@ public class ControleJogo {
 		mesaPanel.zoom = d;
 		centralizaBola();
 
+	}
+
+	public int getNumRecursoes() {
+		return numRecursoes;
+	}
+
+	public void setNumRecursoes(int numRecursoes) {
+		this.numRecursoes = numRecursoes;
 	}
 
 }

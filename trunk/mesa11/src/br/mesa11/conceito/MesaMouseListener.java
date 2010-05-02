@@ -80,6 +80,7 @@ public class MesaMouseListener implements MouseListener {
 				animacao = new Animacao();
 				animacao.setObjetoAnimacao(botao);
 				animacao.setPontosAnimacao(botao.getTrajetoria());
+				controleJogo.setNumRecursoes(0);
 				controleJogo.propagaColisao(animacao, botao);
 				break;
 			}
