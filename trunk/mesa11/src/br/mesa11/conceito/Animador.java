@@ -11,6 +11,7 @@ import javax.swing.SwingUtilities;
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
+import br.nnpe.Logger;
 
 public class Animador implements Runnable {
 
@@ -56,12 +57,11 @@ public class Animador implements Runnable {
 
 				try {
 					if (botao instanceof Bola) {
-						if (controleJogo.getLateral() == null
-								&& !mesaPanel.getCampoBaixo().contains(
-										botao.getCentro())
-								&& !mesaPanel.getCampoCima().contains(
-										botao.getCentro())) {
-							controleJogo.setLateral(botao.getCentro());
+						if (!controleJogo.verificaDentroCampo(botao)) {
+							if (controleJogo.getLateral() == null) {
+								controleJogo.setLateral(botao.getCentro());
+								Logger.logar("lateral");
+							}
 						}
 						if (i % 3 == 0) {
 							controleJogo
@@ -91,19 +91,25 @@ public class Animador implements Runnable {
 					controleJogo.setAnimando(true);
 				}
 
-//				if (threadRodando != null) {
-//					threadRodando.interrupt();
-//					System.out.println("Matou th" + animIn.getObjetoAnimacao());
-//				}
-//				Animador animador = new Animador(animIn, controleJogo);
-//				Thread thread = new Thread(animador);
-//				controleJogo.getBotoesComThread().put(
-//						animIn.getObjetoAnimacao(), thread);
-//				thread.start();
-//				controleJogo.setAnimando(true);				
+				// if (threadRodando != null) {
+				// threadRodando.interrupt();
+				// System.out.println("Matou th" + animIn.getObjetoAnimacao());
+				// }
+				// Animador animador = new Animador(animIn, controleJogo);
+				// Thread thread = new Thread(animador);
+				// controleJogo.getBotoesComThread().put(
+				// animIn.getObjetoAnimacao(), thread);
+				// thread.start();
+				// controleJogo.setAnimando(true);
 
-				
 			}
 		}
 	}
+
+	public static void main(String[] args) {
+		double val = 100;
+		val *= 0.2;
+		System.out.println(val);
+	}
+
 }
