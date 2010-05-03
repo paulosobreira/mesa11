@@ -1,5 +1,7 @@
 package br.mesa11.conceito;
 
+import javax.swing.SwingUtilities;
+
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
 
@@ -17,14 +19,6 @@ public class AtualizadorVisual implements Runnable {
 	public void run() {
 		while (controleJogo.isTelaAtualizando()) {
 			try {
-				try {
-					if (controleJogo.isAnimando())
-						Thread.sleep(contAnimando / 2);
-					else
-						Thread.sleep(cont / 2);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
 				if (controleJogo.getVelhoPontoTela() != controleJogo
 						.getNovoPontoTela()) {
 					controleJogo.getScrollPane().getViewport().setViewPosition(
@@ -34,17 +28,22 @@ public class AtualizadorVisual implements Runnable {
 				}
 				try {
 					if (controleJogo.isAnimando())
-						Thread.sleep(contAnimando / 2);
+						Thread.sleep(contAnimando);
 					else
-						Thread.sleep(cont / 2);
+						Thread.sleep(cont);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
-				mesaPanel.repaint();
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						mesaPanel.repaint();
+					}
+				});
+
 			} catch (Exception e) {
 				e.printStackTrace();
 				try {
-					Thread.sleep(20);
+					Thread.sleep(100);
 					if (cont < 180)
 						cont += 10;
 					if (contAnimando < 60)

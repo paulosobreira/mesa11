@@ -231,9 +231,14 @@ public class MesaPanel extends JPanel {
 		simulaRota(g2d);
 		// Graphics2D g2d = (Graphics2D) g;
 		if (limitesViewPort != null) {
-			g2d.draw(limitesViewPort);
+			// g2d.draw(limitesViewPort);
 		}
 
+	}
+
+	@Override
+	public boolean isOptimizedDrawingEnabled() {
+		return true;
 	}
 
 	private void simulaRota(Graphics2D g2d) {
