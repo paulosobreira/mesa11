@@ -45,7 +45,7 @@ public class MesaMouseListener implements MouseListener {
 			Botao botao = (Botao) botoes.get(id);
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
-				if (goleiro.getRetangulo(1).contains(p1)) {
+				if (goleiro.getShape(1).contains(p1)) {
 					List retaGoleiro = GeoUtil.drawBresenhamLine(goleiro
 							.getCentro(), p1);
 					if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {

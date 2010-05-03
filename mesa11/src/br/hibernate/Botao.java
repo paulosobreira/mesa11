@@ -1,6 +1,11 @@
 package br.hibernate;
 
 import java.awt.Point;
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
@@ -118,6 +123,13 @@ public class Botao extends Mesa11Dados {
 	@Override
 	public String toString() {
 		return "Id :" + getId();
+	}
+
+	public Shape getShape(double zoom) {
+		Ellipse2D e2D = new Ellipse2D.Double(getPosition().x * zoom,
+				getPosition().y * zoom, getDiamentro() * zoom, getDiamentro()
+						* zoom);
+		return e2D;
 	}
 
 }

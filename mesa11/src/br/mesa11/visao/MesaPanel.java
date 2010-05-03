@@ -278,7 +278,7 @@ public class MesaPanel extends JPanel {
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.BLACK);
-		Shape goleroShape = goleiro.getRetangulo(zoom);
+		Shape goleroShape = goleiro.getShape(zoom);
 		g2d.fill(goleroShape);
 
 	}

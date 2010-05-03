@@ -360,10 +360,11 @@ public class ControleJogo {
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
-		if (numRecursoes > 20) {
+		if (numRecursoes > 11) {
 			return;
 		}
 		numRecursoes++;
+		Logger.logar("numRecursoes" + numRecursoes);
 		Botao botao = animacao.getObjetoAnimacao();
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
@@ -386,12 +387,18 @@ public class ControleJogo {
 						bolaBateu = true;
 						double angulo = GeoUtil.calculaAngulo(point, botao
 								.getDestino(), 0);
+						double rebatimentoBola = trajetoriaBotao.size();
 						if (defesaGoleiro) {
 							angulo = GeoUtil.calculaAngulo(botao
 									.getCentroInicio(), point, 90);
 							angulo = 180 - angulo;
+							if (!verificaDentroCampo(botao))
+								rebatimentoBola *= .3;
+							else{
+								rebatimentoBola *= .5;
+							}
 						}
-						double rebatimentoBola = trajetoriaBotao.size();
+
 						while (i < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
@@ -422,6 +429,9 @@ public class ControleJogo {
 						continue;
 					}
 					if (botaoAnalisado instanceof Goleiro) {
+						continue;
+					}
+					if (!verificaDentroCampo(botaoAnalisado)) {
 						continue;
 					}
 					if ((botao instanceof Bola && bolaIngnora
@@ -547,7 +557,7 @@ public class ControleJogo {
 				if (bolaIngnora.contains(goleiro)) {
 					return false;
 				}
-				if (goleiro.getRetangulo(1).intersects(r)) {
+				if (goleiro.getShape(1).intersects(r)) {
 					// if (Math.random() > .7) {
 					// bolaIngnora.add(goleiro);
 					// System.out.println("frango");
@@ -707,6 +717,13 @@ public class ControleJogo {
 	}
 
 	public void setLateral(Point lateral) {
+		if (lateral != null) {
+			if (lateral.x < 3000) {
+				lateral.x += 20;
+			} else {
+				lateral.x -= 20;
+			}
+		}
 		this.lateral = lateral;
 	}
 
@@ -891,4 +908,11 @@ public class ControleJogo {
 		this.numRecursoes = numRecursoes;
 	}
 
+	public boolean verificaDentroCampo(Botao botao) {
+		if (mesaPanel == null)
+			return true;
+		return (mesaPanel.getCampoBaixo().intersects(
+				botao.getShape(1).getBounds2D()) || mesaPanel.getCampoCima()
+				.intersects(botao.getShape(1).getBounds2D()));
+	}
 }

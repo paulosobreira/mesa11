@@ -34,7 +34,7 @@ public class Goleiro extends Botao {
 		super(i);
 	}
 
-	public Shape getRetangulo(double zoom) {
+	public Shape getShape(double zoom) {
 		Rectangle2D r2D = new Rectangle2D.Double(getPosition().x * zoom,
 				getPosition().y * zoom, getDiamentro() * zoom, 60 * zoom);
 		GeneralPath generalPath = new GeneralPath(r2D);
