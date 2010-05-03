@@ -16,10 +16,10 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if ((System.currentTimeMillis() - controleJogo.getLastScrool()) < 100)
+		if ((System.currentTimeMillis() - controleJogo.getLastScrool()) < 60)
 			return;
 		double newzoom = mesaPanel.zoom;
-		newzoom += e.getWheelRotation() / 40.0;
+		newzoom += e.getWheelRotation() / 100.0;
 
 		mesaPanel.zoom = newzoom;
 		if (mesaPanel.zoom <= 0.3) {

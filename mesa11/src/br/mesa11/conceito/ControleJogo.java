@@ -75,6 +75,7 @@ public class ControleJogo {
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
+		mesaPanel.setDoubleBuffered(true);
 		final Properties properties = new Properties();
 
 		try {
