@@ -230,9 +230,18 @@ public class MesaPanel extends JPanel {
 		}
 		simulaRota(g2d);
 		// Graphics2D g2d = (Graphics2D) g;
-		if (limitesViewPort != null) {
-			// g2d.draw(limitesViewPort);
-		}
+//		if (limitesViewPort != null && controleJogo.getBola() != null) {
+//			Rectangle rectangle = (Rectangle) limitesViewPort;
+//			g2d.drawOval((int) rectangle.getCenterX() - 25, (int) rectangle
+//					.getCenterY() - 25, 10, 10);
+//			Botao b = controleJogo.getBola();
+//			Point ori = new Point((int) rectangle.getCenterX()-25, (int) rectangle
+//					.getCenterY()-25);
+//			Point des = new Point((int) (b.getCentro().x * zoom),
+//					(int) (b.getCentro().y * zoom));
+//			g2d.drawLine(ori.x, ori.y, des.x, des.y);
+//
+//		}
 
 	}
 

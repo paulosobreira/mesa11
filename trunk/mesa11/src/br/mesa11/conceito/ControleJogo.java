@@ -330,8 +330,8 @@ public class ControleJogo {
 			return null;
 		}
 		Rectangle rectangle = scrollPane.getViewport().getBounds();
-		rectangle.width += 100;
-		rectangle.height += 100;
+		rectangle.width += 50;
+		rectangle.height += 50;
 		rectangle.x = velhoPontoTela.x;
 		rectangle.y = velhoPontoTela.y;
 		return rectangle;
@@ -395,7 +395,7 @@ public class ControleJogo {
 							angulo = 180 - angulo;
 							if (!verificaDentroCampo(botao))
 								rebatimentoBola *= .3;
-							else{
+							else {
 								rebatimentoBola *= .5;
 							}
 						}
@@ -573,35 +573,44 @@ public class ControleJogo {
 	}
 
 	public void centralizaBotao(Botao b) {
+		Rectangle rectangle = (Rectangle) limitesViewPort();
+		if (rectangle == null)
+			return;
 
-		Point ori = new Point(
-				(int) (scrollPane.getViewport().getViewPosition().x),
-				(int) (scrollPane.getViewport().getViewPosition().y));
-		Point des = new Point((int) (b.getCentro().x * mesaPanel.zoom)
-				- (scrollPane.getViewport().getWidth() / 2), (int) (b
-				.getCentro().y * mesaPanel.zoom)
-				- (scrollPane.getViewport().getHeight() / 2));
+		Point ori = new Point((int) rectangle.getCenterX() - 25,
+				(int) rectangle.getCenterY() - 25);
+		Point des = new Point((int) (b.getCentro().x * mesaPanel.zoom),
+				(int) (b.getCentro().y * mesaPanel.zoom));
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			for (int i = reta.size() - 1; i > 0; i -= Util
-					.inte(40 / mesaPanel.zoom)) {
+			int cont = reta.size() / 10;
+			for (int i = cont; i < reta.size(); i += cont) {
 				p = (Point) reta.get(i);
-				if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
-						.getViewport().getWidth()) || p.y > ((mesaPanel
-						.getHeight() * mesaPanel.zoom) - (scrollPane
-						.getViewport().getHeight()))))) {
-					continue;
-				} else {
+				if (rectangle.contains(p)) {
+					p.x -= ((rectangle.width - 50) / 2);
+					p.y -= ((rectangle.height - 50) / 2);
 					break;
 				}
 			}
 		}
-		if (!((p.x < 0 || p.y < 0) || (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
-				.getViewport().getWidth()) || p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
-				.getViewport().getHeight()))))) {
-			novoPontoTela = p;
+		if (p.x < 0) {
+			p.x = 1;
 		}
+		if (p.y < 0) {
+			p.y = 1;
+		}
+		int largMax = (int) ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+				.getViewport().getWidth());
+		if (p.x > largMax) {
+			p.x = largMax - 1;
+		}
+		int altMax = (int) ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
+				.getViewport().getHeight()));
+		if (p.y > altMax) {
+			p.y = altMax - 1;
+		}
+		novoPontoTela = p;
 	}
 
 	public Botao getBola() {
