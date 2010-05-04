@@ -1,5 +1,6 @@
 package br.mesa11.conceito;
 
+import java.awt.Rectangle;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
@@ -27,6 +28,11 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 		}
 		if (mesaPanel.zoom >= 1) {
 			mesaPanel.zoom = 1;
+		}
+		Rectangle rectangle = (Rectangle) controleJogo.limitesViewPort();
+		if (rectangle != null
+				&& mesaPanel.LARGURA_MESA * mesaPanel.zoom < rectangle.width) {
+			mesaPanel.zoom += .1;
 		}
 		controleJogo.setLastScrool(System.currentTimeMillis());
 		controleJogo.centralizaBola();
