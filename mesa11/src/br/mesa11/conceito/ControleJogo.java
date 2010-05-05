@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -37,11 +36,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
-import sun.management.resources.agent;
-
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
+import br.hibernate.Time;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -144,7 +143,7 @@ public class ControleJogo {
 			}
 		});
 		Thread atualizadorTela = new Thread(new AtualizadorVisual(this));
-		atualizadorTela.setPriority(Thread.MIN_PRIORITY);
+		// atualizadorTela.setPriority(Thread.MAX_PRIORITY);
 		atualizadorTela.start();
 
 	}
@@ -249,21 +248,30 @@ public class ControleJogo {
 		if (val != JOptionPane.YES_OPTION) {
 			return;
 		}
-		Long cima[] = new Long[10];
+		Time timeCima = new Time();
+		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		for (int i = 0; i < 10; i++) {
-			cima[i] = new Long(i + 1);
+			Long id = new Long(i + 1);
+			Botao botao = new Botao(id);
+			botao.setImagem(obterKey((String) timesCima.getSelectedItem()));
+			timeCima.getBotoes().add(botao);
+			botoes.put(botao.getId(), botao);
 		}
 		ControlePosicionamento controleFormacao = new ControlePosicionamento(
 				this);
-		controleFormacao.posicionaTimeCima(obterKey((String) timesCima
-				.getSelectedItem()), cima, bolaCima.isSelected());
 
-		Long baixo[] = new Long[10];
+		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
+
+		Time timeBaixo = new Time();
 		for (int i = 0; i < 10; i++) {
-			baixo[i] = new Long(i + 11);
+			Long id = new Long(i + 11);
+			Botao botao = new Botao(id);
+			botao.setImagem(obterKey((String) timesBaixo.getSelectedItem()));
+			timeBaixo.getBotoes().add(botao);
+			botoes.put(botao.getId(), botao);
+
 		}
-		controleFormacao.posicionaTimeBaixo(obterKey((String) timesBaixo
-				.getSelectedItem()), baixo, bolaBaixo.isSelected());
+		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
 
 		Goleiro goleiro1 = new Goleiro(100);
 		goleiro1.setCentro(mesaPanel.golCima());
