@@ -5,6 +5,10 @@ public class ConstantesMesa11 {
 	public static boolean debug = true;
 	public static boolean modoZip = true;
 
+	public static int CAMPO_CIMA = 1;
+
+	public static int CAMPO_BAIXO = 2;
+
 	public static final String LOGAR = "01";
 
 	public static final String NOVO_USUARIO = "02";
