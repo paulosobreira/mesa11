@@ -57,8 +57,6 @@ public class ControleJogo {
 	private JScrollPane scrollPane;
 	private Point velhoPontoTela;
 	private Point novoPontoTela;
-	private long lastScrool = System.currentTimeMillis();
-	private long delayAtualiacao;
 	private Point lateral;
 	private JFrame frame;
 	private boolean animando;
@@ -806,13 +804,6 @@ public class ControleJogo {
 		this.botaoSelecionado = botaoSelecionado;
 	}
 
-	public long getLastScrool() {
-		return lastScrool;
-	}
-
-	public void setLastScrool(long lastScrool) {
-		this.lastScrool = lastScrool;
-	}
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;
