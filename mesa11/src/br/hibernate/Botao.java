@@ -14,14 +14,23 @@ import br.nnpe.Logger;
 
 public class Botao extends Mesa11Dados {
 
-	private transient BufferedImage imgBotao;
+	private BufferedImage imgBotao;
 
-	private transient int diamentro = 128;
-	private transient Point position;
-	private transient Point centroInicio;
-	private transient Point destino;
-	private transient String imagem;
-	private transient double angulo;
+	private int diamentro = 128;
+	private Point position;
+	private Point centroInicio;
+	private Point destino;
+	private String imagem;
+	private double angulo;
+	private Time time;
+
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
 
 	public double getAngulo() {
 		return angulo;
@@ -60,6 +69,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Point getCentro() {
+		if (getPosition() == null) {
+			return null;
+		}
 		return new Point(getPosition().x + (getDiamentro() / 2),
 				getPosition().y + (getDiamentro() / 2));
 	}
