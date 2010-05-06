@@ -9,6 +9,7 @@ import br.mesa11.visao.MesaPanel;
 public class MesaMouseWheelListener implements MouseWheelListener {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
+	private long lastScrool = System.currentTimeMillis();
 
 	public MesaMouseWheelListener(ControleJogo controleJogo) {
 		this.controleJogo = controleJogo;
@@ -17,7 +18,7 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		if ((System.currentTimeMillis() - controleJogo.getLastScrool()) < 60)
+		if ((System.currentTimeMillis() - lastScrool) < 60)
 			return;
 		double newzoom = mesaPanel.zoom;
 		newzoom += e.getWheelRotation() / 100.0;
@@ -34,7 +35,7 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 				&& mesaPanel.LARGURA_MESA * mesaPanel.zoom < rectangle.width) {
 			mesaPanel.zoom += .1;
 		}
-		controleJogo.setLastScrool(System.currentTimeMillis());
+		lastScrool = System.currentTimeMillis();
 		controleJogo.centralizaBola();
 
 	}
