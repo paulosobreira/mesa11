@@ -835,4 +835,8 @@ public class Util {
 		return (int) d;
 	}
 
+	public static int intervalo(int val1, int val2) {
+
+		return (val1 + (int) (Math.random() * (1 + val2 - val1)));
+	}
 }

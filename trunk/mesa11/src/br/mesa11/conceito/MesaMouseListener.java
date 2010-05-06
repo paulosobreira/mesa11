@@ -113,6 +113,9 @@ public class MesaMouseListener implements MouseListener {
 	private void selecionaBotao(MouseEvent e) {
 		Point pontoClicado = new Point((int) (e.getPoint().x / mesaPanel.zoom),
 				(int) (e.getPoint().y / mesaPanel.zoom));
+		if (MouseEvent.BUTTON3 == e.getButton()) {
+			controleJogo.setPontoBtnDirClicado(pontoClicado);
+		}
 		controleJogo.setPontoClicado(pontoClicado);
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
@@ -127,6 +130,7 @@ public class MesaMouseListener implements MouseListener {
 				break;
 			}
 		}
+
 	}
 
 	@Override

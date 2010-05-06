@@ -64,4 +64,6 @@ public class ConstantesMesa11 {
 	public static final String D_26 = "26";
 
 	public static final String D_27 = "27";
+
+	public static final int PERIMETRO = 400;
 }

@@ -64,10 +64,10 @@ public class ControleJogo {
 	private boolean animando;
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
+	private Point pontoBtnDirClicado;
 	private Point pontoPasando;
 	private boolean carregaBotao;
 	private boolean chutaBola;
-	private Hashtable times;
 	private boolean telaAtualizando = true;
 	private int numRecursoes;
 
@@ -75,22 +75,6 @@ public class ControleJogo {
 		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
 		mesaPanel.setDoubleBuffered(true);
-		final Properties properties = new Properties();
-
-		try {
-			times = new Hashtable();
-			properties.load(CarregadorRecursos
-					.recursoComoStream("times.properties"));
-
-			Enumeration propName = properties.propertyNames();
-			while (propName.hasMoreElements()) {
-				final String name = (String) propName.nextElement();
-				times.put(name, properties.getProperty(name));
-
-			}
-		} catch (IOException e) {
-			Logger.logarExept(e);
-		}
 		criarPopupMenu();
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
@@ -142,6 +126,9 @@ public class ControleJogo {
 
 			}
 		});
+		bola = new Bola(0);
+		bola.setImagem("bola.png");
+		botoes.put(bola.getId(), bola);
 		Thread atualizadorTela = new Thread(new AtualizadorVisual(this));
 		// atualizadorTela.setPriority(Thread.MAX_PRIORITY);
 		atualizadorTela.start();
@@ -197,116 +184,12 @@ public class ControleJogo {
 	}
 
 	public void iniciaJogoLivre() {
-		GridLayout gridLayout = new GridLayout(2, 4);
-		gridLayout.setHgap(15);
-		gridLayout.setVgap(5);
-		JPanel escolhaTimesPanel = new JPanel(gridLayout);
-		JComboBox timesCima = new JComboBox();
-		JComboBox timesBaixo = new JComboBox();
-		JRadioButton bolaCima = new JRadioButton();
-		JRadioButton bolaBaixo = new JRadioButton();
-		ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(bolaCima);
-		buttonGroup.add(bolaBaixo);
-		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
-			String key = (String) iterator.next();
-			timesCima.addItem(times.get(key));
-			timesBaixo.addItem(times.get(key));
-		}
-		escolhaTimesPanel.setBorder(new TitledBorder("baterCentro"));
-		escolhaTimesPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("timeCima");
-			}
-		});
-		escolhaTimesPanel.add(timesCima);
-		escolhaTimesPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("bateCentroCima");
-			}
-		});
-		escolhaTimesPanel.add(bolaCima);
-		escolhaTimesPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("timeBaixo");
-			}
-		});
-		escolhaTimesPanel.add(timesBaixo);
-		escolhaTimesPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("bateCentroBaixo");
-			}
-		});
-		escolhaTimesPanel.add(bolaBaixo);
-		int val = JOptionPane.showConfirmDialog(frame, escolhaTimesPanel, Lang
-				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
-				JOptionPane.QUESTION_MESSAGE);
-		if (val != JOptionPane.YES_OPTION) {
-			return;
-		}
-		Time timeCima = new Time();
-		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
-		for (int i = 0; i < 10; i++) {
-			Long id = new Long(i + 1);
-			Botao botao = new Botao(id);
-			botao.setImagem(obterKey((String) timesCima.getSelectedItem()));
-			timeCima.getBotoes().add(botao);
-			botoes.put(botao.getId(), botao);
-		}
-		ControlePosicionamento controleFormacao = new ControlePosicionamento(
-				this);
-
-		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
-
-		Time timeBaixo = new Time();
-		for (int i = 0; i < 10; i++) {
-			Long id = new Long(i + 11);
-			Botao botao = new Botao(id);
-			botao.setImagem(obterKey((String) timesBaixo.getSelectedItem()));
-			timeBaixo.getBotoes().add(botao);
-			botoes.put(botao.getId(), botao);
-
-		}
-		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
-
-		Goleiro goleiro1 = new Goleiro(100);
-		goleiro1.setCentro(mesaPanel.golCima());
-		Goleiro goleiro2 = new Goleiro(200);
-		goleiro2.setCentro(mesaPanel.golBaixo());
-
-		bola = new Bola(0);
-		bola.setImagem("bola.png");
-		botoes.put(bola.getId(), bola);
-		botoes.put(goleiro1.getId(), goleiro1);
-		botoes.put(goleiro2.getId(), goleiro2);
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
-			Long id = (Long) iterator.next();
-			Botao b = (Botao) botoes.get(id);
-			if (b instanceof Goleiro) {
-				continue;
-			}
-			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
-		}
-		bolaCentro();
-	}
-
-	private String obterKey(String value) {
-		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
-			String key = (String) iterator.next();
-			String val = (String) times.get(key);
-			if (value.equals(val)) {
-				return key;
-			}
-		}
-		return null;
+		ControleJogoLivre controleJogoLivre = new ControleJogoLivre(this);
+		controleJogoLivre.iniciaJogoLivre();
 	}
 
 	protected void centralizaBola() {
-		if (bola == null) {
+		if (bola == null || bola.getCentro() == null) {
 			centroCampo();
 			return;
 		}
@@ -369,11 +252,10 @@ public class ControleJogo {
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
-		if (numRecursoes > 11) {
+		if (numRecursoes > 22) {
 			return;
 		}
 		numRecursoes++;
-		Logger.logar("numRecursoes" + numRecursoes);
 		Botao botao = animacao.getObjetoAnimacao();
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
@@ -466,13 +348,13 @@ public class ControleJogo {
 						double detAtingido = trajetoriaBotao.size();
 						if ((botaoAnalisado instanceof Bola)) {
 							Logger.logar("Botão Acerta Bola");
-
-							detAtingido *= 0.7;
+							detAtingido *= (1 - (i / detAtingido));
 						} else {
 							if ((botao instanceof Bola)) {
 								Logger.logar("Bola Acerta Botão");
 								detAtingido *= 0.05;
 							} else {
+								Logger.logar("Teste");
 								detAtingido *= 0.3;
 							}
 
@@ -495,10 +377,14 @@ public class ControleJogo {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
 									.getCentro(), bola.getCentro(), 90);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
+							Logger
+									.logar("Rebatimento de bola em botão (Botao Bola)");
 						} else if ((botaoAnalisado instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
 									botao.getDestino(), 90);
-							dest = Util.inte(trajetoriaBotao.size() * .3);
+							dest = Util.inte(detAtingido / 2);
+							Logger
+									.logar("Rebatimento de bola em botão (BotaoAnalizado Bola)");
 						} else {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
 									.getCentro(), point, 90);
@@ -789,8 +675,88 @@ public class ControleJogo {
 				chutarBola();
 			}
 		});
+
+		JMenuItem limparPerimetro = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("limparPerimetro");
+			}
+		};
+		popup.add(limparPerimetro);
+		limparPerimetro.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				limparPerimetro(pontoBtnDirClicado);
+			}
+		});
+
 		MouseListener popupListener = new PopupListener(popup, this);
 		mesaPanel.addMouseListener(popupListener);
+	}
+
+	protected void limparPerimetro(Point p) {
+		if (p == null) {
+			return;
+		}
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			if (b instanceof Bola || b instanceof Goleiro) {
+				continue;
+			}
+			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
+			if (reta.size() < ConstantesMesa11.PERIMETRO) {
+				posicionaBotaoAleatoriamenteNoSeuCampo(b);
+			}
+		}
+	}
+
+	private void posicionaBotaoAleatoriamenteNoSeuCampo(Botao b) {
+		boolean botaoPosicionado = false;
+		while (!botaoPosicionado) {
+			if (ConstantesMesa11.CAMPO_CIMA == b.getTime().getCampo()) {
+				int valx = Util.intervalo(mesaPanel.getCampoCima().x, mesaPanel
+						.getCampoCima().x
+						+ mesaPanel.getCampoCima().width);
+				int valy = Util.intervalo(mesaPanel.getCampoCima().y, mesaPanel
+						.getCampoCima().y
+						+ mesaPanel.getCampoCima().height);
+				Point point = new Point(valx, valy);
+				if (verificaTemBotao(point)) {
+					continue;
+				}
+				b.setCentro(point);
+				b.setCentroInicio(point);
+				botaoPosicionado = true;
+			} else {
+				int valx = Util.intervalo(mesaPanel.getCampoBaixo().x,
+						mesaPanel.getCampoBaixo().x
+								+ mesaPanel.getCampoCima().width);
+				int valy = Util.intervalo(mesaPanel.getCampoBaixo().y,
+						mesaPanel.getCampoBaixo().y
+								+ mesaPanel.getCampoCima().height);
+				Point point = new Point(valx, valy);
+				if (verificaTemBotao(point)) {
+					continue;
+				}
+				b.setCentro(point);
+				b.setCentroInicio(point);
+				botaoPosicionado = true;
+			}
+		}
+
+	}
+
+	public boolean verificaTemBotao(Point p) {
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
+			if (reta.size() < b.getRaio()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected void soltarBotao() {
@@ -800,6 +766,14 @@ public class ControleJogo {
 			carregaBotao = false;
 		}
 
+	}
+
+	public boolean verificaDentroCampo(Botao botao) {
+		if (mesaPanel == null)
+			return true;
+		return (mesaPanel.getCampoBaixo().intersects(
+				botao.getShape(1).getBounds2D()) || mesaPanel.getCampoCima()
+				.intersects(botao.getShape(1).getBounds2D()));
 	}
 
 	protected void chutarBola() {
@@ -926,11 +900,16 @@ public class ControleJogo {
 		this.numRecursoes = numRecursoes;
 	}
 
-	public boolean verificaDentroCampo(Botao botao) {
-		if (mesaPanel == null)
-			return true;
-		return (mesaPanel.getCampoBaixo().intersects(
-				botao.getShape(1).getBounds2D()) || mesaPanel.getCampoCima()
-				.intersects(botao.getShape(1).getBounds2D()));
+	public JFrame getFrame() {
+		return frame;
 	}
+
+	public Point getPontoBtnDirClicado() {
+		return pontoBtnDirClicado;
+	}
+
+	public void setPontoBtnDirClicado(Point pontoBtnDirClicado) {
+		this.pontoBtnDirClicado = pontoBtnDirClicado;
+	}
+
 }
