@@ -26,12 +26,12 @@ import br.nnpe.Logger;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 
-public class ControleJogoLivre {
+public class GenrenciadorBotoes {
 
 	private ControleJogo controleJogo;
 	private Hashtable times;
 
-	public ControleJogoLivre(ControleJogo controleJogo) {
+	public GenrenciadorBotoes(ControleJogo controleJogo) {
 		super();
 		this.controleJogo = controleJogo;
 		final Properties properties = new Properties();

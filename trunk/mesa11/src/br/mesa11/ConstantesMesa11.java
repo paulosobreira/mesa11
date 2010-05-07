@@ -66,4 +66,8 @@ public class ConstantesMesa11 {
 	public static final String D_27 = "27";
 
 	public static final int PERIMETRO = 400;
+
+	public static final int DIAMENTRO_BOTAO = 128;
+
+	public static final int RAIO_BOTAO = DIAMENTRO_BOTAO / 2;
 }
