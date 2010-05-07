@@ -31,7 +31,7 @@ public class MesaMouseListener implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		if (controleJogo.isAnimando() || controleJogo.getPontoClicado() == null
 				&& controleJogo.getPontoPasando() == null
-				|| (MouseEvent.BUTTON1 != e.getButton())) {
+				|| (MouseEvent.BUTTON1 != e.getButton()) || botoes == null) {
 			controleJogo.setPontoClicado(null);
 			return;
 		}
@@ -57,6 +57,9 @@ public class MesaMouseListener implements MouseListener {
 					controleJogo.setPontoClicado(null);
 					return;
 				}
+			}
+			if (botao.getCentro() == null) {
+				continue;
 			}
 			List raioPonto = GeoUtil.drawBresenhamLine(p1, botao.getCentro());
 			if (raioPonto.size() <= botao.getRaio()) {

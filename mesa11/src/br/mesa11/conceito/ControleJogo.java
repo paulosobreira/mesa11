@@ -349,6 +349,8 @@ public class ControleJogo {
 						if ((botaoAnalisado instanceof Bola)) {
 							Logger.logar("Botão Acerta Bola");
 							detAtingido *= (1 - (i / detAtingido));
+							Logger.logar("Botão Acerta Bola detAtingido="
+									+ detAtingido);
 						} else {
 							if ((botao instanceof Bola)) {
 								Logger.logar("Bola Acerta Botão");
@@ -378,13 +380,15 @@ public class ControleJogo {
 									.getCentro(), bola.getCentro(), 90);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
 							Logger
-									.logar("Rebatimento de bola em botão (Botao Bola)");
+									.logar("Rebatimento de bola em botão (Botao Bola) dest="
+											+ dest);
 						} else if ((botaoAnalisado instanceof Bola)) {
 							angulo = GeoUtil.calculaAngulo(botao.getCentro(),
 									botao.getDestino(), 90);
-							dest = Util.inte(detAtingido / 2);
+							dest = Util.inte(detAtingido * .4);
 							Logger
-									.logar("Rebatimento de bola em botão (BotaoAnalizado Bola)");
+									.logar("Rebatimento de bola em botão (BotaoAnalizado Bola) dest="
+											+ dest);
 						} else {
 							angulo = GeoUtil.calculaAngulo(botaoAnalisado
 									.getCentro(), point, 90);
