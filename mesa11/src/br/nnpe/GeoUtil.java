@@ -131,19 +131,19 @@ public class GeoUtil {
 		int dy = b.y - a.y;
 		// double tan = Math.atan((double) dy / dx);
 		double tan = Math.atan2(dy, dx);
-		//Logger.logar("Tangete" + tan);
+		// Logger.logar("Tangete" + tan);
 		// return tan;
 		return tan;
 		// 2 quadrantes, -pi/2 até pi/2
 		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
 	}
-	
+
 	public static double calculaAngulo(Point a, Point b, double fator) {
 		int dx = b.x - a.x;
 		int dy = b.y - a.y;
 		// double tan = Math.atan((double) dy / dx);
 		double tan = Math.atan2(dy, dx);
-		//Logger.logar("Tangete" + tan);
+		// Logger.logar("Tangete" + tan);
 		// return tan;
 		return Math.toDegrees(tan) + fator;
 		// 2 quadrantes, -pi/2 até pi/2
@@ -191,15 +191,20 @@ public class GeoUtil {
 		List points = new ArrayList();
 		for (int x = 0; x <= (int) raio / Math.sqrt(2); x++) {
 			int y = (int) Math.sqrt(Math.pow(raio, 2) - Math.pow(x, 2));
-			points.add(new Point(y + centerY, -x + centerX));
-			points.add(new Point(-y + centerY, x + centerX));
 			points.add(new Point(x + centerX, -y + centerY));
 			points.add(new Point(-x + centerX, -y + centerY));
 			points.add(new Point(x + centerX, y + centerY));
 			points.add(new Point(-x + centerX, y + centerY));
-			points.add(new Point(y + centerY, x + centerX));
-			points.add(new Point(-y + centerY, -x + centerX));
 		}
+
+		for (int y = 0; y <= (int) raio / Math.sqrt(2); y++) {
+			int x = (int) Math.sqrt(Math.pow(raio, 2) - Math.pow(y, 2));
+			points.add(new Point(x + centerX, -y + centerY));
+			points.add(new Point(-x + centerX, -y + centerY));
+			points.add(new Point(x + centerX, y + centerY));
+			points.add(new Point(-x + centerX, y + centerY));
+		}
+
 		return points;
 	}
 

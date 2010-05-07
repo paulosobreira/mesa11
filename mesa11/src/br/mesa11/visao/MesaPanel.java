@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
@@ -243,7 +244,25 @@ public class MesaPanel extends JPanel {
 		// g2d.drawLine(ori.x, ori.y, des.x, des.y);
 		//
 		// }
+		desennhaCirculo(g2d);
 
+	}
+
+	private void desennhaCirculo(Graphics g2d) {
+		if (controleJogo.getPontoBtnDirClicado() != null) {
+			List l = GeoUtil.drawCircle(Util.inte(controleJogo
+					.getPontoBtnDirClicado().x
+					* zoom), Util.inte(controleJogo.getPontoBtnDirClicado().y
+					* zoom), Util.inte(ConstantesMesa11.PERIMETRO * zoom));
+			g2d.fillOval(Util.inte(controleJogo.getPontoBtnDirClicado().x
+					* zoom), Util.inte(controleJogo.getPontoBtnDirClicado().y
+					* zoom), 2, 2);
+			g2d.setColor(Color.BLACK);
+			for (Iterator iterator = l.iterator(); iterator.hasNext();) {
+				Point p = (Point) iterator.next();
+				g2d.fillOval(p.x, p.y, 2, 2);
+			}
+		}
 	}
 
 	@Override
@@ -253,7 +272,7 @@ public class MesaPanel extends JPanel {
 
 	private void simulaRota(Graphics2D g2d) {
 		if (controleJogo.getPontoClicado() != null
-				&& controleJogo.getPontoPasando() != null) {
+				&& controleJogo.getPontoPasando() != null && botoes != null) {
 			g2d.setColor(Color.BLACK);
 			Point p0 = (Point) controleJogo.getPontoClicado();
 			Point pAtual = (Point) controleJogo.getPontoPasando();
@@ -261,6 +280,9 @@ public class MesaPanel extends JPanel {
 					.hasNext();) {
 				Long id = (Long) iterator.next();
 				Botao botao = (Botao) botoes.get(id);
+				if (botao == null || botao.getCentro() == null) {
+					continue;
+				}
 				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
 						.getCentro());
 				if (raioPonto.size() <= botao.getRaio()) {

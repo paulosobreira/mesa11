@@ -12,6 +12,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -182,7 +184,7 @@ public class ControleJogo {
 	}
 
 	public void iniciaJogoLivre() {
-		ControleJogoLivre controleJogoLivre = new ControleJogoLivre(this);
+		GenrenciadorBotoes controleJogoLivre = new GenrenciadorBotoes(this);
 		controleJogoLivre.iniciaJogoLivre();
 	}
 
@@ -688,6 +690,20 @@ public class ControleJogo {
 			}
 		});
 
+		JMenuItem limparPerimetroCirculo = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("limparPerimetroCirculo");
+			}
+		};
+		popup.add(limparPerimetroCirculo);
+		limparPerimetroCirculo.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				limparPerimetroCirculo(pontoBtnDirClicado);
+			}
+		});
+
 		MouseListener popupListener = new PopupListener(popup, this);
 		mesaPanel.addMouseListener(popupListener);
 	}
@@ -709,10 +725,53 @@ public class ControleJogo {
 		}
 	}
 
+	protected void limparPerimetroCirculo(Point p) {
+		if (p == null) {
+			return;
+		}
+		List circulo = GeoUtil.drawCircle(p.x, p.y, ConstantesMesa11.PERIMETRO);
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			if (b instanceof Bola || b instanceof Goleiro) {
+				continue;
+			}
+			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
+			if (reta.size() < ConstantesMesa11.PERIMETRO) {
+				boolean botaoPosicionado = false;
+				int cont = 0;
+				while (!botaoPosicionado) {
+					cont++;
+					if (cont > 100) {
+						Logger
+								.logar("limparPerimetroCirculo - posicionaBotaoAleatoriamenteNoSeuCampo");
+						posicionaBotaoAleatoriamenteNoSeuCampo(b);
+						botaoPosicionado = true;
+					}
+
+					Point point = (Point) circulo.get(Util.intervalo(0, circulo
+							.size() - 1));
+					if (!mesaPanel.getCampoBaixo().contains(point)
+							&& !mesaPanel.getCampoCima().contains(point)) {
+						continue;
+					}
+					if (verificaTemBotao(point)) {
+						continue;
+					}
+
+					b.setCentroTodos(point);
+					botaoPosicionado = true;
+				}
+			}
+		}
+	}
+
 	private void posicionaBotaoAleatoriamenteNoSeuCampo(Botao b) {
 		boolean botaoPosicionado = false;
+
 		while (!botaoPosicionado) {
 			if (ConstantesMesa11.CAMPO_CIMA == b.getTime().getCampo()) {
+
 				int valx = Util.intervalo(mesaPanel.getCampoCima().x, mesaPanel
 						.getCampoCima().x
 						+ mesaPanel.getCampoCima().width);
@@ -723,8 +782,7 @@ public class ControleJogo {
 				if (verificaTemBotao(point)) {
 					continue;
 				}
-				b.setCentro(point);
-				b.setCentroInicio(point);
+				b.setCentroTodos(point);
 				botaoPosicionado = true;
 			} else {
 				int valx = Util.intervalo(mesaPanel.getCampoBaixo().x,
@@ -737,8 +795,7 @@ public class ControleJogo {
 				if (verificaTemBotao(point)) {
 					continue;
 				}
-				b.setCentro(point);
-				b.setCentroInicio(point);
+				b.setCentroTodos(point);
 				botaoPosicionado = true;
 			}
 		}
@@ -746,11 +803,22 @@ public class ControleJogo {
 	}
 
 	public boolean verificaTemBotao(Point p) {
+		return verificaTemBotao(p, null);
+	}
+
+	public boolean verificaTemBotao(Point p, Botao exceto) {
+		Rectangle2D rectangle2d = new Rectangle2D.Double(p.x
+				- ConstantesMesa11.RAIO_BOTAO, p.y
+				- ConstantesMesa11.RAIO_BOTAO,
+				ConstantesMesa11.DIAMENTRO_BOTAO,
+				ConstantesMesa11.DIAMENTRO_BOTAO);
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao b = (Botao) botoes.get(id);
-			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
-			if (reta.size() < b.getRaio()) {
+			if (exceto != null && exceto.equals(b)) {
+				continue;
+			}
+			if (b.getShape(1).intersects(rectangle2d)) {
 				return true;
 			}
 		}
@@ -759,6 +827,9 @@ public class ControleJogo {
 
 	protected void soltarBotao() {
 		if (botaoSelecionado != null) {
+			if (verificaTemBotao(botaoSelecionado.getCentro(), botaoSelecionado)) {
+				return;
+			}
 			botaoSelecionado.setCentroInicio(botaoSelecionado.getCentro());
 			botaoSelecionado = null;
 			carregaBotao = false;
@@ -803,7 +874,6 @@ public class ControleJogo {
 	public void setBotaoSelecionado(Botao botaoSelecionado) {
 		this.botaoSelecionado = botaoSelecionado;
 	}
-
 
 	public JScrollPane getScrollPane() {
 		return scrollPane;

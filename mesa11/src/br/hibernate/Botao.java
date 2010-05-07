@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 
@@ -16,7 +17,7 @@ public class Botao extends Mesa11Dados {
 
 	private BufferedImage imgBotao;
 
-	private int diamentro = 128;
+	private int diamentro = ConstantesMesa11.DIAMENTRO_BOTAO;
 	private Point position;
 	private Point centroInicio;
 	private Point destino;
@@ -79,6 +80,11 @@ public class Botao extends Mesa11Dados {
 	public void setCentro(Point p) {
 		position = new Point(p.x - (getDiamentro() / 2), p.y
 				- (getDiamentro() / 2));
+	}
+
+	public void setCentroTodos(Point p) {
+		setCentro(p);
+		setCentroInicio(p);
 	}
 
 	public int getDiamentro() {
