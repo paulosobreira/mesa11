@@ -29,13 +29,13 @@ public class AtualizadorVisual implements Runnable {
 					controleJogo.setVelhoPontoTela(controleJogo
 							.getNovoPontoTela());
 				}
-//				SwingUtilities.invokeLater(new Runnable() {
-//					@Override
-//					public void run() {
-//						mesaPanel.repaint();
-//					}
-//				});
-				mesaPanel.repaint();
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						mesaPanel.repaint();
+					}
+				});
+				// mesaPanel.repaint();
 				try {
 					if (controleJogo.isAnimando())
 						Thread.sleep(contAnimando);
