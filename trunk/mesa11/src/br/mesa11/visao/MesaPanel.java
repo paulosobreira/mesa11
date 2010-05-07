@@ -182,6 +182,34 @@ public class MesaPanel extends JPanel {
 
 	}
 
+	// @Override
+	// public void paint(Graphics g) {
+	// try {
+	// super.paint(g);
+	// } catch (Exception e) {
+	// System.out.println("peguei");
+	// }
+	//
+	// }
+
+	@Override
+	public void paintImmediately(int x, int y, int w, int h) {
+		try {
+			super.paintImmediately(x, y, w, h);
+		} catch (Exception e) {
+			System.out.println("peguei1");
+		}
+	}
+
+	@Override
+	public void paintImmediately(Rectangle r) {
+		try {
+			super.paintImmediately(r);
+		} catch (Exception e) {
+			System.out.println("peguei2");
+		}
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
