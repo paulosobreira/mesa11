@@ -197,7 +197,9 @@ public class MesaPanel extends JPanel {
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
-		desenhaCampo(g2d);
+		synchronized (zero) {
+			desenhaCampo(g2d);
+		}
 		desengaGol(g2d);
 		desenhaFiguras(g2d);
 		if (botoes != null) {
@@ -217,9 +219,9 @@ public class MesaPanel extends JPanel {
 				// }
 				if (botao instanceof Goleiro) {
 					Goleiro goleiro = (Goleiro) botao;
-					desenhaGoleiro(goleiro, g);
+					desenhaGoleiro(goleiro, g2d);
 				} else {
-					desenhaBotao(botao, g);
+					desenhaBotao(botao, g2d);
 				}
 				// g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
 				// .getPosition().y * ZOOM),
@@ -227,7 +229,7 @@ public class MesaPanel extends JPanel {
 				// .getDiamentro() * ZOOM));
 
 			}
-			desenhaBotao((Botao) botoes.get(new Long(0)), g);
+			desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
 		}
 		simulaRota(g2d);
 		// Graphics2D g2d = (Graphics2D) g;
@@ -263,11 +265,6 @@ public class MesaPanel extends JPanel {
 				g2d.fillOval(p.x, p.y, 2, 2);
 			}
 		}
-	}
-
-	@Override
-	public boolean isOptimizedDrawingEnabled() {
-		return true;
 	}
 
 	private void simulaRota(Graphics2D g2d) {
@@ -306,6 +303,7 @@ public class MesaPanel extends JPanel {
 			}
 
 		}
+
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {
