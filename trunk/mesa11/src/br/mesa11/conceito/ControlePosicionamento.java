@@ -12,6 +12,7 @@ import br.nnpe.Util;
 public class ControlePosicionamento {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
+	
 	private Map botoes;
 
 	public ControlePosicionamento(ControleJogo controleJogo) {

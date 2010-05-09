@@ -70,6 +70,7 @@ public class ControleJogo {
 	private boolean chutaBola;
 	private boolean telaAtualizando = true;
 	private int numRecursoes;
+	private ControlePartida controlePartida;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -184,8 +185,8 @@ public class ControleJogo {
 	}
 
 	public void iniciaJogoLivre() {
-		GenrenciadorBotoes controleJogoLivre = new GenrenciadorBotoes(this);
-		controleJogoLivre.iniciaJogoLivre();
+		controlePartida = new ControlePartida(this);
+		controlePartida.iniciaJogoLivre();
 	}
 
 	protected void centralizaBola() {
@@ -975,6 +976,20 @@ public class ControleJogo {
 
 	public void setPontoBtnDirClicado(Point pontoBtnDirClicado) {
 		this.pontoBtnDirClicado = pontoBtnDirClicado;
+	}
+
+	public String tempoJogoFormatado() {
+		if (controlePartida == null) {
+			return "";
+		}
+		return controlePartida.tempoJogoFormatado();
+	}
+
+	public String tempoRestanteJogoFormatado() {
+		if (controlePartida == null) {
+			return "";
+		}
+		return controlePartida.tempoRestanteJogoFormatado();
 	}
 
 }
