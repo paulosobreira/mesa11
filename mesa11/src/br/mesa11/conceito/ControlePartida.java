@@ -1,7 +1,10 @@
 package br.mesa11.conceito;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -23,15 +26,20 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 
-public class GenrenciadorBotoes {
+public class ControlePartida {
 
 	private ControleJogo controleJogo;
+	private int tempoJogoMinutos;
 	private Hashtable times;
+	private int tempoJogoMilis;
+	private long inicioJogoMilis;
+	private long fimJogoMilis;
 
-	public GenrenciadorBotoes(ControleJogo controleJogo) {
+	public ControlePartida(ControleJogo controleJogo) {
 		super();
 		this.controleJogo = controleJogo;
 		final Properties properties = new Properties();
@@ -68,7 +76,13 @@ public class GenrenciadorBotoes {
 			timesCima.addItem(times.get(key));
 			timesBaixo.addItem(times.get(key));
 		}
-		escolhaTimesPanel.setBorder(new TitledBorder("baterCentro"));
+		escolhaTimesPanel.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				// TODO Auto-generated method stub
+				return Lang.msg("baterCentro");
+			}
+		});
 		escolhaTimesPanel.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -97,14 +111,33 @@ public class GenrenciadorBotoes {
 			}
 		});
 		escolhaTimesPanel.add(bolaBaixo);
+
+		JPanel tempoJogoPanel = new JPanel();
+		tempoJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("tempoJogoMinutos");
+			}
+		});
+		JComboBox tempoJogoCombo = new JComboBox();
+		tempoJogoCombo.addItem(new Integer(10));
+		tempoJogoCombo.addItem(new Integer(20));
+		tempoJogoCombo.addItem(new Integer(30));
+		tempoJogoPanel.add(tempoJogoCombo);
+
 		JFrame frame = controleJogo.getFrame();
 		Map botoes = controleJogo.getBotoes();
-		int val = JOptionPane.showConfirmDialog(frame, escolhaTimesPanel, Lang
+		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
+		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
+		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.SOUTH);
+
+		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
 				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
 			return;
 		}
+		processaTempoJogo(tempoJogoCombo.getSelectedItem());
 		Time timeCima = new Time();
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		for (int i = 0; i < 10; i++) {
@@ -151,6 +184,29 @@ public class GenrenciadorBotoes {
 		controleJogo.bolaCentro();
 	}
 
+	private void processaTempoJogo(Object selectedItem) {
+		tempoJogoMinutos = (Integer) selectedItem;
+		tempoJogoMilis = tempoJogoMinutos * 60 * 1000;
+		inicioJogoMilis = System.currentTimeMillis();
+		fimJogoMilis = inicioJogoMilis + tempoJogoMilis;
+		Logger.logar("Inicio Jogo " + df.format(inicioJogoMilis));
+		Logger.logar("Tempo Jogo " + formatarTempo(tempoJogoMilis));
+		Logger.logar("Fim Jogo " + df.format(fimJogoMilis));
+	}
+
+	private static DecimalFormat dez = new DecimalFormat("00");
+	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+	public static String formatarTempo(long fullnum) {
+
+		long minu = (fullnum / 60000);
+		long seg = ((fullnum - (minu * 60000)) / 1000);
+		if (minu > 0)
+			return (minu) + ":" + dez.format(Math.abs(seg));
+		else
+			return seg + "";
+	}
+
 	private String obterKey(String value) {
 		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();
@@ -160,6 +216,14 @@ public class GenrenciadorBotoes {
 			}
 		}
 		return null;
+	}
+
+	public String tempoJogoFormatado() {
+		return formatarTempo(tempoJogoMilis);
+	}
+
+	public String tempoRestanteJogoFormatado() {
+		return formatarTempo(fimJogoMilis - System.currentTimeMillis());
 	}
 
 }

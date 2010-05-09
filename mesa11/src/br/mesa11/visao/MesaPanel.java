@@ -275,6 +275,16 @@ public class MesaPanel extends JPanel {
 		//
 		// }
 		desennhaCirculo(g2d);
+		desenhaInfoJogo(g2d);
+	}
+
+	private void desenhaInfoJogo(Graphics2D g2d) {
+		int x = limitesViewPort.getBounds().x
+				+ (limitesViewPort.getBounds().width - 100);
+		int y = limitesViewPort.getBounds().y + 20;
+		g2d.drawString(controleJogo.tempoJogoFormatado(), x, y);
+		y += 50;
+		g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
 
 	}
 
