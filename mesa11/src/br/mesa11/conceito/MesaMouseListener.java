@@ -46,6 +46,9 @@ public class MesaMouseListener implements MouseListener {
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p1)) {
+					if (!controleJogo.veririficaVez(goleiro)) {
+						return;
+					}
 					List retaGoleiro = GeoUtil.drawBresenhamLine(goleiro
 							.getCentro(), p1);
 					if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
@@ -63,6 +66,10 @@ public class MesaMouseListener implements MouseListener {
 			}
 			List raioPonto = GeoUtil.drawBresenhamLine(p1, botao.getCentro());
 			if (raioPonto.size() <= botao.getRaio()) {
+				if (!controleJogo.veririficaVez(botao)) {
+					controleJogo.setPontoClicado(null);
+					return;
+				}
 				if (botao instanceof Bola) {
 					return;
 				}
@@ -106,6 +113,7 @@ public class MesaMouseListener implements MouseListener {
 		thread.start();
 		controleJogo.setAnimando(true);
 		controleJogo.setPontoClicado(null);
+		controleJogo.processaJogada();
 	}
 
 	@Override

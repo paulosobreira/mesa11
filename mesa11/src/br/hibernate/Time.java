@@ -5,15 +5,15 @@ import java.util.List;
 
 public class Time {
 
-	private int campo;
+	private String campo;
 	private List botoes = new ArrayList();
 	private String nome;
 
-	public int getCampo() {
+	public String getCampo() {
 		return campo;
 	}
 
-	public void setCampo(int campo) {
+	public void setCampo(String campo) {
 		this.campo = campo;
 	}
 
@@ -33,4 +33,8 @@ public class Time {
 		this.nome = nome;
 	}
 
+	@Override
+	public String toString() {
+		return " Nome: " + nome + " Campo: " + campo;
+	}
 }

@@ -280,11 +280,16 @@ public class MesaPanel extends JPanel {
 
 	private void desenhaInfoJogo(Graphics2D g2d) {
 		int x = limitesViewPort.getBounds().x
-				+ (limitesViewPort.getBounds().width - 100);
+				+ (limitesViewPort.getBounds().width - 150);
 		int y = limitesViewPort.getBounds().y + 20;
 		g2d.drawString(controleJogo.tempoJogoFormatado(), x, y);
-		y += 50;
+		y += 20;
 		g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
+		y += 20;
+		g2d.drawString(controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
+		y += 20;
+		g2d.drawString(controleJogo.timeJogadaVez(), x, y);
+
 
 	}
 
