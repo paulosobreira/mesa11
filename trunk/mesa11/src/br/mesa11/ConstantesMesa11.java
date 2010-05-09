@@ -5,9 +5,9 @@ public class ConstantesMesa11 {
 	public static boolean debug = true;
 	public static boolean modoZip = true;
 
-	public static int CAMPO_CIMA = 1;
+	public static String CAMPO_CIMA = "CAMPO_CIMA";
 
-	public static int CAMPO_BAIXO = 2;
+	public static String CAMPO_BAIXO = "CAMPO_BAIXO";
 
 	public static final String LOGAR = "01";
 

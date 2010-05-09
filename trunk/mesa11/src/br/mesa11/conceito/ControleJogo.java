@@ -992,4 +992,27 @@ public class ControleJogo {
 		return controlePartida.tempoRestanteJogoFormatado();
 	}
 
+	public String tempoJogadaRestanteJogoFormatado() {
+		if (controlePartida == null) {
+			return "";
+		}
+		return controlePartida.tempoJogadaRestanteJogoFormatado();
+	}
+
+	public void processaJogada() {
+		controlePartida.zerarTimerJogada();
+
+	}
+
+	public boolean veririficaVez(Botao b) {
+		return controlePartida.veririficaVez(b);
+	}
+
+	public String timeJogadaVez() {
+		if (controlePartida == null) {
+			return "";
+		}
+		return controlePartida.timeJogadaVez();
+	}
+
 }
