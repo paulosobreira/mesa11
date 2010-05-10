@@ -71,6 +71,7 @@ public class ControleJogo {
 	private boolean telaAtualizando = true;
 	private int numRecursoes;
 	private ControlePartida controlePartida;
+	private Evento eventoAtual;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -289,6 +290,9 @@ public class ControleJogo {
 							else {
 								rebatimentoBola *= .5;
 							}
+							eventoAtual.setPonto(point);
+							eventoAtual
+									.setEventoCod(ConstantesMesa11.GOLEIRO_DEFESA);
 						}
 
 						while (i < trajetoriaBotao.size()) {
@@ -337,7 +341,17 @@ public class ControleJogo {
 							botaoAnalisado.getCentro());
 					if ((raioPonto.size() - (botao.getRaio())) <= (botaoAnalisado
 							.getRaio())) {
-
+						if ((botao instanceof Bola)) {
+							eventoAtual.setPonto(point);
+							eventoAtual.setUltimoContatoBola(botao);
+							eventoAtual
+									.setEventoCod(ConstantesMesa11.CONTOATO_BOLA_JOGADOR);
+						} else {
+							eventoAtual.setPonto(point);
+							eventoAtual.setUltimoContatoBola(botaoAnalisado);
+							eventoAtual
+									.setEventoCod(ConstantesMesa11.CONTOATO_BOLA_JOGADOR);
+						}
 						if ((botao instanceof Bola) && Math.random() > .8) {
 							Logger.logar("Passou pelo jogador");
 							bolaIngnora.add(botaoAnalisado);
@@ -1013,6 +1027,14 @@ public class ControleJogo {
 			return "";
 		}
 		return controlePartida.timeJogadaVez();
+	}
+
+	public Evento getEventoAtual() {
+		return eventoAtual;
+	}
+
+	public void setEventoAtual(Evento eventoAutal) {
+		this.eventoAtual = eventoAutal;
 	}
 
 }
