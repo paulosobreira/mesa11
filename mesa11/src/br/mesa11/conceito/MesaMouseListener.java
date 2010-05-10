@@ -10,6 +10,7 @@ import java.util.Map;
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
@@ -35,7 +36,7 @@ public class MesaMouseListener implements MouseListener {
 			controleJogo.setPontoClicado(null);
 			return;
 		}
-
+		Evento evento = new Evento();
 		Point p1 = controleJogo.getPontoClicado();
 		Point p2 = controleJogo.getPontoPasando();
 		List reta = GeoUtil.drawBresenhamLine(p1, p2);
@@ -54,8 +55,12 @@ public class MesaMouseListener implements MouseListener {
 					if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
 						goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
 								.getCentro(), p2, 0));
+						evento.setPonto(p2);
+						evento.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
 					} else {
 						goleiro.setCentro(p2);
+						evento.setPonto(p2);
+						evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
 					}
 					controleJogo.setPontoClicado(null);
 					return;
@@ -87,6 +92,9 @@ public class MesaMouseListener implements MouseListener {
 				Point destino = GeoUtil.calculaPonto(angulo, Util.inte(reta
 						.size() * 10), botao.getCentro());
 				botao.setDestino(destino);
+				evento.setPonto(p1);
+				evento.setEventoCod(ConstantesMesa11.PALHETADA);
+				controleJogo.setEventoAtual(evento);
 				animacao = new Animacao();
 				animacao.setObjetoAnimacao(botao);
 				animacao.setPontosAnimacao(botao.getTrajetoria());
