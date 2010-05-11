@@ -70,9 +70,11 @@ public class ConstantesMesa11 {
 	public static final int DIAMENTRO_BOTAO = 128;
 
 	public static final int RAIO_BOTAO = DIAMENTRO_BOTAO / 2;
-	public static final String GOLEIRO_ROTACAO = null;
-	public static final String GOLEIRO_MOVEU = null;
-	public static final String PALHETADA = null;
-	public static final String GOLEIRO_DEFESA = null;
-	public static final String CONTOATO_BOLA_JOGADOR = null;
+	public static final String GOLEIRO_ROTACAO = "GOLEIRO_ROTACAO";
+	public static final String GOLEIRO_MOVEU = "GOLEIRO_MOVEU";
+	public static final String GOLEIRO_DEFESA = "GOLEIRO_DEFESA";
+	public static final String CONTATO_BOTAO_BOLA = "CONTATO_BOTAO_BOLA";
+	public static final String CONTATO_BOTAO_BOTAO = "CONTATO_BOTAO_BOTAO";
+	public static final String LATERAL = "LATERAL";
+	public static final String CONTATO_BOLA_BOTAO = "CONTATO_BOLA_BOTAO";
 }

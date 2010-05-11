@@ -93,12 +93,12 @@ public class MesaMouseListener implements MouseListener {
 						.size() * 10), botao.getCentro());
 				botao.setDestino(destino);
 				evento.setPonto(p1);
-				evento.setEventoCod(ConstantesMesa11.PALHETADA);
-				controleJogo.setEventoAtual(evento);
+				evento.setBotaoEvento(botao);
 				animacao = new Animacao();
 				animacao.setObjetoAnimacao(botao);
 				animacao.setPontosAnimacao(botao.getTrajetoria());
 				controleJogo.setNumRecursoes(0);
+				controleJogo.setEventoAtual(evento);
 				controleJogo.propagaColisao(animacao, botao);
 				break;
 			}
@@ -119,9 +119,11 @@ public class MesaMouseListener implements MouseListener {
 		controleJogo.getBotoesComThread().put(animacao.getObjetoAnimacao(),
 				thread);
 		thread.start();
-		controleJogo.setAnimando(true);
 		controleJogo.setPontoClicado(null);
 		controleJogo.processaJogada();
+		Thread threadEventos = new Thread(new ControleEvento(controleJogo));
+		threadEventos.start();
+
 	}
 
 	@Override

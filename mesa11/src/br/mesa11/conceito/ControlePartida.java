@@ -158,6 +158,7 @@ public class ControlePartida {
 		}
 		processaTempoJogo(tempoJogoCombo.getSelectedItem());
 		timeCima = new Time();
+		timeCima.setId(1);
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		timeCima.setNome((String) timesCima.getSelectedItem());
 		for (int i = 0; i < 10; i++) {
@@ -174,6 +175,7 @@ public class ControlePartida {
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 
 		timeBaixo = new Time();
+		timeBaixo.setId(2);
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 		timeBaixo.setNome((String) timesBaixo.getSelectedItem());
 		for (int i = 0; i < 10; i++) {
@@ -302,6 +304,36 @@ public class ControlePartida {
 		}
 		return timeCima.getCampo().equals(campoTimeComBola) ? timeCima
 				.getNome() : timeBaixo.getNome();
+	}
+
+	public void reversaoJogada() {
+		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
+				: ConstantesMesa11.CAMPO_BAIXO);
+		Logger.logar("reversaoJogada");
+		zerarTimerJogada();
+	}
+
+	public void zeraJogadaTime(Time time) {
+		campoTimeComBola = time.getCampo();
+		Logger.logar("zeraJogadaTime");
+		zerarTimerJogada();
+
+	}
+
+	public Time getTimeCima() {
+		return timeCima;
+	}
+
+	public void setTimeCima(Time timeCima) {
+		this.timeCima = timeCima;
+	}
+
+	public Time getTimeBaixo() {
+		return timeBaixo;
+	}
+
+	public void setTimeBaixo(Time timeBaixo) {
+		this.timeBaixo = timeBaixo;
 	}
 
 }
