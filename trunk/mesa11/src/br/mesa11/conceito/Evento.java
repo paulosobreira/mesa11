@@ -3,14 +3,28 @@ package br.mesa11.conceito;
 import java.awt.Point;
 
 import br.hibernate.Botao;
+import br.mesa11.ConstantesMesa11;
+import br.nnpe.Logger;
 
 public class Evento {
 
 	private Point ponto;
 
-	private Botao ultimoContatoBola;
+	private Botao ultimoContato;
+
+	private Botao botaoEvento;
 
 	private String eventoCod;
+
+	private boolean naBola;
+
+	public Botao getBotaoEvento() {
+		return botaoEvento;
+	}
+
+	public void setBotaoEvento(Botao botaoEvento) {
+		this.botaoEvento = botaoEvento;
+	}
 
 	public Point getPonto() {
 		return ponto;
@@ -20,20 +34,46 @@ public class Evento {
 		this.ponto = ponto;
 	}
 
-	public Botao getUltimoContatoBola() {
-		return ultimoContatoBola;
+	public Botao getUltimoContato() {
+		return ultimoContato;
 	}
 
-	public void setUltimoContatoBola(Botao ultimoContatoBola) {
-		this.ultimoContatoBola = ultimoContatoBola;
+	public void setUltimoContato(Botao ultimoContato) {
+		this.ultimoContato = ultimoContato;
 	}
 
 	public String getEventoCod() {
 		return eventoCod;
 	}
 
-	public void setEventoCod(String eventoCod) {
-		this.eventoCod = eventoCod;
+	public boolean isNaBola() {
+		return naBola;
+	}
+
+	public void setNaBola(boolean naBola) {
+		this.naBola = naBola;
+	}
+
+	@Override
+	public String toString() {
+		return "Evento :" + eventoCod + " " + ultimoContato + " " + naBola
+				+ " Btn Evt" + botaoEvento;
+	}
+
+	public void setEventoCod(String eCod) {
+		Logger.logar("setEventoCod" + eventoCod);
+		if (ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(eCod)
+				&& eventoCod != null) {
+			return;
+		}
+		if (ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(eCod)
+				&& eventoCod == null) {
+			naBola = true;
+		}
+		if (naBola && ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(eCod)) {
+			return;
+		}
+		this.eventoCod = eCod;
 	}
 
 }

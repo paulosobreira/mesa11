@@ -46,6 +46,10 @@ public abstract class Mesa11Dados implements Serializable {
 		this.id = id;
 	}
 
+	public void setId(int id) {
+		this.id = new Long(id);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (!(obj instanceof Mesa11Dados)) {

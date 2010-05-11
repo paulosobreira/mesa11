@@ -61,7 +61,6 @@ public class ControleJogo {
 	private Point novoPontoTela;
 	private Point lateral;
 	private JFrame frame;
-	private boolean animando;
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
 	private Point pontoBtnDirClicado;
@@ -330,27 +329,17 @@ public class ControleJogo {
 					if (!verificaDentroCampo(botaoAnalisado)) {
 						continue;
 					}
-					if ((botao instanceof Bola && bolaIngnora
-							.contains(botaoAnalisado))
-							|| (botaoAnalisado instanceof Bola && bolaIngnora
-									.contains(botao))) {
-						continue;
-					}
 
 					List raioPonto = GeoUtil.drawBresenhamLine(point,
 							botaoAnalisado.getCentro());
 					if ((raioPonto.size() - (botao.getRaio())) <= (botaoAnalisado
 							.getRaio())) {
-						if ((botao instanceof Bola)) {
-							eventoAtual.setPonto(point);
-							eventoAtual.setUltimoContatoBola(botao);
-							eventoAtual
-									.setEventoCod(ConstantesMesa11.CONTOATO_BOLA_JOGADOR);
-						} else {
-							eventoAtual.setPonto(point);
-							eventoAtual.setUltimoContatoBola(botaoAnalisado);
-							eventoAtual
-									.setEventoCod(ConstantesMesa11.CONTOATO_BOLA_JOGADOR);
+						if ((botao instanceof Bola && bolaIngnora
+								.contains(botaoAnalisado))
+								|| (botaoAnalisado instanceof Bola && bolaIngnora
+										.contains(botao))) {
+							eventoAtual.setUltimoContato(botaoAnalisado);
+							continue;
 						}
 						if ((botao instanceof Bola) && Math.random() > .8) {
 							Logger.logar("Passou pelo jogador");
@@ -362,13 +351,22 @@ public class ControleJogo {
 						Point destino = null;
 						double detAtingido = trajetoriaBotao.size();
 						if ((botaoAnalisado instanceof Bola)) {
+							eventoAtual.setPonto(point);
+							eventoAtual.setUltimoContato(botao);
+							eventoAtual
+									.setEventoCod(ConstantesMesa11.CONTATO_BOTAO_BOLA);
 							Logger.logar("Botão Acerta Bola");
 							detAtingido *= (1 - (i / detAtingido));
+							bolaIngnora.add(botao);
 							Logger.logar("Botão Acerta Bola detAtingido="
 									+ detAtingido);
 						} else {
 							if ((botao instanceof Bola)) {
 								Logger.logar("Bola Acerta Botão");
+								eventoAtual.setPonto(point);
+								eventoAtual.setUltimoContato(botaoAnalisado);
+								eventoAtual
+										.setEventoCod(ConstantesMesa11.CONTATO_BOTAO_BOLA);
 								detAtingido *= 0.05;
 							} else {
 								Logger.logar("Teste");
@@ -409,6 +407,12 @@ public class ControleJogo {
 									.getCentro(), point, 90);
 							dest = Util.inte(trajetoriaBotao.size() * .1);
 							Logger.logar("Botão Com Botão");
+							if (!eventoAtual.isNaBola()) {
+								eventoAtual.setPonto(point);
+								eventoAtual.setUltimoContato(botaoAnalisado);
+								eventoAtual
+										.setEventoCod(ConstantesMesa11.CONTATO_BOTAO_BOTAO);
+							}
 						}
 
 						destino = GeoUtil.calculaPonto(angulo, dest, botao
@@ -646,6 +650,10 @@ public class ControleJogo {
 			} else {
 				lateral.x -= 20;
 			}
+		}
+		if (eventoAtual != null) {
+			eventoAtual.setPonto(lateral);
+			eventoAtual.setEventoCod(ConstantesMesa11.LATERAL);
 		}
 		this.lateral = lateral;
 	}
@@ -915,11 +923,7 @@ public class ControleJogo {
 	}
 
 	public boolean isAnimando() {
-		return animando;
-	}
-
-	public void setAnimando(boolean animando) {
-		this.animando = animando;
+		return !botoesComThread.isEmpty();
 	}
 
 	public Map getBotoes() {
@@ -1037,4 +1041,55 @@ public class ControleJogo {
 		this.eventoAtual = eventoAutal;
 	}
 
+	public void reversaoJogada() {
+		controlePartida.reversaoJogada();
+
+	}
+
+	public void zeraJogadaTime(Time time) {
+		controlePartida.zeraJogadaTime(time);
+
+	}
+
+	public void falta(Point ponto, Botao b) {
+		System.out.println("Falta");
+		limparPerimetroCirculo(ponto);
+		if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime().getCampo())) {
+			b.setCentroTodos(new Point(ponto.x, ponto.y - b.getDiamentro()));
+		} else {
+			b.setCentroTodos(new Point(ponto.x, ponto.y + b.getDiamentro()));
+		}
+		bola.setCentroTodos(ponto);
+		zeraJogadaTime(b.getTime());
+	}
+
+	public void porcessaLateral() {
+		Time timeLateral = controlePartida.getTimeCima().equals(
+				eventoAtual.getUltimoContato().getTime()) ? controlePartida
+				.getTimeBaixo() : controlePartida.getTimeCima();
+		int tamretaMin = Integer.MAX_VALUE;
+		List btnsLateral = timeLateral.getBotoes();
+		Botao botaoLateral = null;
+		for (Iterator iterator = btnsLateral.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (!(botao instanceof Goleiro)) {
+				List reta = GeoUtil.drawBresenhamLine(lateral, botao
+						.getCentro());
+				if (reta.size() < tamretaMin) {
+					tamretaMin = reta.size();
+					botaoLateral = botao;
+				}
+			}
+		}
+		limparPerimetroCirculo(lateral);
+		zeraJogadaTime(timeLateral);
+		if (lateral.x < 3000) {
+			botaoLateral.setCentroTodos(new Point(lateral.x
+					- botaoLateral.getDiamentro(), lateral.y));
+		} else {
+			botaoLateral.setCentroTodos(new Point(lateral.x
+					+ botaoLateral.getDiamentro(), lateral.y));
+		}
+		lateral();
+	}
 }
