@@ -52,6 +52,11 @@ public class MesaPanel extends JPanel {
 	public double zoom = 1;
 	private Rectangle campoCima;
 	private Rectangle campoBaixo;
+	private Rectangle areaEscateioCima;
+	private Rectangle areaGolCima;
+	private Rectangle areaGolBaixo;
+	private Rectangle areaEscateioBaixo;
+
 	private Rectangle grandeAreaCima;
 	private Rectangle grandeAreaBaixo;
 	private Rectangle pequenaAreaCima;
@@ -96,70 +101,73 @@ public class MesaPanel extends JPanel {
 
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
-		campoCima = new Rectangle((int) (BORDA_CAMPO * zoom),
-				(int) (BORDA_CAMPO * zoom),
-				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom),
-				(int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * zoom));
-		campoBaixo = new Rectangle((int) (BORDA_CAMPO * zoom),
-				(int) (((ALTURA_MESA / 2)) * zoom),
-				(int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * zoom),
-				(int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * zoom));
-		grandeAreaCima = new Rectangle((int) (ALTURA_GDE_AREA * zoom),
-				(int) (BORDA_CAMPO * zoom), (int) ((LARGURA_GDE_AREA) * zoom),
-				(int) ((ALTURA_GDE_AREA) * zoom));
-		grandeAreaBaixo = new Rectangle((int) (ALTURA_GDE_AREA * zoom),
-				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) * zoom),
-				(int) ((LARGURA_GDE_AREA) * zoom),
-				(int) ((ALTURA_GDE_AREA) * zoom));
-		pequenaAreaCima = new Rectangle(
-				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * zoom),
-				(int) (BORDA_CAMPO * zoom), (int) ((LARGURA_PQ_AREA) * zoom),
-				(int) ((ALTURA_PQ_AREA) * zoom));
-		pequenaAreaBaixo = new Rectangle(
-				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * zoom),
-				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA) * zoom),
-				(int) ((LARGURA_PQ_AREA) * zoom),
-				(int) ((ALTURA_PQ_AREA) * zoom));
-		centro = new Rectangle((int) ((LARGURA_MESA / 2) * zoom),
-				(int) ((ALTURA_MESA / 2) * zoom), (int) (DOBRO_LINHA * zoom),
-				(int) (DOBRO_LINHA * zoom));
-		penaltyCima = new Rectangle((int) ((LARGURA_MESA / 2) * zoom),
-				(int) ((BORDA_CAMPO + PENALTI) * zoom),
-				(int) (DOBRO_LINHA * zoom), (int) (DOBRO_LINHA * zoom));
-		penaltyBaixo = new Rectangle((int) ((LARGURA_MESA / 2) * zoom),
-				(int) ((ALTURA_MESA - BORDA_CAMPO - PENALTI) * zoom),
-				(int) (DOBRO_LINHA * zoom), (int) (DOBRO_LINHA * zoom));
+		areaEscateioCima = new Rectangle((BORDA_CAMPO + LINHA), 0,
+				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO);
+		areaEscateioBaixo = new Rectangle((BORDA_CAMPO + LINHA),
+				(ALTURA_MESA - BORDA_CAMPO),
+				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO);
+		campoCima = new Rectangle(BORDA_CAMPO, BORDA_CAMPO, LARGURA_MESA
+				- DOBRO_BORDA_CAMPO, (ALTURA_MESA / 2) - BORDA_CAMPO);
+		campoBaixo = new Rectangle(BORDA_CAMPO, (ALTURA_MESA / 2), LARGURA_MESA
+				- DOBRO_BORDA_CAMPO, (ALTURA_MESA / 2) - BORDA_CAMPO);
+		grandeAreaCima = new Rectangle(ALTURA_GDE_AREA, BORDA_CAMPO,
+				LARGURA_GDE_AREA, ALTURA_GDE_AREA);
+		grandeAreaBaixo = new Rectangle(ALTURA_GDE_AREA, ALTURA_MESA
+				- BORDA_CAMPO - ALTURA_GDE_AREA, LARGURA_GDE_AREA,
+				ALTURA_GDE_AREA);
+		pequenaAreaCima = new Rectangle(LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2,
+				BORDA_CAMPO, LARGURA_PQ_AREA, ALTURA_PQ_AREA);
+		pequenaAreaBaixo = new Rectangle(LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2,
+				ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA, LARGURA_PQ_AREA,
+				ALTURA_PQ_AREA);
+		centro = new Rectangle(LARGURA_MESA / 2, ALTURA_MESA / 2, DOBRO_LINHA,
+				DOBRO_LINHA);
+		penaltyCima = new Rectangle(LARGURA_MESA / 2, BORDA_CAMPO + PENALTI,
+				DOBRO_LINHA, DOBRO_LINHA);
+		penaltyBaixo = new Rectangle(LARGURA_MESA / 2, ALTURA_MESA
+				- BORDA_CAMPO - PENALTI, DOBRO_LINHA, DOBRO_LINHA);
 		hasteDireitaGolCima = new Rectangle(Util.inte(pequenaAreaCima.getX()
-				+ pequenaAreaCima.getWidth() - (110 * zoom)), Util
-				.inte(pequenaAreaCima.getY() + (LINHA * zoom)
-						- (pequenaAreaCima.getHeight() * .50)), Util
-				.inte(10 * zoom), Util.inte(pequenaAreaCima.getHeight() * .50));
-		hasteEsquerdaGolCima = new Rectangle(Util.inte(pequenaAreaCima.getX()
-				+ (110 * zoom)), Util.inte(pequenaAreaCima.getY()
-				+ (LINHA * zoom) - (pequenaAreaCima.getHeight() * .50)), Util
-				.inte(10 * zoom), Util.inte(pequenaAreaCima.getHeight() * .50));
+				+ pequenaAreaCima.getWidth() - (110)), Util
+				.inte(pequenaAreaCima.getY() + (LINHA)
+						- (pequenaAreaCima.getHeight() * .50)), Util.inte(10),
+				Util.inte(pequenaAreaCima.getHeight() * .50));
+		hasteEsquerdaGolCima = new Rectangle(Util
+				.inte(pequenaAreaCima.getX() + (110)), Util
+				.inte(pequenaAreaCima.getY() + (LINHA)
+						- (pequenaAreaCima.getHeight() * .50)), Util.inte(10),
+				Util.inte(pequenaAreaCima.getHeight() * .50));
 		hasteTopoGolCima = new Rectangle(
 				Util.inte(hasteEsquerdaGolCima.getX()), Util
 						.inte(hasteDireitaGolCima.getY()), Util
 						.inte(hasteDireitaGolCima.getX()
-								- hasteEsquerdaGolCima.getX()), Util
-						.inte(10 * zoom));
+								- hasteEsquerdaGolCima.getX()), Util.inte(10));
+		areaGolCima = new Rectangle(Util
+				.inte(hasteEsquerdaGolCima.getCenterX()), Util
+				.inte(hasteTopoGolCima.getY()), Util.inte(hasteTopoGolCima
+				.getWidth()), Util.inte(hasteEsquerdaGolCima.getHeight()
+				- (LINHA)));
+
 		hasteDireitaGolBaixo = new Rectangle(Util.inte(hasteDireitaGolCima
-				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA * zoom)
-				+ pequenaAreaBaixo.getHeight()), Util.inte(10 * zoom), Util
-				.inte(pequenaAreaBaixo.getHeight()
-						- (pequenaAreaBaixo.getHeight() * .50)));
+				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA)
+				+ pequenaAreaBaixo.getHeight()), 10, Util.inte(pequenaAreaBaixo
+				.getHeight()
+				- (pequenaAreaBaixo.getHeight() * .50)));
 		hasteEsquerdaGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolCima
-				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA * zoom)
-				+ pequenaAreaBaixo.getHeight()), Util.inte(10 * zoom), Util
-				.inte(pequenaAreaBaixo.getHeight()
-						- (pequenaAreaBaixo.getHeight() * .50)));
+				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA)
+				+ pequenaAreaBaixo.getHeight()), 10, Util.inte(pequenaAreaBaixo
+				.getHeight()
+				- (pequenaAreaBaixo.getHeight() * .50)));
 		hasteTopoGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolBaixo
 				.getX()), Util.inte(hasteDireitaGolBaixo.getY()
 				+ hasteDireitaGolBaixo.getHeight()), Util
 				.inte(hasteDireitaGolBaixo.getX()
-						- hasteEsquerdaGolBaixo.getX() + Util.inte(10 * zoom)),
-				Util.inte(10 * zoom));
+						- hasteEsquerdaGolBaixo.getX() + Util.inte(10)), Util
+				.inte(10));
+		areaGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolBaixo
+				.getCenterX()), Util.inte(hasteTopoGolBaixo.getY()
+				- hasteEsquerdaGolBaixo.getHeight() + (LINHA)), Util
+				.inte(hasteTopoGolCima.getWidth()), Util
+				.inte(hasteEsquerdaGolBaixo.getHeight() - (LINHA)));
 		this.controleJogo = controleJogo;
 		this.botoes = controleJogo.getBotoes();
 
@@ -197,7 +205,7 @@ public class MesaPanel extends JPanel {
 		try {
 			super.paintImmediately(x, y, w, h);
 		} catch (Exception e) {
-			System.out.println("peguei1");
+			System.out.println("paintImmediately1");
 		}
 	}
 
@@ -206,7 +214,7 @@ public class MesaPanel extends JPanel {
 		try {
 			super.paintImmediately(r);
 		} catch (Exception e) {
-			System.out.println("peguei2");
+			System.out.println("paintImmediately2");
 		}
 	}
 
@@ -289,7 +297,6 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
 		y += 20;
 		g2d.drawString(controleJogo.timeJogadaVez(), x, y);
-
 
 	}
 
@@ -608,50 +615,63 @@ public class MesaPanel extends JPanel {
 				(int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_PQ_AREA) * zoom),
 				(int) ((LARGURA_PQ_AREA) * zoom),
 				(int) ((ALTURA_PQ_AREA) * zoom));
-		Rectangle hasteEsquerdaGolCimaTemp = new Rectangle();
-		hasteEsquerdaGolCimaTemp.setBounds(Util.inte(pequenaAreaCimaTemp.getX()
-				+ (110 * zoom)), Util.inte(pequenaAreaCimaTemp.getY()
-				+ (LINHA * zoom) - (pequenaAreaCimaTemp.getHeight() * .50)),
-				Util.inte(10 * zoom), Util
-						.inte(pequenaAreaCimaTemp.getHeight() * .50));
+		Rectangle2D.Double hasteEsquerdaGolCimaTemp = new Rectangle2D.Double();
+		hasteEsquerdaGolCimaTemp.setRect(pequenaAreaCimaTemp.getX()
+				+ (110 * zoom), pequenaAreaCimaTemp.getY() + (LINHA * zoom)
+				- (pequenaAreaCimaTemp.getHeight() * .50), 10 * zoom,
+				pequenaAreaCimaTemp.getHeight() * .50);
 		g.fill(hasteEsquerdaGolCimaTemp);
-		Rectangle hasteDireitaGolCimaTemp = new Rectangle();
-		hasteDireitaGolCimaTemp.setBounds(Util.inte(pequenaAreaCimaTemp.getX()
-				+ pequenaAreaCimaTemp.getWidth() - (110 * zoom)), Util
-				.inte(pequenaAreaCimaTemp.getY() + (LINHA * zoom)
-						- (pequenaAreaCimaTemp.getHeight() * .50)), Util
-				.inte(10 * zoom), Util
-				.inte(pequenaAreaCimaTemp.getHeight() * .50));
+		Rectangle2D.Double hasteDireitaGolCimaTemp = new Rectangle2D.Double();
+		hasteDireitaGolCimaTemp.setRect(pequenaAreaCimaTemp.getX()
+				+ pequenaAreaCimaTemp.getWidth() - (110 * zoom),
+				pequenaAreaCimaTemp.getY() + (LINHA * zoom)
+						- (pequenaAreaCimaTemp.getHeight() * .50), 10 * zoom,
+				pequenaAreaCimaTemp.getHeight() * .50);
 		g.fill(hasteDireitaGolCimaTemp);
-		Rectangle hasteTopoGolCimaTemp = new Rectangle();
-		hasteTopoGolCimaTemp.setBounds(Util.inte(hasteEsquerdaGolCimaTemp
-				.getX()), Util.inte(hasteDireitaGolCimaTemp.getY()), Util
-				.inte(hasteDireitaGolCimaTemp.getX()
-						- hasteEsquerdaGolCimaTemp.getX()), Util
-				.inte(10 * zoom));
+		Rectangle2D.Double hasteTopoGolCimaTemp = new Rectangle2D.Double();
+		hasteTopoGolCimaTemp.setRect(hasteEsquerdaGolCimaTemp.getX(),
+				hasteDireitaGolCimaTemp.getY(), hasteDireitaGolCimaTemp.getX()
+						- hasteEsquerdaGolCimaTemp.getX(), 10 * zoom);
 		g.fill(hasteTopoGolCimaTemp);
-		Rectangle hasteEsquerdaGolBaixoTemp = new Rectangle();
-		hasteEsquerdaGolBaixoTemp.setBounds(Util.inte(hasteEsquerdaGolCimaTemp
-				.getX()), Util.inte(pequenaAreaBaixoTemp.getY()
-				- (LINHA * zoom) + pequenaAreaBaixoTemp.getHeight()), Util
-				.inte(10 * zoom), Util.inte(pequenaAreaBaixoTemp.getHeight()
-				- (pequenaAreaBaixoTemp.getHeight() * .50)));
+		Color corRede = new Color(255, 255, 255, 100);
+		Rectangle2D.Double areaGolCimaTemp = new Rectangle2D.Double();
+		areaGolCimaTemp.setRect(hasteEsquerdaGolCimaTemp.getCenterX(),
+				hasteTopoGolCimaTemp.getY(), hasteTopoGolCimaTemp.getWidth(),
+				hasteEsquerdaGolCimaTemp.getHeight() - (LINHA * zoom));
+		g.setColor(corRede);
+		g.fill(areaGolCimaTemp);
+		g.setColor(Color.black);
+		Rectangle2D.Double hasteEsquerdaGolBaixoTemp = new Rectangle2D.Double();
+		hasteEsquerdaGolBaixoTemp.setRect(hasteEsquerdaGolCimaTemp.getX(),
+				pequenaAreaBaixoTemp.getY() - (LINHA * zoom)
+						+ pequenaAreaBaixoTemp.getHeight(), 10 * zoom,
+				pequenaAreaBaixoTemp.getHeight()
+						- (pequenaAreaBaixoTemp.getHeight() * .50));
 		g.fill(hasteEsquerdaGolBaixoTemp);
-		Rectangle hasteDireitaGolBaixoTemp = new Rectangle();
-		hasteDireitaGolBaixoTemp.setBounds(Util.inte(hasteDireitaGolCimaTemp
-				.getX()), Util.inte(pequenaAreaBaixoTemp.getY()
-				- (LINHA * zoom) + pequenaAreaBaixoTemp.getHeight()), Util
-				.inte(10 * zoom), Util.inte(pequenaAreaBaixoTemp.getHeight()
-				- (pequenaAreaBaixoTemp.getHeight() * .50)));
+		Rectangle2D.Double hasteDireitaGolBaixoTemp = new Rectangle2D.Double();
+		hasteDireitaGolBaixoTemp.setRect(hasteDireitaGolCimaTemp.getX(),
+				pequenaAreaBaixoTemp.getY() - (LINHA * zoom)
+						+ pequenaAreaBaixoTemp.getHeight(), 10 * zoom,
+				pequenaAreaBaixoTemp.getHeight()
+						- (pequenaAreaBaixoTemp.getHeight() * .50));
 		g.fill(hasteDireitaGolBaixoTemp);
-		Rectangle hasteTopoGolBaixoTemp = new Rectangle();
-		hasteTopoGolBaixoTemp.setBounds(Util.inte(hasteEsquerdaGolBaixoTemp
-				.getX()), Util.inte(hasteDireitaGolBaixoTemp.getY()
-				+ hasteDireitaGolBaixoTemp.getHeight()), Util
-				.inte(hasteDireitaGolBaixoTemp.getX()
+		Rectangle2D.Double hasteTopoGolBaixoTemp = new Rectangle2D.Double();
+		hasteTopoGolBaixoTemp.setRect(hasteEsquerdaGolBaixoTemp.getX(),
+				hasteDireitaGolBaixoTemp.getY()
+						+ hasteDireitaGolBaixoTemp.getHeight(),
+				hasteDireitaGolBaixoTemp.getX()
 						- hasteEsquerdaGolBaixoTemp.getX()
-						+ Util.inte(10 * zoom)), Util.inte(10 * zoom));
+						+ Util.inte(10 * zoom), 10 * zoom);
 		g.fill(hasteTopoGolBaixoTemp);
+
+		Rectangle2D.Double areaGolBaixoTemp = new Rectangle2D.Double();
+		areaGolBaixoTemp.setRect(hasteEsquerdaGolBaixoTemp.getCenterX(),
+				hasteTopoGolBaixoTemp.getY()
+						- hasteEsquerdaGolBaixoTemp.getHeight()
+						+ (LINHA * zoom), hasteTopoGolCimaTemp.getWidth(),
+				hasteEsquerdaGolBaixoTemp.getHeight() - (LINHA * zoom));
+		g.setColor(corRede);
+		g.fill(areaGolBaixoTemp);
 
 	}
 
