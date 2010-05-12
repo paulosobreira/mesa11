@@ -1051,16 +1051,25 @@ public class ControleJogo {
 
 	}
 
-	public void falta(Point ponto, Botao b) {
+	public void falta(Point ponto, Botao levouFalta) {
 		System.out.println("Falta");
 		limparPerimetroCirculo(ponto);
-		if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime().getCampo())) {
-			b.setCentroTodos(new Point(ponto.x, ponto.y - b.getDiamentro()));
+
+		if (ConstantesMesa11.CAMPO_CIMA.equals(levouFalta.getTime().getCampo())) {
+			double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel.golBaixo(),
+					ponto, 90);
+			Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+					.getDiamentro(), ponto);
+			levouFalta.setCentroTodos(p);
 		} else {
-			b.setCentroTodos(new Point(ponto.x, ponto.y + b.getDiamentro()));
+			double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel.golCima(),
+					ponto, 90);
+			Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+					.getDiamentro(), ponto);
+			levouFalta.setCentroTodos(p);
 		}
 		bola.setCentroTodos(ponto);
-		zeraJogadaTime(b.getTime());
+		zeraJogadaTime(levouFalta.getTime());
 	}
 
 	public void porcessaLateral() {
