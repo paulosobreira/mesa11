@@ -48,42 +48,6 @@ public class Mesa11Applet extends JApplet {
 
 	private LookAndFeelInfo[] looks;
 
-	public void play(String music) {
-		try {
-			if (sequencer == null)
-				sequencer = MidiSystem.getSequencer();
-			URL musicUrl = null;
-			try {
-				musicUrl = new URL(getCodeBase() + "midia/musicas/" + music);
-				Logger.logar(musicUrl);
-			} catch (MalformedURLException e) {
-				Logger.logarExept(e);
-			}
-			sequencer
-					.setSequence(MidiSystem.getSequence(musicUrl.openStream()));
-			sequencer.open();
-			sequencer.start();
-			sequencer.setLoopCount(sequencer.LOOP_CONTINUOUSLY);
-		} catch (Exception e) {
-			Logger.logarExeptVisual(e, this);
-		}
-
-	}
-
-	public void pauseMusic() {
-		try {
-			if (sequencer == null)
-				return;
-			if (sequencer.isRunning()) {
-				sequencer.stop();
-			} else {
-				sequencer.start();
-			}
-		} catch (Exception e) {
-			Logger.logarExeptVisual(e, this);
-		}
-	}
-
 	public static void main(String[] args) {
 		LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
 		for (int i = 0; i < looks.length; i++) {
