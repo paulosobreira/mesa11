@@ -24,18 +24,18 @@ public class AtualizadorVisual implements Runnable {
 			try {
 				if (controleJogo.getVelhoPontoTela() != controleJogo
 						.getNovoPontoTela()) {
-					controleJogo.getScrollPane().getViewport().setViewPosition(
-							controleJogo.getNovoPontoTela());
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							mesaPanel.repaint();
+							controleJogo.getScrollPane().getViewport()
+									.setViewPosition(
+											controleJogo.getNovoPontoTela());
+						}
+					});
 					controleJogo.setVelhoPontoTela(controleJogo
 							.getNovoPontoTela());
 				}
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						mesaPanel.repaint();
-					}
-				});
-				// mesaPanel.repaint();
 				try {
 					if (controleJogo.isAnimando())
 						Thread.sleep(contAnimando);

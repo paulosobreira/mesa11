@@ -130,16 +130,6 @@ public class FormLogin {
 			}
 		});
 		jPanel.add(novoUsuario);
-		JButton som = new JButton("Som");
-		som.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mesa11Applet.pauseMusic();
-			}
-		});
-		jPanel.add(som);
-		panel.add(jPanel, BorderLayout.CENTER);
 	}
 
 	public JPanel getPanel() {
