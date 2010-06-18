@@ -71,6 +71,7 @@ public class ControleJogo {
 	private int numRecursoes;
 	private ControlePartida controlePartida;
 	private Evento eventoAtual;
+	private String ultimaMarcacao;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -1053,6 +1054,7 @@ public class ControleJogo {
 
 	public void falta(Point ponto, Botao levouFalta) {
 		System.out.println("Falta");
+		ultimaMarcacao = "Falta";
 		limparPerimetroCirculo(ponto);
 
 		if (ConstantesMesa11.CAMPO_CIMA.equals(levouFalta.getTime().getCampo())) {
@@ -1091,6 +1093,7 @@ public class ControleJogo {
 			}
 		}
 		limparPerimetroCirculo(lateral);
+		ultimaMarcacao = "Lateral";
 		zeraJogadaTime(timeLateral);
 		if (lateral.x < 3000) {
 			botaoLateral.setCentroTodos(new Point(lateral.x

@@ -287,6 +287,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaInfoJogo(Graphics2D g2d) {
+		g2d.setColor(Color.BLACK);
 		int x = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width - 150);
 		int y = limitesViewPort.getBounds().y + 20;

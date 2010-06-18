@@ -22,8 +22,10 @@ public class AtualizadorVisual implements Runnable {
 	public void run() {
 		while (controleJogo.isTelaAtualizando()) {
 			try {
+				boolean scrooll = false;
 				if (controleJogo.getVelhoPontoTela() != controleJogo
 						.getNovoPontoTela()) {
+					scrooll = true;
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -41,6 +43,14 @@ public class AtualizadorVisual implements Runnable {
 						Thread.sleep(contAnimando);
 					else
 						Thread.sleep(cont);
+					if (!scrooll) {
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								mesaPanel.repaint();
+							}
+						});
+					}
 				} catch (InterruptedException e) {
 				}
 
