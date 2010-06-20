@@ -5,12 +5,14 @@ package br.mesa11.visao;
 
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -23,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import br.hibernate.Botao;
+import br.hibernate.Goleiro;
 import br.nnpe.Util;
 
 /**
@@ -36,14 +39,16 @@ public class EditorTime extends JPanel {
 	private JLabel labelCor4 = new JLabel("Cor da equipe 4:");
 	private JLabel labelCor5 = new JLabel("Cor da equipe 5:");
 	private JLabel labelCor6 = new JLabel("Cor da equipe 6:");
-	private JLabel imgUn1 = new JLabel("");;
-	private JLabel imgUn2 = new JLabel("");;
+	private JLabel imgUn1 = new JLabel("");
+	private JLabel imgGolUn1 = new JLabel("");
+	private JLabel imgUn2 = new JLabel("");
+	private JLabel imgGolUn2 = new JLabel("");
 
 	/**
 	 * 
 	 */
 	public EditorTime() {
-		JPanel jPanel = new JPanel(new GridLayout(2, 4));
+
 		labelCor1.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -53,6 +58,8 @@ public class EditorTime extends JPanel {
 				setCor(color, labelCor1);
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
+				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
+						.getBackground(), labelCor3.getBackground(), imgGolUn1);
 			}
 
 		});
@@ -65,11 +72,12 @@ public class EditorTime extends JPanel {
 				setCor(color, labelCor2);
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
-			}
+				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
+						.getBackground(), labelCor3.getBackground(), imgGolUn1);
 
+			}
 		});
 		labelCor3.addMouseListener(new MouseAdapter() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this,
@@ -77,8 +85,10 @@ public class EditorTime extends JPanel {
 				setCor(color, labelCor3);
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
-			}
+				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
+						.getBackground(), labelCor3.getBackground(), imgGolUn1);
 
+			}
 		});
 		labelCor4.addMouseListener(new MouseAdapter() {
 
@@ -89,6 +99,8 @@ public class EditorTime extends JPanel {
 				setCor(color, labelCor4);
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
 						.getBackground(), labelCor6.getBackground(), imgUn2);
+				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
+						.getBackground(), labelCor6.getBackground(), imgGolUn2);
 			}
 
 		});
@@ -100,8 +112,11 @@ public class EditorTime extends JPanel {
 						"Escolha uma cor", Color.WHITE);
 				setCor(color, labelCor5);
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgUn2);			}
+						.getBackground(), labelCor6.getBackground(), imgUn2);
+				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
+						.getBackground(), labelCor6.getBackground(), imgGolUn2);
 
+			}
 		});
 		labelCor6.addMouseListener(new MouseAdapter() {
 
@@ -111,18 +126,78 @@ public class EditorTime extends JPanel {
 						"Escolha uma cor", Color.WHITE);
 				setCor(color, labelCor6);
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgUn2);			}
+						.getBackground(), labelCor6.getBackground(), imgUn2);
+				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
+						.getBackground(), labelCor6.getBackground(), imgGolUn2);
+			}
 
 		});
-		jPanel.add(labelCor1);
-		jPanel.add(labelCor2);
-		jPanel.add(labelCor3);
-		jPanel.add(imgUn1);
-		jPanel.add(labelCor4);
-		jPanel.add(labelCor5);
-		jPanel.add(labelCor6);
-		jPanel.add(imgUn2);
-		add(jPanel);
+		JPanel cores1 = new JPanel(new GridLayout(1, 3));
+		cores1.add(labelCor1);
+		cores1.add(labelCor2);
+		cores1.add(labelCor3);
+		JPanel cores2 = new JPanel(new GridLayout(1, 3));
+		cores2.add(labelCor4);
+		cores2.add(labelCor5);
+		cores2.add(labelCor6);
+		JPanel un1 = new JPanel(new BorderLayout());
+		un1.add(cores1, BorderLayout.NORTH);
+		un1.add(imgUn1, BorderLayout.WEST);
+		un1.add(imgGolUn1, BorderLayout.CENTER);
+		JPanel un2 = new JPanel(new BorderLayout());
+		un2.add(cores2, BorderLayout.NORTH);
+		un2.add(imgUn2, BorderLayout.WEST);
+		un2.add(imgGolUn2, BorderLayout.CENTER);
+		setLayout(new GridLayout(2, 1));
+		add(un1);
+		add(un2);
+
+	}
+
+	/**
+	 * @param background
+	 * @param background2
+	 * @param background3
+	 * @param imgUn12
+	 */
+	protected void desenhaUniformeGoleiro(Color cor1, Color cor2, Color cor3,
+			JLabel icon) {
+		Goleiro botao = new Goleiro(0);
+		botao.setPosition(new Point(0, 0));
+		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro(), 60,
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
+		graphics.fill(botao.getShape(1));
+		AlphaComposite composite = AlphaComposite
+				.getInstance(AlphaComposite.SRC_IN);
+		graphics.setComposite(composite);
+		graphics.setColor(cor1);
+		graphics.fillRect(0, 0, Util.inte(botao.getDiamentro() * .7), 60);
+		graphics.setColor(cor2);
+		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
+				.inte(botao.getDiamentro() * .35), 60);
+		graphics.setColor(cor3);
+		graphics.setStroke(new BasicStroke(5.0f));
+		graphics.drawRect(0, 0, botao.getDiamentro(), 60);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 16));
+		graphics.setColor(cor2);
+		if (cor2.equals(cor1)) {
+			graphics.setColor(cor3);
+		}
+		graphics.drawString("Mesa", 12, Util.inte(60 * .5));
+		graphics.setColor(cor1);
+		if (cor1.equals(cor2)) {
+			graphics.setColor(cor3);
+		}
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 20));
+		graphics.drawString("11", Util.inte(botao.getDiamentro() * .75), Util
+				.inte(60 * .5));
+
+		graphics.dispose();
+		icon.setIcon(new ImageIcon(botaoImg));
 
 	}
 
