@@ -22,8 +22,59 @@ public class Botao extends Mesa11Dados {
 	private Point centroInicio;
 	private Point destino;
 	private String imagem;
+	private String nome;
+	private String numero;
 	private double angulo;
 	private Time time;
+	private Long precisao;
+	private Long forca;
+	private Long defesa;
+	private boolean titular;
+	private boolean goleiro;
+
+	public Long getPrecisao() {
+		return precisao;
+	}
+
+	public void setPrecisao(Long precisao) {
+		this.precisao = precisao;
+	}
+
+	public Long getForca() {
+		return forca;
+	}
+
+	public void setForca(Long forca) {
+		this.forca = forca;
+	}
+
+	public Long getDefesa() {
+		return defesa;
+	}
+
+	public void setDefesa(Long defesa) {
+		this.defesa = defesa;
+	}
+
+	public boolean isTitular() {
+		return titular;
+	}
+
+	public void setTitular(boolean titular) {
+		this.titular = titular;
+	}
+
+	public boolean isGoleiro() {
+		return goleiro;
+	}
+
+	public void setGoleiro(boolean goleiro) {
+		this.goleiro = goleiro;
+	}
+
+	public void setDiamentro(int diamentro) {
+		this.diamentro = diamentro;
+	}
 
 	public Time getTime() {
 		return time;
@@ -31,6 +82,22 @@ public class Botao extends Mesa11Dados {
 
 	public void setTime(Time time) {
 		this.time = time;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
 	}
 
 	public double getAngulo() {
