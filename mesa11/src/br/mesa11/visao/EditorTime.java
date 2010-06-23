@@ -264,6 +264,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor1);
+				time.setCor1RGB(color.getRGB());
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
 				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
@@ -278,6 +279,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor2);
+				time.setCor2RGB(color.getRGB());
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
 				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
@@ -291,6 +293,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor3);
+				time.setCor3RGB(color.getRGB());
 				desenhaUniforme(labelCor1.getBackground(), labelCor2
 						.getBackground(), labelCor3.getBackground(), imgUn1);
 				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
@@ -305,6 +308,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor4);
+				time.setCor4RGB(color.getRGB());
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
 						.getBackground(), labelCor6.getBackground(), imgUn2);
 				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
@@ -319,6 +323,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor5);
+				time.setCor5RGB(color.getRGB());
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
 						.getBackground(), labelCor6.getBackground(), imgUn2);
 				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
@@ -333,6 +338,7 @@ public class EditorTime extends JPanel {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor6);
+				time.setCor6RGB(color.getRGB());
 				desenhaUniforme(labelCor4.getBackground(), labelCor5
 						.getBackground(), labelCor6.getBackground(), imgUn2);
 				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
@@ -340,12 +346,12 @@ public class EditorTime extends JPanel {
 			}
 
 		});
-		setCor(Color.BLACK, labelCor1);
-		setCor(Color.WHITE, labelCor2);
-		setCor(Color.YELLOW, labelCor3);
-		setCor(Color.WHITE, labelCor4);
-		setCor(Color.BLACK, labelCor5);
-		setCor(Color.YELLOW, labelCor6);
+		setCor(new Color(time.getCor1RGB()), labelCor1);
+		setCor(new Color(time.getCor2RGB()), labelCor2);
+		setCor(new Color(time.getCor3RGB()), labelCor3);
+		setCor(new Color(time.getCor4RGB()), labelCor4);
+		setCor(new Color(time.getCor5RGB()), labelCor5);
+		setCor(new Color(time.getCor6RGB()), labelCor6);
 		desenhaUniforme(labelCor1.getBackground(), labelCor2.getBackground(),
 				labelCor3.getBackground(), imgUn1);
 		desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
