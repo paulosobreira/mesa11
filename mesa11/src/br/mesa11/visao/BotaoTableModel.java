@@ -117,15 +117,15 @@ public class BotaoTableModel extends AbstractTableModel {
 			return botao.getNumero();
 
 		case 2:
-			return botao.isTitular() ? "S" : "N";
+			return botao.isTitular() ? Lang.msg("sim") : Lang.msg("nao");
 		case 3:
-			return botao.isGoleiro() ? "S" : "N";
+			return botao.isGoleiro() ? Lang.msg("sim") : Lang.msg("nao");
 		case 4:
-			return botao.getPrecisao() + "";
+			return botao.getPrecisao() == null ? 0 : botao.getPrecisao();
 		case 5:
-			return botao.getForca() + "";
+			return botao.getForca() == null ? 0 : botao.getForca();
 		case 6:
-			return botao.getDefesa() + "";
+			return botao.getDefesa() == null ? 0 : botao.getDefesa();
 
 		default:
 			return null;
@@ -141,17 +141,17 @@ public class BotaoTableModel extends AbstractTableModel {
 		case 0:
 			return String.class;
 		case 1:
-			return String.class;
+			return Integer.class;
 		case 2:
 			return String.class;
 		case 3:
 			return String.class;
 		case 4:
-			return String.class;
+			return Integer.class;
 		case 5:
-			return String.class;
+			return Integer.class;
 		case 6:
-			return String.class;
+			return Integer.class;
 		default:
 			return null;
 		}
@@ -162,26 +162,29 @@ public class BotaoTableModel extends AbstractTableModel {
 
 		switch (columnIndex) {
 		case 0:
-
-			// String data = (String) aValue;
-			//
-			// if (data.length() >= 16) {
-			// taskBean.setHoraTarefa(TimeUtil.string2GregorianCalendar(data));
-			// }
-
+			botao.setNome((String) aValue);
 			break;
 
 		case 1:
-			// taskBean.setDescricao((String) aValue);
-
+			botao.setNumero((Integer) aValue);
 			break;
-
 		case 2:
-			// taskBean.setAtivada(((Boolean) aValue).booleanValue());
-
+			botao.setTitular(Lang.key((String) aValue).equals("sim") ? true
+					: false);
+			break;
 		case 3:
-			// if (aValue instanceof String)
-			// taskBean.setTipoAtividade((String) aValue);
+			botao.setGoleiro(Lang.key((String) aValue).equals("sim") ? true
+					: false);
+			break;
+		case 4:
+			botao.setPrecisao((Integer) aValue);
+			break;
+		case 5:
+			botao.setForca((Integer) aValue);
+			break;
+		case 6:
+			botao.setDefesa((Integer) aValue);
+			break;
 		default:
 			break;
 		}
