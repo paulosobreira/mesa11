@@ -34,7 +34,13 @@ public class BotaoTableModel extends AbstractTableModel {
 				case 0:
 					Collections.sort(data, new Comparator() {
 						public int compare(Object arg0, Object arg1) {
-							return 0;
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							if (botao0.getNome() == null
+									|| botao1.getNome() == null) {
+								return 0;
+							}
+							return botao0.getNome().compareTo(botao1.getNome());
 						}
 					});
 					fireTableDataChanged();
@@ -44,7 +50,14 @@ public class BotaoTableModel extends AbstractTableModel {
 				case 1:
 					Collections.sort(data, new Comparator() {
 						public int compare(Object arg0, Object arg1) {
-							return 0;
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							if (botao0.getNumero() == null
+									|| botao1.getNumero() == null) {
+								return 0;
+							}
+							return botao0.getNumero().compareTo(
+									botao1.getNumero());
 						}
 					});
 					fireTableDataChanged();
@@ -54,7 +67,10 @@ public class BotaoTableModel extends AbstractTableModel {
 				case 2:
 					Collections.sort(data, new Comparator() {
 						public int compare(Object arg0, Object arg1) {
-							return 0;
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							return new Boolean(botao0.isTitular())
+									.compareTo(new Boolean(botao1.isTitular()));
 						}
 					});
 					fireTableDataChanged();
@@ -63,7 +79,58 @@ public class BotaoTableModel extends AbstractTableModel {
 				case 3:
 					Collections.sort(data, new Comparator() {
 						public int compare(Object arg0, Object arg1) {
-							return 0;
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							return new Boolean(botao0.isGoleiro())
+									.compareTo(new Boolean(botao1.isGoleiro()));
+						}
+					});
+					fireTableDataChanged();
+
+					break;
+				case 4:
+					Collections.sort(data, new Comparator() {
+						public int compare(Object arg0, Object arg1) {
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							if (botao0.getPrecisao() == null
+									|| botao1.getPrecisao() == null) {
+								return 0;
+							}
+							return botao1.getPrecisao().compareTo(
+									botao0.getPrecisao());
+						}
+					});
+					fireTableDataChanged();
+
+					break;
+				case 5:
+					Collections.sort(data, new Comparator() {
+						public int compare(Object arg0, Object arg1) {
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							if (botao0.getForca() == null
+									|| botao1.getForca() == null) {
+								return 0;
+							}
+							return botao1.getForca().compareTo(
+									botao0.getForca());
+						}
+					});
+					fireTableDataChanged();
+
+					break;
+				case 6:
+					Collections.sort(data, new Comparator() {
+						public int compare(Object arg0, Object arg1) {
+							Botao botao0 = (Botao) arg0;
+							Botao botao1 = (Botao) arg1;
+							if (botao0.getDefesa() == null
+									|| botao1.getDefesa() == null) {
+								return 0;
+							}
+							return botao1.getDefesa().compareTo(
+									botao0.getDefesa());
 						}
 					});
 					fireTableDataChanged();
