@@ -172,6 +172,10 @@ public class Lang {
 				String load = "mensagens_" + sufix + ".properties";
 				InputStream inputStream = CarregadorRecursos
 						.recursoComoStream(load);
+				if (inputStream == null) {
+					load = "idiomas/mensagens_en.properties";
+					inputStream = CarregadorRecursos.recursoComoStream(load);
+				}
 				validaProperties(inputStream);
 				inputStream = CarregadorRecursos.recursoComoStream(load);
 				bundle = new PropertyResourceBundle(inputStream);

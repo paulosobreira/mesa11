@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
@@ -57,6 +59,8 @@ public class EditorTime extends JPanel {
 	private JLabel imgGolUn1 = new JLabel("");
 	private JLabel imgUn2 = new JLabel("");
 	private JLabel imgGolUn2 = new JLabel("");
+	private JLabel qtdePts = null;
+	private JTextField textFieldNomeTime = new JTextField();
 	private Time time;
 	private JTable tabelaBotoes;
 
@@ -67,22 +71,58 @@ public class EditorTime extends JPanel {
 		this.time = time;
 		gerarLabelsCores();
 		JTabbedPane jTabbedPane = new JTabbedPane();
+		jTabbedPane
+				.addTab(Lang.msg("nomesBotoes"), gerarTabelaAtributosBotao());
 		jTabbedPane.addTab(Lang.msg("coresBotoes"), gerarTabelaCores());
-		jTabbedPane.addTab(Lang.msg("nomesBotoes"), gerarTabelaNomes());
+
 		setLayout(new BorderLayout());
+		JPanel panelTime = new JPanel(new GridLayout(2, 2));
+		panelTime.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("dadosTime");
+			}
+		});
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("nomeTime");
+			}
+		});
+		panelTime.add(textFieldNomeTime);
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("pontosTime");
+			}
+		});
+		qtdePts = new JLabel() {
+			@Override
+			public String getText() {
+				return EditorTime.this.time.getQtdePontos() == null ? "0"
+						: EditorTime.this.time.getQtdePontos().toString();
+			}
+		};
+		panelTime.add(qtdePts);
+		add(panelTime, BorderLayout.NORTH);
 		add(jTabbedPane, BorderLayout.CENTER);
 	}
 
-	private Component gerarTabelaNomes() {
+	private Component gerarTabelaAtributosBotao() {
 		tabelaBotoes = new JTable();
 		final BotaoTableModel botaoTableModel = new BotaoTableModel(time
 				.getBotoes());
 		tabelaBotoes.setModel(botaoTableModel);
+		botaoTableModel.addMouseListener(tabelaBotoes);
+		TableColumn columnNome = tabelaBotoes.getColumnModel().getColumn(0);
 		TableColumn columnTitular = tabelaBotoes.getColumnModel().getColumn(2);
 		TableColumn columnGoleiro = tabelaBotoes.getColumnModel().getColumn(3);
 		TableColumn columnPrecisao = tabelaBotoes.getColumnModel().getColumn(4);
 		TableColumn columnForca = tabelaBotoes.getColumnModel().getColumn(5);
 		TableColumn columnDefesa = tabelaBotoes.getColumnModel().getColumn(6);
+		columnNome.setMaxWidth(250);
+		columnNome.setMinWidth(250);
+
 		JComboBox comboBoxSimNao = new JComboBox();
 		comboBoxSimNao.addItem(Lang.msg("sim"));
 		comboBoxSimNao.addItem(Lang.msg("nao"));
@@ -107,7 +147,31 @@ public class EditorTime extends JPanel {
 				super.setValue(value);
 			}
 
+			@Override
+			public Object getNextValue() {
+				Integer qtde = time.getQtdePontos();
+				Integer val = (Integer) getValue();
+				if (qtde <= 0 || val >= 1000) {
+					return val;
+				}
+				qtde--;
+				time.setQtdePontos(qtde);
+				qtdePts.repaint();
+				return super.getNextValue();
+			}
+
+			@Override
+			public Object getPreviousValue() {
+				Integer qtde = time.getQtdePontos();
+				qtde++;
+				time.setQtdePontos(qtde);
+				qtdePts.repaint();
+				return super.getPreviousValue();
+			}
 		});
+		JFormattedTextField tfspinnerAtributos = ((JSpinner.DefaultEditor) spinnerAtributos
+				.getEditor()).getTextField();
+		tfspinnerAtributos.setEditable(false);
 		columnPrecisao.setCellEditor(new SpinnerEditor(spinnerAtributos));
 		columnForca.setCellEditor(new SpinnerEditor(spinnerAtributos));
 		columnDefesa.setCellEditor(new SpinnerEditor(spinnerAtributos));
@@ -417,6 +481,17 @@ public class EditorTime extends JPanel {
 
 	public static void main(String[] args) {
 		Time time = new Time();
+		time.setQtdePontos(Util.intervalo(100, 1000));
+		Botao botao = new Botao();
+		botao.setNome("Mesa");
+		botao.setNumero(11);
+		botao.setTitular(true);
+		botao.setGoleiro(false);
+		botao.setForca(Util.intervalo(500, 1000));
+		botao.setPrecisao(Util.intervalo(500, 1000));
+		botao.setDefesa(Util.intervalo(500, 1000));
+		botao.setTime(time);
+		time.getBotoes().add(botao);
 		time.setNome("mesa11");
 		EditorTime editorTime = new EditorTime(time);
 		// JFrame frame = new JFrame();

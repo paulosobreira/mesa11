@@ -8,6 +8,15 @@ public class Time extends Mesa11Dados {
 	private String campo;
 	private List botoes = new ArrayList();
 	private String nome;
+	private Integer qtdePontos;
+
+	public Integer getQtdePontos() {
+		return qtdePontos;
+	}
+
+	public void setQtdePontos(Integer qtdePontos) {
+		this.qtdePontos = qtdePontos;
+	}
 
 	public String getCampo() {
 		return campo;
