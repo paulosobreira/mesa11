@@ -10,7 +10,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -21,15 +20,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.TableColumn;
 
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
@@ -73,6 +78,40 @@ public class EditorTime extends JPanel {
 		final BotaoTableModel botaoTableModel = new BotaoTableModel(time
 				.getBotoes());
 		tabelaBotoes.setModel(botaoTableModel);
+		TableColumn columnTitular = tabelaBotoes.getColumnModel().getColumn(2);
+		TableColumn columnGoleiro = tabelaBotoes.getColumnModel().getColumn(3);
+		TableColumn columnPrecisao = tabelaBotoes.getColumnModel().getColumn(4);
+		TableColumn columnForca = tabelaBotoes.getColumnModel().getColumn(5);
+		TableColumn columnDefesa = tabelaBotoes.getColumnModel().getColumn(6);
+		JComboBox comboBoxSimNao = new JComboBox();
+		comboBoxSimNao.addItem(Lang.msg("sim"));
+		comboBoxSimNao.addItem(Lang.msg("nao"));
+		columnTitular.setCellEditor(new DefaultCellEditor(comboBoxSimNao));
+		columnGoleiro.setCellEditor(new DefaultCellEditor(comboBoxSimNao));
+
+		JSpinner spinnerAtributos = new JSpinner(new SpinnerNumberModel() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see javax.swing.SpinnerNumberModel#setValue(java.lang.Object)
+			 */
+			@Override
+			public void setValue(Object value) {
+				Integer val = (Integer) value;
+				if (val.intValue() > 1000) {
+					return;
+				}
+				if (val.intValue() < 0) {
+					return;
+				}
+				super.setValue(value);
+			}
+
+		});
+		columnPrecisao.setCellEditor(new SpinnerEditor(spinnerAtributos));
+		columnForca.setCellEditor(new SpinnerEditor(spinnerAtributos));
+		columnDefesa.setCellEditor(new SpinnerEditor(spinnerAtributos));
+
 		JButton inserirLinha = new JButton() {
 			@Override
 			public String getText() {
@@ -136,6 +175,17 @@ public class EditorTime extends JPanel {
 		un2.add(imgGolUn2, BorderLayout.CENTER);
 
 		JPanel cores = new JPanel();
+		cores.setBorder(new TitledBorder("") {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see javax.swing.border.TitledBorder#getTitle()
+			 */
+			@Override
+			public String getTitle() {
+				return Lang.msg("clickNoTexto");
+			}
+		});
 		cores.setLayout(new GridLayout(2, 1));
 		cores.add(un1);
 		cores.add(un2);
@@ -226,15 +276,24 @@ public class EditorTime extends JPanel {
 			}
 
 		});
+		setCor(Color.BLACK, labelCor1);
+		setCor(Color.WHITE, labelCor2);
+		setCor(Color.YELLOW, labelCor3);
+		setCor(Color.WHITE, labelCor4);
+		setCor(Color.BLACK, labelCor5);
+		setCor(Color.YELLOW, labelCor6);
+		desenhaUniforme(labelCor1.getBackground(), labelCor2.getBackground(),
+				labelCor3.getBackground(), imgUn1);
+		desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
+				.getBackground(), labelCor3.getBackground(), imgGolUn1);
+
+		desenhaUniforme(labelCor4.getBackground(), labelCor5.getBackground(),
+				labelCor6.getBackground(), imgUn2);
+		desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
+				.getBackground(), labelCor6.getBackground(), imgGolUn2);
 
 	}
 
-	/**
-	 * @param background
-	 * @param background2
-	 * @param background3
-	 * @param imgUn12
-	 */
 	protected void desenhaUniformeGoleiro(Color cor1, Color cor2, Color cor3,
 			JLabel icon) {
 		Goleiro botao = new Goleiro(0);
