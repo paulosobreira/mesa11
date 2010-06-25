@@ -1,7 +1,6 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
-import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
@@ -12,37 +11,35 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.io.IOException;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
+import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.visao.BotaoTableModel;
+import br.mesa11.visao.EditorTime;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -53,6 +50,7 @@ import br.recursos.Lang;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
+	private Map botoesImagens = new HashMap();
 	private Map botoesComThread = new HashMap();
 	private Botao bola;
 	private MesaPanel mesaPanel;
@@ -72,11 +70,11 @@ public class ControleJogo {
 	private ControlePartida controlePartida;
 	private Evento eventoAtual;
 	private String ultimaMarcacao;
+	private Thread atualizadorTela;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
 		mesaPanel = new MesaPanel(this);
-		mesaPanel.setDoubleBuffered(true);
 		criarPopupMenu();
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
@@ -129,12 +127,17 @@ public class ControleJogo {
 			}
 		});
 		bola = new Bola(0);
-		bola.setImagem("bola.png");
+		botoesImagens.put(bola.getId(), CarregadorRecursos
+				.carregaImg("bola.png"));
 		botoes.put(bola.getId(), bola);
-		Thread atualizadorTela = new Thread(new AtualizadorVisual(this));
-		// atualizadorTela.setPriority(Thread.MAX_PRIORITY);
-		atualizadorTela.start();
+		if (atualizadorTela == null) {
+			atualizadorTela = new Thread(new AtualizadorVisual(this));
+			atualizadorTela.start();
+		}
+	}
 
+	public Map getBotoesImagens() {
+		return botoesImagens;
 	}
 
 	private void adicinaListentesEventosTeclado() {
@@ -1103,5 +1106,95 @@ public class ControleJogo {
 					+ botaoLateral.getDiamentro(), lateral.y));
 		}
 		lateral();
+	}
+
+	public void salvarTime(Time time) {
+		validaTime(time);
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+		encoder.writeObject(time);
+		encoder.flush();
+		JTextArea xmlArea = new JTextArea(30, 50);
+		xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
+				+ "</java>");
+		xmlArea.setEditable(false);
+		xmlArea.setSelectionStart(0);
+		xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
+		JScrollPane xmlPane = new JScrollPane(xmlArea);
+		xmlPane.setBorder(new TitledBorder(Lang.msg("salvarTimeInfo")));
+		JOptionPane.showMessageDialog(frame, xmlPane, Lang.msg("salvarTime"),
+				JOptionPane.INFORMATION_MESSAGE);
+
+	}
+
+	private void validaTime(Time time) {
+		List botoesTime = time.getBotoes();
+		List remover = new ArrayList();
+		List adicionar = new ArrayList();
+		for (Iterator iterator = botoesTime.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (!(botao instanceof Goleiro) && botao.isGoleiro()) {
+				remover.add(botao);
+				adicionar.add(BotaoUtils.converteGoleiro(botao));
+			}
+			if ((botao instanceof Goleiro) && !botao.isGoleiro()) {
+				remover.add(botao);
+				adicionar.add(BotaoUtils.converteBotao((Goleiro) botao));
+			}
+		}
+		botoesTime.removeAll(remover);
+		botoesTime.addAll(adicionar);
+
+	}
+
+	public void inserirBotaoEditor(Time time, BotaoTableModel botaoTableModel) {
+		Botao botao = new Botao();
+		botao.setTime(time);
+		botao.setNome(time.getNome());
+		int numero = 0;
+		List botoes = time.getBotoes();
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Botao b = (Botao) iterator.next();
+			if (b.getNumero() > numero) {
+				numero = b.getNumero();
+			}
+		}
+		botao.setNumero(numero + 1);
+		botao.setTitular(true);
+		botao.setGoleiro(false);
+		botao.setForca(Util.intervalo(500, 1000));
+		botao.setPrecisao(Util.intervalo(500, 1000));
+		botao.setDefesa(Util.intervalo(500, 1000));
+		botaoTableModel.inserirLinha(botao);
+	}
+
+	public void carregarTime() {
+		try {
+			JTextArea xmlArea = new JTextArea(30, 50);
+			JScrollPane xmlPane = new JScrollPane(xmlArea);
+			xmlPane.setBorder(new TitledBorder(Lang.msg("xmlTimeSalvoInfo")));
+			JOptionPane.showMessageDialog(frame, xmlPane, Lang
+					.msg("xmlTimeSalvo"), JOptionPane.INFORMATION_MESSAGE);
+
+			if (Util.isNullOrEmpty(xmlArea.getText())) {
+				return;
+			}
+			ByteArrayInputStream bin = new ByteArrayInputStream(xmlArea
+					.getText().getBytes());
+			XMLDecoder xmlDecoder = new XMLDecoder(bin);
+			Time time = (Time) xmlDecoder.readObject();
+			EditorTime editorTime = new EditorTime(time, this);
+			JOptionPane.showMessageDialog(frame, editorTime);
+		} catch (Exception e) {
+			StackTraceElement[] trace = e.getStackTrace();
+			StringBuffer retorno = new StringBuffer();
+			int size = ((trace.length > 10) ? 10 : trace.length);
+			for (int i = 0; i < size; i++)
+				retorno.append(trace[i] + "\n");
+			JOptionPane.showMessageDialog(frame, retorno.toString(), Lang
+					.msg("erro"), JOptionPane.ERROR_MESSAGE);
+			Logger.logarExept(e);
+		}
+
 	}
 }

@@ -205,6 +205,7 @@ public class MesaPanel extends JPanel {
 		try {
 			super.paintImmediately(x, y, w, h);
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("paintImmediately1");
 		}
 	}
@@ -382,7 +383,8 @@ public class MesaPanel extends JPanel {
 				zoom, zoom);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
 				affineTransform, AffineTransformOp.TYPE_BILINEAR);
-		BufferedImage botaoImg = botao.getImgBotao();
+		BufferedImage botaoImg = (BufferedImage) controleJogo
+				.getBotoesImagens().get(botao.getId());
 		if (botaoImg == null)
 			return;
 		BufferedImage zoomBuffer = new BufferedImage(

@@ -12,6 +12,8 @@ public class Time extends Mesa11Dados {
 	private List botoes = new ArrayList();
 	private String nome;
 	private Integer qtdePontos;
+	private boolean corMeiaNumero1;
+	private boolean corMeiaNumero2;
 	private int cor1RGB;
 	private int cor2RGB;
 	private int cor3RGB;
@@ -21,6 +23,22 @@ public class Time extends Mesa11Dados {
 
 	public int getCor1RGB() {
 		return cor1RGB;
+	}
+
+	public boolean isCorMeiaNumero1() {
+		return corMeiaNumero1;
+	}
+
+	public void setCorMeiaNumero1(boolean corMeiaNumero1) {
+		this.corMeiaNumero1 = corMeiaNumero1;
+	}
+
+	public boolean isCorMeiaNumero2() {
+		return corMeiaNumero2;
+	}
+
+	public void setCorMeiaNumero2(boolean corMeiaNumero2) {
+		this.corMeiaNumero2 = corMeiaNumero2;
 	}
 
 	public void setCor1RGB(int cor1rgb) {

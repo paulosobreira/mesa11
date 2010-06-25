@@ -2,7 +2,10 @@ package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.beans.XMLDecoder;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Enumeration;
@@ -23,6 +26,7 @@ import javax.swing.border.TitledBorder;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
+import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
@@ -53,7 +57,6 @@ public class ControlePartida {
 			times = new Hashtable();
 			properties.load(CarregadorRecursos
 					.recursoComoStream("times.properties"));
-
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
@@ -145,7 +148,9 @@ public class ControlePartida {
 		tempoJogoPanel.add(tempoJogadaCombo);
 
 		JFrame frame = controleJogo.getFrame();
+		Map botoesImagens = controleJogo.getBotoesImagens();
 		Map botoes = controleJogo.getBotoes();
+		MesaPanel mesaPanel = controleJogo.getMesaPanel();
 		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
 		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
 		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.SOUTH);
@@ -157,56 +162,60 @@ public class ControlePartida {
 			return;
 		}
 		processaTempoJogo(tempoJogoCombo.getSelectedItem());
-		timeCima = new Time();
-		timeCima.setId(1);
+		String xmlCima = obterKey((String) timesCima.getSelectedItem());
+		String xmlBaixo = obterKey((String) timesBaixo.getSelectedItem());
+		if (xmlCima.equals(xmlBaixo)) {
+			return;
+		}
+
+		XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+				.recursoComoStream(xmlCima));
+		timeCima = (Time) xmlDecoder.readObject();
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
-		timeCima.setNome((String) timesCima.getSelectedItem());
-		for (int i = 0; i < 10; i++) {
-			Long id = new Long(i + 1);
-			Botao botao = new Botao(id);
-			botao.setTime(timeCima);
-			botao.setImagem(obterKey((String) timesCima.getSelectedItem()));
-			timeCima.getBotoes().add(botao);
+		for (int i = 0; i < 11; i++) {
+			Long id = new Long(i + 2);
+			Botao botao = (Botao) timeCima.getBotoes().get(i);
+			if (botao.getId() == null || MesaPanel.zero.equals(botao.getId())) {
+				botao.setId(id);
+			}
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botoesImagens.put(botao.getId(), BotaoUtils
+						.desenhaUniformeGoleiro(timeCima, 1, botao));
+				botao.setCentro(mesaPanel.golCima());
+			} else {
+				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
+						timeCima, 1, botao));
+			}
 			botoes.put(botao.getId(), botao);
+
 		}
 		ControlePosicionamento controleFormacao = new ControlePosicionamento(
 				controleJogo);
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 
-		timeBaixo = new Time();
-		timeBaixo.setId(2);
+		xmlDecoder = new XMLDecoder(CarregadorRecursos
+				.recursoComoStream(xmlBaixo));
+		timeBaixo = (Time) xmlDecoder.readObject();
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
-		timeBaixo.setNome((String) timesBaixo.getSelectedItem());
-		for (int i = 0; i < 10; i++) {
-			Long id = new Long(i + 11);
-			Botao botao = new Botao(id);
-			botao.setTime(timeBaixo);
-			botao.setImagem(obterKey((String) timesBaixo.getSelectedItem()));
-			timeBaixo.getBotoes().add(botao);
+		for (int i = 0; i < 11; i++) {
+			Long id = new Long(i + 20);
+			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
+			if (botao.getId() == null || MesaPanel.zero.equals(botao.getId())) {
+				botao.setId(id);
+			}
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botoesImagens.put(botao.getId(), BotaoUtils
+						.desenhaUniformeGoleiro(timeBaixo, 1, botao));
+				botao.setCentro(mesaPanel.golBaixo());
+				System.out.println("Goleiro Baixo");
+			} else {
+				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
+						timeBaixo, 1, botao));
+			}
 			botoes.put(botao.getId(), botao);
-
 		}
 		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
-		MesaPanel mesaPanel = controleJogo.getMesaPanel();
-		Goleiro goleiro1 = new Goleiro(100);
-		goleiro1.setCentro(mesaPanel.golCima());
-		timeCima.getBotoes().add(goleiro1);
-		goleiro1.setTime(timeCima);
-		Goleiro goleiro2 = new Goleiro(200);
-		goleiro2.setCentro(mesaPanel.golBaixo());
-		timeBaixo.getBotoes().add(goleiro2);
-		goleiro2.setTime(timeBaixo);
-		botoes.put(goleiro1.getId(), goleiro1);
-		botoes.put(goleiro2.getId(), goleiro2);
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
-			Long id = (Long) iterator.next();
-			Botao b = (Botao) botoes.get(id);
-			if (b instanceof Goleiro) {
-				continue;
-			}
-			b.setImgBotao(CarregadorRecursos.carregaImg(b.getImagem()));
-		}
 		controleJogo.bolaCentro();
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
 				.isSelected() ? ConstantesMesa11.CAMPO_CIMA

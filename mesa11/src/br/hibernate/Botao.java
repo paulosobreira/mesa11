@@ -15,13 +15,10 @@ import br.nnpe.Logger;
 
 public class Botao extends Mesa11Dados {
 
-	private BufferedImage imgBotao;
-
 	private int diamentro = ConstantesMesa11.DIAMENTRO_BOTAO;
 	private Point position;
 	private Point centroInicio;
 	private Point destino;
-	private String imagem;
 	private String nome;
 	private Integer numero;
 	private double angulo;
@@ -108,14 +105,6 @@ public class Botao extends Mesa11Dados {
 		this.angulo = angulo;
 	}
 
-	public String getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(String imagem) {
-		this.imagem = imagem;
-	}
-
 	public Point getCentroInicio() {
 		return centroInicio;
 	}
@@ -172,7 +161,6 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Botao() {
-		imgBotao = null;
 	}
 
 	public Botao(Long id) {
@@ -181,14 +169,6 @@ public class Botao extends Mesa11Dados {
 
 	public Botao(int id) {
 		this.id = new Long(id);
-	}
-
-	public BufferedImage getImgBotao() {
-		return imgBotao;
-	}
-
-	public void setImgBotao(BufferedImage imgBotao) {
-		this.imgBotao = imgBotao;
 	}
 
 	public static void main(String[] args) {
@@ -212,6 +192,10 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Shape getShape(double zoom) {
+		if (getPosition() == null) {
+			System.out.println("getShape getPosition null id " + id + " "
+					+ getClass());
+		}
 		Ellipse2D e2D = new Ellipse2D.Double(getPosition().x * zoom,
 				getPosition().y * zoom, getDiamentro() * zoom, getDiamentro()
 						* zoom);

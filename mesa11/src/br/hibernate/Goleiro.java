@@ -30,6 +30,9 @@ public class Goleiro extends Botao {
 		this.rotacao = rotacao;
 	}
 
+	public Goleiro() {
+	}
+
 	public Goleiro(int i) {
 		super(i);
 	}
@@ -47,11 +50,17 @@ public class Goleiro extends Botao {
 	}
 
 	public Point getCentro() {
+		if (getPosition() == null) {
+			return new Point(0, 0);
+		}
 		return new Point(getPosition().x + (getDiamentro() / 2),
 				getPosition().y + 30);
 	}
 
 	public void setCentro(Point p) {
+		if (p == null) {
+			return;
+		}
 		setPosition(new Point(p.x - (getDiamentro() / 2), p.y - 30));
 	}
 }
