@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_20" class="java.beans.XMLDecoder"> 
+ <object id="Time0" class="br.hibernate.Time"> 
+  <void property="botoes"> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495448785</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>840</int> 
+     </void> 
+     <void property="forca"> 
+      <int>883</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>2</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>872</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495448973</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>846</int> 
+     </void> 
+     <void property="forca"> 
+      <int>585</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>3</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>844</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495449145</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>710</int> 
+     </void> 
+     <void property="forca"> 
+      <int>595</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>4</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>751</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495449348</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>828</int> 
+     </void> 
+     <void property="forca"> 
+      <int>708</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>5</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>934</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495449535</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>843</int> 
+     </void> 
+     <void property="forca"> 
+      <int>697</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>6</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>992</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495449848</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>902</int> 
+     </void> 
+     <void property="forca"> 
+      <int>841</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>7</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>872</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495450066</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>753</int> 
+     </void> 
+     <void property="forca"> 
+      <int>998</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>8</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>810</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495450270</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>900</int> 
+     </void> 
+     <void property="forca"> 
+      <int>623</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>9</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>843</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495450598</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>882</int> 
+     </void> 
+     <void property="forca"> 
+      <int>650</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>10</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>947</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495451395</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>783</int> 
+     </void> 
+     <void property="forca"> 
+      <int>940</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>11</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>712</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Goleiro"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277495448551</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>912</int> 
+     </void> 
+     <void property="diamentro"> 
+      <int>128</int> 
+     </void> 
+     <void property="forca"> 
+      <int>824</int> 
+     </void> 
+     <void property="goleiro"> 
+      <boolean>true</boolean> 
+     </void> 
+     <void property="id"> 
+      <long>0</long> 
+     </void> 
+     <void property="nome"> 
+      <string>Argentina</string> 
+     </void> 
+     <void property="numero"> 
+      <int>1</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>965</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="cor1RGB"> 
+   <int>-3342337</int> 
+  </void> 
+  <void property="cor3RGB"> 
+   <int>-1</int> 
+  </void> 
+  <void property="cor4RGB"> 
+   <int>-16777063</int> 
+  </void> 
+  <void property="cor5RGB"> 
+   <int>-1</int> 
+  </void> 
+  <void property="dataCriacao"> 
+   <object class="java.util.Date"> 
+    <long>1277495437691</long> 
+   </object> 
+  </void> 
+  <void property="nome"> 
+   <string>Argentina</string> 
+  </void> 
+  <void property="qtdePontos"> 
+   <int>165</int> 
+  </void> 
+ </object> 
+</java>

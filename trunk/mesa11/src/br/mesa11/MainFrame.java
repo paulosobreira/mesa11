@@ -11,8 +11,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.conceito.ControleJogo;
+import br.mesa11.visao.EditorTime;
+import br.nnpe.Util;
 import br.recursos.Lang;
 
 public class MainFrame {
@@ -31,11 +34,9 @@ public class MainFrame {
 
 		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
-		controleJogo = new ControleJogo(frame);
 		frame.setSize(800, 600);
 		frame.setVisible(true);
-		controleJogo.centroCampo();
-		controleJogo.setZoom(0.3);
+
 	}
 
 	private void gerarMenus() {
@@ -50,6 +51,16 @@ public class MainFrame {
 
 		bar.add(menuJogoLivre);
 		gerarMenusJogoLivre(menuJogoLivre);
+
+		JMenu menuEditarTime = new JMenu() {
+			public String getText() {
+				return Lang.msg("menuEditarTime");
+			}
+
+		};
+
+		bar.add(menuEditarTime);
+		gerarMenusEditarTime(menuEditarTime);
 		JMenu info = new JMenu() {
 			public String getText() {
 				return Lang.msg("info");
@@ -58,6 +69,42 @@ public class MainFrame {
 		};
 		bar.add(info);
 		gerarMenusSobre(info);
+	}
+
+	private void gerarMenusEditarTime(JMenu menuEditarTime) {
+		JMenuItem criarTime = new JMenuItem("") {
+			public String getText() {
+				return Lang.msg("criarTime");
+			}
+
+		};
+		criarTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Time time = new Time();
+				time.setQtdePontos(Util.intervalo(100, 1000));
+				if (controleJogo == null) {
+					controleJogo = new ControleJogo(frame);
+				}
+				EditorTime editorTime = new EditorTime(time, controleJogo);
+				JOptionPane.showMessageDialog(frame, editorTime);
+			}
+		});
+		menuEditarTime.add(criarTime);
+		JMenuItem carregarTime = new JMenuItem("") {
+			public String getText() {
+				return Lang.msg("carregarTime");
+			}
+
+		};
+		carregarTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (controleJogo == null) {
+					controleJogo = new ControleJogo(frame);
+				}
+				controleJogo.carregarTime();
+			}
+		});
+		menuEditarTime.add(carregarTime);
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
@@ -90,6 +137,11 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				controleJogo = new ControleJogo(frame);
+				frame.setSize(800, 600);
+				frame.setVisible(true);
+				controleJogo.centroCampo();
+				controleJogo.setZoom(0.3);
 				controleJogo.iniciaJogoLivre();
 			}
 		});
@@ -104,6 +156,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.bolaPenaltiCima();
 			}
 		});
@@ -118,6 +172,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.bolaPenaltiBaixo();
 			}
 		});
@@ -132,6 +188,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.bolaCentro();
 			}
 		});
@@ -146,6 +204,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.escCimaDir();
 			}
 		});
@@ -161,6 +221,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.escCimaEsc();
 			}
 		});
@@ -176,6 +238,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.escBaixoDir();
 			}
 		});
@@ -191,6 +255,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.escBaixoEsc();
 			}
 		});
@@ -206,6 +272,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.metaCima();
 			}
 		});
@@ -221,6 +289,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.metaBaixo();
 			}
 		});
@@ -236,6 +306,8 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo == null)
+					return;
 				controleJogo.lateral();
 			}
 		});

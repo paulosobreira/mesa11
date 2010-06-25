@@ -3,29 +3,26 @@
  */
 package br.mesa11.visao;
 
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -39,8 +36,9 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.TableColumn;
 
 import br.hibernate.Botao;
-import br.hibernate.Goleiro;
 import br.hibernate.Time;
+import br.mesa11.BotaoUtils;
+import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Util;
 import br.recursos.Lang;
 
@@ -60,15 +58,19 @@ public class EditorTime extends JPanel {
 	private JLabel imgUn2 = new JLabel("");
 	private JLabel imgGolUn2 = new JLabel("");
 	private JLabel qtdePts = null;
-	private JTextField textFieldNomeTime = new JTextField();
+	private JTextField textFieldNomeTime;
 	private Time time;
 	private JTable tabelaBotoes;
+	private JCheckBox corMeiaCorNumero1;
+	private JCheckBox corMeiaCorNumero2;
+	private ControleJogo controleJogo;
 
 	/**
 	 * 
 	 */
-	public EditorTime(Time time) {
+	public EditorTime(Time time, ControleJogo controleJogo) {
 		this.time = time;
+		this.controleJogo = controleJogo;
 		gerarLabelsCores();
 		JTabbedPane jTabbedPane = new JTabbedPane();
 		jTabbedPane
@@ -76,7 +78,7 @@ public class EditorTime extends JPanel {
 		jTabbedPane.addTab(Lang.msg("coresBotoes"), gerarTabelaCores());
 
 		setLayout(new BorderLayout());
-		JPanel panelTime = new JPanel(new GridLayout(2, 2));
+		JPanel panelTime = new JPanel(new GridLayout(4, 2));
 		panelTime.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
@@ -89,7 +91,22 @@ public class EditorTime extends JPanel {
 				return Lang.msg("nomeTime");
 			}
 		});
+		textFieldNomeTime = new JTextField(time.getNome());
 		panelTime.add(textFieldNomeTime);
+		textFieldNomeTime.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				EditorTime.this.time.setNome(textFieldNomeTime.getText());
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
 		panelTime.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -104,6 +121,47 @@ public class EditorTime extends JPanel {
 			}
 		};
 		panelTime.add(qtdePts);
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("corMeiaCorNumero");
+			}
+		});
+		corMeiaCorNumero1 = new JCheckBox();
+		corMeiaCorNumero1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.time.setCorMeiaNumero1(corMeiaCorNumero1
+						.isSelected());
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(
+						EditorTime.this.time, 1)));
+
+			}
+		});
+		panelTime.add(corMeiaCorNumero1);
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("corMeiaCorNumero");
+			}
+		});
+		corMeiaCorNumero2 = new JCheckBox();
+		corMeiaCorNumero2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.time.setCorMeiaNumero2(corMeiaCorNumero2
+						.isSelected());
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(
+						EditorTime.this.time, 2)));
+			}
+		});
+		panelTime.add(corMeiaCorNumero2);
 		add(panelTime, BorderLayout.NORTH);
 		add(jTabbedPane, BorderLayout.CENTER);
 	}
@@ -186,9 +244,7 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Botao botao = new Botao();
-				botao.setTime(time);
-				botaoTableModel.inserirLinha(botao);
+				controleJogo.inserirBotaoEditor(time, botaoTableModel);
 
 			}
 		});
@@ -211,11 +267,29 @@ public class EditorTime extends JPanel {
 
 			}
 		});
+
+		JButton salvarTime = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("salvarTime");
+			}
+		};
+
+		salvarTime.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controleJogo.salvarTime(time);
+
+			}
+		});
+
 		JPanel panelTabela = new JPanel(new BorderLayout());
 		panelTabela.add(new JScrollPane(tabelaBotoes), BorderLayout.CENTER);
-		JPanel panelBotoes = new JPanel(new GridLayout(1, 2));
+		JPanel panelBotoes = new JPanel(new GridLayout(1, 3));
 		panelBotoes.add(inserirLinha);
 		panelBotoes.add(removerLinha);
+		panelBotoes.add(salvarTime);
 		panelTabela.add(panelBotoes, BorderLayout.SOUTH);
 		return panelTabela;
 	}
@@ -265,10 +339,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor1);
 				time.setCor1RGB(color.getRGB());
-				desenhaUniforme(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgUn1);
-				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgGolUn1);
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 			}
 
 		});
@@ -280,10 +353,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor2);
 				time.setCor2RGB(color.getRGB());
-				desenhaUniforme(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgUn1);
-				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgGolUn1);
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -294,10 +366,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor3);
 				time.setCor3RGB(color.getRGB());
-				desenhaUniforme(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgUn1);
-				desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
-						.getBackground(), labelCor3.getBackground(), imgGolUn1);
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -309,10 +380,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor4);
 				time.setCor4RGB(color.getRGB());
-				desenhaUniforme(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgUn2);
-				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgGolUn2);
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -324,10 +394,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor5);
 				time.setCor5RGB(color.getRGB());
-				desenhaUniforme(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgUn2);
-				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgGolUn2);
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 
 			}
 		});
@@ -339,10 +408,9 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor6);
 				time.setCor6RGB(color.getRGB());
-				desenhaUniforme(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgUn2);
-				desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
-						.getBackground(), labelCor6.getBackground(), imgGolUn2);
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2
+						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -352,109 +420,16 @@ public class EditorTime extends JPanel {
 		setCor(new Color(time.getCor4RGB()), labelCor4);
 		setCor(new Color(time.getCor5RGB()), labelCor5);
 		setCor(new Color(time.getCor6RGB()), labelCor6);
-		desenhaUniforme(labelCor1.getBackground(), labelCor2.getBackground(),
-				labelCor3.getBackground(), imgUn1);
-		desenhaUniformeGoleiro(labelCor1.getBackground(), labelCor2
-				.getBackground(), labelCor3.getBackground(), imgGolUn1);
+		imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+		imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
-		desenhaUniforme(labelCor4.getBackground(), labelCor5.getBackground(),
-				labelCor6.getBackground(), imgUn2);
-		desenhaUniformeGoleiro(labelCor4.getBackground(), labelCor5
-				.getBackground(), labelCor6.getBackground(), imgGolUn2);
+		imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+		imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 
 	}
 
-	protected void desenhaUniformeGoleiro(Color cor1, Color cor2, Color cor3,
-			JLabel icon) {
-		Goleiro botao = new Goleiro(0);
-		botao.setPosition(new Point(0, 0));
-		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro(), 60,
-				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
-		setarHints(graphics);
-		graphics.fill(botao.getShape(1));
-		AlphaComposite composite = AlphaComposite
-				.getInstance(AlphaComposite.SRC_IN);
-		graphics.setComposite(composite);
-		graphics.setColor(cor1);
-		graphics.fillRect(0, 0, Util.inte(botao.getDiamentro() * .7), 60);
-		graphics.setColor(cor2);
-		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
-				.inte(botao.getDiamentro() * .35), 60);
-		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(5.0f));
-		graphics.drawRect(0, 0, botao.getDiamentro(), 60);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 16));
-		graphics.setColor(cor2);
-		if (cor2.equals(cor1)) {
-			graphics.setColor(cor3);
-		}
-		graphics.drawString("Mesa", 12, Util.inte(60 * .5));
-		graphics.setColor(cor1);
-		if (cor1.equals(cor2)) {
-			graphics.setColor(cor3);
-		}
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 20));
-		graphics.drawString("11", Util.inte(botao.getDiamentro() * .75), Util
-				.inte(60 * .5));
 
-		graphics.dispose();
-		icon.setIcon(new ImageIcon(botaoImg));
 
-	}
-
-	private void setarHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-				RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	}
-
-	protected void desenhaUniforme(Color cor1, Color cor2, Color cor3,
-			JLabel icon) {
-		Botao botao = new Botao();
-		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro(), botao
-				.getDiamentro(), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
-		setarHints(graphics);
-		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
-		AlphaComposite composite = AlphaComposite
-				.getInstance(AlphaComposite.SRC_IN);
-		graphics.setComposite(composite);
-		graphics.setColor(cor1);
-		graphics.fillRect(0, 0, botao.getDiamentro(), Util.inte(botao
-				.getDiamentro() * .7));
-		graphics.setColor(cor2);
-		graphics.fillRect(0, Util.inte(botao.getDiamentro() * .7), botao
-				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
-		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(5.0f));
-		graphics.drawOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 16));
-		graphics.setColor(cor2);
-		if (cor2.equals(cor1)) {
-			graphics.setColor(cor3);
-		}
-		graphics.drawString("Mesa", 12, Util.inte(botao.getDiamentro() * .5));
-		graphics.setColor(cor1);
-		if (cor1.equals(cor2)) {
-			graphics.setColor(cor3);
-		}
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 20));
-		graphics.drawString("11", Util.inte(botao.getDiamentro() * .4), Util
-				.inte(botao.getDiamentro() * .9));
-
-		graphics.dispose();
-		icon.setIcon(new ImageIcon(botaoImg));
-	}
 
 	public void setCor(Color color, JLabel label) {
 		label.setOpaque(true);
@@ -499,7 +474,8 @@ public class EditorTime extends JPanel {
 		botao.setTime(time);
 		time.getBotoes().add(botao);
 		time.setNome("mesa11");
-		EditorTime editorTime = new EditorTime(time);
+		ControleJogo controleJogo = new ControleJogo(new JFrame());
+		EditorTime editorTime = new EditorTime(time, controleJogo);
 		// JFrame frame = new JFrame();
 		// frame.add(editorTime);
 		// frame.setVisible(true);
