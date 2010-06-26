@@ -1,10 +1,13 @@
 package br.mesa11.conceito;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import br.hibernate.Botao;
+import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Util;
@@ -12,7 +15,7 @@ import br.nnpe.Util;
 public class ControlePosicionamento {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
-	
+
 	private Map botoes;
 
 	public ControlePosicionamento(ControleJogo controleJogo) {
@@ -26,7 +29,14 @@ public class ControlePosicionamento {
 		int distHCima = (int) (mesaPanel.getCampoCima().getWidth() / 5);
 		int distVCima = (int) (mesaPanel.getCampoCima().getHeight() / 2);
 		int xpenal = mesaPanel.getPenaltyCima().x;
-		List btns = time.getBotoes();
+		List btnsTime = time.getBotoes();
+		List btns = new ArrayList();
+		for (Iterator iterator = btnsTime.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (!(botao instanceof Goleiro) || !botao.isGoleiro()) {
+				btns.add(botao);
+			}
+		}
 		Botao botao1 = (Botao) btns.get(0);
 		botao1.setCentro(new Point(xpenal, distVCima));
 
@@ -86,7 +96,14 @@ public class ControlePosicionamento {
 		int distVBaixo = (int) (mesaPanel.getCampoCima().getHeight() / 2);
 		int y = mesaPanel.golBaixo().y + 200;
 		int xpenal = mesaPanel.getPenaltyCima().x;
-		List btns = time.getBotoes();
+		List btnsTime = time.getBotoes();
+		List btns = new ArrayList();
+		for (Iterator iterator = btnsTime.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (!(botao instanceof Goleiro) || !botao.isGoleiro()) {
+				btns.add(botao);
+			}
+		}
 		Botao botao1 = (Botao) btns.get(0);
 		botao1.setCentro(new Point(xpenal, y - distVBaixo));
 

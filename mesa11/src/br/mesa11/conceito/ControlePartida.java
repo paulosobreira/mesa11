@@ -180,8 +180,9 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, 1, botao));
+						.desenhaUniformeGoleiro(timeCima, 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
+				System.out.println("Goleiro Cima");
 			} else {
 				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
 						timeCima, 1, botao));
@@ -206,7 +207,7 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo, 1, botao));
+						.desenhaUniformeGoleiro(timeBaixo, 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 				System.out.println("Goleiro Baixo");
 			} else {
@@ -216,6 +217,13 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 		}
 		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoes.get(id);
+			System.out.println(id + " " + botao.getPosition() + " "
+					+ botao.getNumero() + " " + botao.getNome() + " "
+					+ botao.isGoleiro() + " " + botao.getClass());
+		}
 		controleJogo.bolaCentro();
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
 				.isSelected() ? ConstantesMesa11.CAMPO_CIMA

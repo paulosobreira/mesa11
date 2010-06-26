@@ -363,10 +363,33 @@ public class MesaPanel extends JPanel {
 				* zoom), Util.inte(goleiro.getCentro().y * zoom)))) {
 			return;
 		}
+		int botx = (int) (goleiro.getPosition().x * zoom);
+		int boty = (int) (goleiro.getPosition().y * zoom);
+
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setColor(Color.BLACK);
+		// g2d.setColor(Color.BLACK);
 		Shape goleroShape = goleiro.getShape(zoom);
-		g2d.fill(goleroShape);
+		// g2d.fill(goleroShape);
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(
+				zoom, zoom);
+		AffineTransformOp affineTransformOp = new AffineTransformOp(
+				affineTransform, AffineTransformOp.TYPE_BILINEAR);
+		BufferedImage botaoImg = (BufferedImage) controleJogo
+				.getBotoesImagens().get(goleiro.getId());
+		BufferedImage zoomBuffer = new BufferedImage((int) (goleiro
+				.getDiamentro() * zoom), (int) (60 * zoom),
+				BufferedImage.TYPE_INT_ARGB);
+
+		affineTransformOp.filter(botaoImg, zoomBuffer);
+		double rad = Math.toRadians((double) goleiro.getRotacao());
+		affineTransform.setToRotation(rad, botx + 200, boty + 30);
+
+		BufferedImage newBuffer = new BufferedImage((int) (goleiro
+				.getDiamentro() * zoom), (int) (60 * zoom),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		graphics2d.drawImage(zoomBuffer, 0, 0, null);
+		g.drawImage(newBuffer, botx, boty, null);
 
 	}
 
@@ -398,9 +421,9 @@ public class MesaPanel extends JPanel {
 				(int) (botaoImg.getHeight() * zoom),
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-		Ellipse2D externo = new Ellipse2D.Double(0, 0,
-				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-		graphics2d.setClip(externo);
+		// Ellipse2D externo = new Ellipse2D.Double(0, 0,
+		// (botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
+		// graphics2d.setClip(externo);
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		g.drawImage(newBuffer, botx, boty, null);
 	}
