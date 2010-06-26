@@ -23,7 +23,7 @@ public class BotaoUtils {
 	}
 
 	public static BufferedImage desenhaUniformeGoleiro(Time time, int uniforme,
-			Botao botao) {
+			Goleiro botao) {
 		Color cor1, cor2, cor3;
 		if (uniforme == 1) {
 			cor1 = new Color(time.getCor1RGB());
@@ -167,6 +167,7 @@ public class BotaoUtils {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+		goleiro.setDiamentro(400);
 		return goleiro;
 	}
 
@@ -177,6 +178,7 @@ public class BotaoUtils {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+		goleiro.setDiamentro(128);
 		return botao;
 	}
 

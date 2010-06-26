@@ -6,39 +6,6 @@
     <object class="br.hibernate.Botao"> 
      <void property="dataCriacao"> 
       <object class="java.util.Date"> 
-       <long>1277485333770</long> 
-      </object> 
-     </void> 
-     <void property="defesa"> 
-      <int>683</int> 
-     </void> 
-     <void property="forca"> 
-      <int>521</int> 
-     </void> 
-     <void property="goleiro"> 
-      <boolean>true</boolean> 
-     </void> 
-     <void property="nome"> 
-      <string>Brasil</string> 
-     </void> 
-     <void property="numero"> 
-      <int>1</int> 
-     </void> 
-     <void property="precisao"> 
-      <int>674</int> 
-     </void> 
-     <void property="time"> 
-      <object idref="Time0"/> 
-     </void> 
-     <void property="titular"> 
-      <boolean>true</boolean> 
-     </void> 
-    </object> 
-   </void> 
-   <void method="add"> 
-    <object class="br.hibernate.Botao"> 
-     <void property="dataCriacao"> 
-      <object class="java.util.Date"> 
        <long>1277485335395</long> 
       </object> 
      </void> 
@@ -326,6 +293,45 @@
      </void> 
      <void property="precisao"> 
       <int>699</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Goleiro"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1277485333770</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>683</int> 
+     </void> 
+     <void property="diamentro"> 
+      <int>400</int> 
+     </void> 
+     <void property="forca"> 
+      <int>521</int> 
+     </void> 
+     <void property="goleiro"> 
+      <boolean>true</boolean> 
+     </void> 
+     <void property="id"> 
+      <long>0</long> 
+     </void> 
+     <void property="nome"> 
+      <string>Brasil</string> 
+     </void> 
+     <void property="numero"> 
+      <int>1</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>674</int> 
      </void> 
      <void property="time"> 
       <object idref="Time0"/> 
