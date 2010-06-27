@@ -367,29 +367,36 @@ public class MesaPanel extends JPanel {
 		int boty = (int) (goleiro.getPosition().y * zoom);
 
 		Graphics2D g2d = (Graphics2D) g;
-		// g2d.setColor(Color.BLACK);
+		g2d.setColor(Color.BLACK);
 		Shape goleroShape = goleiro.getShape(zoom);
-		// g2d.fill(goleroShape);
-		AffineTransform affineTransform = AffineTransform.getScaleInstance(
-				zoom, zoom);
-		AffineTransformOp affineTransformOp = new AffineTransformOp(
-				affineTransform, AffineTransformOp.TYPE_BILINEAR);
+		g2d.fill(goleroShape);
+
+		AffineTransform afZoom = new AffineTransform();
+		AffineTransform afRotate = new AffineTransform();
+		afZoom.setToScale(zoom, zoom);
+		double rad = Math.toRadians((double) goleiro.getRotacao());
+		afRotate.setToRotation(rad, 200, 200);
+
 		BufferedImage botaoImg = (BufferedImage) controleJogo
 				.getBotoesImagens().get(goleiro.getId());
-		BufferedImage zoomBuffer = new BufferedImage((int) (goleiro
-				.getDiamentro() * zoom), (int) (60 * zoom),
-				BufferedImage.TYPE_INT_ARGB);
-
-		affineTransformOp.filter(botaoImg, zoomBuffer);
-		double rad = Math.toRadians((double) goleiro.getRotacao());
-		affineTransform.setToRotation(rad, botx + 200, boty + 30);
-
-		BufferedImage newBuffer = new BufferedImage((int) (goleiro
-				.getDiamentro() * zoom), (int) (60 * zoom),
+		BufferedImage newBuffer = new BufferedImage(400, 400,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-		graphics2d.drawImage(zoomBuffer, 0, 0, null);
-		g.drawImage(newBuffer, botx, boty, null);
+		graphics2d.drawImage(botaoImg, 0, 170, null);
+		graphics2d.dispose();
+
+		BufferedImage zoomBuffer = new BufferedImage(400, 400,
+				BufferedImage.TYPE_INT_ARGB);
+		BufferedImage rotateBuffer = new BufferedImage(400, 400,
+				BufferedImage.TYPE_INT_ARGB);
+
+		AffineTransformOp op = new AffineTransformOp(afRotate,
+				AffineTransformOp.TYPE_BILINEAR);
+		op.filter(newBuffer, zoomBuffer);
+		AffineTransformOp op2 = new AffineTransformOp(afZoom,
+				AffineTransformOp.TYPE_BILINEAR);
+		op2.filter(zoomBuffer, rotateBuffer);
+		g.drawImage(rotateBuffer, botx, boty - Util.inte(170 * zoom), null);
 
 	}
 
@@ -421,9 +428,9 @@ public class MesaPanel extends JPanel {
 				(int) (botaoImg.getHeight() * zoom),
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-		// Ellipse2D externo = new Ellipse2D.Double(0, 0,
-		// (botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-		// graphics2d.setClip(externo);
+		Ellipse2D externo = new Ellipse2D.Double(0, 0,
+				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
+		graphics2d.setClip(externo);
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		g.drawImage(newBuffer, botx, boty, null);
 	}
