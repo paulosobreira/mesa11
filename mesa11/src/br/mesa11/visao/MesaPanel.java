@@ -374,7 +374,7 @@ public class MesaPanel extends JPanel {
 		AffineTransform afZoom = new AffineTransform();
 		AffineTransform afRotate = new AffineTransform();
 		afZoom.setToScale(zoom, zoom);
-		double rad = Math.toRadians((double) goleiro.getRotacao());
+		double rad = Math.toRadians(goleiro.getRotacao());
 		afRotate.setToRotation(rad, 200, 200);
 
 		BufferedImage botaoImg = (BufferedImage) controleJogo

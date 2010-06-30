@@ -58,7 +58,7 @@ public class BotaoUtils {
 		graphics.setStroke(new BasicStroke(5.0f));
 		graphics.drawRect(0, 0, botao.getDiamentro(), 60);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 16));
+				.getFont().getStyle(), 18));
 		graphics.setColor(cor2);
 		if (cor2.equals(cor1)) {
 			graphics.setColor(cor3);
@@ -75,7 +75,7 @@ public class BotaoUtils {
 				|| (uniforme == 2 && time.isCorMeiaNumero2()))
 			graphics.setColor(cor3);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 20));
+				.getFont().getStyle(), 22));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
 				.getDiamentro() * .75), Util.inte(60 * .5));
 
@@ -134,7 +134,7 @@ public class BotaoUtils {
 		graphics.setStroke(new BasicStroke(5.0f));
 		graphics.drawOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 16));
+				.getFont().getStyle(), 18));
 		graphics.setColor(cor2);
 		if (cor2.equals(cor1)) {
 			graphics.setColor(cor3);
@@ -152,7 +152,7 @@ public class BotaoUtils {
 				|| (uniforme == 2 && time.isCorMeiaNumero2()))
 			graphics.setColor(cor3);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 20));
+				.getFont().getStyle(), 22));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
 				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .9));
 

@@ -277,7 +277,7 @@ public class ControleJogo {
 							- bola.getRaio(), point.y - bola.getRaio(), bola
 							.getDiamentro(), bola.getDiamentro());
 					boolean defesaGoleiro = defesaGoleiro(rectangle,
-							bolaIngnora);
+							bolaIngnora, eventoAtual);
 					if (!bolaBateu
 							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro)) {
 						bolaBateu = true;
@@ -470,7 +470,8 @@ public class ControleJogo {
 		return false;
 	}
 
-	private boolean defesaGoleiro(Rectangle r, Set bolaIngnora) {
+	private boolean defesaGoleiro(Rectangle r, Set bolaIngnora,
+			Evento eventoAtual) {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -485,6 +486,7 @@ public class ControleJogo {
 					// System.out.println("frango");
 					// return false;
 					// }
+					eventoAtual.setUltimoContato(goleiro);
 					Logger.logar("Goleiro Defendeu");
 					return true;
 				}
