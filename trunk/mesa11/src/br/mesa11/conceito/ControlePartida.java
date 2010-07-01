@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -29,6 +30,7 @@ import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.MesaPanel;
+import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
@@ -351,6 +353,34 @@ public class ControlePartida {
 
 	public void setTimeBaixo(Time timeBaixo) {
 		this.timeBaixo = timeBaixo;
+	}
+
+	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
+		Goleiro goleiroTime = obterGoleiroTime(time);
+		double distGoleiroTime = GeoUtil.distaciaEntrePontos(goleiroTime
+				.getCentro(), bola.getCentro());
+		double outraDistancia = 0;
+		if (timeCima.equals(time)) {
+			goleiroTime = obterGoleiroTime(timeBaixo);
+			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
+					.getCentro(), bola.getCentro());
+		} else {
+			goleiroTime = obterGoleiroTime(timeCima);
+			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
+					.getCentro(), bola.getCentro());
+		}
+		return distGoleiroTime < outraDistancia;
+	}
+
+	public Goleiro obterGoleiroTime(Time time) {
+		List botoes = time.getBotoes();
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			if (object instanceof Goleiro) {
+				return (Goleiro) object;
+			}
+		}
+		return null;
 	}
 
 }

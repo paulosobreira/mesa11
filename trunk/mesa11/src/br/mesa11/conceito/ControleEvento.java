@@ -34,7 +34,20 @@ public class ControleEvento implements Runnable {
 			controleJogo.porcessaLateral();
 		} else if (!evento.isNaBola()) {
 			controleJogo.reversaoJogada();
+		} else if (ConstantesMesa11.GOLEIRO_DEFESA
+				.equals(evento.getEventoCod())) {
+			if (evento.getUltimoContato() != null
+					&& evento.getUltimoContato().getTime() != null
+					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
+							.getUltimoContato().getTime()))
+				controleJogo.reversaoJogada();
+		} else if (ConstantesMesa11.META_ESCANTEIO
+				.equals(evento.getEventoCod())) {
+			// veirifica ultMetaEscanteio e ver getUltimoContato
+		} else if (ConstantesMesa11.GOL.equals(evento.getEventoCod())) {
+			// veirifica ultGol e ver getUltimoContato
 		}
+
 		System.out.println("ProcessadorEvento" + controleJogo.getEventoAtual());
 
 	}
