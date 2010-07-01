@@ -67,6 +67,7 @@ public class ControleJogo {
 	private Point pontoPasando;
 	private boolean carregaBotao;
 	private boolean chutaBola;
+	private boolean chamadaAGol;
 	private boolean telaAtualizando = true;
 	private int numRecursoes;
 	private ControlePartida controlePartida;
@@ -437,6 +438,14 @@ public class ControleJogo {
 				}
 			}
 		}
+	}
+
+	public Time getTimeCima() {
+		return controlePartida.getTimeCima();
+	}
+
+	public Time getTimeBaixo() {
+		return controlePartida.getTimeBaixo();
 	}
 
 	private boolean verificaPosseGoleiro(Botao botao) {
@@ -1243,6 +1252,26 @@ public class ControleJogo {
 
 	public Point getUltMetaEscanteio() {
 		return ultMetaEscanteio;
+	}
+
+	public void processarEscanteio(Time timeBaixo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void processarMeta(Time timeBaixo) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void processarGolContra(Time timeCima) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void processarGol(Time timeCima) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
