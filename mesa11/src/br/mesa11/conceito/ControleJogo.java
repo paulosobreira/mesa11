@@ -57,7 +57,9 @@ public class ControleJogo {
 	private JScrollPane scrollPane;
 	private Point velhoPontoTela;
 	private Point novoPontoTela;
-	private Point lateral;
+	private Point ultLateral;
+	private Point ultGol;
+	private Point ultMetaEscanteio;
 	private JFrame frame;
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
@@ -277,7 +279,7 @@ public class ControleJogo {
 							- bola.getRaio(), point.y - bola.getRaio(), bola
 							.getDiamentro(), bola.getDiamentro());
 					boolean defesaGoleiro = defesaGoleiro(rectangle,
-							bolaIngnora, eventoAtual);
+							bolaIngnora);
 					if (!bolaBateu
 							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro)) {
 						bolaBateu = true;
@@ -470,8 +472,7 @@ public class ControleJogo {
 		return false;
 	}
 
-	private boolean defesaGoleiro(Rectangle r, Set bolaIngnora,
-			Evento eventoAtual) {
+	private boolean defesaGoleiro(Rectangle r, Set bolaIngnora) {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -486,7 +487,6 @@ public class ControleJogo {
 					// System.out.println("frango");
 					// return false;
 					// }
-					eventoAtual.setUltimoContato(goleiro);
 					Logger.logar("Goleiro Defendeu");
 					return true;
 				}
@@ -637,16 +637,16 @@ public class ControleJogo {
 		if (bola == null || mesaPanel == null) {
 			return;
 		}
-		if (lateral != null) {
-			bola.setCentroInicio(lateral);
-			bola.setCentro(lateral);
+		if (ultLateral != null) {
+			bola.setCentroInicio(ultLateral);
+			bola.setCentro(ultLateral);
 			centralizaBola();
 		}
 
 	}
 
 	public Point getLateral() {
-		return lateral;
+		return ultLateral;
 	}
 
 	public void setLateral(Point lateral) {
@@ -661,7 +661,7 @@ public class ControleJogo {
 			eventoAtual.setPonto(lateral);
 			eventoAtual.setEventoCod(ConstantesMesa11.LATERAL);
 		}
-		this.lateral = lateral;
+		this.ultLateral = lateral;
 	}
 
 	public void criarPopupMenu() {
@@ -1089,7 +1089,7 @@ public class ControleJogo {
 		for (Iterator iterator = btnsLateral.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			if (!(botao instanceof Goleiro)) {
-				List reta = GeoUtil.drawBresenhamLine(lateral, botao
+				List reta = GeoUtil.drawBresenhamLine(ultLateral, botao
 						.getCentro());
 				if (reta.size() < tamretaMin) {
 					tamretaMin = reta.size();
@@ -1097,15 +1097,15 @@ public class ControleJogo {
 				}
 			}
 		}
-		limparPerimetroCirculo(lateral);
+		limparPerimetroCirculo(ultLateral);
 		ultimaMarcacao = "Lateral";
 		zeraJogadaTime(timeLateral);
-		if (lateral.x < 3000) {
-			botaoLateral.setCentroTodos(new Point(lateral.x
-					- botaoLateral.getDiamentro(), lateral.y));
+		if (ultLateral.x < 3000) {
+			botaoLateral.setCentroTodos(new Point(ultLateral.x
+					- botaoLateral.getDiamentro(), ultLateral.y));
 		} else {
-			botaoLateral.setCentroTodos(new Point(lateral.x
-					+ botaoLateral.getDiamentro(), lateral.y));
+			botaoLateral.setCentroTodos(new Point(ultLateral.x
+					+ botaoLateral.getDiamentro(), ultLateral.y));
 		}
 		lateral();
 	}
@@ -1199,4 +1199,50 @@ public class ControleJogo {
 		}
 
 	}
+
+	public boolean verificaBolaPertoGoleiroTime(Time time) {
+		return controlePartida.verificaBolaPertoGoleiroTime(time, bola);
+	}
+
+	public boolean verificaGol(Botao botao) {
+		if (mesaPanel == null)
+			return true;
+		return (mesaPanel.getAreaGolBaixo().intersects(
+				botao.getShape(1).getBounds2D()) || mesaPanel.getAreaGolCima()
+				.intersects(botao.getShape(1).getBounds2D()));
+	}
+
+	public void setGol(Point centro) {
+		if (eventoAtual != null) {
+			eventoAtual.setPonto(centro);
+			eventoAtual.setEventoCod(ConstantesMesa11.GOL);
+		}
+		ultGol = centro;
+	}
+
+	public boolean verificaMetaEscanteio(Botao botao) {
+		if (mesaPanel == null)
+			return true;
+		return (mesaPanel.getAreaEscateioBaixo().intersects(
+				botao.getShape(1).getBounds2D()) || mesaPanel
+				.getAreaEscateioCima().intersects(
+						botao.getShape(1).getBounds2D()));
+	}
+
+	public void setMetaEscanteio(Point centro) {
+		if (eventoAtual != null) {
+			eventoAtual.setPonto(centro);
+			eventoAtual.setEventoCod(ConstantesMesa11.META_ESCANTEIO);
+		}
+		ultMetaEscanteio = centro;
+	}
+
+	public Point getUltGol() {
+		return ultGol;
+	}
+
+	public Point getUltMetaEscanteio() {
+		return ultMetaEscanteio;
+	}
+
 }

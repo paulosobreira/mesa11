@@ -14,6 +14,7 @@ public class Time extends Mesa11Dados {
 	private Integer qtdePontos;
 	private boolean corMeiaNumero1;
 	private boolean corMeiaNumero2;
+	private boolean agol;
 	private int cor1RGB;
 	private int cor2RGB;
 	private int cor3RGB;
@@ -115,6 +116,14 @@ public class Time extends Mesa11Dados {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public boolean isAgol() {
+		return agol;
+	}
+
+	public void setAgol(boolean agol) {
+		this.agol = agol;
 	}
 
 	@Override

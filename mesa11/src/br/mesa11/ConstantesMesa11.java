@@ -76,5 +76,7 @@ public class ConstantesMesa11 {
 	public static final String CONTATO_BOTAO_BOLA = "CONTATO_BOTAO_BOLA";
 	public static final String CONTATO_BOTAO_BOTAO = "CONTATO_BOTAO_BOTAO";
 	public static final String LATERAL = "LATERAL";
+	public static final String GOL = "GOL";
 	public static final String CONTATO_BOLA_BOTAO = "CONTATO_BOLA_BOTAO";
+	public static final String META_ESCANTEIO = "META_ESCANTEIO";
 }

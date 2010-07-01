@@ -190,33 +190,20 @@ public class MesaPanel extends JPanel {
 
 	}
 
-	// @Override
-	// public void paint(Graphics g) {
-	// try {
-	// super.paint(g);
-	// } catch (Exception e) {
-	// System.out.println("peguei");
-	// }
-	//
-	// }
-
-	@Override
-	public void paintImmediately(int x, int y, int w, int h) {
-		try {
-			super.paintImmediately(x, y, w, h);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("paintImmediately1");
-		}
+	public Rectangle getAreaEscateioCima() {
+		return areaEscateioCima;
 	}
 
-	@Override
-	public void paintImmediately(Rectangle r) {
-		try {
-			super.paintImmediately(r);
-		} catch (Exception e) {
-			System.out.println("paintImmediately2");
-		}
+	public Rectangle getAreaGolCima() {
+		return areaGolCima;
+	}
+
+	public Rectangle getAreaGolBaixo() {
+		return areaGolBaixo;
+	}
+
+	public Rectangle getAreaEscateioBaixo() {
+		return areaEscateioBaixo;
 	}
 
 	@Override
