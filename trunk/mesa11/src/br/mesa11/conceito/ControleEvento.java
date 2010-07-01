@@ -1,5 +1,6 @@
 package br.mesa11.conceito;
 
+import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 
 public class ControleEvento implements Runnable {
@@ -21,6 +22,8 @@ public class ControleEvento implements Runnable {
 			}
 		}
 		Evento evento = controleJogo.getEventoAtual();
+		Time timeCima = controleJogo.getTimeCima();
+		Time timeBaixo = controleJogo.getTimeBaixo();
 		if ((ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(evento.getEventoCod()) || ConstantesMesa11.CONTATO_BOLA_BOTAO
 				.equals(evento.getEventoCod()))
 				&& evento.getUltimoContato().getId() != 0) {
@@ -43,11 +46,44 @@ public class ControleEvento implements Runnable {
 				controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.META_ESCANTEIO
 				.equals(evento.getEventoCod())) {
-			// veirifica ultMetaEscanteio e ver getUltimoContato
+			Time time = evento.getUltimoContato().getTime();
+			if (timeCima.equals(time)) {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima().contains(
+						controleJogo.getUltMetaEscanteio())) {
+					controleJogo.processarEscanteio(timeBaixo);
+				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
+						.contains(controleJogo.getUltMetaEscanteio())) {
+					controleJogo.processarMeta(timeBaixo);
+				}
+			} else {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima().contains(
+						controleJogo.getUltMetaEscanteio())) {
+					controleJogo.processarMeta(timeCima);
+				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
+						.contains(controleJogo.getUltMetaEscanteio())) {
+					controleJogo.processarEscanteio(timeCima);
+				}
+			}
 		} else if (ConstantesMesa11.GOL.equals(evento.getEventoCod())) {
-			// veirifica ultGol e ver getUltimoContato
+			Time time = evento.getUltimoContato().getTime();
+			if (timeCima.equals(time)) {
+				if (controleJogo.getMesaPanel().getAreaGolCima().contains(
+						controleJogo.getUltGol())) {
+					controleJogo.processarGolContra(timeCima);
+				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
+						.contains(controleJogo.getUltGol())) {
+					controleJogo.processarGol(timeCima);
+				}
+			} else {
+				if (controleJogo.getMesaPanel().getAreaGolCima().contains(
+						controleJogo.getUltGol())) {
+					controleJogo.processarGol(timeBaixo);
+				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
+						.contains(controleJogo.getUltMetaEscanteio())) {
+					controleJogo.processarGolContra(timeBaixo);
+				}
+			}
 		}
-
 		System.out.println("ProcessadorEvento" + controleJogo.getEventoAtual());
 
 	}
