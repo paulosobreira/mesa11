@@ -58,8 +58,8 @@ public class ControleJogo {
 	private Point velhoPontoTela;
 	private Point novoPontoTela;
 	private Point ultLateral;
-	private Point ultGol;
-	private Point ultMetaEscanteio;
+	private Shape ultGol;
+	private Shape ultMetaEscanteio;
 	private JFrame frame;
 	private Botao botaoSelecionado;
 	private Point pontoClicado;
@@ -68,6 +68,7 @@ public class ControleJogo {
 	private boolean carregaBotao;
 	private boolean chutaBola;
 	private boolean chamadaAGol;
+
 	private boolean telaAtualizando = true;
 	private int numRecursoes;
 	private ControlePartida controlePartida;
@@ -141,6 +142,13 @@ public class ControleJogo {
 
 	public Map getBotoesImagens() {
 		return botoesImagens;
+	}
+
+	public boolean isBolaFora() {
+		if (eventoAtual != null) {
+			return eventoAtual.isBolaFora();
+		}
+		return false;
 	}
 
 	private void adicinaListentesEventosTeclado() {
@@ -1221,12 +1229,12 @@ public class ControleJogo {
 				.intersects(botao.getShape(1).getBounds2D()));
 	}
 
-	public void setGol(Point centro) {
+	public void setGol(Botao botao) {
 		if (eventoAtual != null) {
-			eventoAtual.setPonto(centro);
+			eventoAtual.setPonto(botao.getCentro());
 			eventoAtual.setEventoCod(ConstantesMesa11.GOL);
 		}
-		ultGol = centro;
+		ultGol = botao.getShape(1).getBounds2D();
 	}
 
 	public boolean verificaMetaEscanteio(Botao botao) {
@@ -1238,39 +1246,39 @@ public class ControleJogo {
 						botao.getShape(1).getBounds2D()));
 	}
 
-	public void setMetaEscanteio(Point centro) {
+	public void setMetaEscanteio(Botao botao) {
 		if (eventoAtual != null) {
-			eventoAtual.setPonto(centro);
+			eventoAtual.setPonto(botao.getCentro());
 			eventoAtual.setEventoCod(ConstantesMesa11.META_ESCANTEIO);
 		}
-		ultMetaEscanteio = centro;
+		ultMetaEscanteio = botao.getShape(1).getBounds2D();
 	}
 
-	public Point getUltGol() {
+	public Shape getUltGol() {
 		return ultGol;
 	}
 
-	public Point getUltMetaEscanteio() {
+	public Shape getUltMetaEscanteio() {
 		return ultMetaEscanteio;
 	}
 
-	public void processarEscanteio(Time timeBaixo) {
-		// TODO Auto-generated method stub
+	public void processarEscanteio(Time time) {
+		System.out.println("Escanteio " + time);
 
 	}
 
-	public void processarMeta(Time timeBaixo) {
-		// TODO Auto-generated method stub
+	public void processarMeta(Time time) {
+		System.out.println("Meta " + time);
 
 	}
 
-	public void processarGolContra(Time timeCima) {
-		// TODO Auto-generated method stub
+	public void processarGolContra(Time time) {
+		System.out.println("GolContra " + time);
 
 	}
 
-	public void processarGol(Time timeCima) {
-		// TODO Auto-generated method stub
+	public void processarGol(Time time) {
+		System.out.println("Gol " + time);
 
 	}
 

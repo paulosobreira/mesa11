@@ -48,38 +48,42 @@ public class ControleEvento implements Runnable {
 				.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
 			if (timeCima.equals(time)) {
-				if (controleJogo.getMesaPanel().getAreaEscateioCima().contains(
-						controleJogo.getUltMetaEscanteio())) {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima()
+						.intersects(
+								controleJogo.getUltMetaEscanteio().getBounds())) {
 					controleJogo.processarEscanteio(timeBaixo);
 				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
-						.contains(controleJogo.getUltMetaEscanteio())) {
+						.intersects(
+								controleJogo.getUltMetaEscanteio().getBounds())) {
 					controleJogo.processarMeta(timeBaixo);
 				}
 			} else {
-				if (controleJogo.getMesaPanel().getAreaEscateioCima().contains(
-						controleJogo.getUltMetaEscanteio())) {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima()
+						.intersects(
+								controleJogo.getUltMetaEscanteio().getBounds())) {
 					controleJogo.processarMeta(timeCima);
 				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
-						.contains(controleJogo.getUltMetaEscanteio())) {
+						.intersects(
+								controleJogo.getUltMetaEscanteio().getBounds())) {
 					controleJogo.processarEscanteio(timeCima);
 				}
 			}
 		} else if (ConstantesMesa11.GOL.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
 			if (timeCima.equals(time)) {
-				if (controleJogo.getMesaPanel().getAreaGolCima().contains(
-						controleJogo.getUltGol())) {
+				if (controleJogo.getMesaPanel().getAreaGolCima().intersects(
+						controleJogo.getUltGol().getBounds())) {
 					controleJogo.processarGolContra(timeCima);
 				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
-						.contains(controleJogo.getUltGol())) {
+						.intersects(controleJogo.getUltGol().getBounds())) {
 					controleJogo.processarGol(timeCima);
 				}
 			} else {
-				if (controleJogo.getMesaPanel().getAreaGolCima().contains(
-						controleJogo.getUltGol())) {
+				if (controleJogo.getMesaPanel().getAreaGolCima().intersects(
+						controleJogo.getUltGol().getBounds())) {
 					controleJogo.processarGol(timeBaixo);
 				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
-						.contains(controleJogo.getUltMetaEscanteio())) {
+						.intersects(controleJogo.getUltGol().getBounds())) {
 					controleJogo.processarGolContra(timeBaixo);
 				}
 			}
