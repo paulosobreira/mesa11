@@ -18,6 +18,16 @@ public class Evento {
 
 	private boolean naBola;
 
+	private boolean bolaFora;
+
+	public boolean isBolaFora() {
+		return bolaFora;
+	}
+
+	public void setBolaFora(boolean bolaFora) {
+		this.bolaFora = bolaFora;
+	}
+
 	public Botao getBotaoEvento() {
 		return botaoEvento;
 	}
@@ -39,6 +49,9 @@ public class Evento {
 	}
 
 	public void setUltimoContato(Botao ultimoContato) {
+		if (ultimoContato.getId() == 0) {
+			return;
+		}
 		this.ultimoContato = ultimoContato;
 	}
 
@@ -73,7 +86,11 @@ public class Evento {
 		if (naBola && ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(eCod)) {
 			return;
 		}
+		if (ConstantesMesa11.GOL.equals(eCod)
+				|| ConstantesMesa11.META_ESCANTEIO.equals(eCod)
+				|| ConstantesMesa11.LATERAL.equals(eCod)) {
+			bolaFora = true;
+		}
 		this.eventoCod = eCod;
 	}
-
 }

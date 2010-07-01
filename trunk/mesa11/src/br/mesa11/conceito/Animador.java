@@ -59,16 +59,19 @@ public class Animador implements Runnable {
 
 				try {
 					if (botao instanceof Bola) {
-						if (controleJogo.verificaGol(botao)) {
-							controleJogo.setGol(botao.getCentro());
-							Logger.logar("gol");
-						} else if (controleJogo.verificaMetaEscanteio(botao)) {
-							controleJogo.setMetaEscanteio(botao.getCentro());
-							Logger.logar("MetaEscanteio");
-						} else if (!controleJogo.verificaDentroCampo(botao)) {
-							if (controleJogo.getLateral() == null) {
-								controleJogo.setLateral(botao.getCentro());
-								Logger.logar("lateral");
+						if (!controleJogo.isBolaFora()) {
+							if (controleJogo.verificaGol(botao)) {
+								controleJogo.setGol(botao);
+								Logger.logar("animar gol");
+							} else if (controleJogo
+									.verificaMetaEscanteio(botao)) {
+								controleJogo.setMetaEscanteio(botao);
+								Logger.logar("animar MetaEscanteio");
+							} else if (!controleJogo.verificaDentroCampo(botao)) {
+								if (controleJogo.getLateral() == null) {
+									controleJogo.setLateral(botao.getCentro());
+									Logger.logar("animar lateral");
+								}
 							}
 						}
 						if (i % 3 == 0) {
