@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<java version="1.6.0_20" class="java.beans.XMLDecoder"> 
+ <object id="Time0" class="br.hibernate.Time"> 
+  <void property="botoes"> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103392359</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>588</int> 
+     </void> 
+     <void property="forca"> 
+      <int>755</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>2</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>655</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103392593</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>683</int> 
+     </void> 
+     <void property="forca"> 
+      <int>629</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>3</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>832</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103393156</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>815</int> 
+     </void> 
+     <void property="forca"> 
+      <int>544</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>4</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>753</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103393343</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>775</int> 
+     </void> 
+     <void property="forca"> 
+      <int>864</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>5</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>931</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103393640</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>669</int> 
+     </void> 
+     <void property="forca"> 
+      <int>708</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>6</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>738</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103393843</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>952</int> 
+     </void> 
+     <void property="forca"> 
+      <int>906</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>7</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>717</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103394046</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>611</int> 
+     </void> 
+     <void property="forca"> 
+      <int>807</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>8</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>982</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103394343</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>522</int> 
+     </void> 
+     <void property="forca"> 
+      <int>535</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>9</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>892</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103394718</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>787</int> 
+     </void> 
+     <void property="forca"> 
+      <int>511</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>10</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>968</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Botao"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103395250</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>551</int> 
+     </void> 
+     <void property="forca"> 
+      <int>876</int> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>11</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>508</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+   <void method="add"> 
+    <object class="br.hibernate.Goleiro"> 
+     <void property="dataCriacao"> 
+      <object class="java.util.Date"> 
+       <long>1278103391968</long> 
+      </object> 
+     </void> 
+     <void property="defesa"> 
+      <int>709</int> 
+     </void> 
+     <void property="forca"> 
+      <int>510</int> 
+     </void> 
+     <void property="goleiro"> 
+      <boolean>true</boolean> 
+     </void> 
+     <void property="id"> 
+      <long>0</long> 
+     </void> 
+     <void property="nome"> 
+      <string>Holanda</string> 
+     </void> 
+     <void property="numero"> 
+      <int>1</int> 
+     </void> 
+     <void property="precisao"> 
+      <int>694</int> 
+     </void> 
+     <void property="time"> 
+      <object idref="Time0"/> 
+     </void> 
+     <void property="titular"> 
+      <boolean>true</boolean> 
+     </void> 
+    </object> 
+   </void> 
+  </void> 
+  <void property="cor1RGB"> 
+   <int>-26368</int> 
+  </void> 
+  <void property="cor4RGB"> 
+   <int>-1</int> 
+  </void> 
+  <void property="cor5RGB"> 
+   <int>-16776961</int> 
+  </void> 
+  <void property="cor6RGB"> 
+   <int>-26368</int> 
+  </void> 
+  <void property="dataCriacao"> 
+   <object class="java.util.Date"> 
+    <long>1278103383328</long> 
+   </object> 
+  </void> 
+  <void property="nome"> 
+   <string>Holanda</string> 
+  </void> 
+  <void property="qtdePontos"> 
+   <int>238</int> 
+  </void> 
+ </object> 
+</java>
