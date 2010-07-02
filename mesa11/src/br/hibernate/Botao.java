@@ -5,6 +5,7 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -136,6 +137,11 @@ public class Botao extends Mesa11Dados {
 	public void setCentro(Point p) {
 		position = new Point(p.x - (getDiamentro() / 2), p.y
 				- (getDiamentro() / 2));
+	}
+
+	public void setCentroTodos(Point2D p) {
+		setCentro(new Point((int) p.getX(), (int) p.getY()));
+		setCentroInicio(new Point((int) p.getX(), (int) p.getY()));
 	}
 
 	public void setCentroTodos(Point p) {
