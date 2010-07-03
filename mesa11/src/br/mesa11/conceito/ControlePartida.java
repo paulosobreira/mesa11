@@ -222,9 +222,9 @@ public class ControlePartida {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
-			System.out.println(id + " " + botao.getPosition() + " "
-					+ botao.getNumero() + " " + botao.getNome() + " "
-					+ botao.isGoleiro() + " " + botao.getClass());
+//			System.out.println(id + " " + botao.getPosition() + " "
+//					+ botao.getNumero() + " " + botao.getNome() + " "
+//					+ botao.isGoleiro() + " " + botao.getClass());
 		}
 		controleJogo.bolaCentro();
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima

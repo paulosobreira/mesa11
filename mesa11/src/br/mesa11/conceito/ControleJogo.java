@@ -13,6 +13,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.print.Paper;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
@@ -71,13 +72,12 @@ public class ControleJogo {
 	private boolean carregaBotao;
 	private boolean chutaBola;
 	private boolean chamadaAGol;
-
-	private boolean telaAtualizando = true;
 	private int numRecursoes;
 	private ControlePartida controlePartida;
 	private Evento eventoAtual;
 	private String ultimaMarcacao;
-	private Thread atualizadorTela;
+	private AtualizadorVisual atualizadorTela;
+	private WindowListener WindowListener;
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -123,7 +123,7 @@ public class ControleJogo {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
-				setTelaAtualizando(false);
+				limparJogo();
 
 			}
 
@@ -137,10 +137,6 @@ public class ControleJogo {
 		botoesImagens.put(bola.getId(), CarregadorRecursos
 				.carregaImg("bola.png"));
 		botoes.put(bola.getId(), bola);
-		if (atualizadorTela == null) {
-			atualizadorTela = new Thread(new AtualizadorVisual(this));
-			atualizadorTela.start();
-		}
 	}
 
 	public Map getBotoesImagens() {
@@ -739,7 +735,7 @@ public class ControleJogo {
 		}
 	}
 
-	public void metaCima() {
+	public void metaCima(Time... times) {
 		if (bola == null || mesaPanel == null) {
 			return;
 		}
@@ -750,10 +746,16 @@ public class ControleJogo {
 		p.y += mesaPanel.getPequenaAreaCima().getHeight() - bola.getDiamentro();
 		bola.setPosition(p);
 		centralizaBola();
+		if (times != null && times.length > 0) {
+			limparPerimetro(p);
+			Botao botao = obterUmCobrador(times[0]);
+			botao.setCentroTodos(new Point2D.Double(p.x, p.y
+					- botao.getDiamentro()));
+		}
 
 	}
 
-	public void metaBaixo() {
+	public void metaBaixo(Time... times) {
 		if (bola == null || mesaPanel == null) {
 			return;
 		}
@@ -764,6 +766,12 @@ public class ControleJogo {
 
 		bola.setPosition(p);
 		centralizaBola();
+		if (times != null && times.length > 0) {
+			limparPerimetro(p);
+			Botao botao = obterUmCobrador(times[0]);
+			botao.setCentroTodos(new Point2D.Double(p.x, p.y
+					+ botao.getDiamentro()));
+		}
 
 	}
 
@@ -1084,14 +1092,6 @@ public class ControleJogo {
 
 	public void setNovoPontoTela(Point novoPontoTela) {
 		this.novoPontoTela = novoPontoTela;
-	}
-
-	public boolean isTelaAtualizando() {
-		return telaAtualizando;
-	}
-
-	public void setTelaAtualizando(boolean telaAtualizando) {
-		this.telaAtualizando = telaAtualizando;
 	}
 
 	public Map getBotoesComThread() {
@@ -1419,30 +1419,10 @@ public class ControleJogo {
 		Point metaEsq = null;
 		double distDir, distEsq;
 		Point bolaEscanteio = ultMetaEscanteio.getBounds().getLocation();
-		if (!controlePartida.getTimeCima().equals(time)) {
-			metaEsq = mesaPanel.getCampoCima().getLocation();
-			Point p = mesaPanel.getCampoCima().getLocation();
-			p.x += mesaPanel.getCampoCima().getWidth() - bola.getDiamentro();
-			metaDir = p;
-			distDir = GeoUtil.distaciaEntrePontos(metaDir, bolaEscanteio);
-			distEsq = GeoUtil.distaciaEntrePontos(metaEsq, bolaEscanteio);
-			if (distDir < distEsq) {
-				escCimaDir(time);
-			} else {
-				escCimaEsc(time);
-			}
+		if (controlePartida.getTimeCima().equals(time)) {
+			metaCima(time);
 		} else {
-			metaEsq = mesaPanel.getCampoBaixo().getLocation();
-			Point p = mesaPanel.getCampoBaixo().getLocation();
-			p.x += mesaPanel.getCampoBaixo().getWidth() - bola.getDiamentro();
-			metaDir = p;
-			distDir = GeoUtil.distaciaEntrePontos(metaDir, bolaEscanteio);
-			distEsq = GeoUtil.distaciaEntrePontos(metaEsq, bolaEscanteio);
-			if (distDir < distEsq) {
-				escBaixoDir(time);
-			} else {
-				escBaixoEsc(time);
-			}
+			metaBaixo(time);
 		}
 		reversaoJogada();
 	}
@@ -1457,4 +1437,27 @@ public class ControleJogo {
 
 	}
 
+	public void limparJogo() {
+		System.out.println("matarTodasThreads");
+		WindowListener[] windowListeners = frame.getWindowListeners();
+		for (int i = 0; i < windowListeners.length; i++) {
+			frame.removeWindowListener(windowListeners[i]);
+		}
+		frame.getContentPane().removeAll();
+		pararVideo();
+
+	}
+
+	private void pararVideo() {
+		if (atualizadorTela != null) {
+			atualizadorTela.setAlive(false);
+		}
+	}
+
+	public void inicializaVideo() {
+		pararVideo();
+		System.out.println("inicializaVideo");
+		atualizadorTela = new AtualizadorVisual(this);
+		atualizadorTela.start();
+	}
 }

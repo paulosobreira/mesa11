@@ -417,7 +417,9 @@ public class MesaPanel extends JPanel {
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		Ellipse2D externo = new Ellipse2D.Double(0, 0,
 				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-		graphics2d.setClip(externo);
+		if (botao.getId() == 0) {
+			graphics2d.setClip(externo);
+		}
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		g.drawImage(newBuffer, botx, boty, null);
 	}
