@@ -610,8 +610,8 @@ public class ControleJogo {
 		if (times != null && times.length > 0) {
 			Botao botao = obterUmCobrador(times[0]);
 			limparPerimetro(p);
-			botao.setCentroTodos(new Point(p.x + botao.getDiamentro(), p.y
-					- botao.getDiamentro()));
+			botao.setCentroTodos(new Point2D.Double(p.x + botao.getDiamentro()
+					* .7, p.y - botao.getDiamentro() * .7));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -645,8 +645,8 @@ public class ControleJogo {
 		if (times != null && times.length > 0) {
 			Botao botao = obterUmCobrador(times[0]);
 			limparPerimetro(p);
-			botao.setCentroTodos(new Point(p.x - botao.getDiamentro(), p.y
-					- botao.getDiamentro()));
+			botao.setCentroTodos(new Point2D.Double(p.x - botao.getDiamentro()
+					* .7, p.y - botao.getDiamentro() * .7));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -679,8 +679,8 @@ public class ControleJogo {
 		if (times != null && times.length > 0) {
 			limparPerimetro(p);
 			Botao botao = obterUmCobrador(times[0]);
-			botao.setCentroTodos(new Point(p.x + botao.getDiamentro(), p.y
-					+ botao.getDiamentro()));
+			botao.setCentroTodos(new Point2D.Double(p.x + botao.getDiamentro()
+					* .7, p.y + botao.getDiamentro() * .7));
 
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
@@ -716,8 +716,8 @@ public class ControleJogo {
 		if (times != null && times.length > 0) {
 			limparPerimetro(p);
 			Botao botao = obterUmCobrador(times[0]);
-			botao.setCentroTodos(new Point(p.x - botao.getDiamentro(), p.y
-					+ botao.getDiamentro()));
+			botao.setCentroTodos(new Point2D.Double(p.x - botao.getDiamentro()
+					* .7, p.y + botao.getDiamentro() * .7));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -1415,8 +1415,36 @@ public class ControleJogo {
 	}
 
 	public void processarMeta(Time time) {
-		System.out.println("Meta " + time);
-
+		Point metaDir = null;
+		Point metaEsq = null;
+		double distDir, distEsq;
+		Point bolaEscanteio = ultMetaEscanteio.getBounds().getLocation();
+		if (!controlePartida.getTimeCima().equals(time)) {
+			metaEsq = mesaPanel.getCampoCima().getLocation();
+			Point p = mesaPanel.getCampoCima().getLocation();
+			p.x += mesaPanel.getCampoCima().getWidth() - bola.getDiamentro();
+			metaDir = p;
+			distDir = GeoUtil.distaciaEntrePontos(metaDir, bolaEscanteio);
+			distEsq = GeoUtil.distaciaEntrePontos(metaEsq, bolaEscanteio);
+			if (distDir < distEsq) {
+				escCimaDir(time);
+			} else {
+				escCimaEsc(time);
+			}
+		} else {
+			metaEsq = mesaPanel.getCampoBaixo().getLocation();
+			Point p = mesaPanel.getCampoBaixo().getLocation();
+			p.x += mesaPanel.getCampoBaixo().getWidth() - bola.getDiamentro();
+			metaDir = p;
+			distDir = GeoUtil.distaciaEntrePontos(metaDir, bolaEscanteio);
+			distEsq = GeoUtil.distaciaEntrePontos(metaEsq, bolaEscanteio);
+			if (distDir < distEsq) {
+				escBaixoDir(time);
+			} else {
+				escBaixoEsc(time);
+			}
+		}
+		reversaoJogada();
 	}
 
 	public void processarGolContra(Time time) {
