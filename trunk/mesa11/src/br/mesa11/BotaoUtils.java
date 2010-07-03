@@ -55,8 +55,8 @@ public class BotaoUtils {
 		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
 				.inte(botao.getDiamentro() * .35), 60);
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(5.0f));
-		graphics.drawRect(0, 0, botao.getDiamentro(), 60);
+		graphics.setStroke(new BasicStroke(3.0f));
+		graphics.drawRect(5, 5, botao.getDiamentro() - 10, 50);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 20));
 		graphics.setColor(cor2);
@@ -131,8 +131,9 @@ public class BotaoUtils {
 		graphics.fillRect(0, Util.inte(botao.getDiamentro() * .7), botao
 				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(5.0f));
-		graphics.drawOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
+		graphics.setStroke(new BasicStroke(3.0f));
+		graphics.drawOval(3, 3, botao.getDiamentro() - 6,
+				botao.getDiamentro() - 6);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 20));
 		graphics.setColor(cor2);

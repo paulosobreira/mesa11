@@ -137,7 +137,11 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				if(controleJogo!=null){
+					controleJogo.limparJogo();
+				}
 				controleJogo = new ControleJogo(frame);
+				controleJogo.inicializaVideo();
 				frame.setSize(800, 600);
 				frame.setVisible(true);
 				controleJogo.centroCampo();
