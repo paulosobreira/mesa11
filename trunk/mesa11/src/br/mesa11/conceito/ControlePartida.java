@@ -50,6 +50,8 @@ public class ControlePartida {
 	private String campoTimeComBola;
 	private Time timeCima;
 	private Time timeBaixo;
+	private ControlePosicionamento controleFormacao;
+	private MesaPanel mesaPanel;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -152,7 +154,7 @@ public class ControlePartida {
 		JFrame frame = controleJogo.getFrame();
 		Map botoesImagens = controleJogo.getBotoesImagens();
 		Map botoes = controleJogo.getBotoes();
-		MesaPanel mesaPanel = controleJogo.getMesaPanel();
+		mesaPanel = controleJogo.getMesaPanel();
 		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
 		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
 		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.SOUTH);
@@ -192,8 +194,7 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 
 		}
-		ControlePosicionamento controleFormacao = new ControlePosicionamento(
-				controleJogo);
+		controleFormacao = new ControlePosicionamento(controleJogo);
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 
@@ -222,9 +223,9 @@ public class ControlePartida {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
-//			System.out.println(id + " " + botao.getPosition() + " "
-//					+ botao.getNumero() + " " + botao.getNome() + " "
-//					+ botao.isGoleiro() + " " + botao.getClass());
+			// System.out.println(id + " " + botao.getPosition() + " "
+			// + botao.getNumero() + " " + botao.getNome() + " "
+			// + botao.isGoleiro() + " " + botao.getClass());
 		}
 		controleJogo.bolaCentro();
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
@@ -381,6 +382,56 @@ public class ControlePartida {
 			}
 		}
 		return null;
+	}
+
+	public void processarGol(Time time) {
+		if (timeCima.equals(time)) {
+			controleFormacao.posicionaTimeCima(timeCima, false);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
+		} else {
+			controleFormacao.posicionaTimeCima(timeCima, true);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
+		}
+		contralizaGoleiroBaixo();
+		contralizaGoleiroCima();
+		controleJogo.bolaCentro();
+	}
+
+	private void contralizaGoleiroBaixo() {
+		for (int i = 0; i < 11; i++) {
+			Long id = new Long(i + 20);
+			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botao.setCentro(mesaPanel.golBaixo());
+				break;
+			}
+		}
+
+	}
+
+	private void contralizaGoleiroCima() {
+		for (int i = 0; i < 11; i++) {
+			Long id = new Long(i + 20);
+			Botao botao = (Botao) timeCima.getBotoes().get(i);
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botao.setCentro(mesaPanel.golCima());
+				break;
+			}
+		}
+
+	}
+
+	public void processarGolContra(Time time) {
+		if (timeCima.equals(time)) {
+			controleFormacao.posicionaTimeCima(timeCima, true);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
+		} else {
+			controleFormacao.posicionaTimeCima(timeCima, false);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
+		}
+		contralizaGoleiroBaixo();
+		contralizaGoleiroCima();
+		controleJogo.bolaCentro();
 	}
 
 }

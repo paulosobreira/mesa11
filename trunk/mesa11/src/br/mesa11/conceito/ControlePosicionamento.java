@@ -38,55 +38,55 @@ public class ControlePosicionamento {
 			}
 		}
 		Botao botao1 = (Botao) btns.get(0);
-		botao1.setCentro(new Point(xpenal, distVCima));
+		botao1.setCentroTodos(new Point(xpenal, distVCima));
 
 		Botao botao2 = (Botao) btns.get(1);
-		botao2.setCentro(new Point(xpenal - (2 * distHCima), Util
+		botao2.setCentroTodos(new Point(xpenal - (2 * distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao3 = (Botao) btns.get(2);
 		;
-		botao3.setCentro(new Point(xpenal - (distHCima), Util
+		botao3.setCentroTodos(new Point(xpenal - (distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao4 = (Botao) btns.get(3);
 		;
-		botao4.setCentro(new Point(xpenal + (2 * distHCima), Util
+		botao4.setCentroTodos(new Point(xpenal + (2 * distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao5 = (Botao) btns.get(4);
 		;
-		botao5.setCentro(new Point(xpenal + (distHCima), Util
+		botao5.setCentroTodos(new Point(xpenal + (distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao6 = (Botao) btns.get(5);
 		;
-		botao6.setCentro(new Point(xpenal, Util.inte(distVCima * 1.5)));
+		botao6.setCentroTodos(new Point(xpenal, Util.inte(distVCima * 1.5)));
 
 		Botao botao7 = (Botao) btns.get(6);
 		;
-		botao7.setCentro(new Point(xpenal - (2 * distHCima), Util
+		botao7.setCentroTodos(new Point(xpenal - (2 * distHCima), Util
 				.inte(distVCima * 2)));
 
 		Botao botao9 = (Botao) btns.get(8);
-		botao9.setCentro(new Point(xpenal + (2 * distHCima), Util
+		botao9.setCentroTodos(new Point(xpenal + (2 * distHCima), Util
 				.inte(distVCima * 2)));
 		if (centro) {
 			Point c = mesaPanel.getCentro().getLocation();
 			Botao botao8 = (Botao) btns.get(7);
-			botao8.setCentro(new Point(c.x
+			botao8.setCentroTodos(new Point(c.x
 					- Util.inte(botao8.getDiamentro() * 1.5), c.y));
 
 			Botao botao10 = (Botao) btns.get(9);
-			botao10.setCentro(new Point(c.x
+			botao10.setCentroTodos(new Point(c.x
 					+ Util.inte(botao8.getDiamentro() * 1.5), c.y));
 		} else {
 			Botao botao8 = (Botao) btns.get(7);
-			botao8.setCentro(new Point(xpenal - (distHCima), Util
+			botao8.setCentroTodos(new Point(xpenal - (distHCima), Util
 					.inte(distVCima * 2)));
 
 			Botao botao10 = (Botao) btns.get(9);
-			botao10.setCentro(new Point(xpenal + (distHCima), Util
+			botao10.setCentroTodos(new Point(xpenal + (distHCima), Util
 					.inte(distVCima * 2)));
 		}
 	}
@@ -105,51 +105,51 @@ public class ControlePosicionamento {
 			}
 		}
 		Botao botao1 = (Botao) btns.get(0);
-		botao1.setCentro(new Point(xpenal, y - distVBaixo));
+		botao1.setCentroTodos(new Point(xpenal, y - distVBaixo));
 
 		Botao botao2 = (Botao) btns.get(1);
-		botao2.setCentro(new Point(xpenal - (2 * distHBaixo), y
+		botao2.setCentroTodos(new Point(xpenal - (2 * distHBaixo), y
 				- Util.inte(distVBaixo * 1.5)));
 
 		Botao botao3 = (Botao) btns.get(2);
-		botao3.setCentro(new Point(xpenal - (distHBaixo), y
+		botao3.setCentroTodos(new Point(xpenal - (distHBaixo), y
 				- Util.inte(distVBaixo * 1.5)));
 
 		Botao botao4 = (Botao) btns.get(3);
-		botao4.setCentro(new Point(xpenal + (2 * distHBaixo), y
+		botao4.setCentroTodos(new Point(xpenal + (2 * distHBaixo), y
 				- Util.inte(distVBaixo * 1.5)));
 
 		Botao botao5 = (Botao) btns.get(4);
-		botao5.setCentro(new Point(xpenal + (distHBaixo), y
+		botao5.setCentroTodos(new Point(xpenal + (distHBaixo), y
 				- Util.inte(distVBaixo * 1.5)));
 
 		Botao botao6 = (Botao) btns.get(5);
-		botao6.setCentro(new Point(xpenal, y - Util.inte(distVBaixo * 1.5)));
+		botao6.setCentroTodos(new Point(xpenal, y - Util.inte(distVBaixo * 1.5)));
 
 		Botao botao7 = (Botao) btns.get(6);
-		botao7.setCentro(new Point(xpenal - (2 * distHBaixo), y
+		botao7.setCentroTodos(new Point(xpenal - (2 * distHBaixo), y
 				- Util.inte(distVBaixo * 2)));
 
 		Botao botao9 = (Botao) btns.get(8);
-		botao9.setCentro(new Point(xpenal + (2 * distHBaixo), y
+		botao9.setCentroTodos(new Point(xpenal + (2 * distHBaixo), y
 				- Util.inte(distVBaixo * 2)));
 
 		if (centro) {
 			Point c = mesaPanel.getCentro().getLocation();
 			Botao botao8 = (Botao) btns.get(7);
-			botao8.setCentro(new Point(c.x
+			botao8.setCentroTodos(new Point(c.x
 					- Util.inte(botao8.getDiamentro() * 1.5), c.y));
 
 			Botao botao10 = (Botao) btns.get(9);
-			botao10.setCentro(new Point(c.x
+			botao10.setCentroTodos(new Point(c.x
 					+ Util.inte(botao8.getDiamentro() * 1.5), c.y));
 		} else {
 			Botao botao8 = (Botao) btns.get(7);
-			botao8.setCentro(new Point(xpenal - (distHBaixo), y
+			botao8.setCentroTodos(new Point(xpenal - (distHBaixo), y
 					- Util.inte(distVBaixo * 2)));
 
 			Botao botao10 = (Botao) btns.get(9);
-			botao10.setCentro(new Point(xpenal + (distHBaixo), y
+			botao10.setCentroTodos(new Point(xpenal + (distHBaixo), y
 					- Util.inte(distVBaixo * 2)));
 		}
 
