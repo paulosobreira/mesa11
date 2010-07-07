@@ -1428,11 +1428,14 @@ public class ControleJogo {
 	}
 
 	public void processarGolContra(Time time) {
+		controlePartida.processarGolContra(time);
 		System.out.println("GolContra " + time);
 
 	}
 
 	public void processarGol(Time time) {
+		controlePartida.processarGol(time);
+		reversaoJogada();
 		System.out.println("Gol " + time);
 
 	}
