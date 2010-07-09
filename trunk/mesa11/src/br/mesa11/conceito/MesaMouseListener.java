@@ -47,23 +47,23 @@ public class MesaMouseListener implements MouseListener {
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p1)) {
-					if (!controleJogo.veririficaVez(goleiro)) {
+					if (controleJogo.veririficaVez(goleiro)) {
+						List retaGoleiro = GeoUtil.drawBresenhamLine(goleiro
+								.getCentro(), p1);
+						if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
+							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
+									.getCentro(), p2, 0));
+							evento.setPonto(p2);
+							evento
+									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+						} else {
+							goleiro.setCentro(p2);
+							evento.setPonto(p2);
+							evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+						}
+						controleJogo.setPontoClicado(null);
 						return;
 					}
-					List retaGoleiro = GeoUtil.drawBresenhamLine(goleiro
-							.getCentro(), p1);
-					if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
-						goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
-								.getCentro(), p2, 0));
-						evento.setPonto(p2);
-						evento.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
-					} else {
-						goleiro.setCentro(p2);
-						evento.setPonto(p2);
-						evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
-					}
-					controleJogo.setPontoClicado(null);
-					return;
 				}
 			}
 			if (botao.getCentro() == null) {

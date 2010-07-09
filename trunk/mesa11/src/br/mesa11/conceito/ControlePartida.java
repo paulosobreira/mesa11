@@ -50,6 +50,7 @@ public class ControlePartida {
 	private String campoTimeComBola;
 	private Time timeCima;
 	private Time timeBaixo;
+	private Map mapaGols = new Hashtable();
 	private ControlePosicionamento controleFormacao;
 	private MesaPanel mesaPanel;
 
@@ -231,6 +232,8 @@ public class ControlePartida {
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
 				.isSelected() ? ConstantesMesa11.CAMPO_CIMA
 				: ConstantesMesa11.CAMPO_BAIXO);
+		mapaGols.put(timesCima, new Integer(0));
+		mapaGols.put(timesBaixo, new Integer(0));
 	}
 
 	private void iniciaTempoJogada(Object selectedItem, String timeComBola) {
@@ -385,6 +388,8 @@ public class ControlePartida {
 	}
 
 	public void processarGol(Time time) {
+		Integer gols = (Integer) mapaGols.get(time);
+		mapaGols.put(time, new Integer(gols.intValue() + 1));
 		if (timeCima.equals(time)) {
 			controleFormacao.posicionaTimeCima(timeCima, false);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
@@ -425,9 +430,13 @@ public class ControlePartida {
 		if (timeCima.equals(time)) {
 			controleFormacao.posicionaTimeCima(timeCima, true);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
+			Integer gols = (Integer) mapaGols.get(timeBaixo);
+			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
 		} else {
 			controleFormacao.posicionaTimeCima(timeCima, false);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
+			Integer gols = (Integer) mapaGols.get(timeCima);
+			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
 		}
 		contralizaGoleiroBaixo();
 		contralizaGoleiroCima();
