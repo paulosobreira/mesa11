@@ -22,6 +22,7 @@ import javax.swing.JPanel;
 
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
+import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
@@ -279,13 +280,26 @@ public class MesaPanel extends JPanel {
 		int x = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width - 150);
 		int y = limitesViewPort.getBounds().y + 20;
+		Time timeMandante = controleJogo.obterTimeMandante();
+		Time timeVisita = controleJogo.obterTimeVisita();
+		if (timeMandante != null && timeVisita != null) {
+			g2d.drawString(timeMandante.getNome() + " "
+					+ controleJogo.verGols(timeMandante) + " vs "
+					+ controleJogo.verGols(timeVisita) + " "
+					+ timeVisita.getNome(),
+					limitesViewPort.getBounds().width / 2, y);
+		}
 		g2d.drawString(controleJogo.tempoJogoFormatado(), x, y);
 		y += 20;
 		g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
 		y += 20;
 		g2d.drawString(controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
 		y += 20;
-		g2d.drawString(controleJogo.timeJogadaVez(), x, y);
+		Time time = controleJogo.timeJogadaVez();
+		if (time != null)
+			g2d.drawString(time.getNome() + " "
+					+ controleJogo.obterNumJogadas(time) + " de "
+					+ (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
 
 	}
 
