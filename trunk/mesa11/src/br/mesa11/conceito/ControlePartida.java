@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JComboBox;
@@ -51,6 +52,7 @@ public class ControlePartida {
 	private Time timeCima;
 	private Time timeBaixo;
 	private Map mapaGols = new Hashtable();
+	private Map mapaJogadas = new Hashtable();
 	private ControlePosicionamento controleFormacao;
 	private MesaPanel mesaPanel;
 
@@ -232,8 +234,16 @@ public class ControlePartida {
 		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
 				.isSelected() ? ConstantesMesa11.CAMPO_CIMA
 				: ConstantesMesa11.CAMPO_BAIXO);
-		mapaGols.put(timesCima, new Integer(0));
-		mapaGols.put(timesBaixo, new Integer(0));
+		if (timeCima.getId() == null) {
+			timeCima.setId(System.currentTimeMillis());
+		}
+		if (timeBaixo.getId() == null) {
+			timeBaixo.setId(timeCima.getId() + 1);
+		}
+		mapaGols.put(timeCima, new Integer(0));
+		mapaGols.put(timeBaixo, new Integer(0));
+		mapaJogadas.put(timeCima, new Integer(0));
+		mapaJogadas.put(timeBaixo, new Integer(0));
 	}
 
 	private void iniciaTempoJogada(Object selectedItem, String timeComBola) {
@@ -304,6 +314,7 @@ public class ControlePartida {
 			campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
 					: ConstantesMesa11.CAMPO_BAIXO);
 			Logger.logar("verificaFalhaPorTempo");
+			zerarJogadas();
 			zerarTimerJogada();
 		}
 	}
@@ -321,18 +332,19 @@ public class ControlePartida {
 		return campoTimeComBola.equals(b.getTime().getCampo());
 	}
 
-	public String timeJogadaVez() {
+	public Time timeJogadaVez() {
 		if (Util.isNullOrEmpty(campoTimeComBola)) {
-			return "";
+			return null;
 		}
 		return timeCima.getCampo().equals(campoTimeComBola) ? timeCima
-				.getNome() : timeBaixo.getNome();
+				: timeBaixo;
 	}
 
 	public void reversaoJogada() {
 		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
 				: ConstantesMesa11.CAMPO_BAIXO);
 		Logger.logar("reversaoJogada");
+		zerarJogadas();
 		zerarTimerJogada();
 	}
 
@@ -388,17 +400,20 @@ public class ControlePartida {
 	}
 
 	public void processarGol(Time time) {
-		Integer gols = (Integer) mapaGols.get(time);
-		mapaGols.put(time, new Integer(gols.intValue() + 1));
 		if (timeCima.equals(time)) {
 			controleFormacao.posicionaTimeCima(timeCima, false);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
+			Integer gols = (Integer) mapaGols.get(timeCima);
+			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
 		} else {
 			controleFormacao.posicionaTimeCima(timeCima, true);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
+			Integer gols = (Integer) mapaGols.get(timeBaixo);
+			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
 		}
 		contralizaGoleiroBaixo();
 		contralizaGoleiroCima();
+		zerarJogadas();
 		controleJogo.bolaCentro();
 	}
 
@@ -440,7 +455,36 @@ public class ControlePartida {
 		}
 		contralizaGoleiroBaixo();
 		contralizaGoleiroCima();
+		zerarJogadas();
 		controleJogo.bolaCentro();
+	}
+
+	public String verGols(Time time) {
+		return mapaGols.get(time).toString();
+	}
+
+	public boolean incrementaJogada() {
+		Time time = timeJogadaVez();
+		Integer numJogadas = (Integer) mapaJogadas.get(time);
+		if (numJogadas.intValue() > ConstantesMesa11.NUM_JOGADAS) {
+			zerarJogadas();
+			return false;
+		} else {
+			mapaJogadas.put(time, new Integer(numJogadas + 1));
+			return true;
+		}
+	}
+
+	public void zerarJogadas() {
+		Set keySet = mapaJogadas.keySet();
+		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+			Object time = (Object) iterator.next();
+			mapaJogadas.put(time, new Integer(0));
+		}
+	}
+
+	public Object obterNumJogadas(Time time) {
+		return mapaJogadas.get(time);
 	}
 
 }

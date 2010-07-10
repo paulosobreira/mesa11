@@ -607,7 +607,7 @@ public class ControleJogo {
 			Botao botao = obterUmCobrador(times[0]);
 			limparPerimetro(p);
 			botao.setCentroTodos(new Point2D.Double(p.x + botao.getDiamentro()
-					* .7, p.y - botao.getDiamentro() * .7));
+					* .55, p.y - botao.getDiamentro() * .55));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -642,7 +642,7 @@ public class ControleJogo {
 			Botao botao = obterUmCobrador(times[0]);
 			limparPerimetro(p);
 			botao.setCentroTodos(new Point2D.Double(p.x - botao.getDiamentro()
-					* .7, p.y - botao.getDiamentro() * .7));
+					* .55, p.y - botao.getDiamentro() * .55));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -676,7 +676,7 @@ public class ControleJogo {
 			limparPerimetro(p);
 			Botao botao = obterUmCobrador(times[0]);
 			botao.setCentroTodos(new Point2D.Double(p.x + botao.getDiamentro()
-					* .7, p.y + botao.getDiamentro() * .7));
+					* .65, p.y + botao.getDiamentro() * .65));
 
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
@@ -713,7 +713,7 @@ public class ControleJogo {
 			limparPerimetro(p);
 			Botao botao = obterUmCobrador(times[0]);
 			botao.setCentroTodos(new Point2D.Double(p.x - botao.getDiamentro()
-					* .7, p.y + botao.getDiamentro() * .7));
+					* .55, p.y + botao.getDiamentro() * .55));
 			Botao marcador = botao;
 			while (marcador.equals(botao)) {
 				marcador = obterUmCobrador(times[0]);
@@ -1166,9 +1166,9 @@ public class ControleJogo {
 		return controlePartida.veririficaVez(b);
 	}
 
-	public String timeJogadaVez() {
+	public Time timeJogadaVez() {
 		if (controlePartida == null) {
-			return "";
+			return null;
 		}
 		return controlePartida.timeJogadaVez();
 	}
@@ -1182,6 +1182,7 @@ public class ControleJogo {
 	}
 
 	public void reversaoJogada() {
+		controlePartida.zerarJogadas();
 		controlePartida.reversaoJogada();
 
 	}
@@ -1462,5 +1463,29 @@ public class ControleJogo {
 		System.out.println("inicializaVideo");
 		atualizadorTela = new AtualizadorVisual(this);
 		atualizadorTela.start();
+	}
+
+	public Time obterTimeMandante() {
+		return controlePartida.getTimeCima();
+	}
+
+	public Time obterTimeVisita() {
+		return controlePartida.getTimeBaixo();
+	}
+
+	public String verGols(Time time) {
+		return controlePartida.verGols(time);
+	}
+
+	public Object obterNumJogadas(Time time) {
+		return controlePartida.obterNumJogadas(time);
+	}
+
+	public boolean incrementaJogada() {
+		return controlePartida.incrementaJogada();
+	}
+
+	public void zerarJogadas() {
+		controlePartida.zerarJogadas();
 	}
 }

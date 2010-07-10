@@ -9,6 +9,7 @@ public class ControleEvento implements Runnable {
 
 	public ControleEvento(ControleJogo controleJogo) {
 		super();
+
 		this.controleJogo = controleJogo;
 	}
 
@@ -27,14 +28,21 @@ public class ControleEvento implements Runnable {
 		if ((ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(evento.getEventoCod()) || ConstantesMesa11.CONTATO_BOLA_BOTAO
 				.equals(evento.getEventoCod()))
 				&& evento.getUltimoContato().getId() != 0) {
-			controleJogo.zeraJogadaTime(evento.getUltimoContato().getTime());
+			if (controleJogo.incrementaJogada()) {
+				controleJogo
+						.zeraJogadaTime(evento.getUltimoContato().getTime());
+			} else {
+				controleJogo.reversaoJogada();
+			}
 		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(evento
 				.getEventoCod())
 				&& !evento.isNaBola() && !evento.getBotaoEvento().getTime()
 				.equals(evento.getUltimoContato().getTime()))) {
 			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
+			controleJogo.zerarJogadas();
 		} else if (ConstantesMesa11.LATERAL.equals(evento.getEventoCod())) {
 			controleJogo.porcessaLateral();
+			controleJogo.zerarJogadas();
 		} else if (!evento.isNaBola()) {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
@@ -42,8 +50,9 @@ public class ControleEvento implements Runnable {
 			if (evento.getUltimoContato() != null
 					&& evento.getUltimoContato().getTime() != null
 					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
-							.getUltimoContato().getTime()))
+							.getUltimoContato().getTime())) {
 				controleJogo.reversaoJogada();
+			}
 		} else if (ConstantesMesa11.META_ESCANTEIO
 				.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
