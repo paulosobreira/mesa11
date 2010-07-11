@@ -27,11 +27,13 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
+import br.recursos.Lang;
 
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0);
+	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
 	public static final int ALTURA_MESA = 5286;
@@ -290,18 +292,18 @@ public class MesaPanel extends JPanel {
 			Color cM3 = new Color(timeMandante.getCor3());
 			g2d.setColor(cM1);
 			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
-			if(timeMandante.isCorMeiaNumero()){
+			if (timeMandante.isCorMeiaNumero()) {
 				g2d.setColor(cM3);
-			}else{
-				g2d.setColor(cM2);	
+			} else {
+				g2d.setColor(cM2);
 			}
 			g2d.drawString(timeMandante.getNome(), newx - 90, y);
 			g2d.setColor(cM2);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
-			if(timeMandante.isCorMeiaNumero()){
+			if (timeMandante.isCorMeiaNumero()) {
 				g2d.setColor(cM3);
-			}else{
-				g2d.setColor(cM1);	
+			} else {
+				g2d.setColor(cM1);
 			}
 			g2d.drawString(controleJogo.verGols(timeMandante), newx + 12, y);
 
@@ -310,39 +312,51 @@ public class MesaPanel extends JPanel {
 			Color cV3 = new Color(timeVisita.getCor3());
 			g2d.setColor(cV1);
 			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 10, 10);
-			if(timeVisita.isCorMeiaNumero()){
+			if (timeVisita.isCorMeiaNumero()) {
 				g2d.setColor(cV3);
-			}else{
-				g2d.setColor(cV2);	
+			} else {
+				g2d.setColor(cV2);
 			}
 			g2d.drawString(timeVisita.getNome(), newx + 70, y);
 			g2d.setColor(cV2);
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
-			if(timeVisita.isCorMeiaNumero()){
-				g2d.setColor(cV3);	
-			}else{
+			if (timeVisita.isCorMeiaNumero()) {
+				g2d.setColor(cV3);
+			} else {
 				g2d.setColor(cV1);
 			}
 			g2d.drawString(controleJogo.verGols(timeVisita), newx + 48, y);
-
-			// g2d.drawString(timeMandante.getNome() + " "
-			// + controleJogo.verGols(timeMandante) + " vs "
-			// + controleJogo.verGols(timeVisita) + " "
-			// + timeVisita.getNome(), limitesViewPort.getBounds().x
-			// + (limitesViewPort.getBounds().width / 2), y);
 		}
-		g2d.drawString(controleJogo.tempoJogoFormatado(), x, y);
-		y += 20;
-		g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
-		y += 20;
-		g2d.drawString(controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
-		y += 20;
 		Time time = controleJogo.timeJogadaVez();
-		if (time != null)
-			g2d.drawString(time.getNome() + " "
-					+ controleJogo.obterNumJogadas(time) + " de "
-					+ (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
+		if (time != null) {
+			Color c1 = new Color(time.getCor1());
+			Color c2 = new Color(time.getCor2());
+			Color c3 = new Color(time.getCor3());
+			g2d.setColor(lightWhite);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
+			g2d.drawString(" "+Lang.msg("de")+" ", x + 25, y);
+			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 50, y);
+			y += 25;
+			g2d.setColor(lightWhite);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(Lang.msg("jogadas") + " "
+					+ controleJogo.obterNumJogadas(time) + " " + Lang.msg("de")
+					+ " " + (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
 
+			y += 25;
+			g2d.setColor(c1);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			if (time.isCorMeiaNumero()) {
+				g2d.setColor(c3);
+			} else {
+				g2d.setColor(c2);
+			}
+			g2d.drawString(time.getNome() + " "
+					+ controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
+		}
 	}
 
 	private void desennhaCirculo(Graphics g2d) {
