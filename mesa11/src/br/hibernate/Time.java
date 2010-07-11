@@ -15,12 +15,37 @@ public class Time extends Mesa11Dados {
 	private boolean corMeiaNumero1;
 	private boolean corMeiaNumero2;
 	private boolean agol;
+	private boolean segundoUniforme;
 	private int cor1RGB;
 	private int cor2RGB;
 	private int cor3RGB;
 	private int cor4RGB;
 	private int cor5RGB;
 	private int cor6RGB;
+
+	public int getCor1() {
+		if (segundoUniforme) {
+			return cor4RGB;
+		} else {
+			return cor1RGB;
+		}
+	}
+
+	public int getCor2() {
+		if (segundoUniforme) {
+			return cor5RGB;
+		} else {
+			return cor2RGB;
+		}
+	}
+
+	public int getCor3() {
+		if (segundoUniforme) {
+			return cor6RGB;
+		} else {
+			return cor3RGB;
+		}
+	}
 
 	public int getCor1RGB() {
 		return cor1RGB;
@@ -137,4 +162,13 @@ public class Time extends Mesa11Dados {
 		color.getRGB();
 
 	}
+
+	public boolean isCorMeiaNumero() {
+		if (segundoUniforme) {
+			return isCorMeiaNumero2();
+		} else {
+			return isCorMeiaNumero1();
+		}
+	}
+
 }

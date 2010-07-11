@@ -283,11 +283,53 @@ public class MesaPanel extends JPanel {
 		Time timeMandante = controleJogo.obterTimeMandante();
 		Time timeVisita = controleJogo.obterTimeVisita();
 		if (timeMandante != null && timeVisita != null) {
-			g2d.drawString(timeMandante.getNome() + " "
-					+ controleJogo.verGols(timeMandante) + " vs "
-					+ controleJogo.verGols(timeVisita) + " "
-					+ timeVisita.getNome(),
-					limitesViewPort.getBounds().width / 2, y);
+			int newx = limitesViewPort.getBounds().x
+					+ (limitesViewPort.getBounds().width / 2);
+			Color cM1 = new Color(timeMandante.getCor1());
+			Color cM2 = new Color(timeMandante.getCor2());
+			Color cM3 = new Color(timeMandante.getCor3());
+			g2d.setColor(cM1);
+			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
+			if(timeMandante.isCorMeiaNumero()){
+				g2d.setColor(cM3);
+			}else{
+				g2d.setColor(cM2);	
+			}
+			g2d.drawString(timeMandante.getNome(), newx - 90, y);
+			g2d.setColor(cM2);
+			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
+			if(timeMandante.isCorMeiaNumero()){
+				g2d.setColor(cM3);
+			}else{
+				g2d.setColor(cM1);	
+			}
+			g2d.drawString(controleJogo.verGols(timeMandante), newx + 12, y);
+
+			Color cV1 = new Color(timeVisita.getCor1());
+			Color cV2 = new Color(timeVisita.getCor2());
+			Color cV3 = new Color(timeVisita.getCor3());
+			g2d.setColor(cV1);
+			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 10, 10);
+			if(timeVisita.isCorMeiaNumero()){
+				g2d.setColor(cV3);
+			}else{
+				g2d.setColor(cV2);	
+			}
+			g2d.drawString(timeVisita.getNome(), newx + 70, y);
+			g2d.setColor(cV2);
+			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
+			if(timeVisita.isCorMeiaNumero()){
+				g2d.setColor(cV3);	
+			}else{
+				g2d.setColor(cV1);
+			}
+			g2d.drawString(controleJogo.verGols(timeVisita), newx + 48, y);
+
+			// g2d.drawString(timeMandante.getNome() + " "
+			// + controleJogo.verGols(timeMandante) + " vs "
+			// + controleJogo.verGols(timeVisita) + " "
+			// + timeVisita.getNome(), limitesViewPort.getBounds().x
+			// + (limitesViewPort.getBounds().width / 2), y);
 		}
 		g2d.drawString(controleJogo.tempoJogoFormatado(), x, y);
 		y += 20;
