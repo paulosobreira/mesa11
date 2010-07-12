@@ -48,6 +48,7 @@ public class ControlePartida {
 	private int tempoJogadaSegundos;
 	private long tempoJogadaAtualMilis;
 	private long tempoJogadaFimMilis;
+	private boolean virouTimes = false;
 	private String campoTimeComBola;
 	private Time timeCima;
 	private Time timeBaixo;
@@ -55,6 +56,8 @@ public class ControlePartida {
 	private Map mapaJogadas = new Hashtable();
 	private ControlePosicionamento controleFormacao;
 	private MesaPanel mesaPanel;
+	private boolean bateuCentroCima;
+	private boolean bateuCentroBaixo;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -200,7 +203,7 @@ public class ControlePartida {
 		controleFormacao = new ControlePosicionamento(controleJogo);
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
-
+		bateuCentroCima = bolaCima.isSelected();
 		xmlDecoder = new XMLDecoder(CarregadorRecursos
 				.recursoComoStream(xmlBaixo));
 		timeBaixo = (Time) xmlDecoder.readObject();
@@ -223,6 +226,7 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 		}
 		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
+		bateuCentroBaixo = bolaBaixo.isSelected();
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -326,6 +330,31 @@ public class ControlePartida {
 		Logger.logar("zerarTimerJogada");
 	}
 
+	public void verificaIntervalo() {
+		if (virouTimes) {
+			return;
+		}
+		if (System.currentTimeMillis() > (inicioJogoMilis + (tempoJogoMilis / 2))) {
+			Time aux = timeBaixo;
+			timeBaixo = timeCima;
+			timeCima = aux;
+			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroCima);
+			if (!bateuCentroCima) {
+				zeraJogadaTime(timeCima);
+			}
+			controleFormacao.posicionaTimeBaixo(timeBaixo, !bateuCentroBaixo);
+			if (!bateuCentroBaixo) {
+				zeraJogadaTime(timeBaixo);
+			}
+			contralizaGoleiroBaixo();
+			contralizaGoleiroCima();
+			zerarJogadas();
+			controleJogo.bolaCentro();
+			virouTimes = true;
+			Logger.logar("Intervalo");
+		}
+	}
+
 	public boolean veririficaVez(Botao b) {
 		System.out.println("veririficaVez " + b.getTime());
 		System.out.println("campoTimeComBola " + campoTimeComBola);
@@ -352,7 +381,6 @@ public class ControlePartida {
 		campoTimeComBola = time.getCampo();
 		Logger.logar("zeraJogadaTime");
 		zerarTimerJogada();
-
 	}
 
 	public Time getTimeCima() {

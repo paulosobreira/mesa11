@@ -1488,4 +1488,9 @@ public class ControleJogo {
 	public void zerarJogadas() {
 		controlePartida.zerarJogadas();
 	}
+
+	public void verificaIntervalo() {
+		controlePartida.verificaIntervalo();
+
+	}
 }

@@ -29,20 +29,24 @@ public class ControleEvento implements Runnable {
 				.equals(evento.getEventoCod()))
 				&& evento.getUltimoContato().getId() != 0) {
 			if (controleJogo.incrementaJogada()) {
+				if (!controleJogo.timeJogadaVez().equals(
+						evento.getUltimoContato().getTime())) {
+					controleJogo.zerarJogadas();
+				}
 				controleJogo
 						.zeraJogadaTime(evento.getUltimoContato().getTime());
 			} else {
+				controleJogo.zerarJogadas();
 				controleJogo.reversaoJogada();
 			}
 		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(evento
 				.getEventoCod())
 				&& !evento.isNaBola() && !evento.getBotaoEvento().getTime()
 				.equals(evento.getUltimoContato().getTime()))) {
-			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
 			controleJogo.zerarJogadas();
+			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
 		} else if (ConstantesMesa11.LATERAL.equals(evento.getEventoCod())) {
 			controleJogo.porcessaLateral();
-			controleJogo.zerarJogadas();
 		} else if (!evento.isNaBola()) {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
@@ -97,6 +101,7 @@ public class ControleEvento implements Runnable {
 				}
 			}
 		}
+		controleJogo.verificaIntervalo();
 		System.out.println("ProcessadorEvento" + controleJogo.getEventoAtual());
 
 	}
