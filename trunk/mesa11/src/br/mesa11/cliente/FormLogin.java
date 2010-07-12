@@ -4,8 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
-import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,127 +15,170 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import br.applet.Mesa11Applet;
-import br.hibernate.Usuario;
-import br.mesa11.ConstantesMesa11;
-import br.mesa11.MainFrame;
+import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.recursos.Lang;
-import br.tos.Mesa11TO;
 
-public class FormLogin {
+public class FormLogin extends JPanel {
+	private JComboBox comboIdiomas = new JComboBox(new String[] {
+			Lang.msg("pt"), Lang.msg("en") });
+	private JTextField nomeLogar = new JTextField(20);
+	private JTextField nomeVisitante = new JTextField(20);
+	private JTextField nomeRegistrar = new JTextField(20);
 
-	private Mesa11Applet mesa11Applet;
-
-	private JPanel panel;
-
-	private Usuario usuario;
-
-	public FormLogin(Mesa11Applet mesa11Applet) {
-		this.mesa11Applet = mesa11Applet;
-		panel = new JPanel();
-		gerarMenuLogin();
-		if (ConstantesMesa11.debug) {
-			logarAdmin();
+	private JLabel senhaLabel = new JLabel("Senha") {
+		public String getText() {
+			return Lang.msg("senha");
 		}
-	}
+	};
+	private JPasswordField senha = new JPasswordField(20);
 
-	private void logarAdmin() {
-		Usuario usuario = new Usuario();
-		usuario.setLogin("admin");
-		Mesa11TO algolTO = new Mesa11TO();
-		algolTO.setComando(ConstantesMesa11.LOGAR);
-		algolTO.setData(usuario);
-		usuario = (Usuario) mesa11Applet.enviarObjeto(algolTO);
-		if (usuario != null) {
-			FormLogin.this.usuario = usuario;
-			MainFrame mainFrame = new MainFrame(mesa11Applet,
-					FormLogin.this.usuario);
-			mainFrame.setVisible(true);
+	private JCheckBox recuperar = new JCheckBox();
+	private JLabel recuperarLabel = new JLabel("Recuperar Senha") {
+		public String getText() {
+			return Lang.msg("recuperarSenha");
 		}
+	};
 
+	private JLabel emailLabel = new JLabel("Entre com seu e-mail") {
+		public String getText() {
+			return Lang.msg("entreEmail");
+		}
+	};
+	private JTextField email = new JTextField(20);
+
+	public FormLogin() {
+		setLayout(new BorderLayout());
+		add(gerarLoginVisitante(), BorderLayout.NORTH);
+		add(gerarRegistrar(), BorderLayout.CENTER);
+		add(gerarLogin(), BorderLayout.SOUTH);
+		setSize(300, 300);
+		setVisible(true);
 	}
 
-	private void gerarMenuLogin() {
-
-		GridLayout gridLayout = new GridLayout(9, 1);
-		JPanel jPanel = new JPanel(gridLayout);
-		jPanel.setBorder(new TitledBorder(""));
-		jPanel.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("login");
-			}
-		});
-		final JTextField login = new JTextField();
-		jPanel.add(login);
-		jPanel.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("senha");
-			}
-		});
-		JPasswordField senha = new JPasswordField(20);
-		jPanel.add(senha);
-		jPanel.add(new JLabel() {
-			public String getText() {
-				return Lang.msg("email");
-			}
-		});
-		final JTextField email = new JTextField(40);
-		jPanel.add(email);
-		JButton logar = new JButton() {
-			public String getText() {
-				return Lang.msg("logar");
-			}
-		};
-		logar.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Usuario usuario = new Usuario();
-				usuario.setLogin(login.getText());
-				Mesa11TO mesa11TO = new Mesa11TO();
-				mesa11TO.setComando(ConstantesMesa11.LOGAR);
-				mesa11TO.setData(usuario);
-				usuario = (Usuario) mesa11Applet.enviarObjeto(mesa11TO);
-				if (usuario != null) {
-					FormLogin.this.usuario = usuario;
-					MainFrame mainFrame = new MainFrame(mesa11Applet,
-							FormLogin.this.usuario);
-					mainFrame.setVisible(true);
-				}
-
-			}
-		});
-		jPanel.add(logar);
-		JButton novoUsuario = new JButton() {
-			public String getText() {
-				return Lang.msg("novoUsuario");
-			}
-		};
-		novoUsuario.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Usuario usuario = new Usuario();
-				usuario.setLogin(login.getText());
-				usuario.setEmail(email.getText());
-				Mesa11TO mesa11TO = new Mesa11TO();
-				mesa11TO.setComando(ConstantesMesa11.NOVO_USUARIO);
-				mesa11TO.setData(usuario);
-				usuario = (Usuario) mesa11Applet.enviarObjeto(mesa11TO);
-				if (usuario != null) {
-					FormLogin.this.usuario = usuario;
-					JOptionPane.showMessageDialog(mesa11Applet, Lang
-							.msg("usuarioCadastrado"));
-					MainFrame mainFrame = new MainFrame(mesa11Applet,
-							FormLogin.this.usuario);
-					mainFrame.setVisible(true);
-				}
-			}
-		});
-		jPanel.add(novoUsuario);
+	public JCheckBox getRecuperar() {
+		return recuperar;
 	}
 
-	public JPanel getPanel() {
+	private JPanel gerarRegistrar() {
+		JPanel registrarPanel = new JPanel(new GridLayout(5, 2));
+		registrarPanel.setBorder(new TitledBorder("Registrar") {
+			public String getTitle() {
+				return Lang.msg("registrar");
+			}
+		});
+		registrarPanel.add(new JLabel("Entre com seu Nome") {
+			public String getText() {
+				return Lang.msg("nome");
+			}
+		});
+		registrarPanel.add(nomeRegistrar);
+		registrarPanel.add(emailLabel);
+		registrarPanel.add(email);
+		JPanel recupearPanel = new JPanel();
+		recupearPanel.add(recuperarLabel);
+		recupearPanel.add(recuperar);
+		registrarPanel.add(recupearPanel);
+		comboIdiomas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Logger.logar(Lang
+						.key(comboIdiomas.getSelectedItem().toString()));
+				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
+				if (i != null && !"".equals(i)) {
+					Lang.mudarIdioma(i);
+					comboIdiomas.removeAllItems();
+					comboIdiomas.addItem(Lang.msg("pt"));
+					comboIdiomas.addItem(Lang.msg("en"));
+				}
+				FormLogin.this.repaint();
+			}
+		});
+		JPanel newPanel = new JPanel(new BorderLayout());
+		newPanel.add(registrarPanel, BorderLayout.CENTER);
+		JPanel langPanel = new JPanel(new BorderLayout());
+		langPanel.setBorder(new TitledBorder("Idiomas") {
+			public String getTitle() {
+				return Lang.msg("idiomas");
+			}
+		});
+		langPanel.add(comboIdiomas, BorderLayout.CENTER);
+		newPanel.add(langPanel, BorderLayout.SOUTH);
+		return newPanel;
+	}
+
+	private JPanel gerarLoginVisitante() {
+		JPanel panel = new JPanel(new GridLayout(2, 2));
+		panel.setBorder(new TitledBorder("Visitante") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("visitante");
+			}
+		});
+		panel.add(new JLabel("Entre com seu Nome") {
+			public String getText() {
+				return Lang.msg("nome");
+			}
+		});
+		panel.add(nomeVisitante);
 		return panel;
 	}
 
+	private JPanel gerarLogin() {
+		JPanel panel = new JPanel();
+		GridLayout gridLayout = new GridLayout(4, 2);
+		panel.setBorder(new TitledBorder("Entrar") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("entrar");
+			}
+		});
+		panel.setLayout(gridLayout);
+		panel.add(new JLabel("Entre com seu Nome") {
+			public String getText() {
+				return Lang.msg("nome");
+			}
+		});
+		panel.add(nomeLogar);
+		panel.add(senhaLabel);
+		panel.add(senha);
+		return panel;
+	}
+
+	public JTextField getNome() {
+		if (!Util.isNullOrEmpty(nomeVisitante.getText()))
+			return nomeVisitante;
+		if (!Util.isNullOrEmpty(nomeRegistrar.getText()))
+			return nomeRegistrar;
+		return nomeLogar;
+	}
+
+	public void setNome(JTextField nome) {
+		this.nomeLogar = nome;
+	}
+
+	public JPasswordField getSenha() {
+		return senha;
+	}
+
+	public static void main(String[] args) throws FileNotFoundException {
+		// FileOutputStream fileOutputStream = new
+		// FileOutputStream("teste.xml");
+		// XMLEncoder encoder = new XMLEncoder(fileOutputStream);
+		// String teste = "HandlerFactory";
+		// encoder.writeObject(teste);
+		// encoder.flush();
+		// encoder.close();
+		FormLogin formEntrada = new FormLogin();
+		formEntrada.setToolTipText(Lang.msg("formularioLogin"));
+		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang
+				.msg("formularioLogin"), JOptionPane.OK_CANCEL_OPTION);
+
+		if (JOptionPane.OK_OPTION == result) {
+			System.out.println("ok");
+		}
+	}
+
+	public JTextField getEmail() {
+		return email;
+	}
 }

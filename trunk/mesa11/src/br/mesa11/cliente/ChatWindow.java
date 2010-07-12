@@ -110,16 +110,13 @@ public class ChatWindow {
 		}
 	};
 
-	private JComboBox comboTemporada = new JComboBox(new String[] { "2009",
-			"2008", "2007", "2003", "1990", "1993", "1988", "1987", "1986",
-			"1974", "1972", "1968", "super" });
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JButton sobre = new JButton("Sobre") {
 
 		public String getText() {
 
-			return Lang.msg("180");
+			return Lang.msg("Sobre");
 		}
 	};
 	private JLabel infoLabel1 = new JLabel();
@@ -164,8 +161,6 @@ public class ChatWindow {
 		criarJogo.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				String temporada = (String) comboTemporada.getSelectedItem();
-				controleChatCliente.criarJogo("t" + temporada);
 
 			}
 
@@ -297,7 +292,6 @@ public class ChatWindow {
 		buttonsPanel.add(iniciarJogo);
 		buttonsPanel.add(verDetalhes);
 		buttonsPanel.add(classificacao);
-		buttonsPanel.add(comboTemporada);
 		buttonsPanel.add(comboIdiomas);
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -434,11 +428,11 @@ public class ChatWindow {
 	}
 
 	public void atualizaInfo() {
-		String text = Lang.msg("114") + " "
+		String text = Lang.msg("latenciaJogo") + " "
 				+ controleChatCliente.getLatenciaMinima();
-		text += " " + Lang.msg("115") + " "
+		text += " " + Lang.msg("latenciaReal") + " "
 				+ controleChatCliente.getLatenciaReal();
-		text += " " + Lang.msg("116") + " " + 10;
+		text += " " + Lang.msg("maxJogos") + " " + 10;
 
 		infoLabel1.setText(text);
 

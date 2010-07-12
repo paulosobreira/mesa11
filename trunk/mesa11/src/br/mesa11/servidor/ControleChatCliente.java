@@ -18,16 +18,15 @@ public class ControleChatCliente {
 	public ControleChatCliente(Mesa11Applet mesa11Applet) {
 		this.mesa11Applet = mesa11Applet;
 		chatWindow = new ChatWindow(this);
-
+		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
-		logar();
 	}
 
 	public void logar() {
-		formLogin = new FormLogin(mesa11Applet);
-		// formLogin.setToolTipText(Lang.msg("066"));
+		formLogin = new FormLogin();
+		formLogin.setToolTipText(Lang.msg("formularioLogin"));
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				formLogin.getPanel(), Lang.msg("066"),
+				formLogin, Lang.msg("formularioLogin"),
 				JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
@@ -87,14 +86,12 @@ public class ControleChatCliente {
 
 	}
 
-	public String getLatenciaMinima() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getLatenciaMinima() {
+		return mesa11Applet.getLatenciaMinima();
 	}
 
-	public String getLatenciaReal() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getLatenciaReal() {
+		return mesa11Applet.getLatenciaReal();
 	}
 
 }
