@@ -85,7 +85,7 @@ public class Mesa11Applet extends JApplet {
 					"client.properties"));
 			this.urlSufix = properties.getProperty("servidor");
 			controleChatCliente = new ControleChatCliente(this);
-
+			controleChatCliente.logar();
 		} catch (Exception e) {
 			StackTraceElement[] trace = e.getStackTrace();
 			StringBuffer retorno = new StringBuffer();
