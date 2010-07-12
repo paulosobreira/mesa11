@@ -224,9 +224,7 @@ public class MesaPanel extends JPanel {
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
-		synchronized (zero) {
-			desenhaCampo(g2d);
-		}
+		// desenhaCampo(g2d);
 		desengaGol(g2d);
 		desenhaFiguras(g2d);
 		if (botoes != null) {
@@ -336,7 +334,7 @@ public class MesaPanel extends JPanel {
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
-			g2d.drawString(" "+Lang.msg("de")+" ", x + 25, y);
+			g2d.drawString(" " + Lang.msg("de") + " ", x + 25, y);
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 50, y);
 			y += 25;
 			g2d.setColor(lightWhite);
@@ -491,7 +489,10 @@ public class MesaPanel extends JPanel {
 			graphics2d.setClip(externo);
 		}
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
-		g.drawImage(newBuffer, botx, boty, null);
+		// g.drawImage(newBuffer, botx, boty, null);
+		g.setColor(Color.black);
+		g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
+				.inte(botao.getDiamentro() * zoom));
 	}
 
 	private void desenhaCampo(Graphics2D g) {
