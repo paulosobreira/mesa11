@@ -34,7 +34,7 @@ public class FormLogin extends JPanel {
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField capchaTexto = new JTextField(20);
 	private String capchaChave = "";
-	private JTextField nomeVisitante = new JTextField(20);
+	private JCheckBox joe = new JCheckBox();
 	private JTextField nomeRegistrar = new JTextField(20);
 	private Mesa11Applet mesa11Applet;
 	private JTextField email = new JTextField(20);
@@ -189,13 +189,21 @@ public class FormLogin extends JPanel {
 				return Lang.msg("visitante");
 			}
 		});
-		panel.add(new JLabel("Entre com seu Nome") {
+		JPanel joePanel = new JPanel();
+		joePanel.add(joe);
+		joePanel.add(new JLabel() {
+			@Override
 			public String getText() {
-				return Lang.msg("nome");
+				return Lang.msg("entrarComoJoe");
 			}
 		});
-		panel.add(nomeVisitante);
+
+		panel.add(joePanel);
 		return panel;
+	}
+
+	public JCheckBox getJoe() {
+		return joe;
 	}
 
 	private JPanel gerarLogin() {
@@ -220,8 +228,6 @@ public class FormLogin extends JPanel {
 	}
 
 	public JTextField getNome() {
-		if (!Util.isNullOrEmpty(nomeVisitante.getText()))
-			return nomeVisitante;
 		if (!Util.isNullOrEmpty(nomeRegistrar.getText()))
 			return nomeRegistrar;
 		return nomeLogar;
