@@ -73,7 +73,7 @@ Vers&atilde;o do Jogo modo 1 jogador </a> <!--<a href="ServletBaseDados?tipo=" >
 <span class="class2"> <a href="mailto:sowbreira@gmail.com">Duvidas,
 Criticas, Sugestões, Bugs ,Colaborar ...</a> </span></div>
 <div><applet code="br.applet.Mesa11Applet.class"
-	archive="mesa11.jar" width="100%" height="100%"></applet></div>
+	archive="mesa11.jar" width="100%" height="500px"></applet></div>
 </center>
 </body>
 </html>
