@@ -1,6 +1,7 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -49,11 +51,44 @@ public class FormLogin extends JPanel {
 
 	public FormLogin() {
 		setLayout(new BorderLayout());
-		add(gerarLoginVisitante(), BorderLayout.NORTH);
-		add(gerarRegistrar(), BorderLayout.CENTER);
-		add(gerarLogin(), BorderLayout.SOUTH);
+		JTabbedPane jTabbedPane = new JTabbedPane();
+		JPanel panelAba1 = new JPanel(new BorderLayout());
+		panelAba1.add(gerarLoginVisitante(), BorderLayout.NORTH);
+		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
+		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
+		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
+		JPanel panelAba2 = new JPanel(new BorderLayout());
+		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
+		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
+		add(jTabbedPane, BorderLayout.CENTER);
 		setSize(300, 300);
 		setVisible(true);
+	}
+
+	private JPanel gerarIdiomas() {
+		comboIdiomas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Logger.logar(Lang
+						.key(comboIdiomas.getSelectedItem().toString()));
+				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
+				if (i != null && !"".equals(i)) {
+					Lang.mudarIdioma(i);
+					comboIdiomas.removeAllItems();
+					comboIdiomas.addItem(Lang.msg("pt"));
+					comboIdiomas.addItem(Lang.msg("en"));
+				}
+				FormLogin.this.repaint();
+			}
+		});
+		JPanel langPanel = new JPanel(new BorderLayout());
+		langPanel.setBorder(new TitledBorder("Idiomas") {
+			public String getTitle() {
+				return Lang.msg("idiomas");
+			}
+		});
+		langPanel.add(comboIdiomas, BorderLayout.CENTER);
+
+		return langPanel;
 	}
 
 	public JCheckBox getRecuperar() {
@@ -79,30 +114,10 @@ public class FormLogin extends JPanel {
 		recupearPanel.add(recuperarLabel);
 		recupearPanel.add(recuperar);
 		registrarPanel.add(recupearPanel);
-		comboIdiomas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Logger.logar(Lang
-						.key(comboIdiomas.getSelectedItem().toString()));
-				String i = Lang.key(comboIdiomas.getSelectedItem().toString());
-				if (i != null && !"".equals(i)) {
-					Lang.mudarIdioma(i);
-					comboIdiomas.removeAllItems();
-					comboIdiomas.addItem(Lang.msg("pt"));
-					comboIdiomas.addItem(Lang.msg("en"));
-				}
-				FormLogin.this.repaint();
-			}
-		});
+
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.CENTER);
-		JPanel langPanel = new JPanel(new BorderLayout());
-		langPanel.setBorder(new TitledBorder("Idiomas") {
-			public String getTitle() {
-				return Lang.msg("idiomas");
-			}
-		});
-		langPanel.add(comboIdiomas, BorderLayout.CENTER);
-		newPanel.add(langPanel, BorderLayout.SOUTH);
+
 		return newPanel;
 	}
 
