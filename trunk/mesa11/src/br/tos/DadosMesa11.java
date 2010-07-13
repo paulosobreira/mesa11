@@ -1,22 +1,18 @@
 package br.tos;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Vector;
 
 /**
  * @author paulo.sobreira
  * 
  */
-public class DadosChat implements Serializable {
+public class DadosMesa11 implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
-	private List clientes = new Vector();
-	private List jogosCriados = new Vector();
+	private Collection clientes = new HashSet();
+	private Collection jogosCriados = new HashSet();
 	private String linhaChat = "";
 
 	public Long getDataTime() {
@@ -35,20 +31,12 @@ public class DadosChat implements Serializable {
 		this.linhaChat = linhaChat;
 	}
 
-	public List getClientes() {
+	public Collection getClientes() {
 		return clientes;
 	}
 
-	public List getJogosCriados() {
+	public Collection getJogosCriados() {
 		return jogosCriados;
-	}
-
-	public void setJogosCriados(List jogosCriados) {
-		this.jogosCriados = jogosCriados;
-	}
-
-	public void setClientes(List clientes) {
-		this.clientes = clientes;
 	}
 
 }

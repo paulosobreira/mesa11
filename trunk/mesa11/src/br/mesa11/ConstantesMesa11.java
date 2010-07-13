@@ -9,13 +9,13 @@ public class ConstantesMesa11 {
 
 	public static String CAMPO_BAIXO = "CAMPO_BAIXO";
 
-	public static final String LOGAR = "01";
+	public static final String LOGAR = "LOGAR";
 
-	public static final String NOVO_USUARIO = "02";
+	public static final String NOVO_USUARIO = "NOVO_USUARIO";
 
 	public static final String D_03 = "03";
 
-	public static final String LOGIN_EFETUADO = "04";
+	public static final String LOGIN_EFETUADO = "LOGIN_EFETUADO";
 
 	public static final String D_05 = "05";
 
@@ -81,4 +81,7 @@ public class ConstantesMesa11 {
 	public static final String META_ESCANTEIO = "META_ESCANTEIO";
 	public static final int NUM_JOGADAS = 4;
 	public static final String NOVO_CAPCHA = "NOVO_CAPCHA";
+	public static final String RECUPERA_SENHA = "RECUPERA_SENHA";
+	public static final String LOGAR_VISITANTE = "LOGAR_VISITANTE";
+	public static final String ATUALIZAR_VISAO = "ATUALIZAR_VISAO";
 }

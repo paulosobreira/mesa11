@@ -5,12 +5,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.DefaultListModel;
@@ -30,7 +28,8 @@ import javax.swing.border.TitledBorder;
 import br.mesa11.servidor.ControleChatCliente;
 import br.nnpe.Logger;
 import br.recursos.Lang;
-import br.tos.DadosChat;
+import br.tos.DadosMesa11;
+import br.tos.SessaoCliente;
 
 /**
  * @author paulo.sobreira
@@ -123,15 +122,15 @@ public class ChatWindow {
 	private Set chatTimes = new HashSet();
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-	public ChatWindow(ControleChatCliente controleChatApplet) {
+	public ChatWindow(ControleChatCliente  controleChatCliente) {
 		mainPanel = new JPanel(new BorderLayout());
-		if (controleChatApplet != null) {
-			this.controleChatCliente = controleChatApplet;
-			controleChatApplet.setChatWindow(this);
+		if (controleChatCliente != null) {
+			this.controleChatCliente = controleChatCliente;
+			controleChatCliente.setChatWindow(this);
 		}
 		gerarLayout();
 		gerarAcoes();
-		if (controleChatApplet != null) {
+		if (controleChatCliente != null) {
 			atualizaInfo();
 		}
 	}
@@ -261,7 +260,7 @@ public class ChatWindow {
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
-				return Lang.msg("JogadoresOnline");
+				return Lang.msg("jogadoresOnline");
 			}
 		});
 		cPanel.add(chatPanel, BorderLayout.CENTER);
@@ -269,7 +268,7 @@ public class ChatWindow {
 		JPanel jogsPanel = new JPanel();
 		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
-				return Lang.msg("ListadeJogos");
+				return Lang.msg("listadeJogos");
 			}
 		}));
 		sPanel.add(jogsPanel, BorderLayout.EAST);
@@ -342,23 +341,23 @@ public class ChatWindow {
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
 
-	public void atualizar(DadosChat dadosChat) {
-		atualizarChat(dadosChat);
+	public void atualizar(DadosMesa11 dadosMesa11) {
+		atualizarChat(dadosMesa11);
 
 		DefaultListModel clientesModel = new DefaultListModel();
-		// for (Iterator iter = dadosPaddock.getClientes().iterator(); iter
-		// .hasNext();) {
-		// SessaoCliente element = (SessaoCliente) iter.next();
-		// clientesModel.addElement(element);
-		// }
+		for (Iterator iter = dadosMesa11.getClientes().iterator(); iter
+				.hasNext();) {
+			SessaoCliente element = (SessaoCliente) iter.next();
+			clientesModel.addElement(element);
+		}
 		listaClientes.setModel(clientesModel);
 
 		DefaultListModel model = ((DefaultListModel) listaJogosCriados
 				.getModel());
-		if (model.size() != dadosChat.getJogosCriados().size()) {
+		if (model.size() != dadosMesa11.getJogosCriados().size()) {
 			model.clear();
 			mapaJogosCriados.clear();
-			for (Iterator iter = dadosChat.getJogosCriados().iterator(); iter
+			for (Iterator iter = dadosMesa11.getJogosCriados().iterator(); iter
 					.hasNext();) {
 				String element = (String) iter.next();
 				String key = Lang.decodeTexto(element);
@@ -368,7 +367,7 @@ public class ChatWindow {
 		}
 	}
 
-	private void atualizarChat(DadosChat dadosPaddock) {
+	private void atualizarChat(DadosMesa11 dadosPaddock) {
 		if ("".equals(dadosPaddock.getLinhaChat())
 				|| dadosPaddock.getLinhaChat() == null
 				|| dadosPaddock.getDataTime() == null) {
