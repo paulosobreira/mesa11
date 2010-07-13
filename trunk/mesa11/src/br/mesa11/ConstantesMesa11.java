@@ -80,4 +80,5 @@ public class ConstantesMesa11 {
 	public static final String CONTATO_BOLA_BOTAO = "CONTATO_BOLA_BOTAO";
 	public static final String META_ESCANTEIO = "META_ESCANTEIO";
 	public static final int NUM_JOGADAS = 4;
+	public static final String NOVO_CAPCHA = "NOVO_CAPCHA";
 }

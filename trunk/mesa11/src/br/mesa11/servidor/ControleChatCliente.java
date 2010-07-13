@@ -19,11 +19,11 @@ public class ControleChatCliente {
 		this.mesa11Applet = mesa11Applet;
 		chatWindow = new ChatWindow(this);
 		mesa11Applet.setLayout(new BorderLayout());
-		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
+		// mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
 	}
 
 	public void logar() {
-		formLogin = new FormLogin();
+		formLogin = new FormLogin(mesa11Applet);
 		formLogin.setToolTipText(Lang.msg("formularioLogin"));
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				formLogin, Lang.msg("formularioLogin"),

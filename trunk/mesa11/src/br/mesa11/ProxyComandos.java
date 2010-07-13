@@ -17,6 +17,8 @@ public class ProxyComandos {
 			return controleLogin.logar((Usuario) mesa11TO.getData());
 		} else if (ConstantesMesa11.NOVO_USUARIO.equals(mesa11TO.getComando())) {
 			return controleLogin.cadastratUsuario((Usuario) mesa11TO.getData());
+		} else if (ConstantesMesa11.NOVO_CAPCHA.equals(mesa11TO.getComando())) {
+			return controleLogin.novoCapcha();
 		}
 		return null;
 	}

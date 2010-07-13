@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
+import com.octo.captcha.engine.image.gimpy.DefaultGimpyEngine;
 import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
 import com.sun.image.codec.jpeg.ImageFormatException;
 import com.sun.image.codec.jpeg.JPEGCodec;

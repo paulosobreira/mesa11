@@ -5,8 +5,12 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -17,16 +21,25 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.applet.Mesa11Applet;
+import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.tos.Mesa11TO;
 
 public class FormLogin extends JPanel {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
+	private JTextField capchaTexto = new JTextField(20);
+	private String capchaChave = "";
 	private JTextField nomeVisitante = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
+	private Mesa11Applet mesa11Applet;
+	private JTextField email = new JTextField(20);
+	private JLabel capchaImage;
+	private JCheckBox recuperar = new JCheckBox();
 
 	private JLabel senhaLabel = new JLabel("Senha") {
 		public String getText() {
@@ -35,7 +48,6 @@ public class FormLogin extends JPanel {
 	};
 	private JPasswordField senha = new JPasswordField(20);
 
-	private JCheckBox recuperar = new JCheckBox();
 	private JLabel recuperarLabel = new JLabel("Recuperar Senha") {
 		public String getText() {
 			return Lang.msg("recuperarSenha");
@@ -47,12 +59,13 @@ public class FormLogin extends JPanel {
 			return Lang.msg("entreEmail");
 		}
 	};
-	private JTextField email = new JTextField(20);
 
-	public FormLogin() {
+	public FormLogin(Mesa11Applet mesa11Applet) {
+		this.mesa11Applet = mesa11Applet;
+
 		setLayout(new BorderLayout());
 		JTabbedPane jTabbedPane = new JTabbedPane();
-		JPanel panelAba1 = new JPanel(new BorderLayout());
+		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
 		panelAba1.add(gerarLoginVisitante(), BorderLayout.NORTH);
 		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
 		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
@@ -61,6 +74,9 @@ public class FormLogin extends JPanel {
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
+		if (mesa11Applet != null) {
+			capchaReload();
+		}
 		setSize(300, 300);
 		setVisible(true);
 	}
@@ -116,9 +132,53 @@ public class FormLogin extends JPanel {
 		registrarPanel.add(recupearPanel);
 
 		JPanel newPanel = new JPanel(new BorderLayout());
-		newPanel.add(registrarPanel, BorderLayout.CENTER);
-
+		newPanel.add(registrarPanel, BorderLayout.NORTH);
+		newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
 		return newPanel;
+	}
+
+	private Component gerarCapchaPanel() {
+		JPanel capchaPanel = new JPanel(new BorderLayout());
+		capchaImage = new JLabel();
+
+		JPanel capchaImagePanel = new JPanel();
+		capchaImagePanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				capchaReload();
+				super.mouseClicked(e);
+			}
+		});
+		capchaImagePanel.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("clickNovaImagem");
+			}
+		});
+		capchaImagePanel.add(capchaImage);
+		capchaPanel.add(capchaImagePanel, BorderLayout.CENTER);
+		JPanel sulPanel = new JPanel();
+		sulPanel.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("digiteFrase");
+			}
+		});
+		sulPanel.add(capchaTexto);
+		capchaPanel.add(sulPanel, BorderLayout.SOUTH);
+		return capchaPanel;
+	}
+
+	protected void capchaReload() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
+		Object ret = mesa11Applet.enviarObjeto(mesa11to);
+		if (ret != null && ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			capchaChave = (String) mesa11to.getData();
+			capchaImage.setIcon(new ImageIcon(mesa11to.getDataBytes()));
+		}
+
 	}
 
 	private JPanel gerarLoginVisitante() {
@@ -183,7 +243,7 @@ public class FormLogin extends JPanel {
 		// encoder.writeObject(teste);
 		// encoder.flush();
 		// encoder.close();
-		FormLogin formEntrada = new FormLogin();
+		FormLogin formEntrada = new FormLogin(null);
 		formEntrada.setToolTipText(Lang.msg("formularioLogin"));
 		int result = JOptionPane.showConfirmDialog(null, formEntrada, Lang
 				.msg("formularioLogin"), JOptionPane.OK_CANCEL_OPTION);
