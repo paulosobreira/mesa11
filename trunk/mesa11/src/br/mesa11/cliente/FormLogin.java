@@ -34,11 +34,10 @@ public class FormLogin extends JPanel {
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField capchaTexto = new JTextField(20);
 	private String capchaChave = "";
-	private JCheckBox joe = new JCheckBox();
+	private JLabel capchaImage;
 	private JTextField nomeRegistrar = new JTextField(20);
 	private Mesa11Applet mesa11Applet;
 	private JTextField email = new JTextField(20);
-	private JLabel capchaImage;
 	private JCheckBox recuperar = new JCheckBox();
 
 	private JLabel senhaLabel = new JLabel("Senha") {
@@ -66,7 +65,6 @@ public class FormLogin extends JPanel {
 		setLayout(new BorderLayout());
 		JTabbedPane jTabbedPane = new JTabbedPane();
 		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
-		panelAba1.add(gerarLoginVisitante(), BorderLayout.NORTH);
 		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
 		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
 		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
@@ -126,10 +124,10 @@ public class FormLogin extends JPanel {
 		registrarPanel.add(nomeRegistrar);
 		registrarPanel.add(emailLabel);
 		registrarPanel.add(email);
-		JPanel recupearPanel = new JPanel();
-		recupearPanel.add(recuperarLabel);
-		recupearPanel.add(recuperar);
-		registrarPanel.add(recupearPanel);
+		JPanel recuperarPanel = new JPanel();
+		recuperarPanel.add(recuperarLabel);
+		recuperarPanel.add(recuperar);
+		registrarPanel.add(recuperarPanel);
 
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.NORTH);
@@ -181,34 +179,9 @@ public class FormLogin extends JPanel {
 
 	}
 
-	private JPanel gerarLoginVisitante() {
-		JPanel panel = new JPanel(new GridLayout(2, 2));
-		panel.setBorder(new TitledBorder("Visitante") {
-			@Override
-			public String getTitle() {
-				return Lang.msg("visitante");
-			}
-		});
-		JPanel joePanel = new JPanel();
-		joePanel.add(joe);
-		joePanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("entrarComoJoe");
-			}
-		});
-
-		panel.add(joePanel);
-		return panel;
-	}
-
-	public JCheckBox getJoe() {
-		return joe;
-	}
-
 	private JPanel gerarLogin() {
 		JPanel panel = new JPanel();
-		GridLayout gridLayout = new GridLayout(4, 2);
+		GridLayout gridLayout = new GridLayout(4, 1);
 		panel.setBorder(new TitledBorder("Entrar") {
 			@Override
 			public String getTitle() {
@@ -262,4 +235,13 @@ public class FormLogin extends JPanel {
 	public JTextField getEmail() {
 		return email;
 	}
+
+	public String getCapchaTexto() {
+		return capchaTexto.getText();
+	}
+
+	public String getCapchaChave() {
+		return capchaChave;
+	}
+
 }

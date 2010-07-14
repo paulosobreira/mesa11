@@ -20,12 +20,8 @@ public class ProxyComandos {
 			return atualizarDadosVisao();
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
 			return controleLogin.logar((ClienteMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.LOGAR_VISITANTE.equals(mesa11TO
-				.getComando())) {
-			return controleLogin.logarVisitante((ClienteMesa11) mesa11TO
-					.getData());
 		} else if (ConstantesMesa11.NOVO_USUARIO.equals(mesa11TO.getComando())) {
-			return controleLogin.cadastratUsuario((ClienteMesa11) mesa11TO
+			return controleLogin.cadastrarUsuario((ClienteMesa11) mesa11TO
 					.getData());
 		} else if (ConstantesMesa11.RECUPERA_SENHA
 				.equals(mesa11TO.getComando())) {

@@ -20,7 +20,7 @@ public abstract class Mesa11Dados implements Serializable {
 	private Date dataCriacao = new Date();
 
 	@Column(nullable = false)
-	private String loginCriador;
+	private String loginCriador = "sistema";
 
 	public String getLoginCriador() {
 		return loginCriador;

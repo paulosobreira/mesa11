@@ -105,16 +105,16 @@ public class ControleChatCliente {
 		}
 		clienteMesa11.setEmailJogador(formLogin.getEmail().getText());
 		clienteMesa11.setRecuperar(formLogin.getRecuperar().isSelected());
+		clienteMesa11.setChaveCapcha(formLogin.getCapchaChave());
+		clienteMesa11.setTexto(formLogin.getCapchaTexto());
 
-		if (formLogin.getJoe().isSelected()) {
-			mesa11to.setComando(ConstantesMesa11.LOGAR_VISITANTE);
-		} else if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
+		if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
 				&& !Util.isNullOrEmpty(clienteMesa11.getSenhaJogador())) {
 			mesa11to.setComando(ConstantesMesa11.LOGAR);
 		} else if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
 				&& !Util.isNullOrEmpty(clienteMesa11.getEmailJogador())
 				&& !clienteMesa11.isRecuperar()) {
-			mesa11to.setComando(ConstantesMesa11.LOGAR);
+			mesa11to.setComando(ConstantesMesa11.NOVO_USUARIO);
 		} else if (clienteMesa11.isRecuperar()) {
 			mesa11to.setComando(ConstantesMesa11.RECUPERA_SENHA);
 		}
@@ -124,9 +124,11 @@ public class ControleChatCliente {
 		if (ret == null) {
 			return false;
 		}
-		mesa11to = (Mesa11TO) ret;
-		SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
-		this.sessaoCliente = cliente;
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
+			this.sessaoCliente = cliente;
+		}
 		return true;
 	}
 
