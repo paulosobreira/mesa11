@@ -82,6 +82,5 @@ public class ConstantesMesa11 {
 	public static final int NUM_JOGADAS = 4;
 	public static final String NOVO_CAPCHA = "NOVO_CAPCHA";
 	public static final String RECUPERA_SENHA = "RECUPERA_SENHA";
-	public static final String LOGAR_VISITANTE = "LOGAR_VISITANTE";
 	public static final String ATUALIZAR_VISAO = "ATUALIZAR_VISAO";
 }

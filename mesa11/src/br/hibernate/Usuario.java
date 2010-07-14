@@ -16,6 +16,25 @@ public class Usuario extends Mesa11Dados {
 
 	private String senha;
 
+	private long ultimoLogon = 0;
+	private long ultimaRecuperacao = 0;
+
+	public long getUltimoLogon() {
+		return ultimoLogon;
+	}
+
+	public void setUltimoLogon(long ultimoLogon) {
+		this.ultimoLogon = ultimoLogon;
+	}
+
+	public long getUltimaRecuperacao() {
+		return ultimaRecuperacao;
+	}
+
+	public void setUltimaRecuperacao(long ultimaRecuperacao) {
+		this.ultimaRecuperacao = ultimaRecuperacao;
+	}
+
 	public String getLogin() {
 		return login;
 	}
@@ -38,6 +57,12 @@ public class Usuario extends Mesa11Dados {
 
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+
+	@Override
+	public String toString() {
+
+		return login + " " + email;
 	}
 
 }

@@ -2,6 +2,10 @@ package br.mesa11.servidor;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -12,21 +16,23 @@ import br.hibernate.HibernateUtil;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
+import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 import br.recursos.Lang;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.ErroServ;
 import br.tos.Mesa11TO;
+import br.tos.MsgSrv;
 import br.tos.SessaoCliente;
 
 import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
+import com.sun.org.apache.bcel.internal.generic.LNEG;
 
 public class ControleLogin {
-	private DefaultManageableImageCaptchaService defaultManageableImageCaptchaService = new DefaultManageableImageCaptchaService();
-	private int visitante;
+	private DefaultManageableImageCaptchaService capcha = new DefaultManageableImageCaptchaService();
 	private DadosMesa11 dadosMesa11;
 
 	public ControleLogin(DadosMesa11 dadosMesa11) {
@@ -41,37 +47,107 @@ public class ControleLogin {
 		this.dadosMesa11 = dadosMesa11;
 	}
 
-	public Object cadastratUsuario(ClienteMesa11 clienteMesa11) {
-		Usuario usuario = new Usuario();
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	public Object cadastrarUsuario(ClienteMesa11 clienteMesa11) {
+
+		Usuario usuario = null;
 		try {
-			Transaction transaction = session.beginTransaction();
+			Boolean validateResponseForID = capcha.validateResponseForID(
+					clienteMesa11.getChaveCapcha(), clienteMesa11.getTexto());
+			if (!validateResponseForID) {
+				return new MsgSrv(Lang.msg("capchaInvalido"));
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			return new MsgSrv(Lang.msg("capchaInvalido"));
+		}
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List usuarios = session.createCriteria(Usuario.class).add(
+				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+				.list();
+		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
+		if (usuario != null) {
+			return new MsgSrv(Lang.msg("loginNaoDisponivel"));
+		}
+		usuario = new Usuario();
+		usuario.setLogin(clienteMesa11.getNomeJogador());
+		usuario.setLoginCriador(clienteMesa11.getNomeJogador());
+		usuario.setEmail(clienteMesa11.getEmailJogador());
+		try {
+
+			geraSenhaMandaMail(usuario);
+		} catch (Exception e) {
+			return new ErroServ(e);
+		}
+
+		Transaction transaction = session.beginTransaction();
+		try {
 			if (Util.isNullOrEmpty(usuario.getLoginCriador())) {
 				usuario.setLoginCriador(usuario.getLogin());
 			}
 			session.saveOrUpdate(usuario);
 			transaction.commit();
 		} catch (Exception e) {
+			transaction.rollback();
 			return new ErroServ(e.getMessage());
 		}
-		return usuario;
+		Logger.logar("cadastrarUsuario " + usuario);
+		return criarSessao(usuario);
+	}
+
+	private Object criarSessao(Usuario usuario) {
+		SessaoCliente sessaoCliente = null;
+		Collection clientes = dadosMesa11.getClientes();
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente object = (SessaoCliente) iterator.next();
+			if (object.getNomeJogador().equals(usuario.getLogin())) {
+				sessaoCliente = object;
+				break;
+			}
+		}
+		if (sessaoCliente == null) {
+			sessaoCliente = new SessaoCliente();
+			sessaoCliente.setNomeJogador(usuario.getLogin());
+			dadosMesa11.getClientes().add(sessaoCliente);
+		}
+
+		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(sessaoCliente);
+		return mesa11to;
+	}
+
+	private void geraSenhaMandaMail(Usuario usuario)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		PassGenerator generator = new PassGenerator();
+		String senha = generator.generateIt();
+
+		Logger.logar("geraSenhaMandaMail " + usuario + " senha " + senha);
+		usuario.setSenha(Util.md5(senha));
 	}
 
 	public Object logar(ClienteMesa11 clienteMesa11) {
 		Usuario usuario = new Usuario();
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", usuario.getLogin())).list();
+				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
-		return null;
+		if (usuario == null) {
+			return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
+		}
+		if (!usuario.getSenha().equals(clienteMesa11.getSenhaJogador())) {
+			return new MsgSrv(Lang.msg("senhaIncorreta"));
+		}
+		return criarSessao(usuario);
 	}
 
 	public Object novoCapcha() {
 		try {
 			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
 			String chave = String.valueOf(System.currentTimeMillis());
-			BufferedImage challenge = defaultManageableImageCaptchaService
-					.getImageChallengeForID(chave);
+			BufferedImage challenge = capcha.getImageChallengeForID(chave);
 			JPEGImageEncoder jpegencoderEncoder = JPEGCodec
 					.createJPEGEncoder(jpegstream);
 			jpegencoderEncoder.encode(challenge);
@@ -86,18 +162,33 @@ public class ControleLogin {
 		return new ErroServ(Lang.msg("erroCapcha"));
 	}
 
-	public Object recuperaSenha(ClienteMesa11 data) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Object logarVisitante(ClienteMesa11 data) {
-		SessaoCliente sessaoCliente = new SessaoCliente();
-		sessaoCliente.setNomeJogador("Joe" + visitante++);
-		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-		dadosMesa11.getClientes().add(sessaoCliente);
-		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setData(sessaoCliente);
-		return mesa11to;
+	public Object recuperaSenha(ClienteMesa11 clienteMesa11) {
+		Boolean validateResponseForID = capcha.validateResponseForID(
+				clienteMesa11.getChaveCapcha(), clienteMesa11.getTexto());
+		if (!validateResponseForID) {
+			return new MsgSrv(Lang.msg("capchaInvalido"));
+		}
+		Usuario usuario = new Usuario();
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List usuarios = session.createCriteria(Usuario.class).add(
+				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+				.list();
+		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
+		if (usuario == null) {
+			return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
+		}
+		if ((System.currentTimeMillis() - usuario.getUltimaRecuperacao()) < 300000) {
+			return new MsgSrv(Lang.msg("limiteTempo"));
+		}
+		try {
+			geraSenhaMandaMail(usuario);
+		} catch (Exception e) {
+			return new ErroServ(e);
+		}
+		Transaction transaction = session.beginTransaction();
+		session.saveOrUpdate(usuario);
+		transaction.commit();
+		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { usuario
+				.getEmail() }));
 	}
 }
