@@ -346,8 +346,8 @@ public class ControlePartida {
 			if (!bateuCentroBaixo) {
 				zeraJogadaTime(timeBaixo);
 			}
-			contralizaGoleiroBaixo();
-			contralizaGoleiroCima();
+			centralizaGoleiroBaixo();
+			centralizaGoleiroCima();
 			zerarJogadas();
 			controleJogo.bolaCentro();
 			virouTimes = true;
@@ -439,13 +439,13 @@ public class ControlePartida {
 			Integer gols = (Integer) mapaGols.get(timeBaixo);
 			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
 		}
-		contralizaGoleiroBaixo();
-		contralizaGoleiroCima();
+		centralizaGoleiroBaixo();
+		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
 	}
 
-	private void contralizaGoleiroBaixo() {
+	public void centralizaGoleiroBaixo() {
 		for (int i = 0; i < 11; i++) {
 			Long id = new Long(i + 20);
 			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
@@ -457,7 +457,7 @@ public class ControlePartida {
 
 	}
 
-	private void contralizaGoleiroCima() {
+	public void centralizaGoleiroCima() {
 		for (int i = 0; i < 11; i++) {
 			Long id = new Long(i + 20);
 			Botao botao = (Botao) timeCima.getBotoes().get(i);
@@ -481,8 +481,8 @@ public class ControlePartida {
 			Integer gols = (Integer) mapaGols.get(timeCima);
 			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
 		}
-		contralizaGoleiroBaixo();
-		contralizaGoleiroCima();
+		centralizaGoleiroBaixo();
+		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
 	}

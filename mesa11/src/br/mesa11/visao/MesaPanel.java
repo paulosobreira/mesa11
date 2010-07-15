@@ -26,6 +26,7 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
+import br.nnpe.ImageUtil;
 import br.nnpe.Util;
 import br.recursos.Lang;
 
@@ -288,7 +289,8 @@ public class MesaPanel extends JPanel {
 			Color cM1 = new Color(timeMandante.getCor1());
 			Color cM2 = new Color(timeMandante.getCor2());
 			Color cM3 = new Color(timeMandante.getCor3());
-			g2d.setColor(cM1);
+
+			g2d.setColor(ImageUtil.gerarCorTransparente(cM1, 200));
 			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
 			if (timeMandante.isCorMeiaNumero()) {
 				g2d.setColor(cM3);
@@ -296,7 +298,7 @@ public class MesaPanel extends JPanel {
 				g2d.setColor(cM2);
 			}
 			g2d.drawString(timeMandante.getNome(), newx - 90, y);
-			g2d.setColor(cM2);
+			g2d.setColor(ImageUtil.gerarCorTransparente(cM2, 200));
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
 			if (timeMandante.isCorMeiaNumero()) {
 				g2d.setColor(cM3);
@@ -308,7 +310,7 @@ public class MesaPanel extends JPanel {
 			Color cV1 = new Color(timeVisita.getCor1());
 			Color cV2 = new Color(timeVisita.getCor2());
 			Color cV3 = new Color(timeVisita.getCor3());
-			g2d.setColor(cV1);
+			g2d.setColor(ImageUtil.gerarCorTransparente(cV1, 200));
 			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 10, 10);
 			if (timeVisita.isCorMeiaNumero()) {
 				g2d.setColor(cV3);
@@ -316,7 +318,7 @@ public class MesaPanel extends JPanel {
 				g2d.setColor(cV2);
 			}
 			g2d.drawString(timeVisita.getNome(), newx + 70, y);
-			g2d.setColor(cV2);
+			g2d.setColor(ImageUtil.gerarCorTransparente(cV2, 200));
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
 			if (timeVisita.isCorMeiaNumero()) {
 				g2d.setColor(cV3);
@@ -345,7 +347,7 @@ public class MesaPanel extends JPanel {
 					+ " " + (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
 
 			y += 25;
-			g2d.setColor(c1);
+			g2d.setColor(ImageUtil.gerarCorTransparente(c1, 200));
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			if (time.isCorMeiaNumero()) {
 				g2d.setColor(c3);
@@ -490,9 +492,9 @@ public class MesaPanel extends JPanel {
 		}
 		graphics2d.drawImage(zoomBuffer, 0, 0, null);
 		g.drawImage(newBuffer, botx, boty, null);
-//		g.setColor(Color.black);
-//		g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
-//				.inte(botao.getDiamentro() * zoom));
+		// g.setColor(Color.black);
+		// g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
+		// .inte(botao.getDiamentro() * zoom));
 	}
 
 	private void desenhaCampo(Graphics2D g) {

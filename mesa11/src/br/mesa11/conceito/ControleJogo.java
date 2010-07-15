@@ -1193,22 +1193,35 @@ public class ControleJogo {
 	}
 
 	public void falta(Point ponto, Botao levouFalta) {
-		System.out.println("Falta");
 		ultimaMarcacao = "Falta";
 		limparPerimetroCirculo(ponto);
-
 		if (ConstantesMesa11.CAMPO_CIMA.equals(levouFalta.getTime().getCampo())) {
-			double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel.golBaixo(),
-					ponto, 90);
-			Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-					.getDiamentro(), ponto);
-			levouFalta.setCentroTodos(p);
+			if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
+				limparPerimetroCirculo(mesaPanel.getPenaltyBaixo()
+						.getLocation());
+				levouFalta.setCentroTodos(mesaPanel.getPenaltyBaixo()
+						.getLocation());
+				controlePartida.centralizaGoleiroBaixo();
+			} else {
+				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
+						.golBaixo(), ponto, 90);
+				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+						.getDiamentro(), ponto);
+				levouFalta.setCentroTodos(p);
+			}
 		} else {
-			double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel.golCima(),
-					ponto, 90);
-			Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-					.getDiamentro(), ponto);
-			levouFalta.setCentroTodos(p);
+			if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
+				limparPerimetroCirculo(mesaPanel.getPenaltyCima().getLocation());
+				levouFalta.setCentroTodos(mesaPanel.getPenaltyCima()
+						.getLocation());
+				controlePartida.centralizaGoleiroCima();
+			} else {
+				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
+						.golCima(), ponto, 90);
+				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+						.getDiamentro(), ponto);
+				levouFalta.setCentroTodos(p);
+			}
 		}
 		bola.setCentroTodos(ponto);
 		zeraJogadaTime(levouFalta.getTime());
