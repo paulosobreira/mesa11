@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -27,9 +29,6 @@ import br.tos.MsgSrv;
 import br.tos.SessaoCliente;
 
 import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-import com.sun.org.apache.bcel.internal.generic.LNEG;
 
 public class ControleLogin {
 	private DefaultManageableImageCaptchaService capcha = new DefaultManageableImageCaptchaService();
@@ -148,9 +147,7 @@ public class ControleLogin {
 			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
 			String chave = String.valueOf(System.currentTimeMillis());
 			BufferedImage challenge = capcha.getImageChallengeForID(chave);
-			JPEGImageEncoder jpegencoderEncoder = JPEGCodec
-					.createJPEGEncoder(jpegstream);
-			jpegencoderEncoder.encode(challenge);
+			ImageIO.write(challenge, "jpg", jpegstream);
 			Mesa11TO mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
 			mesa11to.setData(chave);
