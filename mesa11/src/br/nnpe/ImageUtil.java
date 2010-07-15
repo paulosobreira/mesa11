@@ -15,10 +15,8 @@ import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 /**
  * @author Paulo Sobreira Criado Em 21/08/2005
@@ -150,9 +148,9 @@ public class ImageUtil {
 
 	public static byte[] bufferedImage2ByteArray(BufferedImage image) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(os);
+
 		try {
-			encoder.encode(image);
+			ImageIO.write(image, "jpg", os);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
