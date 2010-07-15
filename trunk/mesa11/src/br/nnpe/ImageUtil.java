@@ -92,7 +92,7 @@ public class ImageUtil {
 	 * @return
 	 */
 	public static boolean hasAlpha(Image image) {
-		if(true){
+		if (true) {
 			return false;
 		}
 		// If buffered image, the color model is readily available
@@ -157,5 +157,10 @@ public class ImageUtil {
 			Logger.logarExept(e);
 		}
 		return os.toByteArray();
+	}
+
+	public static Color gerarCorTransparente(Color color, int transp) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
+				transp);
 	}
 }
