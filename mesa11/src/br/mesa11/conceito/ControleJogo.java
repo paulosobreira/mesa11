@@ -901,30 +901,37 @@ public class ControleJogo {
 	}
 
 	protected void limparPerimetroCirculo(Point p) {
+		limparPerimetroCirculo(p, ConstantesMesa11.PERIMETRO);
+	}
+
+	protected void limparPerimetroCirculo(Point p, double perimetro) {
+		limparPerimetroCirculo(p, (int) perimetro);
+	}
+
+	protected void limparPerimetroCirculo(Point p, int perimetro) {
 		if (p == null) {
 			return;
 		}
-		List circulo = GeoUtil.drawCircle(p.x, p.y, ConstantesMesa11.PERIMETRO);
+		List circulo = GeoUtil.drawCircle(p.x, p.y, perimetro);
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao b = (Botao) botoes.get(id);
 			if (b instanceof Bola || b instanceof Goleiro) {
 				continue;
 			}
-			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
-			if (reta.size() < ConstantesMesa11.PERIMETRO) {
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, b
+					.getCentro());
+			if (distaciaEntrePontos < perimetro) {
 				boolean botaoPosicionado = false;
 				int cont = 0;
+				Point point = null;
 				while (!botaoPosicionado) {
 					cont++;
 					if (cont > 100) {
-						Logger
-								.logar("limparPerimetroCirculo - posicionaBotaoAleatoriamenteNoSeuCampo");
-						posicionaBotaoAleatoriamenteNoSeuCampo(b);
 						botaoPosicionado = true;
+						Logger.logar("Nao posicionou botao " + b);
 					}
-
-					Point point = (Point) circulo.get(Util.intervalo(0, circulo
+					point = (Point) circulo.get(Util.intervalo(0, circulo
 							.size() - 1));
 					if (!mesaPanel.getCampoBaixo().contains(point)
 							&& !mesaPanel.getCampoCima().contains(point)) {
@@ -934,9 +941,10 @@ public class ControleJogo {
 						continue;
 					}
 
-					b.setCentroTodos(point);
 					botaoPosicionado = true;
 				}
+				if (point != null)
+					b.setCentroTodos(point);
 			}
 		}
 	}
@@ -1194,36 +1202,47 @@ public class ControleJogo {
 
 	public void falta(Point ponto, Botao levouFalta) {
 		ultimaMarcacao = "Falta";
-		limparPerimetroCirculo(ponto);
+
 		if (ConstantesMesa11.CAMPO_CIMA.equals(levouFalta.getTime().getCampo())) {
 			if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
 				limparPerimetroCirculo(mesaPanel.getPenaltyBaixo()
-						.getLocation());
-				levouFalta.setCentroTodos(mesaPanel.getPenaltyBaixo()
-						.getLocation());
+						.getLocation(), mesaPanel.getGrandeAreaBaixo()
+						.getWidth() / 2);
+				Point penalBaixo = mesaPanel.getPenaltyBaixo().getLocation();
+				getBola().setCentroTodos(penalBaixo);
+				levouFalta.setCentroTodos(new Point(penalBaixo.x, penalBaixo.y
+						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
 			} else {
+				limparPerimetroCirculo(ponto);
 				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
 						.golBaixo(), ponto, 90);
 				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
 						.getDiamentro(), ponto);
 				levouFalta.setCentroTodos(p);
+				bola.setCentroTodos(ponto);
 			}
 		} else {
 			if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
-				limparPerimetroCirculo(mesaPanel.getPenaltyCima().getLocation());
-				levouFalta.setCentroTodos(mesaPanel.getPenaltyCima()
-						.getLocation());
+				limparPerimetroCirculo(
+						mesaPanel.getPenaltyCima().getLocation(), mesaPanel
+								.getGrandeAreaCima().getWidth() / 2);
+				Point penalCima = mesaPanel.getPenaltyCima().getLocation();
+				getBola().setCentroTodos(penalCima);
+				levouFalta.setCentroTodos(new Point(penalCima.x, penalCima.y
+						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
 			} else {
+				limparPerimetroCirculo(ponto);
 				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
 						.golCima(), ponto, 90);
 				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
 						.getDiamentro(), ponto);
 				levouFalta.setCentroTodos(p);
+				bola.setCentroTodos(ponto);
 			}
 		}
-		bola.setCentroTodos(ponto);
+
 		zeraJogadaTime(levouFalta.getTime());
 	}
 

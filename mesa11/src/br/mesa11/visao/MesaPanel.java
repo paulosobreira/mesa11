@@ -11,7 +11,6 @@ import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -34,6 +33,9 @@ public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0);
+	public final static Color green = Color.GREEN;
+//	public final static Color green2 = Color.white;
+//	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -516,7 +518,7 @@ public class MesaPanel extends JPanel {
 		if (limitesViewPort.intersects(zoomedBorda))
 			g.fill(zoomedBorda);
 
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedGrama = new Rectangle2D.Double(((BORDA_CAMPO + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom), ((LARGURA_MESA
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
@@ -551,7 +553,7 @@ public class MesaPanel extends JPanel {
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
 		if (zoomedMeiaLuaCimaBorda.intersects((Rectangle) limitesViewPort))
 			g.fill(zoomedMeiaLuaCimaBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedMeiaLuaCimaGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
@@ -567,7 +569,7 @@ public class MesaPanel extends JPanel {
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
 		if (zoomedMeiaLuaBaixoBorda.intersects((Rectangle) limitesViewPort))
 			g.fill(zoomedMeiaLuaBaixoBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedMeiaLuaBaixoGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
@@ -582,7 +584,7 @@ public class MesaPanel extends JPanel {
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
 		if (limitesViewPort.intersects(zoomedGdeAreaCimaBorda))
 			g.fill(zoomedGdeAreaCimaBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedGdeAreaCimaGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
@@ -600,7 +602,7 @@ public class MesaPanel extends JPanel {
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
 		if (limitesViewPort.intersects(zoomedGdeAreaBaixoBorda))
 			g.fill(zoomedGdeAreaBaixoBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedGdeAreaBaixoGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom), ((ALTURA_MESA - BORDA_CAMPO
 						- ALTURA_GDE_AREA + LINHA) * zoom),
@@ -619,7 +621,7 @@ public class MesaPanel extends JPanel {
 				((ALTURA_PQ_AREA) * zoom));
 		if (limitesViewPort.intersects(zoomedpqAreaCimaBorda))
 			g.fill(zoomedpqAreaCimaBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedpqAreaCimaGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
 				((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
@@ -636,7 +638,7 @@ public class MesaPanel extends JPanel {
 				((LARGURA_PQ_AREA) * zoom), ((ALTURA_PQ_AREA) * zoom));
 		if (limitesViewPort.intersects(zoomedpqAreaBaixoBorda))
 			g.fill(zoomedpqAreaBaixoBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedpqAreaBaixoGrama = new Rectangle2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
@@ -652,7 +654,7 @@ public class MesaPanel extends JPanel {
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
 		if (zoomedcentroBorda.intersects((Rectangle) limitesViewPort))
 			g.fill(zoomedcentroBorda);
-		g.setColor(Color.green);
+		g.setColor(green);
 		zoomedcentroGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
