@@ -71,7 +71,6 @@ public class ControleJogo {
 	private Point pontoPasando;
 	private boolean carregaBotao;
 	private boolean chutaBola;
-	private boolean chamadaAGol;
 	private int numRecursoes;
 	private ControlePartida controlePartida;
 	private Evento eventoAtual;
@@ -1207,9 +1206,11 @@ public class ControleJogo {
 			if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
 				limparPerimetroCirculo(mesaPanel.getPenaltyBaixo()
 						.getLocation(), mesaPanel.getGrandeAreaBaixo()
-						.getWidth() / 2);
+						.getWidth() * 0.55);
 				Point penalBaixo = mesaPanel.getPenaltyBaixo().getLocation();
-				getBola().setCentroTodos(penalBaixo);
+				getBola().setCentroTodos(
+						new Point(penalBaixo.x + getBola().getRaio(),
+								penalBaixo.y + getBola().getRaio()));
 				levouFalta.setCentroTodos(new Point(penalBaixo.x, penalBaixo.y
 						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
@@ -1226,9 +1227,11 @@ public class ControleJogo {
 			if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
 				limparPerimetroCirculo(
 						mesaPanel.getPenaltyCima().getLocation(), mesaPanel
-								.getGrandeAreaCima().getWidth() / 2);
+								.getGrandeAreaCima().getWidth() * 0.55);
 				Point penalCima = mesaPanel.getPenaltyCima().getLocation();
-				getBola().setCentroTodos(penalCima);
+				getBola().setCentroTodos(
+						new Point(penalCima.x + getBola().getRaio(),
+								penalCima.y + getBola().getRaio()));
 				levouFalta.setCentroTodos(new Point(penalCima.x, penalCima.y
 						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
