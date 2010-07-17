@@ -34,8 +34,8 @@ public class MesaPanel extends JPanel {
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0);
 	public final static Color green = Color.GREEN;
-//	public final static Color green2 = Color.white;
-//	public final static Color green = Color.white;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -274,7 +274,7 @@ public class MesaPanel extends JPanel {
 		// g2d.drawLine(ori.x, ori.y, des.x, des.y);
 		//
 		// }
-		desennhaCirculo(g2d);
+		// desennhaCirculo(g2d);
 		desenhaInfoJogo(g2d);
 	}
 
@@ -381,7 +381,7 @@ public class MesaPanel extends JPanel {
 	private void simulaRota(Graphics2D g2d) {
 		if (controleJogo.getPontoClicado() != null
 				&& controleJogo.getPontoPasando() != null && botoes != null) {
-			g2d.setColor(Color.BLACK);
+			g2d.setColor(Color.LIGHT_GRAY);
 			Point p0 = (Point) controleJogo.getPontoClicado();
 			Point pAtual = (Point) controleJogo.getPontoPasando();
 			for (Iterator iterator = botoes.keySet().iterator(); iterator

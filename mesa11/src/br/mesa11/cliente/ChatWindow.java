@@ -25,7 +25,6 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
-import br.mesa11.servidor.ControleChatCliente;
 import br.nnpe.Logger;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
@@ -87,20 +86,6 @@ public class ChatWindow {
 		}
 	};
 
-	private JButton carreira = new JButton("Modo Carreira") {
-
-		public String getText() {
-
-			return Lang.msg("ModoCarreira");
-		}
-	};
-	private JButton construtores = new JButton("Construtores") {
-
-		public String getText() {
-
-			return Lang.msg("Construtores");
-		}
-	};
 	private JButton conta = new JButton("Conta") {
 
 		public String getText() {
@@ -122,7 +107,7 @@ public class ChatWindow {
 	private Set chatTimes = new HashSet();
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
-	public ChatWindow(ControleChatCliente  controleChatCliente) {
+	public ChatWindow(ControleChatCliente controleChatCliente) {
 		mainPanel = new JPanel(new BorderLayout());
 		if (controleChatCliente != null) {
 			this.controleChatCliente = controleChatCliente;
@@ -217,30 +202,12 @@ public class ChatWindow {
 
 		});
 
-		construtores.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controleChatCliente.verConstrutores();
-
-			}
-
-		});
-		carreira.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				controleChatCliente.modoCarreira();
-
-			}
-
-		});
 		sobre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String msg = Lang.msg("184") + "Paulo Sobreira \n "
-						+ "sowbreira@yahoo.com.br \n"
-						+ "http://br.geocities.com/sowbreira/ \n"
+				String msg = Lang.msg("feitopor") + "  Paulo Sobreira \n "
+						+ "sowbreira@gmail.com \n"
+						+ "sowbreira.appspot.com/ \n"
 						+ "Março de 2010 \n ";
-				// msg += Lang.msg("185") + "\n" + " Florêncio Queiroz \n"
-				// + " Jorge Botelho \n" + " Leonardo Andrade \n"
-				// + " Daniel Souza \n" + " Wendel Silva \n"
-				// + " Marcos Henrique\n" + " Alvaru";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
@@ -305,10 +272,7 @@ public class ChatWindow {
 				}
 			}
 		});
-		// carreira.setEnabled(false);
 		conta.setEnabled(false);
-		buttonsPanel.add(carreira);
-		buttonsPanel.add(construtores);
 		buttonsPanel.add(conta);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
@@ -367,16 +331,16 @@ public class ChatWindow {
 		}
 	}
 
-	private void atualizarChat(DadosMesa11 dadosPaddock) {
-		if ("".equals(dadosPaddock.getLinhaChat())
-				|| dadosPaddock.getLinhaChat() == null
-				|| dadosPaddock.getDataTime() == null) {
+	private void atualizarChat(DadosMesa11 dadosMesa11) {
+		if ("".equals(dadosMesa11.getLinhaChat())
+				|| dadosMesa11.getLinhaChat() == null
+				|| dadosMesa11.getDataTime() == null) {
 			return;
 		}
-		if (!chatTimes.contains(dadosPaddock.getDataTime())) {
-			textAreaChat.append(dadosPaddock.getLinhaChat() + "\n");
+		if (!chatTimes.contains(dadosMesa11.getDataTime())) {
+			textAreaChat.append(dadosMesa11.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
-			chatTimes.add(dadosPaddock.getDataTime());
+			chatTimes.add(dadosMesa11.getDataTime());
 		}
 	}
 

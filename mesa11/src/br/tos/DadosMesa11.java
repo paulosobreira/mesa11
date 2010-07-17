@@ -3,6 +3,7 @@ package br.tos;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * @author paulo.sobreira
@@ -37,6 +38,16 @@ public class DadosMesa11 implements Serializable {
 
 	public Collection getJogosCriados() {
 		return jogosCriados;
+	}
+
+	public void atualizaAtividade(String nomeJogador) {
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			if (nomeJogador.equals(sessaoCliente.getNomeJogador())) {
+				sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+				break;
+			}
+		}
 	}
 
 }

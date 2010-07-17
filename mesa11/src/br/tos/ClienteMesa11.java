@@ -8,7 +8,6 @@ import java.io.Serializable;
 public class ClienteMesa11 implements Serializable {
 
 	private static final long serialVersionUID = 6938384085272885074L;
-	private String commando;
 	private String nomeJogador;
 	private String senhaJogador;
 	private String emailJogador;
@@ -18,9 +17,8 @@ public class ClienteMesa11 implements Serializable {
 	private String nomeJogo;
 	private boolean recuperar = false;
 
-	public ClienteMesa11(String commando, SessaoCliente sessaoCliente) {
+	public ClienteMesa11(SessaoCliente sessaoCliente) {
 		super();
-		this.commando = commando;
 		this.sessaoCliente = sessaoCliente;
 	}
 
@@ -58,14 +56,6 @@ public class ClienteMesa11 implements Serializable {
 
 	public void setNomeJogador(String apelido) {
 		this.nomeJogador = apelido;
-	}
-
-	public String getCommando() {
-		return commando;
-	}
-
-	public void setCommando(String commando) {
-		this.commando = commando;
 	}
 
 	public String getSenhaJogador() {
