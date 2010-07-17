@@ -25,7 +25,7 @@
 	</target>
 
 	<target name="compilarClasses">
-		<javac destdir="build" srcdir="src" nowarn="true" optimize="true" >
+		<javac destdir="build" srcdir="src" nowarn="true" optimize="true">
 			<classpath refid="classpath.compilacao" />
 		</javac>
 	</target>
@@ -54,9 +54,11 @@
 	</target>
 
 	<target name="sign_jar">
+		<!---
 		<signjar jar="WebContent/mesa11.jar" signedjar="WebContent/a-mesa11.jar" alias="mesa11-key" keystore="jar-keystore" storepass="123456" keypass="123456">
 		</signjar>
-		<!---<delete file="WebContent/mesa11.jar" />-->
+		<delete file="WebContent/mesa11.jar" />
+		-->
 	</target>
 
 </project>
