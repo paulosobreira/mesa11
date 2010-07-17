@@ -20,7 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
 import br.mesa11.ConstantesMesa11;
-import br.mesa11.servidor.ControleChatCliente;
+import br.mesa11.cliente.ControleChatCliente;
 import br.nnpe.Logger;
 import br.nnpe.ZipUtil;
 import br.recursos.Lang;

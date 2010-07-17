@@ -39,7 +39,7 @@ public class MesaMouseListener implements MouseListener {
 		Evento evento = new Evento();
 		Point p1 = controleJogo.getPontoClicado();
 		Point p2 = controleJogo.getPontoPasando();
-		List reta = GeoUtil.drawBresenhamLine(p1, p2);
+		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
 		Animacao animacao = null;
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
@@ -89,8 +89,8 @@ public class MesaMouseListener implements MouseListener {
 							controleJogo.getBola().getCentro(), 90);
 				}
 
-				Point destino = GeoUtil.calculaPonto(angulo, Util.inte(reta
-						.size() * 10), botao.getCentro());
+				Point destino = GeoUtil.calculaPonto(angulo, Util
+						.inte(distaciaEntrePontos * 10), botao.getCentro());
 				botao.setDestino(destino);
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);

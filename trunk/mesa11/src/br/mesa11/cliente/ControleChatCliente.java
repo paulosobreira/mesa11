@@ -1,4 +1,4 @@
-package br.mesa11.servidor;
+package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
 
@@ -6,14 +6,14 @@ import javax.swing.JOptionPane;
 
 import br.applet.Mesa11Applet;
 import br.mesa11.ConstantesMesa11;
-import br.mesa11.cliente.ChatWindow;
-import br.mesa11.cliente.FormLogin;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
+import br.tos.ErroServ;
 import br.tos.Mesa11TO;
+import br.tos.MsgSrv;
 import br.tos.SessaoCliente;
 
 public class ControleChatCliente {
@@ -137,47 +137,86 @@ public class ControleChatCliente {
 
 	}
 
-	public void enviarTexto(String text) {
-		// TODO Auto-generated method stub
+	private boolean retornoNaoValido(Object ret) {
+		if (ret instanceof ErroServ || ret instanceof MsgSrv) {
+			return true;
+		}
+		return false;
+	}
 
+	public void enviarTexto(String text) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
+		ClienteMesa11 clienteMesa11 = new ClienteMesa11(sessaoCliente);
+		clienteMesa11.setTexto(text);
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(clienteMesa11);
+		mesa11to.setComando(ConstantesMesa11.ENVIAR_TEXTO);
+		Object ret = enviarObjeto(mesa11to);
+		if (retornoNaoValido(ret)) {
+			return;
+		}
+		if (ret == null) {
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("problemasRede"), "Erro", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		mesa11to = (Mesa11TO) ret;
+		chatWindow.atualizar((DadosMesa11) mesa11to.getData());
 	}
 
 	public void criarJogo(String string) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
 
 	public void entarJogo(Object object) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
 
 	public void verDetalhesJogo(Object object) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
 
 	public void verDetalhesJogador(Object object) {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
 
 	public void iniciarJogo() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
 
 	public void verClassificacao() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void verConstrutores() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void modoCarreira() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
 		// TODO Auto-generated method stub
 
 	}
