@@ -171,4 +171,12 @@ public class Time extends Mesa11Dados {
 		}
 	}
 
+	public boolean isSegundoUniforme() {
+		return segundoUniforme;
+	}
+
+	public void setSegundoUniforme(boolean segundoUniforme) {
+		this.segundoUniforme = segundoUniforme;
+	}
+
 }
