@@ -1,13 +1,21 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -17,6 +25,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -58,6 +67,8 @@ public class ControlePartida {
 	private MesaPanel mesaPanel;
 	private boolean bateuCentroCima;
 	private boolean bateuCentroBaixo;
+	private boolean segundoUniformeCima;
+	private boolean segundoUniformeBaixo;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -79,22 +90,19 @@ public class ControlePartida {
 	}
 
 	public void iniciaJogoLivre() {
-		GridLayout gridLayout = new GridLayout(2, 4);
+		GridLayout gridLayout = new GridLayout(4, 2);
 		gridLayout.setHgap(15);
 		gridLayout.setVgap(5);
 		JPanel escolhaTimesPanel = new JPanel(gridLayout);
-		JComboBox timesCima = new JComboBox();
-		JComboBox timesBaixo = new JComboBox();
+		final JComboBox timesCima = new JComboBox();
+		final JComboBox timesBaixo = new JComboBox();
+
 		JRadioButton bolaCima = new JRadioButton();
 		JRadioButton bolaBaixo = new JRadioButton();
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(bolaCima);
 		buttonGroup.add(bolaBaixo);
-		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
-			String key = (String) iterator.next();
-			timesCima.addItem(times.get(key));
-			timesBaixo.addItem(times.get(key));
-		}
+
 		escolhaTimesPanel.setBorder(new TitledBorder("") {
 
 			@Override
@@ -108,27 +116,111 @@ public class ControlePartida {
 				return Lang.msg("timeCima");
 			}
 		});
-		escolhaTimesPanel.add(timesCima);
-		escolhaTimesPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("bateCentroCima");
-			}
-		});
-		escolhaTimesPanel.add(bolaCima);
 		escolhaTimesPanel.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("timeBaixo");
 			}
 		});
+
+		escolhaTimesPanel.add(timesCima);
 		escolhaTimesPanel.add(timesBaixo);
+		final JLabel uniformeCima = new JLabel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO,
+						ConstantesMesa11.DIAMENTRO_BOTAO);
+			}
+		};
+		final JLabel uniformeBaixo = new JLabel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO,
+						ConstantesMesa11.DIAMENTRO_BOTAO);
+			}
+		};
+		JPanel uniformesPanel = new JPanel(new GridLayout(1, 2));
+		uniformesPanel.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("CliqueSegundoUniforme");
+			}
+		});
+		uniformesPanel.add(uniformeCima);
+		uniformesPanel.add(uniformeBaixo);
+		timesCima.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String xmlCima = obterKey((String) timesCima
+							.getSelectedItem());
+					XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+							.recursoComoStream(xmlCima));
+					Time time = (Time) xmlDecoder.readObject();
+					uniformeCima.setIcon(new ImageIcon(BotaoUtils
+							.desenhaUniforme(time, 1)));
+					segundoUniformeCima = false;
+				}
+			}
+		});
+		timesBaixo.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String xmlBaixo = obterKey((String) timesBaixo
+							.getSelectedItem());
+					XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+							.recursoComoStream(xmlBaixo));
+					Time time = (Time) xmlDecoder.readObject();
+					uniformeBaixo.setIcon(new ImageIcon(BotaoUtils
+							.desenhaUniforme(time, 1)));
+					segundoUniformeBaixo = false;
+				}
+			}
+		});
+
+		uniformeCima.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				segundoUniformeCima = !segundoUniformeCima;
+				String xmlCima = obterKey((String) timesCima.getSelectedItem());
+				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+						.recursoComoStream(xmlCima));
+				Time time = (Time) xmlDecoder.readObject();
+				uniformeCima.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						time, segundoUniformeCima ? 2 : 1)));
+			}
+		});
+
+		uniformeBaixo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				segundoUniformeBaixo = !segundoUniformeBaixo;
+				String xmlBaixo = obterKey((String) timesBaixo
+						.getSelectedItem());
+				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+						.recursoComoStream(xmlBaixo));
+				Time time = (Time) xmlDecoder.readObject();
+				uniformeBaixo.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						time, segundoUniformeBaixo ? 2 : 1)));
+			}
+		});
+
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("bateCentroCima");
+			}
+		});
 		escolhaTimesPanel.add(new JLabel() {
 			@Override
 			public String getText() {
 				return Lang.msg("bateCentroBaixo");
 			}
 		});
+
+		escolhaTimesPanel.add(bolaCima);
+
 		escolhaTimesPanel.add(bolaBaixo);
 
 		JPanel tempoJogoPanel = new JPanel();
@@ -163,10 +255,24 @@ public class ControlePartida {
 		mesaPanel = controleJogo.getMesaPanel();
 		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
 		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
-		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.SOUTH);
+		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.NORTH);
+		iniciarJogoPanel.add(uniformesPanel, BorderLayout.SOUTH);
+		List itens = new ArrayList();
+		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			itens.add(times.get(key));
 
-		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
-				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
+		}
+		Collections.shuffle(itens);
+		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
+			timesBaixo.addItem(iterator.next());
+		}
+		Collections.shuffle(itens);
+		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
+			timesCima.addItem(iterator.next());
+		}
+		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel,
+				Lang.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
 			return;
@@ -178,10 +284,11 @@ public class ControlePartida {
 			return;
 		}
 
-		XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-				.recursoComoStream(xmlCima));
+		XMLDecoder xmlDecoder = new XMLDecoder(
+				CarregadorRecursos.recursoComoStream(xmlCima));
 		timeCima = (Time) xmlDecoder.readObject();
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
+		timeCima.setSegundoUniforme(segundoUniformeCima);
 		for (int i = 0; i < 11; i++) {
 			Long id = new Long(i + 2);
 			Botao botao = (Botao) timeCima.getBotoes().get(i);
@@ -190,12 +297,13 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeCima,
+								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 				System.out.println("Goleiro Cima");
 			} else {
 				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeCima, 1, botao));
+						timeCima, segundoUniformeCima ? 2 : 1, botao));
 			}
 			botoes.put(botao.getId(), botao);
 
@@ -204,10 +312,11 @@ public class ControlePartida {
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 		bateuCentroCima = bolaCima.isSelected();
-		xmlDecoder = new XMLDecoder(CarregadorRecursos
-				.recursoComoStream(xmlBaixo));
+		xmlDecoder = new XMLDecoder(
+				CarregadorRecursos.recursoComoStream(xmlBaixo));
 		timeBaixo = (Time) xmlDecoder.readObject();
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
+		timeBaixo.setSegundoUniforme(segundoUniformeBaixo);
 		for (int i = 0; i < 11; i++) {
 			Long id = new Long(i + 20);
 			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
@@ -216,12 +325,13 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo, 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeBaixo,
+								segundoUniformeBaixo ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 				System.out.println("Goleiro Baixo");
 			} else {
 				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeBaixo, 1, botao));
+						timeBaixo, segundoUniformeBaixo ? 2 : 1, botao));
 			}
 			botoes.put(botao.getId(), botao);
 		}
@@ -235,9 +345,9 @@ public class ControlePartida {
 			// + botao.isGoleiro() + " " + botao.getClass());
 		}
 		controleJogo.bolaCentro();
-		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
-				.isSelected() ? ConstantesMesa11.CAMPO_CIMA
-				: ConstantesMesa11.CAMPO_BAIXO);
+		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
+				bolaCima.isSelected() ? ConstantesMesa11.CAMPO_CIMA
+						: ConstantesMesa11.CAMPO_BAIXO);
 		if (timeCima.getId() == null) {
 			timeCima.setId(System.currentTimeMillis());
 		}
@@ -401,17 +511,17 @@ public class ControlePartida {
 
 	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
 		Goleiro goleiroTime = obterGoleiroTime(time);
-		double distGoleiroTime = GeoUtil.distaciaEntrePontos(goleiroTime
-				.getCentro(), bola.getCentro());
+		double distGoleiroTime = GeoUtil.distaciaEntrePontos(
+				goleiroTime.getCentro(), bola.getCentro());
 		double outraDistancia = 0;
 		if (timeCima.equals(time)) {
 			goleiroTime = obterGoleiroTime(timeBaixo);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		} else {
 			goleiroTime = obterGoleiroTime(timeCima);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		}
 		return distGoleiroTime < outraDistancia;
 	}
