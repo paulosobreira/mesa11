@@ -1,5 +1,6 @@
 package br.mesa11.conceito;
 
+import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 
@@ -51,7 +52,10 @@ public class ControleEvento implements Runnable {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
 				.equals(evento.getEventoCod())) {
+			System.out.println("GOLEIRO_DEFESA ult contato "
+					+ evento.getUltimoContato());
 			if (evento.getUltimoContato() != null
+					&& !(evento.getUltimoContato() instanceof Goleiro)
 					&& evento.getUltimoContato().getTime() != null
 					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
 							.getUltimoContato().getTime())) {
@@ -83,6 +87,7 @@ public class ControleEvento implements Runnable {
 			}
 		} else if (ConstantesMesa11.GOL.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
+			System.out.println("Gol Time Ultimo Contato " + time);
 			if (timeCima.equals(time)) {
 				if (controleJogo.getMesaPanel().getAreaGolCima().intersects(
 						controleJogo.getUltGol().getBounds())) {

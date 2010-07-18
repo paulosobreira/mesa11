@@ -271,8 +271,8 @@ public class ControlePartida {
 		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
 			timesCima.addItem(iterator.next());
 		}
-		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel,
-				Lang.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
+		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
+				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
 			return;
@@ -284,8 +284,8 @@ public class ControlePartida {
 			return;
 		}
 
-		XMLDecoder xmlDecoder = new XMLDecoder(
-				CarregadorRecursos.recursoComoStream(xmlCima));
+		XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+				.recursoComoStream(xmlCima));
 		timeCima = (Time) xmlDecoder.readObject();
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		timeCima.setSegundoUniforme(segundoUniformeCima);
@@ -312,8 +312,8 @@ public class ControlePartida {
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 		bateuCentroCima = bolaCima.isSelected();
-		xmlDecoder = new XMLDecoder(
-				CarregadorRecursos.recursoComoStream(xmlBaixo));
+		xmlDecoder = new XMLDecoder(CarregadorRecursos
+				.recursoComoStream(xmlBaixo));
 		timeBaixo = (Time) xmlDecoder.readObject();
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 		timeBaixo.setSegundoUniforme(segundoUniformeBaixo);
@@ -345,9 +345,9 @@ public class ControlePartida {
 			// + botao.isGoleiro() + " " + botao.getClass());
 		}
 		controleJogo.bolaCentro();
-		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
-				bolaCima.isSelected() ? ConstantesMesa11.CAMPO_CIMA
-						: ConstantesMesa11.CAMPO_BAIXO);
+		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
+				.isSelected() ? ConstantesMesa11.CAMPO_CIMA
+				: ConstantesMesa11.CAMPO_BAIXO);
 		if (timeCima.getId() == null) {
 			timeCima.setId(System.currentTimeMillis());
 		}
@@ -466,9 +466,28 @@ public class ControlePartida {
 	}
 
 	public boolean veririficaVez(Botao b) {
-		System.out.println("veririficaVez " + b.getTime());
-		System.out.println("campoTimeComBola " + campoTimeComBola);
-		return campoTimeComBola.equals(b.getTime().getCampo());
+		if (b == null) {
+			return false;
+		}
+		Time time = b.getTime();
+		if (b.getId() == 0) {
+			Goleiro goleiroCima = controleJogo.obterGoleiroCima();
+			double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(b
+					.getCentro(), goleiroCima.getCentro());
+			if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
+				time = goleiroCima.getTime();
+			}
+			Goleiro goleiroBaixo = controleJogo.obterGoleiroBaixo();
+			double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(b
+					.getCentro(), goleiroBaixo.getCentro());
+			if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
+				time = goleiroBaixo.getTime();
+			}
+		}
+		if (time == null) {
+			return false;
+		}
+		return campoTimeComBola.equals(time.getCampo());
 	}
 
 	public Time timeJogadaVez() {
@@ -511,30 +530,23 @@ public class ControlePartida {
 
 	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
 		Goleiro goleiroTime = obterGoleiroTime(time);
-		double distGoleiroTime = GeoUtil.distaciaEntrePontos(
-				goleiroTime.getCentro(), bola.getCentro());
+		double distGoleiroTime = GeoUtil.distaciaEntrePontos(goleiroTime
+				.getCentro(), bola.getCentro());
 		double outraDistancia = 0;
 		if (timeCima.equals(time)) {
 			goleiroTime = obterGoleiroTime(timeBaixo);
-			outraDistancia = GeoUtil.distaciaEntrePontos(
-					goleiroTime.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
+					.getCentro(), bola.getCentro());
 		} else {
 			goleiroTime = obterGoleiroTime(timeCima);
-			outraDistancia = GeoUtil.distaciaEntrePontos(
-					goleiroTime.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
+					.getCentro(), bola.getCentro());
 		}
 		return distGoleiroTime < outraDistancia;
 	}
 
 	public Goleiro obterGoleiroTime(Time time) {
-		List botoes = time.getBotoes();
-		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
-			if (object instanceof Goleiro) {
-				return (Goleiro) object;
-			}
-		}
-		return null;
+		return time.obterGoleiro();
 	}
 
 	public void processarGol(Time time) {
