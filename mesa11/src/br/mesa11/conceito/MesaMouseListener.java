@@ -48,9 +48,9 @@ public class MesaMouseListener implements MouseListener {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p1)) {
 					if (controleJogo.veririficaVez(goleiro)) {
-						List retaGoleiro = GeoUtil.drawBresenhamLine(goleiro
-								.getCentro(), p1);
-						if (retaGoleiro.size() > (goleiro.getRaio() / 2)) {
+						double retaGoleiro = GeoUtil.distaciaEntrePontos(
+								goleiro.getCentro(), p1);
+						if (retaGoleiro > (goleiro.getRaio() / 2)) {
 							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
 									.getCentro(), p2, 0));
 							evento.setPonto(p2);
@@ -69,14 +69,37 @@ public class MesaMouseListener implements MouseListener {
 			if (botao.getCentro() == null) {
 				continue;
 			}
-			List raioPonto = GeoUtil.drawBresenhamLine(p1, botao.getCentro());
-			if (raioPonto.size() <= botao.getRaio()) {
+			double raioPonto = GeoUtil.distaciaEntrePontos(p1, botao
+					.getCentro());
+			if (raioPonto <= botao.getRaio()) {
 				if (!controleJogo.veririficaVez(botao)) {
 					controleJogo.setPontoClicado(null);
 					return;
 				}
 				if (botao instanceof Bola) {
-					return;
+					boolean areaGoleiroCima = false;
+					Goleiro goleiroCima = controleJogo.obterGoleiroCima();
+					double distaciaEntrePontosCima = GeoUtil
+							.distaciaEntrePontos(botao.getCentro(), goleiroCima
+									.getCentro());
+					if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
+						areaGoleiroCima = true;
+						evento.setUltimoContato(goleiroCima);
+						evento.setNaBola(true);
+					}
+					boolean areaGoleiroBaixo = false;
+					Goleiro goleiroBaixo = controleJogo.obterGoleiroBaixo();
+					double distaciaEntrePontosBaixo = GeoUtil
+							.distaciaEntrePontos(botao.getCentro(),
+									goleiroBaixo.getCentro());
+					if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
+						areaGoleiroBaixo = true;
+						evento.setUltimoContato(goleiroBaixo);
+						evento.setNaBola(true);
+					}
+					if (!areaGoleiroBaixo && !areaGoleiroCima) {
+						continue;
+					}
 				}
 				controleJogo.setLateral(null);
 				if (botao instanceof Goleiro) {
@@ -100,6 +123,7 @@ public class MesaMouseListener implements MouseListener {
 				controleJogo.setNumRecursoes(0);
 				controleJogo.setEventoAtual(evento);
 				controleJogo.propagaColisao(animacao, botao);
+				controleJogo.verificaBolaParouEmCimaBotao();
 				break;
 			}
 
@@ -142,7 +166,26 @@ public class MesaMouseListener implements MouseListener {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
-			if (botao instanceof Bola || botao instanceof Goleiro) {
+			if (botao instanceof Bola) {
+				boolean areaGoleiroCima = false;
+				Goleiro goleiroCima = controleJogo.obterGoleiroCima();
+				double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(
+						botao.getCentro(), goleiroCima.getCentro());
+				if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
+					areaGoleiroCima = true;
+				}
+				boolean areaGoleiroBaixo = false;
+				Goleiro goleiroBaixo = controleJogo.obterGoleiroBaixo();
+				double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(
+						botao.getCentro(), goleiroBaixo.getCentro());
+				if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
+					areaGoleiroBaixo = true;
+				}
+				if (!areaGoleiroBaixo && !areaGoleiroCima) {
+					continue;
+				}
+			}
+			if (botao instanceof Goleiro) {
 				continue;
 			}
 			List raioPonto = GeoUtil.drawBresenhamLine(pontoClicado, botao

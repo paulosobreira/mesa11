@@ -1528,4 +1528,44 @@ public class ControleJogo {
 		controlePartida.verificaIntervalo();
 
 	}
+
+	public Goleiro obterGoleiroCima() {
+		return controlePartida.getTimeCima().obterGoleiro();
+	}
+
+	public Goleiro obterGoleiroBaixo() {
+		return controlePartida.getTimeBaixo().obterGoleiro();
+	}
+
+	public void verificaBolaParouEmCimaBotao() {
+		if (eventoAtual == null) {
+			return;
+		}
+		if (eventoAtual.isBolaFora()) {
+			return;
+		}
+		String eventoCod = eventoAtual.getEventoCod();
+		if ((ConstantesMesa11.GOLEIRO_DEFESA.equals(eventoCod) || (ConstantesMesa11.CONTATO_BOTAO_BOLA
+				.equals(eventoCod) || ConstantesMesa11.CONTATO_BOLA_BOTAO
+				.equals(eventoCod)))) {
+
+			for (Iterator iterator = botoes.keySet().iterator(); iterator
+					.hasNext();) {
+				Long id = (Long) iterator.next();
+				if (id.intValue() == 0) {
+					continue;
+				}
+				Botao botao = (Botao) botoes.get(id);
+				if (botao instanceof Goleiro) {
+					continue;
+				}
+				double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+						getBola().getCentro(), botao.getCentro());
+				if (distaciaEntrePontos < botao.getDiamentro()) {
+					eventoAtual.setUltimoContato(botao);
+					System.out.println("verificaBolaParouEmCimaBotao " + botao);
+				}
+			}
+		}
+	}
 }

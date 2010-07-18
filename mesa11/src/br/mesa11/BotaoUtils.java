@@ -116,8 +116,8 @@ public class BotaoUtils {
 			botao.setNome("Mesa");
 			botao.setNumero(11);
 		}
-		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro(), botao
-				.getDiamentro(), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
+				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
 		setarHints(graphics);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
@@ -132,8 +132,8 @@ public class BotaoUtils {
 				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
 		graphics.setColor(cor3);
 		graphics.setStroke(new BasicStroke(2.5f));
-//		graphics.drawOval(5, 5, botao.getDiamentro() - 10,
-//				botao.getDiamentro() - 10);
+		// graphics.drawOval(5, 5, botao.getDiamentro() - 10,
+		// botao.getDiamentro() - 10);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics

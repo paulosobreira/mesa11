@@ -2,6 +2,7 @@ package br.hibernate;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.chainsaw.Main;
@@ -177,6 +178,17 @@ public class Time extends Mesa11Dados {
 
 	public void setSegundoUniforme(boolean segundoUniforme) {
 		this.segundoUniforme = segundoUniforme;
+	}
+
+	public Goleiro obterGoleiro() {
+		List botoes = getBotoes();
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			if (object instanceof Goleiro) {
+				return (Goleiro) object;
+			}
+		}
+		return null;
 	}
 
 }
