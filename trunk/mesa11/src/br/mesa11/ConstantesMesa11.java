@@ -85,7 +85,8 @@ public class ConstantesMesa11 {
 	public static final String ATUALIZAR_VISAO = "ATUALIZAR_VISAO";
 	public static final String ENVIAR_TEXTO = "ENVIAR_TEXTO";
 	public static final String SALVAR_TIME = "SALVAR_TIME";
-	public static final String OBTER_LISTA_TIMES = "OBTER_LISTA_TIMES";
+	public static final String OBTER_LISTA_TIMES_JOGADOR = "OBTER_LISTA_TIMES_JOGADOR";
 	public static final String OBTER_TIME = "OBTER_TIME";
+	public static final String OBTER_TODOS_TIMES = "OBTER_TODOS_TIMES";
 
 }

@@ -155,7 +155,7 @@ public class ChatWindow {
 		criarJogo.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-
+				controleChatCliente.criarJogo();
 			}
 
 		});
@@ -274,7 +274,7 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 500);
+				return new Dimension(120, 250);
 			}
 		};
 		usersPanel.add(jogsPane);
@@ -282,14 +282,14 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 235);
+				return new Dimension(120, 100);
 			}
 		};
 		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 235);
+				return new Dimension(120, 100);
 			}
 		};
 		jogsPanelCriados.add(jogsCriados);

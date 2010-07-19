@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
@@ -166,7 +167,7 @@ public class ControlePersistencia {
 		return new MsgSrv(Lang.msg("salvoComSucesso"));
 	}
 
-	public Object obterTimes(String nomeJogador) {
+	public Object obterTimesJogador(String nomeJogador) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		List times = session.createCriteria(Time.class).add(
 				Restrictions.eq("nomeJogador", nomeJogador)).list();
@@ -182,13 +183,30 @@ public class ControlePersistencia {
 		return mesa11to;
 	}
 
-	public Object carregarTime(String nome) {
+	public Object obterTime(String nome) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Time time = (Time) session.createCriteria(Time.class).add(
 				Restrictions.eq("nome", nome)).uniqueResult();
 		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(time);
+		return mesa11to;
+	}
+
+	public Object obterTodosTimes() {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		String hql = "select obj.nome from Time obj";
+		Query qry = session.createQuery(hql);
+		List times = qry.list();
+		String[] retorno = new String[times.size()];
+		int i = 0;
+		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+			String nome = (String) iterator.next();
+			retorno[i] = nome;
+			i++;
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(retorno);
 		return mesa11to;
 	}
 }
