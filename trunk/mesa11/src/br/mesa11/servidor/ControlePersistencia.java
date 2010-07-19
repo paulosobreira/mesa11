@@ -1,19 +1,30 @@
-package br.servlet;
+package br.mesa11.servidor;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.sql.Connection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+
+import br.hibernate.Botao;
 import br.hibernate.HibernateUtil;
+import br.hibernate.Time;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
+import br.nnpe.Util;
+import br.recursos.Lang;
+import br.tos.ErroServ;
+import br.tos.Mesa11TO;
+import br.tos.MsgSrv;
 
 /**
  * @author Paulo Sobreira Criado em 23/02/2010
@@ -131,5 +142,53 @@ public class ControlePersistencia {
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
+	}
+
+	public Object salvarTime(Time time) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			if (time.getId() == null) {
+				session.saveOrUpdate(time);
+			} else {
+				session.saveOrUpdate(time);
+				for (Iterator iterator = time.getBotoes().iterator(); iterator
+						.hasNext();) {
+					Botao botao = (Botao) iterator.next();
+					session.saveOrUpdate(botao);
+				}
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			return new ErroServ(e.getMessage());
+		}
+		return new MsgSrv(Lang.msg("salvoComSucesso"));
+	}
+
+	public Object obterTimes(String nomeJogador) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		List times = session.createCriteria(Time.class).add(
+				Restrictions.eq("nomeJogador", nomeJogador)).list();
+		String[] retorno = new String[times.size()];
+		int i = 0;
+		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+			Time time = (Time) iterator.next();
+			retorno[i] = time.getNome();
+			i++;
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(retorno);
+		return mesa11to;
+	}
+
+	public Object carregarTime(String nome) {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Time time = (Time) session.createCriteria(Time.class).add(
+				Restrictions.eq("nome", nome)).uniqueResult();
+		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(time);
+		return mesa11to;
 	}
 }

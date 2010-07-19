@@ -1,11 +1,20 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import br.applet.Mesa11Applet;
+import br.hibernate.Botao;
+import br.hibernate.Goleiro;
+import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.conceito.ControleJogo;
+import br.mesa11.visao.EditorTime;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
@@ -22,6 +31,7 @@ public class ControleChatCliente {
 	private Mesa11Applet mesa11Applet;
 	private SessaoCliente sessaoCliente;
 	private Thread threadAtualizadora;
+	private ControleJogo controleJogo;
 	private boolean comunicacaoServer = true;
 
 	public ControleChatCliente(Mesa11Applet mesa11Applet) {
@@ -203,13 +213,41 @@ public class ControleChatCliente {
 
 	}
 
-	public void iniciarJogo() {
+	public void criarTime() {
 		if (sessaoCliente == null) {
 			logar();
 			return;
 		}
-		// TODO Auto-generated method stub
+		Time time = new Time();
+		time.setLoginCriador(sessaoCliente.getNomeJogador());
+		time.setNomeJogador(sessaoCliente.getNomeJogador());
+		time.setQtdePontos(Util.intervalo(100, 1000));
+		Goleiro goleiro = new Goleiro();
+		goleiro.setForca(Util.intervalo(500, 1000));
+		goleiro.setPrecisao(Util.intervalo(500, 1000));
+		goleiro.setDefesa(Util.intervalo(500, 1000));
+		goleiro.setGoleiro(true);
+		goleiro.setTitular(true);
+		goleiro.setTime(time);
+		goleiro.setLoginCriador(sessaoCliente.getNomeJogador());
+		time.getBotoes().add(goleiro);
+		for (int i = 0; i < 10; i++) {
+			Botao botao = new Botao();
+			botao.setForca(Util.intervalo(500, 1000));
+			botao.setPrecisao(Util.intervalo(500, 1000));
+			botao.setDefesa(Util.intervalo(500, 1000));
+			botao.setGoleiro(false);
+			botao.setTitular(false);
+			botao.setTime(time);
+			botao.setLoginCriador(sessaoCliente.getNomeJogador());
+			time.getBotoes().add(botao);
+		}
 
+		if (controleJogo == null) {
+			controleJogo = new ControleJogo(mesa11Applet);
+		}
+		EditorTime editorTime = new EditorTime(time, controleJogo);
+		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), editorTime);
 	}
 
 	public void verClassificacao() {
@@ -229,4 +267,47 @@ public class ControleChatCliente {
 		return mesa11Applet.getLatenciaReal();
 	}
 
+	public void editarTime() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES);
+		mesa11to.setData(sessaoCliente.getNomeJogador());
+		Object ret = enviarObjeto(mesa11to);
+		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
+				.msg("semTimes") });
+		boolean semTimes = true;
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			String[] times = (String[]) mesa11to.getData();
+			jComboBoxTimes = new JComboBox(times);
+			semTimes = false;
+		}
+		JPanel panelTimes = new JPanel();
+		panelTimes.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("escolhaTime");
+			}
+		});
+		panelTimes.add(jComboBoxTimes);
+		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), panelTimes);
+		if (!semTimes) {
+			String timeSelecionado = (String) jComboBoxTimes.getSelectedItem();
+			Logger.logar("timeSelecionado " + timeSelecionado);
+			mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+			mesa11to.setData(timeSelecionado);
+			ret = enviarObjeto(mesa11to);
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				if (controleJogo == null) {
+					controleJogo = new ControleJogo(mesa11Applet);
+				}
+				EditorTime editorTime = new EditorTime((Time) mesa11to
+						.getData(), controleJogo);
+				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+						editorTime);
+			}
+		}
+
+	}
 }

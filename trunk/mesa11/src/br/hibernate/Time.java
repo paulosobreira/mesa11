@@ -5,13 +5,22 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.log4j.chainsaw.Main;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 
+@Entity
 public class Time extends Mesa11Dados {
 
 	private String campo;
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "time", targetEntity = Botao.class)
 	private List botoes = new ArrayList();
+	@Column(nullable = false, unique = true)
 	private String nome;
+	@Column(nullable = false)
+	private String nomeJogador;
 	private Integer qtdePontos;
 	private boolean corMeiaNumero1;
 	private boolean corMeiaNumero2;
@@ -189,6 +198,14 @@ public class Time extends Mesa11Dados {
 			}
 		}
 		return null;
+	}
+
+	public String getNomeJogador() {
+		return nomeJogador;
+	}
+
+	public void setNomeJogador(String nomeJogador) {
+		this.nomeJogador = nomeJogador;
 	}
 
 }

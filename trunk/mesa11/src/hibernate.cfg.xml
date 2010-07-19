@@ -10,5 +10,9 @@
 		<property name="hibernate.connection.username">sa</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
 		<mapping class="br.hibernate.Usuario" />
+		<mapping class="br.hibernate.Time" />
+		<mapping class="br.hibernate.Botao" />
+		<mapping class="br.hibernate.Goleiro" />
+		
 	</session-factory>
 </hibernate-configuration>
