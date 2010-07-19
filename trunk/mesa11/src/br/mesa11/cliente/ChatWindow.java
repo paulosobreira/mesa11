@@ -40,6 +40,7 @@ public class ChatWindow {
 	private ControleChatCliente controleChatCliente;
 	private JList listaClientes = new JList();
 	private JList listaJogosCriados = new JList(new DefaultListModel());
+	private JList listaJogosAndamento = new JList(new DefaultListModel());
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
@@ -233,10 +234,8 @@ public class ChatWindow {
 
 	private void gerarLayout() {
 		JPanel cPanel = new JPanel(new BorderLayout());
-		JPanel sPanel = new JPanel(new BorderLayout());
-
+		JPanel ePanel = new JPanel(new GridLayout(1, 2));
 		mainPanel.add(cPanel, BorderLayout.CENTER);
-		mainPanel.add(sPanel, BorderLayout.SOUTH);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBorder(new TitledBorder("Mesa11 Chat Room v 1.0"));
 		JPanel usersPanel = new JPanel();
@@ -246,25 +245,55 @@ public class ChatWindow {
 			}
 		});
 		cPanel.add(chatPanel, BorderLayout.CENTER);
-		cPanel.add(usersPanel, BorderLayout.EAST);
-		JPanel jogsPanel = new JPanel();
-		jogsPanel.setBorder((new TitledBorder("Lista de Jogos") {
+		mainPanel.add(ePanel, BorderLayout.EAST);
+		JPanel inputPanel = new JPanel();
+		cPanel.add(inputPanel, BorderLayout.SOUTH);
+		ePanel.add(usersPanel);
+		JPanel jogsPanel = new JPanel(new GridLayout(2, 1));
+
+		JPanel jogsPanelCriados = new JPanel();
+		jogsPanelCriados.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
-				return Lang.msg("listadeJogos");
+				return Lang.msg("jogosCriados");
 			}
 		}));
-		sPanel.add(jogsPanel, BorderLayout.EAST);
-		JPanel inputPanel = new JPanel();
-		sPanel.add(inputPanel, BorderLayout.CENTER);
+
+		JPanel jogsAndamentoPanel = new JPanel();
+		jogsAndamentoPanel.setBorder((new TitledBorder("Lista de Jogos") {
+			public String getTitle() {
+				return Lang.msg("jogosAndamnto");
+			}
+		}));
+		jogsPanel.add(jogsPanelCriados);
+		jogsPanel.add(jogsAndamentoPanel);
+		ePanel.add(jogsPanel);
 		/**
 		 * adicionar componentes.
 		 */
-		JScrollPane jogsPane = new JScrollPane(listaClientes);
-		jogsPane.setPreferredSize(new Dimension(150, 400));
+		JScrollPane jogsPane = new JScrollPane(listaClientes) {
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension preferredSize = super.getPreferredSize();
+				return new Dimension(120, 500);
+			}
+		};
 		usersPanel.add(jogsPane);
-		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados);
-		jogsCriados.setPreferredSize(new Dimension(150, 100));
-		jogsPanel.add(jogsCriados);
+		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados) {
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension preferredSize = super.getPreferredSize();
+				return new Dimension(120, 235);
+			}
+		};
+		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension preferredSize = super.getPreferredSize();
+				return new Dimension(120, 235);
+			}
+		};
+		jogsPanelCriados.add(jogsCriados);
+		jogsAndamentoPanel.add(jogsAndamento);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(enviarTexto);
