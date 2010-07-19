@@ -41,12 +41,15 @@ public class ProxyComandos {
 					.getData());
 		} else if (ConstantesMesa11.SALVAR_TIME.equals(mesa11TO.getComando())) {
 			return controlePersistencia.salvarTime((Time) mesa11TO.getData());
-		} else if (ConstantesMesa11.OBTER_LISTA_TIMES.equals(mesa11TO
+		} else if (ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR.equals(mesa11TO
 				.getComando())) {
-			return controlePersistencia.obterTimes((String) mesa11TO.getData());
-		} else if (ConstantesMesa11.OBTER_TIME.equals(mesa11TO.getComando())) {
-			return controlePersistencia.carregarTime((String) mesa11TO
+			return controlePersistencia.obterTimesJogador((String) mesa11TO
 					.getData());
+		} else if (ConstantesMesa11.OBTER_TIME.equals(mesa11TO.getComando())) {
+			return controlePersistencia.obterTime((String) mesa11TO.getData());
+		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
+				.getComando())) {
+			return controlePersistencia.obterTodosTimes();
 		}
 
 		return null;

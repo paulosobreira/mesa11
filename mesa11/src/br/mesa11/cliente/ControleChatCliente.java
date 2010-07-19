@@ -177,12 +177,32 @@ public class ControleChatCliente {
 		chatWindow.atualizar((DadosMesa11) mesa11to.getData());
 	}
 
-	public void criarJogo(String string) {
+	public void criarJogo() {
 		if (sessaoCliente == null) {
 			logar();
 			return;
 		}
-		// TODO Auto-generated method stub
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
+		Object ret = enviarObjeto(mesa11to);
+		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
+				.msg("semTimes") });
+		boolean semTimes = true;
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			String[] times = (String[]) mesa11to.getData();
+			jComboBoxTimes = new JComboBox(times);
+			semTimes = false;
+		}
+		JPanel panelTimes = new JPanel();
+		panelTimes.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("escolhaTime");
+			}
+		});
+		panelTimes.add(jComboBoxTimes);
+		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), panelTimes);
 
 	}
 
@@ -269,7 +289,7 @@ public class ControleChatCliente {
 
 	public void editarTime() {
 		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES);
+		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
 		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
