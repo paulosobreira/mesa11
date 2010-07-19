@@ -58,7 +58,7 @@
 <center>
 
 <div><applet code="br.applet.Mesa11Applet.class"
-	archive="mesa11.jar" width="600px" height="300px"></applet></div>
+	archive="mesa11.jar" width="650px" height="280px"></applet></div>
 <div>
 	<span class="class2"> 
 		<a	href="http://sowbreira.appspot.com/">http://sowbreira.appspot.com/</a>
