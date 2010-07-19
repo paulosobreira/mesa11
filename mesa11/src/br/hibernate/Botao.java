@@ -10,10 +10,15 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 
+@Entity
 public class Botao extends Mesa11Dados {
 
 	private int diamentro = ConstantesMesa11.DIAMENTRO_BOTAO;
@@ -23,6 +28,8 @@ public class Botao extends Mesa11Dados {
 	private String nome;
 	private Integer numero;
 	private double angulo;
+	@ManyToOne
+	@JoinColumn(nullable = false)
 	private Time time;
 	private Integer precisao;
 	private Integer forca;

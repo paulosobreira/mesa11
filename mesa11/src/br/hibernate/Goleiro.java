@@ -7,8 +7,10 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 
-import org.hibernate.loader.custom.Return;
+import javax.persistence.Entity;
 
+import org.hibernate.loader.custom.Return;
+@Entity
 public class Goleiro extends Botao {
 
 	private transient int diamentro = 400;

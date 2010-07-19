@@ -36,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.TitledBorder;
 
+import br.applet.Mesa11Applet;
 import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
@@ -51,6 +52,7 @@ import br.nnpe.PopupListener;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
+import br.tos.Mesa11TO;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
@@ -77,6 +79,11 @@ public class ControleJogo {
 	private String ultimaMarcacao;
 	private AtualizadorVisual atualizadorTela;
 	private WindowListener WindowListener;
+	private Mesa11Applet mesa11Applet;
+
+	public ControleJogo(Mesa11Applet mesa11Applet) {
+		this.mesa11Applet = mesa11Applet;
+	}
 
 	public ControleJogo(JFrame frame) {
 		this.frame = frame;
@@ -1282,21 +1289,31 @@ public class ControleJogo {
 
 	public void salvarTime(Time time) {
 		validaTime(time);
-		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-		XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-		encoder.writeObject(time);
-		encoder.flush();
-		JTextArea xmlArea = new JTextArea(30, 50);
-		xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
-				+ "</java>");
-		xmlArea.setEditable(false);
-		xmlArea.setSelectionStart(0);
-		xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
-		JScrollPane xmlPane = new JScrollPane(xmlArea);
-		xmlPane.setBorder(new TitledBorder(Lang.msg("salvarTimeInfo")));
-		JOptionPane.showMessageDialog(frame, xmlPane, Lang.msg("salvarTime"),
-				JOptionPane.INFORMATION_MESSAGE);
+		if (isJogoOnline()) {
+			salvarTimeOnline(time);
+		} else {
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+			encoder.writeObject(time);
+			encoder.flush();
+			JTextArea xmlArea = new JTextArea(30, 50);
+			xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
+					+ "</java>");
+			xmlArea.setEditable(false);
+			xmlArea.setSelectionStart(0);
+			xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
+			JScrollPane xmlPane = new JScrollPane(xmlArea);
+			xmlPane.setBorder(new TitledBorder(Lang.msg("salvarTimeInfo")));
+			JOptionPane.showMessageDialog(frame, xmlPane, Lang
+					.msg("salvarTime"), JOptionPane.INFORMATION_MESSAGE);
+		}
+	}
 
+	private void salvarTimeOnline(Time time) {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(time);
+		mesa11to.setComando(ConstantesMesa11.SALVAR_TIME);
+		mesa11Applet.enviarObjeto(mesa11to);
 	}
 
 	private void validaTime(Time time) {
@@ -1568,4 +1585,9 @@ public class ControleJogo {
 			}
 		}
 	}
+
+	public boolean isJogoOnline() {
+		return mesa11Applet != null;
+	}
+
 }

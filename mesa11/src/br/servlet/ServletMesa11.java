@@ -43,12 +43,7 @@ public class ServletMesa11 extends HttpServlet {
 		super.init();
 		webDir = getServletContext().getRealPath("") + File.separator;
 		webInfDir = webDir + "WEB-INF" + File.separator;
-		mapasDir = webDir + "midia" + File.separator + "mapas" + File.separator;
-		npcsDir = webDir + "midia" + File.separator + "npcs" + File.separator;
-		itensDir = webDir + "midia" + File.separator + "itens" + File.separator;
-		cenariosDir = webDir + "midia" + File.separator + "cenarios"
-				+ File.separator;
-		proxyComandos = new ProxyComandos();
+		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
 	}
 

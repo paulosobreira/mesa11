@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import br.mesa11.servidor.ControlePersistencia;
 import br.nnpe.Logger;
 import br.recursos.Lang;
 

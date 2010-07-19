@@ -64,13 +64,22 @@ public class ChatWindow {
 			return Lang.msg("CriarJogo");
 		}
 	};
-	private JButton iniciarJogo = new JButton("Iniciar Jogo") {
+	private JButton criarTime = new JButton("criarTime") {
 
 		public String getText() {
 
-			return Lang.msg("IniciarJogo");
+			return Lang.msg("criarTime");
 		}
 	};
+
+	private JButton editarTime = new JButton("editarTime") {
+
+		public String getText() {
+
+			return Lang.msg("editarTime");
+		}
+	};
+
 	private JButton verDetalhes = new JButton("Ver Detalhes") {
 
 		public String getText() {
@@ -187,9 +196,16 @@ public class ChatWindow {
 			}
 
 		});
-		iniciarJogo.addActionListener(new ActionListener() {
+		criarTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleChatCliente.iniciarJogo();
+				controleChatCliente.criarTime();
+
+			}
+
+		});
+		editarTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleChatCliente.editarTime();
 
 			}
 
@@ -206,8 +222,7 @@ public class ChatWindow {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("feitopor") + "  Paulo Sobreira \n "
 						+ "sowbreira@gmail.com \n"
-						+ "sowbreira.appspot.com/ \n"
-						+ "Março de 2010 \n ";
+						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
@@ -255,8 +270,9 @@ public class ChatWindow {
 		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(criarJogo);
-		buttonsPanel.add(iniciarJogo);
 		buttonsPanel.add(verDetalhes);
+		buttonsPanel.add(criarTime);
+		buttonsPanel.add(editarTime);
 		buttonsPanel.add(classificacao);
 		buttonsPanel.add(comboIdiomas);
 		comboIdiomas.addActionListener(new ActionListener() {

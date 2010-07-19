@@ -136,8 +136,8 @@ public class EditorTime extends JPanel {
 						.isSelected());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(
-						EditorTime.this.time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
 
 			}
 		});
@@ -157,13 +157,30 @@ public class EditorTime extends JPanel {
 						.isSelected());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(
-						EditorTime.this.time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
 			}
 		});
 		panelTime.add(corMeiaCorNumero2);
 		add(panelTime, BorderLayout.NORTH);
 		add(jTabbedPane, BorderLayout.CENTER);
+
+		JButton salvarTime = new JButton() {
+			@Override
+			public String getText() {
+				return Lang.msg("salvarTime");
+			}
+		};
+
+		salvarTime.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.controleJogo.salvarTime(EditorTime.this.time);
+
+			}
+		});
+		add(salvarTime, BorderLayout.SOUTH);
 	}
 
 	private Component gerarTabelaAtributosBotao() {
@@ -268,29 +285,14 @@ public class EditorTime extends JPanel {
 			}
 		});
 
-		JButton salvarTime = new JButton() {
-			@Override
-			public String getText() {
-				return Lang.msg("salvarTime");
-			}
-		};
-
-		salvarTime.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				controleJogo.salvarTime(time);
-
-			}
-		});
-
 		JPanel panelTabela = new JPanel(new BorderLayout());
 		panelTabela.add(new JScrollPane(tabelaBotoes), BorderLayout.CENTER);
-		JPanel panelBotoes = new JPanel(new GridLayout(1, 3));
+		JPanel panelBotoes = new JPanel(new GridLayout(1, 2));
 		panelBotoes.add(inserirLinha);
 		panelBotoes.add(removerLinha);
-		panelBotoes.add(salvarTime);
-		panelTabela.add(panelBotoes, BorderLayout.SOUTH);
+		if (!controleJogo.isJogoOnline()) {
+			panelTabela.add(panelBotoes, BorderLayout.SOUTH);
+		}
 		return panelTabela;
 	}
 
@@ -339,9 +341,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor1);
 				time.setCor1RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-				imgGolUn1
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 1)));
 			}
 
 		});
@@ -353,9 +356,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor2);
 				time.setCor2RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-				imgGolUn1
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -366,9 +370,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor3);
 				time.setCor3RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-				imgGolUn1
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -380,9 +385,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor4);
 				time.setCor4RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
-				imgGolUn2
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -394,9 +400,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor5);
 				time.setCor5RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
-				imgGolUn2
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 2)));
 
 			}
 		});
@@ -408,9 +415,10 @@ public class EditorTime extends JPanel {
 						.msg("escolhaCor"), Color.WHITE);
 				setCor(color, labelCor6);
 				time.setCor6RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
-				imgGolUn2
-						.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -421,15 +429,14 @@ public class EditorTime extends JPanel {
 		setCor(new Color(time.getCor5RGB()), labelCor5);
 		setCor(new Color(time.getCor6RGB()), labelCor6);
 		imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-		imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
+		imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time,
+				1)));
 
 		imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
-		imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
+		imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time,
+				2)));
 
 	}
-
-
-
 
 	public void setCor(Color color, JLabel label) {
 		label.setOpaque(true);

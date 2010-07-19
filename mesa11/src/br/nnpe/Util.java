@@ -28,6 +28,8 @@ import java.util.Map;
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
 
+import org.hibernate.Session;
+
 public class Util {
 	public static Locale loc_brasil = new Locale("pt", "BR");
 	public static DecimalFormat decimalFormat = new DecimalFormat("0.00");
@@ -843,5 +845,17 @@ public class Util {
 	public static int intervalo(int val1, int val2) {
 
 		return (val1 + (int) (Math.random() * (1 + val2 - val1)));
+	}
+
+	public static List removePersistBag(List list, Session session) {
+		List ret = new LinkedList();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			if (session != null) {
+				session.evict(object);
+			}
+			ret.add(object);
+		}
+		return ret;
 	}
 }
