@@ -44,6 +44,7 @@ public class ChatWindow {
 	private JTextArea textAreaChat = new JTextArea();
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
+	private HashMap mapaJogosAndamento = new HashMap();
 	private JButton enviarTexto = new JButton("Enviar Texto") {
 
 		public String getText() {
@@ -361,19 +362,34 @@ public class ChatWindow {
 		}
 		listaClientes.setModel(clientesModel);
 
-		DefaultListModel model = ((DefaultListModel) listaJogosCriados
+		DefaultListModel modelJogosCriados = ((DefaultListModel) listaJogosCriados
 				.getModel());
-		if (model.size() != dadosMesa11.getJogosCriados().size()) {
-			model.clear();
+		if (modelJogosCriados.size() != dadosMesa11.getJogosCriados().size()) {
+			modelJogosCriados.clear();
 			mapaJogosCriados.clear();
 			for (Iterator iter = dadosMesa11.getJogosCriados().iterator(); iter
 					.hasNext();) {
 				String element = (String) iter.next();
 				String key = Lang.decodeTexto(element);
 				mapaJogosCriados.put(key, element);
-				model.addElement(key);
+				modelJogosCriados.addElement(key);
 			}
 		}
+		
+		DefaultListModel modelJogosAndamento = ((DefaultListModel) listaJogosAndamento
+				.getModel());
+		if (modelJogosAndamento.size() != dadosMesa11.getJogosAndamento().size()) {
+			modelJogosAndamento.clear();
+			mapaJogosAndamento.clear();
+			for (Iterator iter = dadosMesa11.getJogosAndamento().iterator(); iter
+					.hasNext();) {
+				String element = (String) iter.next();
+				String key = Lang.decodeTexto(element);
+				mapaJogosAndamento.put(key, element);
+				modelJogosAndamento.addElement(key);
+			}
+		}
+		
 	}
 
 	private void atualizarChat(DadosMesa11 dadosMesa11) {
@@ -444,5 +460,13 @@ public class ChatWindow {
 
 		infoLabel1.setText(text);
 
+	}
+
+	public String obterJogoSelecionado() {
+		Object object = listaJogosCriados.getSelectedValue();
+		if (object == null) {
+			object = listaJogosAndamento.getSelectedValue();
+		}
+		return (String) object;
 	}
 }
