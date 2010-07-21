@@ -1,23 +1,28 @@
 package br.mesa11;
 
 import br.hibernate.Time;
+import br.mesa11.cliente.ControleJogosCliente;
 import br.mesa11.servidor.ControleChatServidor;
+import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
 import br.mesa11.servidor.ControlePersistencia;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
+import br.tos.DadosJogoSrvMesa11;
 import br.tos.Mesa11TO;
 
 public class ProxyComandos {
 	private ControleLogin controleLogin;
 	private ControlePersistencia controlePersistencia;
 	private ControleChatServidor controleChatServidor;
+	private ControleJogosServidor controleJogosServidor;
 	private DadosMesa11 dadosMesa11;
 
 	public ProxyComandos(String webDir, String webInfDir) {
 		dadosMesa11 = new DadosMesa11();
 		controleLogin = new ControleLogin(dadosMesa11);
 		controleChatServidor = new ControleChatServidor(dadosMesa11);
+		controleJogosServidor = new ControleJogosServidor(dadosMesa11);
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
 	}
 
@@ -50,6 +55,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
 				.getComando())) {
 			return controlePersistencia.obterTodosTimes();
+		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
+			return controleJogosServidor.criarJogo((DadosJogoSrvMesa11) mesa11TO
+					.getData());
 		}
 
 		return null;

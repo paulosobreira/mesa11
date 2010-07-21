@@ -14,7 +14,16 @@ public class DadosMesa11 implements Serializable {
 	private Long dataTime;
 	private Collection clientes = new HashSet();
 	private Collection jogosCriados = new HashSet();
+	private Collection jogosAndamento = new HashSet();
 	private String linhaChat = "";
+
+	public Collection getJogosAndamento() {
+		return jogosAndamento;
+	}
+
+	public void setJogosAndamento(Collection jogosAndamento) {
+		this.jogosAndamento = jogosAndamento;
+	}
 
 	public Long getDataTime() {
 		return dataTime;
