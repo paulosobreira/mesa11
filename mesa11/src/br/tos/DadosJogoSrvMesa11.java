@@ -1,6 +1,8 @@
 package br.tos;
 
-public class DadosJogoSrvMesa11 {
+import java.io.Serializable;
+
+public class DadosJogoSrvMesa11 implements Serializable {
 
 	private String nomeJogo;
 	private String nomeCriador;

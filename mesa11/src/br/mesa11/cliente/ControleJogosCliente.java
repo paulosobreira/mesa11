@@ -28,7 +28,6 @@ import br.tos.Mesa11TO;
 
 public class ControleJogosCliente {
 	private ChatWindow chatWindow;
-	private Mesa11Applet mesa11Applet;
 	private boolean segundoUniforme;
 	private ControleChatCliente controleChatCliente;
 	private ControleJogo controleJogo;
@@ -36,19 +35,14 @@ public class ControleJogosCliente {
 			.msg("semTimes") });
 
 	public ControleJogosCliente(ChatWindow chatWindow,
-			Mesa11Applet mesa11Applet, ControleChatCliente controleChatCliente) {
+			ControleChatCliente controleChatCliente) {
 		super();
 		this.chatWindow = chatWindow;
-		this.mesa11Applet = mesa11Applet;
 		this.controleChatCliente = controleChatCliente;
 	}
 
 	private Object enviarObjeto(Mesa11TO mesa11to) {
-		if (mesa11Applet == null) {
-			Logger.logar("enviarObjeto mesa11Applet null");
-			return null;
-		}
-		return mesa11Applet.enviarObjeto(mesa11to);
+		return controleChatCliente.enviarObjeto(mesa11to);
 	}
 
 	public void criarJogo() {
@@ -184,8 +178,9 @@ public class ControleJogosCliente {
 		if (result == JOptionPane.YES_OPTION) {
 			System.out.println("JOptionPane.YES_OPTION");
 			DadosJogoSrvMesa11 jogoSrvMesa11 = new DadosJogoSrvMesa11();
-			jogoSrvMesa11.setBolaCampo(controleChatCliente.getSessaoCliente()
-					.getNomeJogador());
+			String jogador = controleChatCliente.getSessaoCliente()
+					.getNomeJogador();
+			jogoSrvMesa11.setNomeCriador(jogador);
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
 			jogoSrvMesa11.setTimeCasa(nomeTime);
 			jogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
@@ -200,6 +195,7 @@ public class ControleJogosCliente {
 			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO);
 			mesa11to.setData(jogoSrvMesa11);
 			enviarObjeto(mesa11to);
+			System.out.println("ConstantesMesa11.CRIAR_JOGO");
 		}
 	}
 
