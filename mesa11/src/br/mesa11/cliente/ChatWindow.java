@@ -161,21 +161,8 @@ public class ChatWindow {
 
 		});
 		entrarJogo.addActionListener(new ActionListener() {
-
 			public void actionPerformed(ActionEvent e) {
-				Object object = listaJogosCriados.getSelectedValue();
-				if (object != null) {
-					int result = JOptionPane.showConfirmDialog(getMainPanel(),
-							Lang.msg("181") + object);
-					if (result == JOptionPane.YES_OPTION) {
-						controleChatCliente.entarJogo(mapaJogosCriados
-								.get(object));
-					}
-				} else {
-					JOptionPane.showMessageDialog(getMainPanel(), Lang
-							.msg("182"));
-				}
-
+				controleChatCliente.entarJogo();
 			}
 
 		});
@@ -375,10 +362,11 @@ public class ChatWindow {
 				modelJogosCriados.addElement(key);
 			}
 		}
-		
+
 		DefaultListModel modelJogosAndamento = ((DefaultListModel) listaJogosAndamento
 				.getModel());
-		if (modelJogosAndamento.size() != dadosMesa11.getJogosAndamento().size()) {
+		if (modelJogosAndamento.size() != dadosMesa11.getJogosAndamento()
+				.size()) {
 			modelJogosAndamento.clear();
 			mapaJogosAndamento.clear();
 			for (Iterator iter = dadosMesa11.getJogosAndamento().iterator(); iter
@@ -389,7 +377,7 @@ public class ChatWindow {
 				modelJogosAndamento.addElement(key);
 			}
 		}
-		
+
 	}
 
 	private void atualizarChat(DadosMesa11 dadosMesa11) {
@@ -469,4 +457,5 @@ public class ChatWindow {
 		}
 		return (String) object;
 	}
+
 }

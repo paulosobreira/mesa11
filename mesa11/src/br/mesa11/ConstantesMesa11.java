@@ -90,5 +90,7 @@ public class ConstantesMesa11 {
 	public static final String OBTER_TODOS_TIMES = "OBTER_TODOS_TIMES";
 	public static final String BOLA = "BOLA";
 	public static final String CRIAR_JOGO = "CRIAR_JOGO";
+	public static final String OBTER_DADOS_JOGO = "OBTER_DADOS_JOGO";
+	public static final String ENTRAR_JOGO = "ENTRAR_JOGO";
 
 }
