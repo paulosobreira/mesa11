@@ -60,8 +60,7 @@ public class ControleChatCliente {
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
 		threadAtualizadora.start();
-		controleJogosCliente = new ControleJogosCliente(chatWindow,
-				mesa11Applet, this);
+		controleJogosCliente = new ControleJogosCliente(chatWindow, this);
 	}
 
 	public void logar() {
@@ -93,7 +92,7 @@ public class ControleChatCliente {
 
 	}
 
-	private Object enviarObjeto(Mesa11TO mesa11to) {
+	public Object enviarObjeto(Mesa11TO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;
