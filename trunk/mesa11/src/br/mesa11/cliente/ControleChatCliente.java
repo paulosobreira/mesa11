@@ -33,6 +33,14 @@ public class ControleChatCliente {
 	private boolean comunicacaoServer = true;
 	private ControleJogosCliente controleJogosCliente;
 
+	public boolean isComunicacaoServer() {
+		return comunicacaoServer;
+	}
+
+	public void setComunicacaoServer(boolean comunicacaoServer) {
+		this.comunicacaoServer = comunicacaoServer;
+	}
+
 	public SessaoCliente getSessaoCliente() {
 		return sessaoCliente;
 	}
@@ -56,11 +64,12 @@ public class ControleChatCliente {
 		});
 		threadAtualizadora.setPriority(Thread.MIN_PRIORITY);
 		chatWindow = new ChatWindow(this);
+		controleJogosCliente = new ControleJogosCliente(chatWindow, this);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
 		threadAtualizadora.start();
-		controleJogosCliente = new ControleJogosCliente(chatWindow, this);
+
 	}
 
 	public void logar() {
@@ -88,7 +97,9 @@ public class ControleChatCliente {
 			return;
 		}
 		mesa11to = (Mesa11TO) ret;
-		chatWindow.atualizar((DadosMesa11) mesa11to.getData());
+		DadosMesa11 dadosMesa11 = (DadosMesa11) mesa11to.getData();
+		chatWindow.atualizar(dadosMesa11);
+		controleJogosCliente.setDadosMesa11(dadosMesa11);
 
 	}
 
@@ -190,14 +201,19 @@ public class ControleChatCliente {
 
 	}
 
-	public void entarJogo(Object object) {
+	public void entarJogo() {
 		if (sessaoCliente == null) {
 			logar();
 			return;
 		}
 		String jogoSelecionado = chatWindow.obterJogoSelecionado();
+		System.out.println("entarJogo() jogoSelecionado " + jogoSelecionado);
+		if (jogoSelecionado == null) {
+			return;
+		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("entrarJogo") + object);
+				Lang.msg("entrarJogo") + jogoSelecionado, Lang
+						.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.entrarJogo(jogoSelecionado);
 		}

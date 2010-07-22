@@ -56,7 +56,14 @@ public class ProxyComandos {
 				.getComando())) {
 			return controlePersistencia.obterTodosTimes();
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
-			return controleJogosServidor.criarJogo((DadosJogoSrvMesa11) mesa11TO
+			return controleJogosServidor
+					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
+			return controleJogosServidor
+					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterDadosJogo((String) mesa11TO
 					.getData());
 		}
 
