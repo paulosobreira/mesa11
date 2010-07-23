@@ -12,7 +12,8 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private boolean SegundoUniformeTimeCasa;
 	private String timeVisita;
 	private boolean SegundoUniformeTimeVisita;
-	private String bolaCampo;
+	private String bolaCampoCasa;
+	private String bolaCampoVisita;
 	private int tempoJogo;
 	private int tempoJogoJogada;
 	private int golsCasa;
@@ -98,14 +99,6 @@ public class DadosJogoSrvMesa11 implements Serializable {
 		SegundoUniformeTimeVisita = segundoUniformeTimeVisita;
 	}
 
-	public String getBolaCampo() {
-		return bolaCampo;
-	}
-
-	public void setBolaCampo(String bolaCampo) {
-		this.bolaCampo = bolaCampo;
-	}
-
 	public int getTempoJogo() {
 		return tempoJogo;
 	}
@@ -138,4 +131,21 @@ public class DadosJogoSrvMesa11 implements Serializable {
 		}
 		return super.hashCode();
 	}
+
+	public String getBolaCampoCasa() {
+		return bolaCampoCasa;
+	}
+
+	public void setBolaCampoCasa(String bolaCampoCasa) {
+		this.bolaCampoCasa = bolaCampoCasa;
+	}
+
+	public String getBolaCampoVisita() {
+		return bolaCampoVisita;
+	}
+
+	public void setBolaCampoVisita(String bolaCampoVisita) {
+		this.bolaCampoVisita = bolaCampoVisita;
+	}
+
 }

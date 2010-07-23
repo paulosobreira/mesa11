@@ -64,7 +64,8 @@ public class ControleChatCliente {
 		});
 		threadAtualizadora.setPriority(Thread.MIN_PRIORITY);
 		chatWindow = new ChatWindow(this);
-		controleJogosCliente = new ControleJogosCliente(chatWindow, this);
+		controleJogosCliente = new ControleJogosCliente(chatWindow, this,
+				mesa11Applet);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);

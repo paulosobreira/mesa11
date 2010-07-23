@@ -49,21 +49,21 @@ public class ChatWindow {
 
 		public String getText() {
 
-			return Lang.msg("EnviarTexto");
+			return Lang.msg("enviarTexto");
 		}
 	};
 	private JButton entrarJogo = new JButton("Entrar Jogo") {
 
 		public String getText() {
 
-			return Lang.msg("EntrarJogo");
+			return Lang.msg("entrarJogo");
 		}
 	};
 	private JButton criarJogo = new JButton("Criar Jogo") {
 
 		public String getText() {
 
-			return Lang.msg("CriarJogo");
+			return Lang.msg("criarJogo");
 		}
 	};
 	private JButton criarTime = new JButton("criarTime") {
@@ -86,14 +86,14 @@ public class ChatWindow {
 
 		public String getText() {
 
-			return Lang.msg("VerDetalhes");
+			return Lang.msg("verDetalhes");
 		}
 	};
 	private JButton classificacao = new JButton("Classificação") {
 
 		public String getText() {
 
-			return Lang.msg("Classificacao");
+			return Lang.msg("classificacao");
 		}
 	};
 
@@ -101,7 +101,7 @@ public class ChatWindow {
 
 		public String getText() {
 
-			return Lang.msg("Conta");
+			return Lang.msg("conta");
 		}
 	};
 
@@ -111,7 +111,7 @@ public class ChatWindow {
 
 		public String getText() {
 
-			return Lang.msg("Sobre");
+			return Lang.msg("sobre");
 		}
 	};
 	private JLabel infoLabel1 = new JLabel();
@@ -311,7 +311,7 @@ public class ChatWindow {
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			public String getTitle() {
-				return Lang.msg("TextoEnviar");
+				return Lang.msg("textoEnviar");
 			}
 		});
 		panelTextoEnviar.setLayout(new BorderLayout());

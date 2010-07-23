@@ -36,6 +36,7 @@ public class ControleJogosCliente {
 			.msg("semTimes") });
 	private DadosMesa11 dadosMesa11;
 	private MonitorJogo monitorJogo;
+	private Mesa11Applet mesa11Applet;
 
 	public DadosMesa11 getDadosMesa11() {
 		return dadosMesa11;
@@ -46,14 +47,19 @@ public class ControleJogosCliente {
 	}
 
 	public ControleJogosCliente(ChatWindow chatWindow,
-			ControleChatCliente controleChatCliente) {
+			ControleChatCliente controleChatCliente, Mesa11Applet mesa11Applet) {
 		super();
 		this.chatWindow = chatWindow;
 		this.controleChatCliente = controleChatCliente;
+		this.mesa11Applet = mesa11Applet;
 	}
 
 	private Object enviarObjeto(Mesa11TO mesa11to) {
-		return controleChatCliente.enviarObjeto(mesa11to);
+		if (mesa11Applet == null) {
+			Logger.logar("enviarObjeto mesa11Applet null");
+			return null;
+		}
+		return mesa11Applet.enviarObjeto(mesa11to);
 	}
 
 	public void criarJogo() {
@@ -120,7 +126,7 @@ public class ControleJogosCliente {
 		uniformesPanel.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
-				return Lang.msg("CliqueSegundoUniforme");
+				return Lang.msg("cliqueSegundoUniforme");
 			}
 		});
 		uniformesPanel.add(uniforme);
@@ -192,30 +198,29 @@ public class ControleJogosCliente {
 				iniciarJogoPanel, Lang.msg("criarJogo"),
 				JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
-			DadosJogoSrvMesa11 jogoSrvMesa11 = new DadosJogoSrvMesa11();
+			DadosJogoSrvMesa11 dadosJogoSrvMesa11 = new DadosJogoSrvMesa11();
 			String jogador = controleChatCliente.getSessaoCliente()
 					.getNomeJogador();
-			jogoSrvMesa11.setNomeCriador(jogador);
+			dadosJogoSrvMesa11.setNomeCriador(jogador);
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-			jogoSrvMesa11.setTimeCasa(nomeTime);
-			jogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
-			jogoSrvMesa11.setTempoJogo((Integer) tempoJogoCombo
+			dadosJogoSrvMesa11.setTimeCasa(nomeTime);
+			dadosJogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
+			dadosJogoSrvMesa11.setTempoJogo((Integer) tempoJogoCombo
 					.getSelectedItem());
-			jogoSrvMesa11.setTempoJogoJogada((Integer) tempoJogadaCombo
+			dadosJogoSrvMesa11.setTempoJogoJogada((Integer) tempoJogadaCombo
 					.getSelectedItem());
-			jogoSrvMesa11.setBolaCampo(Lang.key((String) campoBolaCombo
-					.getSelectedItem()));
-			jogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
+			dadosJogoSrvMesa11.setBolaCampoVisita(Lang
+					.key((String) campoBolaCombo.getSelectedItem()));
+			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
 			mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO);
-			mesa11to.setData(jogoSrvMesa11);
+			mesa11to.setData(dadosJogoSrvMesa11);
 			ret = enviarObjeto(mesa11to);
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
-				jogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(chatWindow, controleChatCliente,
-						this, jogoSrvMesa11);
-
+						this, dadosJogoSrvMesa11, mesa11Applet);
 				monitorJogo.start();
 			}
 		}
@@ -372,7 +377,7 @@ public class ControleJogosCliente {
 		});
 		System.out.println("ln 373");
 		JComboBox campoBolaCombo = new JComboBox();
-		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampo())) {
+		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
 			campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.CAMPO_CIMA));
 			campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.CAMPO_BAIXO));
 		} else {
@@ -408,13 +413,21 @@ public class ControleJogosCliente {
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
 			dadosJogoSrvMesa11.setTimeVisita(nomeTime);
 			dadosJogoSrvMesa11.setSegundoUniformeTimeVisita(segundoUniforme);
-			dadosJogoSrvMesa11.setBolaCampo(Lang.key((String) campoBolaCombo
-					.getSelectedItem()));
+			dadosJogoSrvMesa11.setBolaCampoVisita(Lang
+					.key((String) campoBolaCombo.getSelectedItem()));
 			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
 			mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.ENTRAR_JOGO);
 			mesa11to.setData(dadosJogoSrvMesa11);
-			enviarObjeto(mesa11to);
+			ret = enviarObjeto(mesa11to);
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				DadosJogoSrvMesa11 dadosJogoSrvMesa11Jogo = (DadosJogoSrvMesa11) mesa11to
+						.getData();
+				monitorJogo = new MonitorJogo(chatWindow, controleChatCliente,
+						this, dadosJogoSrvMesa11Jogo, mesa11Applet);
+				monitorJogo.start();
+			}
 		}
 
 	}
@@ -430,5 +443,15 @@ public class ControleJogosCliente {
 			return true;
 		}
 		return false;
+	}
+
+	public boolean timesSelecionados() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void iniciaJogo(ControleJogo controleJogo) {
+		// TODO Auto-generated method stub
+
 	}
 }

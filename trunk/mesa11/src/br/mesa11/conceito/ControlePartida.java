@@ -45,6 +45,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
+import br.tos.DadosJogoSrvMesa11;
 
 public class ControlePartida {
 
@@ -69,6 +70,7 @@ public class ControlePartida {
 	private boolean bateuCentroBaixo;
 	private boolean segundoUniformeCima;
 	private boolean segundoUniformeBaixo;
+	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -143,7 +145,7 @@ public class ControlePartida {
 		uniformesPanel.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
-				return Lang.msg("CliqueSegundoUniforme");
+				return Lang.msg("cliqueSegundoUniforme");
 			}
 		});
 		uniformesPanel.add(uniformeCima);
@@ -635,6 +637,32 @@ public class ControlePartida {
 
 	public Object obterNumJogadas(Time time) {
 		return mapaJogadas.get(time);
+	}
+
+	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
+			Time timeCasa, Time timeVisita) {
+		controleFormacao = new ControlePosicionamento(controleJogo);
+		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
+			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
+					.getBolaCampoVisita())) {
+				controleFormacao.posicionaTimeCima(timeVisita, false);
+				controleFormacao.posicionaTimeBaixo(timeCasa, true);
+			} else {
+				controleFormacao.posicionaTimeBaixo(timeVisita, false);
+				controleFormacao.posicionaTimeCima(timeCasa, true);
+			}
+		}
+		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
+				.getBolaCampoVisita())) {
+			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
+					.getBolaCampoCasa())) {
+				controleFormacao.posicionaTimeCima(timeCasa, false);
+				controleFormacao.posicionaTimeBaixo(timeVisita, true);
+			} else {
+				controleFormacao.posicionaTimeBaixo(timeCasa, false);
+				controleFormacao.posicionaTimeCima(timeVisita, true);
+			}
+		}
 	}
 
 }
