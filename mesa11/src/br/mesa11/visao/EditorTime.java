@@ -323,7 +323,7 @@ public class EditorTime extends JPanel {
 			 */
 			@Override
 			public String getTitle() {
-				return Lang.msg("clickNoTexto");
+				return Lang.msg("edicaoUniformes");
 			}
 		});
 		cores.setLayout(new GridLayout(2, 1));

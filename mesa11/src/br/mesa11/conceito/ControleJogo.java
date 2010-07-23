@@ -52,6 +52,7 @@ import br.nnpe.PopupListener;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
+import br.tos.DadosJogoSrvMesa11;
 import br.tos.Mesa11TO;
 
 public class ControleJogo {
@@ -80,9 +81,87 @@ public class ControleJogo {
 	private AtualizadorVisual atualizadorTela;
 	private WindowListener WindowListener;
 	private Mesa11Applet mesa11Applet;
+	private boolean jogoCliente;
+	private boolean jogoServidor;
 
 	public ControleJogo(Mesa11Applet mesa11Applet) {
 		this.mesa11Applet = mesa11Applet;
+		this.frame = new JFrame();
+		mesaPanel = new MesaPanel(this);
+		criarPopupMenu();
+		scrollPane = new JScrollPane(mesaPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		adicinaListentesEventosMouse();
+		adicinaListentesEventosTeclado();
+		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frame.addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void windowClosed(WindowEvent e) {
+				limparJogo();
+
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		bola = new Bola(0);
+		botoesImagens.put(bola.getId(), CarregadorRecursos
+				.carregaImg("bola.png"));
+		botoes.put(bola.getId(), bola);
+		frame.setSize(800, 600);
+		frame.setVisible(true);
+
+	}
+
+	public boolean isJogoCliente() {
+		return jogoCliente;
+	}
+
+	public void setJogoCliente(boolean jogoCliente) {
+		this.jogoCliente = jogoCliente;
+	}
+
+	public boolean isJogoServidor() {
+		return jogoServidor;
+	}
+
+	public void setJogoServidor(boolean jogoServidor) {
+		this.jogoServidor = jogoServidor;
 	}
 
 	public ControleJogo(JFrame frame) {
@@ -207,6 +286,13 @@ public class ControleJogo {
 	public void iniciaJogoLivre() {
 		controlePartida = new ControlePartida(this);
 		controlePartida.iniciaJogoLivre();
+	}
+
+	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
+			Time timeCasa, Time timeVisita) {
+		controlePartida = new ControlePartida(this);
+		controlePartida.iniciaJogoCliente(dadosJogoSrvMesa11, timeCasa,
+				timeVisita);
 	}
 
 	protected void centralizaBola() {
@@ -1494,7 +1580,7 @@ public class ControleJogo {
 	}
 
 	public void limparJogo() {
-		System.out.println("matarTodasThreads");
+		Logger.logar("matarTodasThreads");
 		WindowListener[] windowListeners = frame.getWindowListeners();
 		for (int i = 0; i < windowListeners.length; i++) {
 			frame.removeWindowListener(windowListeners[i]);
@@ -1589,7 +1675,5 @@ public class ControleJogo {
 	public boolean isJogoOnline() {
 		return mesa11Applet != null;
 	}
-
-
 
 }
