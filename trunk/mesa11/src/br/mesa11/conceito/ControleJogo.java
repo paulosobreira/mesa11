@@ -138,10 +138,6 @@ public class ControleJogo {
 
 			}
 		});
-		bola = new Bola(0);
-		botoesImagens.put(bola.getId(), CarregadorRecursos
-				.carregaImg("bola.png"));
-		botoes.put(bola.getId(), bola);
 	}
 
 	public boolean isJogoCliente() {
@@ -286,9 +282,15 @@ public class ControleJogo {
 
 	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
+		bola = new Bola(0);
+		botoesImagens.put(bola.getId(), CarregadorRecursos
+				.carregaImg("bola.png"));
+		botoes.put(bola.getId(), bola);
 		controlePartida = new ControlePartida(this);
 		controlePartida.iniciaJogoCliente(dadosJogoSrvMesa11, timeCasa,
 				timeVisita);
+		bolaCentro();
+
 	}
 
 	protected void centralizaBola() {
@@ -1598,6 +1600,7 @@ public class ControleJogo {
 		atualizadorTela.start();
 		frame.setSize(800, 600);
 		frame.setVisible(true);
+
 	}
 
 	public Time obterTimeMandante() {

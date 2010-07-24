@@ -641,6 +641,7 @@ public class ControlePartida {
 
 	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
+		this.mesaPanel = controleJogo.getMesaPanel();
 		Map botoes = controleJogo.getBotoes();
 		Map botoesImagens = controleJogo.getBotoesImagens();
 		controleFormacao = new ControlePosicionamento(controleJogo);
@@ -678,9 +679,12 @@ public class ControlePartida {
 		mapaJogadas.put(timeCima, new Integer(0));
 		mapaJogadas.put(timeBaixo, new Integer(0));
 		List botoesTimeCima = timeCima.getBotoes();
+		System.out.println("timeCima.getBotoes() " + timeCima.getBotoes());
+
 		for (Iterator iterator = botoesTimeCima.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);
+			System.out.println("botoes.put(botao.getId(), botao);");
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
 						.desenhaUniformeGoleiro(timeCima, timeCima
@@ -692,6 +696,7 @@ public class ControlePartida {
 			}
 		}
 		List botoesTimeBaixo = timeBaixo.getBotoes();
+		System.out.println("timeBaixo.getBotoes() " + timeBaixo.getBotoes());
 		for (Iterator iterator = botoesTimeBaixo.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);

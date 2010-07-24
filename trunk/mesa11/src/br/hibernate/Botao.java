@@ -172,6 +172,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Point getPosition() {
+		if (position == null) {
+			return new Point(0, 0);
+		}
 		return position;
 	}
 
