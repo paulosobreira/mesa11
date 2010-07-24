@@ -209,7 +209,7 @@ public class ControleJogosCliente {
 					.getSelectedItem());
 			dadosJogoSrvMesa11.setTempoJogoJogada((Integer) tempoJogadaCombo
 					.getSelectedItem());
-			dadosJogoSrvMesa11.setBolaCampoVisita(Lang
+			dadosJogoSrvMesa11.setBolaCampoCasa(Lang
 					.key((String) campoBolaCombo.getSelectedItem()));
 			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
 			mesa11to = new Mesa11TO();
@@ -219,6 +219,7 @@ public class ControleJogosCliente {
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+				System.out.println("monitorJogo = new MonitorJogo");
 				monitorJogo = new MonitorJogo(chatWindow, controleChatCliente,
 						this, dadosJogoSrvMesa11, mesa11Applet);
 				monitorJogo.start();

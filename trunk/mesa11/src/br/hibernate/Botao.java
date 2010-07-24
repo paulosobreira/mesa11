@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 @Entity
 public class Botao extends Mesa11Dados {
@@ -38,6 +39,9 @@ public class Botao extends Mesa11Dados {
 	private boolean goleiro;
 
 	public Integer getNumero() {
+		if (numero == null) {
+			return new Integer(0);
+		}
 		return numero;
 	}
 
@@ -98,6 +102,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public String getNome() {
+		if (Util.isNullOrEmpty(nome)) {
+			return "";
+		}
 		return nome;
 	}
 

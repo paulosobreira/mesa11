@@ -79,7 +79,6 @@ public class ControleJogo {
 	private Evento eventoAtual;
 	private String ultimaMarcacao;
 	private AtualizadorVisual atualizadorTela;
-	private WindowListener WindowListener;
 	private Mesa11Applet mesa11Applet;
 	private boolean jogoCliente;
 	private boolean jogoServidor;
@@ -143,9 +142,6 @@ public class ControleJogo {
 		botoesImagens.put(bola.getId(), CarregadorRecursos
 				.carregaImg("bola.png"));
 		botoes.put(bola.getId(), bola);
-		frame.setSize(800, 600);
-		frame.setVisible(true);
-
 	}
 
 	public boolean isJogoCliente() {
@@ -1598,28 +1594,44 @@ public class ControleJogo {
 
 	public void inicializaVideo() {
 		pararVideo();
-		System.out.println("inicializaVideo");
 		atualizadorTela = new AtualizadorVisual(this);
 		atualizadorTela.start();
+		frame.setSize(800, 600);
+		frame.setVisible(true);
 	}
 
 	public Time obterTimeMandante() {
+		if (controlePartida == null) {
+			return null;
+		}
 		return controlePartida.getTimeCima();
 	}
 
 	public Time obterTimeVisita() {
+		if (controlePartida == null) {
+			return null;
+		}
 		return controlePartida.getTimeBaixo();
 	}
 
 	public String verGols(Time time) {
+		if (controlePartida == null) {
+			return null;
+		}
 		return controlePartida.verGols(time);
 	}
 
 	public Object obterNumJogadas(Time time) {
+		if (controlePartida == null) {
+			return null;
+		}
 		return controlePartida.obterNumJogadas(time);
 	}
 
 	public boolean incrementaJogada() {
+		if (controlePartida == null) {
+			return false;
+		}
 		return controlePartida.incrementaJogada();
 	}
 

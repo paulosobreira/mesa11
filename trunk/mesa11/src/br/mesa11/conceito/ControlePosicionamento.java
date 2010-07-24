@@ -45,26 +45,21 @@ public class ControlePosicionamento {
 				.inte(distVCima * 1.5)));
 
 		Botao botao3 = (Botao) btns.get(2);
-		;
 		botao3.setCentroTodos(new Point(xpenal - (distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao4 = (Botao) btns.get(3);
-		;
 		botao4.setCentroTodos(new Point(xpenal + (2 * distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao5 = (Botao) btns.get(4);
-		;
 		botao5.setCentroTodos(new Point(xpenal + (distHCima), Util
 				.inte(distVCima * 1.5)));
 
 		Botao botao6 = (Botao) btns.get(5);
-		;
 		botao6.setCentroTodos(new Point(xpenal, Util.inte(distVCima * 1.5)));
 
 		Botao botao7 = (Botao) btns.get(6);
-		;
 		botao7.setCentroTodos(new Point(xpenal - (2 * distHCima), Util
 				.inte(distVCima * 2)));
 

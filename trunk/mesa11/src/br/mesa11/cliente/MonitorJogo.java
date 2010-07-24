@@ -43,17 +43,14 @@ public class MonitorJogo extends Thread {
 			if (timesSelecionados() && controleJogo == null) {
 				iniciaJogo();
 			}
-			System.out.println("Esperando jogo comecar");
+			// System.out.println("Esperando jogo comecar controleJogo "
+			// + controleJogo);
 
 		}
 	}
 
 	private void iniciaJogo() {
-		controleJogo = new ControleJogo(mesa11Applet);
-		controleJogo.inicializaVideo();
-		controleJogo.centroCampo();
-		controleJogo.setZoom(0.3);
-		controleJogo.setJogoCliente(true);
+
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
@@ -61,13 +58,21 @@ public class MonitorJogo extends Thread {
 		mesa11to = (Mesa11TO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
 		mesa11to = new Mesa11TO();
-		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
+		mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
 		mesa11to = (Mesa11TO) ret;
 		Time timeVisita = (Time) mesa11to.getData();
+		System.out.println("iniciaJogo()");
+		System.out.println("timeCasa " + timeCasa);
+		System.out.println("timeVisita " + timeVisita);
+		controleJogo = new ControleJogo(mesa11Applet);
 		controleJogo
 				.iniciaJogoCliente(dadosJogoSrvMesa11, timeCasa, timeVisita);
+		controleJogo.inicializaVideo();
+		controleJogo.centroCampo();
+		controleJogo.setZoom(0.3);
+		controleJogo.setJogoCliente(true);
 	}
 
 	private boolean timesSelecionados() {
