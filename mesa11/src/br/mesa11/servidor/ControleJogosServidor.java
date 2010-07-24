@@ -41,13 +41,16 @@ public class ControleJogosServidor {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
 				.get(dadosJogoSrvMesa11.getNomeJogo());
 		if (jogoSrvMesa11 != null) {
+			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			dadosMesa11.getJogosCriados().remove(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			dadosMesa11.getJogosAndamento().add(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
-			return new MsgSrv("Entrou Jogo");
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(dadosJogoSrvMesa11);
+			return mesa11to;
 		}
-		return new MsgSrv("Erro ao Entrou Jogo");
+		return new MsgSrv(Lang.msg("jogoInexistente"));
 	}
 
 	public Object obterDadosJogo(String nomejogo) {

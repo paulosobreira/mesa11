@@ -641,15 +641,21 @@ public class ControlePartida {
 
 	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
+		Map botoes = controleJogo.getBotoes();
+		Map botoesImagens = controleJogo.getBotoesImagens();
 		controleFormacao = new ControlePosicionamento(controleJogo);
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
 					.getBolaCampoVisita())) {
 				controleFormacao.posicionaTimeCima(timeVisita, false);
 				controleFormacao.posicionaTimeBaixo(timeCasa, true);
+				timeCima = timeVisita;
+				timeBaixo = timeCasa;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeVisita, false);
 				controleFormacao.posicionaTimeCima(timeCasa, true);
+				timeCima = timeCasa;
+				timeBaixo = timeVisita;
 			}
 		}
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
@@ -658,10 +664,48 @@ public class ControlePartida {
 					.getBolaCampoCasa())) {
 				controleFormacao.posicionaTimeCima(timeCasa, false);
 				controleFormacao.posicionaTimeBaixo(timeVisita, true);
+				timeCima = timeCasa;
+				timeBaixo = timeVisita;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeCasa, false);
 				controleFormacao.posicionaTimeCima(timeVisita, true);
+				timeCima = timeVisita;
+				timeBaixo = timeCasa;
 			}
+		}
+		mapaGols.put(timeCima, new Integer(0));
+		mapaGols.put(timeBaixo, new Integer(0));
+		mapaJogadas.put(timeCima, new Integer(0));
+		mapaJogadas.put(timeBaixo, new Integer(0));
+		List botoesTimeCima = timeCima.getBotoes();
+		for (Iterator iterator = botoesTimeCima.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			botoes.put(botao.getId(), botao);
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botoesImagens.put(botao.getId(), BotaoUtils
+						.desenhaUniformeGoleiro(timeCima, timeCima
+								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+				botao.setCentro(mesaPanel.golCima());
+			} else {
+				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
+						timeCima, timeCima.isSegundoUniforme() ? 2 : 1, botao));
+			}
+		}
+		List botoesTimeBaixo = timeBaixo.getBotoes();
+		for (Iterator iterator = botoesTimeBaixo.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			botoes.put(botao.getId(), botao);
+			if (botao instanceof Goleiro || botao.isGoleiro()) {
+				botoesImagens.put(botao.getId(), BotaoUtils
+						.desenhaUniformeGoleiro(timeBaixo, timeBaixo
+								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+				botao.setCentro(mesaPanel.golBaixo());
+			} else {
+				botoesImagens.put(botao.getId(), BotaoUtils
+						.desenhaUniforme(timeBaixo, timeBaixo
+								.isSegundoUniforme() ? 2 : 1, botao));
+			}
+
 		}
 	}
 
