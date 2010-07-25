@@ -1754,4 +1754,119 @@ public class ControleJogo {
 	public boolean isJogoOnlineSrvidor() {
 		return jogoServidor != null;
 	}
+
+	public void efetuarJogada() {
+		Evento evento = new Evento();
+		Point p1 = getPontoClicado();
+		Point p2 = getPontoPasando();
+		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
+		Animacao animacao = null;
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoes.get(id);
+			if (botao instanceof Goleiro) {
+				Goleiro goleiro = (Goleiro) botao;
+				if (goleiro.getShape(1).contains(p1)) {
+					if (veririficaVez(goleiro)) {
+						double retaGoleiro = GeoUtil.distaciaEntrePontos(
+								goleiro.getCentro(), p1);
+						if (retaGoleiro > (goleiro.getRaio() / 2)) {
+							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
+									.getCentro(), p2, 0));
+							evento.setPonto(p2);
+							evento
+									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+						} else {
+							goleiro.setCentro(p2);
+							evento.setPonto(p2);
+							evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+						}
+						setPontoClicado(null);
+						return;
+					}
+				}
+			}
+			if (botao.getCentro() == null) {
+				continue;
+			}
+			double raioPonto = GeoUtil.distaciaEntrePontos(p1, botao
+					.getCentro());
+			if (raioPonto <= botao.getRaio()) {
+				if (!veririficaVez(botao)) {
+					setPontoClicado(null);
+					return;
+				}
+				if (botao instanceof Bola) {
+					boolean areaGoleiroCima = false;
+					Goleiro goleiroCima = obterGoleiroCima();
+					double distaciaEntrePontosCima = GeoUtil
+							.distaciaEntrePontos(botao.getCentro(), goleiroCima
+									.getCentro());
+					if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
+						areaGoleiroCima = true;
+						evento.setUltimoContato(goleiroCima);
+						evento.setNaBola(true);
+					}
+					boolean areaGoleiroBaixo = false;
+					Goleiro goleiroBaixo = obterGoleiroBaixo();
+					double distaciaEntrePontosBaixo = GeoUtil
+							.distaciaEntrePontos(botao.getCentro(),
+									goleiroBaixo.getCentro());
+					if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
+						areaGoleiroBaixo = true;
+						evento.setUltimoContato(goleiroBaixo);
+						evento.setNaBola(true);
+					}
+					if (!areaGoleiroBaixo && !areaGoleiroCima) {
+						continue;
+					}
+				}
+				setLateral(null);
+				if (botao instanceof Goleiro) {
+					return;
+				}
+				double angulo = GeoUtil.calculaAngulo(botao.getCentro(), p2,
+						270);
+				if (isChutaBola()) {
+					angulo = GeoUtil.calculaAngulo(botao.getCentro(),
+							getBola().getCentro(), 90);
+				}
+
+				Point destino = GeoUtil.calculaPonto(angulo, Util
+						.inte(distaciaEntrePontos * 10), botao.getCentro());
+				botao.setDestino(destino);
+				evento.setPonto(p1);
+				evento.setBotaoEvento(botao);
+				animacao = new Animacao();
+				animacao.setObjetoAnimacao(botao);
+				animacao.setPontosAnimacao(botao.getTrajetoria());
+				setNumRecursoes(0);
+				setEventoAtual(evento);
+				propagaColisao(animacao, botao);
+				verificaBolaParouEmCimaBotao();
+				break;
+			}
+
+		}
+		if (animacao == null) {
+			return;
+		}
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoes.get(id);
+			if (botao.getCentroInicio() != null)
+				botao.setCentro(botao.getCentroInicio());
+		}
+		getBotoesComThread().clear();
+		Animador animador = new Animador(animacao, this);
+		Thread thread = new Thread(animador);
+		getBotoesComThread().put(animacao.getObjetoAnimacao(),
+				thread);
+		thread.start();
+		setPontoClicado(null);
+		processaJogada();
+		Thread threadEventos = new Thread(new ControleEvento(this));
+		threadEventos.start();
+
+	}
 }

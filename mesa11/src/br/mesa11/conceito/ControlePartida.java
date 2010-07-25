@@ -131,15 +131,15 @@ public class ControlePartida {
 		final JLabel uniformeCima = new JLabel() {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO,
-						ConstantesMesa11.DIAMENTRO_BOTAO);
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO + 10,
+						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
 		final JLabel uniformeBaixo = new JLabel() {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO,
-						ConstantesMesa11.DIAMENTRO_BOTAO);
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO + 10,
+						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
 		JPanel uniformesPanel = new JPanel(new GridLayout(1, 2));
@@ -303,7 +303,6 @@ public class ControlePartida {
 						.desenhaUniformeGoleiro(timeCima,
 								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
-				System.out.println("Goleiro Cima");
 			} else {
 				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
 						timeCima, segundoUniformeCima ? 2 : 1, botao));
@@ -331,7 +330,6 @@ public class ControlePartida {
 						.desenhaUniformeGoleiro(timeBaixo,
 								segundoUniformeBaixo ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
-				System.out.println("Goleiro Baixo");
 			} else {
 				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
 						timeBaixo, segundoUniformeBaixo ? 2 : 1, botao));
