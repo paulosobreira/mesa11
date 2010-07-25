@@ -36,6 +36,12 @@ public class MesaMouseListener implements MouseListener {
 			controleJogo.setPontoClicado(null);
 			return;
 		}
+		if (controleJogo.isJogoOnlineCliente()
+				&& !controleJogo.verificaVezOnline()) {
+			controleJogo.setPontoClicado(null);
+			return;
+		}
+
 		Evento evento = new Evento();
 		Point p1 = controleJogo.getPontoClicado();
 		Point p2 = controleJogo.getPontoPasando();

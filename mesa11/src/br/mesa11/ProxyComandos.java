@@ -22,14 +22,19 @@ public class ProxyComandos {
 		dadosMesa11 = new DadosMesa11();
 		controleLogin = new ControleLogin(dadosMesa11);
 		controleChatServidor = new ControleChatServidor(dadosMesa11);
-		controleJogosServidor = new ControleJogosServidor(dadosMesa11);
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
+		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
+				controlePersistencia);
 	}
 
 	public Object processarObjeto(Object object) {
 		Mesa11TO mesa11TO = (Mesa11TO) object;
 		if (ConstantesMesa11.ATUALIZAR_VISAO.equals(mesa11TO.getComando())) {
 			return atualizarDadosVisao();
+		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterDadosJogo((String) mesa11TO
+					.getData());
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
 			return controleLogin.logar((ClienteMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.NOVO_USUARIO.equals(mesa11TO.getComando())) {
@@ -51,7 +56,11 @@ public class ProxyComandos {
 			return controlePersistencia.obterTimesJogador((String) mesa11TO
 					.getData());
 		} else if (ConstantesMesa11.OBTER_TIME.equals(mesa11TO.getComando())) {
-			return controlePersistencia.obterTime((String) mesa11TO.getData());
+			Time time = controlePersistencia.obterTime((String) mesa11TO
+					.getData());
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(time);
+			return mesa11to;
 		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
 				.getComando())) {
 			return controlePersistencia.obterTodosTimes();
@@ -61,10 +70,6 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
-				.getComando())) {
-			return controleJogosServidor.obterDadosJogo((String) mesa11TO
-					.getData());
 		}
 
 		return null;

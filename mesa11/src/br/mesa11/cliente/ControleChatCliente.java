@@ -101,7 +101,6 @@ public class ControleChatCliente {
 		DadosMesa11 dadosMesa11 = (DadosMesa11) mesa11to.getData();
 		chatWindow.atualizar(dadosMesa11);
 		controleJogosCliente.setDadosMesa11(dadosMesa11);
-
 	}
 
 	public Object enviarObjeto(Mesa11TO mesa11to) {
@@ -270,7 +269,7 @@ public class ControleChatCliente {
 		}
 
 		EditorTime editorTime = new EditorTime(time, new ControleJogo(
-				mesa11Applet));
+				mesa11Applet, null, null));
 		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), editorTime);
 	}
 
@@ -324,7 +323,7 @@ public class ControleChatCliente {
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
 				EditorTime editorTime = new EditorTime((Time) mesa11to
-						.getData(), new ControleJogo(mesa11Applet));
+						.getData(), new ControleJogo(mesa11Applet, null, null));
 				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
 						editorTime);
 			}

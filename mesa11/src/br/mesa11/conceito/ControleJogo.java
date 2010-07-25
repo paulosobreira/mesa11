@@ -43,6 +43,7 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.BotaoTableModel;
 import br.mesa11.visao.EditorTime;
 import br.mesa11.visao.MesaPanel;
@@ -77,14 +78,17 @@ public class ControleJogo {
 	private int numRecursoes;
 	private ControlePartida controlePartida;
 	private Evento eventoAtual;
-	private String ultimaMarcacao;
 	private AtualizadorVisual atualizadorTela;
 	private Mesa11Applet mesa11Applet;
-	private boolean jogoCliente;
-	private boolean jogoServidor;
+	private JogoServidor jogoServidor;
+	private String timeClienteOnline;
+	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 
-	public ControleJogo(Mesa11Applet mesa11Applet) {
+	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
+			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
 		this.mesa11Applet = mesa11Applet;
+		this.timeClienteOnline = timeClienteOnline;
+		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
 		this.frame = new JFrame();
 		mesaPanel = new MesaPanel(this);
 		criarPopupMenu();
@@ -138,22 +142,6 @@ public class ControleJogo {
 
 			}
 		});
-	}
-
-	public boolean isJogoCliente() {
-		return jogoCliente;
-	}
-
-	public void setJogoCliente(boolean jogoCliente) {
-		this.jogoCliente = jogoCliente;
-	}
-
-	public boolean isJogoServidor() {
-		return jogoServidor;
-	}
-
-	public void setJogoServidor(boolean jogoServidor) {
-		this.jogoServidor = jogoServidor;
 	}
 
 	public ControleJogo(JFrame frame) {
@@ -214,6 +202,18 @@ public class ControleJogo {
 		botoesImagens.put(bola.getId(), CarregadorRecursos
 				.carregaImg("bola.png"));
 		botoes.put(bola.getId(), bola);
+		bolaCentro();
+	}
+
+	public ControleJogo(JogoServidor jogoServidor) {
+		this.frame = frame;
+		mesaPanel = new MesaPanel(this);
+		scrollPane = new JScrollPane(mesaPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		bola = new Bola(0);
+		botoes.put(bola.getId(), bola);
+		this.jogoServidor = jogoServidor;
 	}
 
 	public Map getBotoesImagens() {
@@ -280,14 +280,16 @@ public class ControleJogo {
 		controlePartida.iniciaJogoLivre();
 	}
 
-	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
+	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
 		bola = new Bola(0);
-		botoesImagens.put(bola.getId(), CarregadorRecursos
-				.carregaImg("bola.png"));
+		if (isJogoOnlineCliente()) {
+			botoesImagens.put(bola.getId(), CarregadorRecursos
+					.carregaImg("bola.png"));
+		}
 		botoes.put(bola.getId(), bola);
 		controlePartida = new ControlePartida(this);
-		controlePartida.iniciaJogoCliente(dadosJogoSrvMesa11, timeCasa,
+		controlePartida.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa,
 				timeVisita);
 		bolaCentro();
 
@@ -331,6 +333,14 @@ public class ControleJogo {
 		rectangle.x = velhoPontoTela.x;
 		rectangle.y = velhoPontoTela.y;
 		return rectangle;
+	}
+
+	public JogoServidor getJogoServidor() {
+		return jogoServidor;
+	}
+
+	public void setJogoServidor(JogoServidor jogoServidor) {
+		this.jogoServidor = jogoServidor;
 	}
 
 	public void centroCampo() {
@@ -1235,6 +1245,9 @@ public class ControleJogo {
 	}
 
 	public String tempoJogoFormatado() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getTempoJogoFormatado();
+		}
 		if (controlePartida == null) {
 			return "";
 		}
@@ -1242,6 +1255,9 @@ public class ControleJogo {
 	}
 
 	public String tempoRestanteJogoFormatado() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getTempoRestanteJogoFormatado();
+		}
 		if (controlePartida == null) {
 			return "";
 		}
@@ -1249,6 +1265,9 @@ public class ControleJogo {
 	}
 
 	public String tempoJogadaRestanteJogoFormatado() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getTempoJogadaRestanteJogoFormatado();
+		}
 		if (controlePartida == null) {
 			return "";
 		}
@@ -1261,6 +1280,10 @@ public class ControleJogo {
 	}
 
 	public boolean veririficaVez(Botao b) {
+		if (dadosJogoSrvMesa11 != null) {
+			return b.getTime().getNome()
+					.equals(dadosJogoSrvMesa11.getTimeVez());
+		}
 		return controlePartida.veririficaVez(b);
 	}
 
@@ -1291,7 +1314,6 @@ public class ControleJogo {
 	}
 
 	public void falta(Point ponto, Botao levouFalta) {
-		ultimaMarcacao = "Falta";
 
 		if (ConstantesMesa11.CAMPO_CIMA.equals(levouFalta.getTime().getCampo())) {
 			if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
@@ -1359,7 +1381,6 @@ public class ControleJogo {
 			}
 		}
 		limparPerimetroCirculo(ultLateral);
-		ultimaMarcacao = "Lateral";
 		zeraJogadaTime(timeLateral);
 		if (ultLateral.x < 3000) {
 			botaoLateral.setCentroTodos(new Point(ultLateral.x
@@ -1373,7 +1394,7 @@ public class ControleJogo {
 
 	public void salvarTime(Time time) {
 		validaTime(time);
-		if (isJogoOnline()) {
+		if (isJogoOnlineCliente()) {
 			salvarTimeOnline(time);
 		} else {
 			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -1618,13 +1639,32 @@ public class ControleJogo {
 	}
 
 	public String verGols(Time time) {
+		if (dadosJogoSrvMesa11 != null) {
+			if (time.getNome().equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
+				return String.valueOf(dadosJogoSrvMesa11.getGolsCasa());
+			}
+			if (time.getNome().equals(dadosJogoSrvMesa11.getBolaCampoVisita())) {
+				return String.valueOf(dadosJogoSrvMesa11.getGolsVisita());
+			}
+		}
 		if (controlePartida == null) {
 			return null;
 		}
 		return controlePartida.verGols(time);
 	}
 
+	public int verGolsInt(Time time) {
+		if (controlePartida == null) {
+			return 0;
+		}
+		return controlePartida.verGolsInt(time);
+	}
+
 	public Object obterNumJogadas(Time time) {
+		if (isJogoOnlineCliente()) {
+			return "TD";
+			// if(time.getNome().equals(dadosJogoSrvMesa11.get))
+		}
 		if (controlePartida == null) {
 			return null;
 		}
@@ -1687,8 +1727,31 @@ public class ControleJogo {
 		}
 	}
 
-	public boolean isJogoOnline() {
+	public boolean isJogoOnlineCliente() {
 		return mesa11Applet != null;
 	}
 
+	private Object enviarObjeto(Mesa11TO mesa11to) {
+		if (mesa11Applet == null) {
+			Logger.logar("enviarObjeto mesa11Applet null");
+			return null;
+		}
+		return mesa11Applet.enviarObjeto(mesa11to);
+	}
+
+	public DadosJogoSrvMesa11 getDadosJogoSrvMesa11() {
+		return dadosJogoSrvMesa11;
+	}
+
+	public void setDadosJogoSrvMesa11(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
+		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
+	}
+
+	public boolean verificaVezOnline() {
+		return timeClienteOnline.equals(dadosJogoSrvMesa11.getTimeVez());
+	}
+
+	public boolean isJogoOnlineSrvidor() {
+		return jogoServidor != null;
+	}
 }

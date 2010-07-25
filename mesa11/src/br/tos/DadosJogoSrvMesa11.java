@@ -18,6 +18,43 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private int tempoJogoJogada;
 	private int golsCasa;
 	private int golsVisita;
+	private String timeVez;
+	private String tempoJogoFormatado;
+	private String tempoRestanteJogoFormatado;
+	private String tempoJogadaRestanteJogoFormatado;
+
+	public String getTempoJogadaRestanteJogoFormatado() {
+		return tempoJogadaRestanteJogoFormatado;
+	}
+
+	public void setTempoJogadaRestanteJogoFormatado(
+			String tempoJogadaRestanteJogoFormatado) {
+		this.tempoJogadaRestanteJogoFormatado = tempoJogadaRestanteJogoFormatado;
+	}
+
+	public String getTempoRestanteJogoFormatado() {
+		return tempoRestanteJogoFormatado;
+	}
+
+	public void setTempoRestanteJogoFormatado(String tempoRestanteJogoFormatado) {
+		this.tempoRestanteJogoFormatado = tempoRestanteJogoFormatado;
+	}
+
+	public String getTempoJogoFormatado() {
+		return tempoJogoFormatado;
+	}
+
+	public void setTempoJogoFormatado(String tempoJogoFormatado) {
+		this.tempoJogoFormatado = tempoJogoFormatado;
+	}
+
+	public String getTimeVez() {
+		return timeVez;
+	}
+
+	public void setTimeVez(String timeVez) {
+		this.timeVez = timeVez;
+	}
 
 	public int getGolsCasa() {
 		return golsCasa;

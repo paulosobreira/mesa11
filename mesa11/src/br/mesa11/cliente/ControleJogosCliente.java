@@ -63,6 +63,11 @@ public class ControleJogosCliente {
 	}
 
 	public void criarJogo() {
+		if (monitorJogo != null && monitorJogo.isAlive()) {
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("jaEstaEmUmJogo"));
+			return;
+		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
 		Object ret = enviarObjeto(mesa11to);
@@ -219,9 +224,11 @@ public class ControleJogosCliente {
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
-				System.out.println("monitorJogo = new MonitorJogo");
-				monitorJogo = new MonitorJogo(chatWindow, controleChatCliente,
-						this, dadosJogoSrvMesa11, mesa11Applet);
+				System.out.println("Criar Jogo nome "
+						+ dadosJogoSrvMesa11.getNomeJogo());
+				monitorJogo = new MonitorJogo(controleChatCliente, this,
+						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
+								.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -260,7 +267,6 @@ public class ControleJogosCliente {
 		Time timeCasa = (Time) mesa11to.getData();
 		uniformeCasa.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(timeCasa,
 				dadosJogoSrvMesa11.isSegundoUniformeTimeCasa() ? 2 : 1)));
-		System.out.println("ln 259");
 		final JLabel uniforme = new JLabel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -292,7 +298,6 @@ public class ControleJogosCliente {
 					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
-		System.out.println("ln 289");
 		jComboBoxTimes.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
@@ -335,7 +340,6 @@ public class ControleJogosCliente {
 		});
 		uniformesPanel.add(uniformeCasa);
 		uniformesPanel.add(uniforme);
-		System.out.println("ln 332");
 		JPanel panelComboTimes = new JPanel(new GridLayout(1, 2));
 		panelComboTimes.setBorder(new TitledBorder("") {
 			@Override
@@ -376,7 +380,6 @@ public class ControleJogosCliente {
 				return "" + dadosJogoSrvMesa11.getTempoJogoJogada();
 			}
 		});
-		System.out.println("ln 373");
 		JComboBox campoBolaCombo = new JComboBox();
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
 			campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.CAMPO_CIMA));
@@ -404,7 +407,6 @@ public class ControleJogosCliente {
 		});
 		JTextField jTextFieldSenhaJogo = new JTextField();
 		opcoesJogoPanel.add(jTextFieldSenhaJogo);
-		System.out.println("ln 400");
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				iniciarJogoPanel, Lang.msg("criarJogo"),
 				JOptionPane.YES_NO_OPTION);
@@ -425,8 +427,10 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				DadosJogoSrvMesa11 dadosJogoSrvMesa11Jogo = (DadosJogoSrvMesa11) mesa11to
 						.getData();
-				monitorJogo = new MonitorJogo(chatWindow, controleChatCliente,
-						this, dadosJogoSrvMesa11Jogo, mesa11Applet);
+				System.out.println("Entar Jogo");
+				monitorJogo = new MonitorJogo(controleChatCliente, this,
+						dadosJogoSrvMesa11Jogo, mesa11Applet,
+						dadosJogoSrvMesa11.getTimeVisita());
 				monitorJogo.start();
 			}
 		}
@@ -435,24 +439,20 @@ public class ControleJogosCliente {
 
 	public boolean verificaJogosNasListas(String nomeJogo) {
 		if (dadosMesa11 == null) {
+			System.out.println("dadosMesa11 null");
 			return false;
 		}
 		if (dadosMesa11.getJogosCriados().contains(nomeJogo)) {
+			System.out.println("verificaJogosNasListas getJogosCriados "
+					+ nomeJogo);
 			return true;
 		}
 		if (dadosMesa11.getJogosAndamento().contains(nomeJogo)) {
+			System.out.println("verificaJogosNasListas getJogosAndamento "
+					+ nomeJogo);
 			return true;
 		}
 		return false;
 	}
 
-	public boolean timesSelecionados() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void iniciaJogo(ControleJogo controleJogo) {
-		// TODO Auto-generated method stub
-
-	}
 }

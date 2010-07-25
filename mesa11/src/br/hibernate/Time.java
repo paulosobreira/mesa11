@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import br.nnpe.Util;
+
 @Entity
 public class Time extends Mesa11Dados {
 
@@ -208,4 +210,20 @@ public class Time extends Mesa11Dados {
 		this.nomeJogador = nomeJogador;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (getId() == null && !Util.isNullOrEmpty(nome)) {
+			Time time = (Time) obj;
+			return nome.equals(time.getNome());
+		}
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode() {
+		if (getId() == null && !Util.isNullOrEmpty(nome)) {
+			return nome.hashCode();
+		}
+		return super.hashCode();
+	}
 }
