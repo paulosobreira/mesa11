@@ -25,7 +25,12 @@ public class MainFrame {
 	private JApplet mesa11Applet;
 
 	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
-		frame = new JFrame("mesa11");
+		frame = new JFrame() {
+			@Override
+			public String getTitle() {
+				return Lang.msg("titulo");
+			}
+		};
 		if (mesa11Applet == null) {
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		} else {
@@ -137,7 +142,7 @@ public class MainFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				if(controleJogo!=null){
+				if (controleJogo != null) {
 					controleJogo.limparJogo();
 				}
 				controleJogo = new ControleJogo(frame);

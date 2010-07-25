@@ -183,14 +183,12 @@ public class ControlePersistencia {
 		return mesa11to;
 	}
 
-	public Object obterTime(String nome) {
+	public Time obterTime(String nome) {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Time time = (Time) session.createCriteria(Time.class).add(
 				Restrictions.eq("nome", nome)).uniqueResult();
 		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
-		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setData(time);
-		return mesa11to;
+		return time;
 	}
 
 	public Object obterTodosTimes() {

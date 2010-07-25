@@ -39,6 +39,7 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -62,15 +63,14 @@ public class ControlePartida {
 	private String campoTimeComBola;
 	private Time timeCima;
 	private Time timeBaixo;
-	private Map mapaGols = new Hashtable();
-	private Map mapaJogadas = new Hashtable();
+	private Map<Time, Integer> mapaGols = new Hashtable<Time, Integer>();
+	private Map<Time, Integer> mapaJogadas = new Hashtable<Time, Integer>();
 	private ControlePosicionamento controleFormacao;
 	private MesaPanel mesaPanel;
 	private boolean bateuCentroCima;
 	private boolean bateuCentroBaixo;
 	private boolean segundoUniformeCima;
 	private boolean segundoUniformeBaixo;
-	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -100,6 +100,7 @@ public class ControlePartida {
 		final JComboBox timesBaixo = new JComboBox();
 
 		JRadioButton bolaCima = new JRadioButton();
+		bolaCima.setSelected(true);
 		JRadioButton bolaBaixo = new JRadioButton();
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(bolaCima);
@@ -493,6 +494,11 @@ public class ControlePartida {
 	}
 
 	public Time timeJogadaVez() {
+		if (controleJogo.isJogoOnlineCliente()) {
+			return timeCima.getNome().equals(
+					controleJogo.getDadosJogoSrvMesa11().getTimeVez()) ? timeCima
+					: timeBaixo;
+		}
 		if (Util.isNullOrEmpty(campoTimeComBola)) {
 			return null;
 		}
@@ -615,6 +621,10 @@ public class ControlePartida {
 		return mapaGols.get(time).toString();
 	}
 
+	public Integer verGolsInt(Time time) {
+		return mapaGols.get(time);
+	}
+
 	public boolean incrementaJogada() {
 		Time time = timeJogadaVez();
 		Integer numJogadas = (Integer) mapaJogadas.get(time);
@@ -631,7 +641,7 @@ public class ControlePartida {
 		Set keySet = mapaJogadas.keySet();
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			Object time = (Object) iterator.next();
-			mapaJogadas.put(time, new Integer(0));
+			mapaJogadas.put((Time) time, new Integer(0));
 		}
 	}
 
@@ -639,12 +649,13 @@ public class ControlePartida {
 		return mapaJogadas.get(time);
 	}
 
-	public void iniciaJogoCliente(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
+	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
 		this.mesaPanel = controleJogo.getMesaPanel();
 		Map botoes = controleJogo.getBotoes();
 		Map botoesImagens = controleJogo.getBotoesImagens();
 		controleFormacao = new ControlePosicionamento(controleJogo);
+		Time timeBola = null;
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
 					.getBolaCampoVisita())) {
@@ -652,11 +663,13 @@ public class ControlePartida {
 				controleFormacao.posicionaTimeBaixo(timeCasa, true);
 				timeCima = timeVisita;
 				timeBaixo = timeCasa;
+				timeBola = timeBaixo;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeVisita, false);
 				controleFormacao.posicionaTimeCima(timeCasa, true);
 				timeCima = timeCasa;
 				timeBaixo = timeVisita;
+				timeBola = timeCima;
 			}
 		}
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
@@ -667,51 +680,65 @@ public class ControlePartida {
 				controleFormacao.posicionaTimeBaixo(timeVisita, true);
 				timeCima = timeCasa;
 				timeBaixo = timeVisita;
+				timeBola = timeBaixo;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeCasa, false);
 				controleFormacao.posicionaTimeCima(timeVisita, true);
 				timeCima = timeVisita;
 				timeBaixo = timeCasa;
+				timeBola = timeCima;
 			}
 		}
+		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
+		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 		mapaGols.put(timeCima, new Integer(0));
 		mapaGols.put(timeBaixo, new Integer(0));
 		mapaJogadas.put(timeCima, new Integer(0));
 		mapaJogadas.put(timeBaixo, new Integer(0));
 		List botoesTimeCima = timeCima.getBotoes();
-		System.out.println("timeCima.getBotoes() " + timeCima.getBotoes());
-
 		for (Iterator iterator = botoesTimeCima.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);
-			System.out.println("botoes.put(botao.getId(), botao);");
-			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, timeCima
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
-				botao.setCentro(mesaPanel.golCima());
-			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeCima, timeCima.isSegundoUniforme() ? 2 : 1, botao));
+			if (controleJogo.isJogoOnlineCliente()) {
+				if (botao instanceof Goleiro || botao.isGoleiro()) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniformeGoleiro(timeCima, timeCima
+									.isSegundoUniforme() ? 2 : 1,
+									(Goleiro) botao));
+					botao.setCentro(mesaPanel.golCima());
+				} else {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniforme(timeCima, timeCima
+									.isSegundoUniforme() ? 2 : 1, botao));
+				}
 			}
 		}
 		List botoesTimeBaixo = timeBaixo.getBotoes();
-		System.out.println("timeBaixo.getBotoes() " + timeBaixo.getBotoes());
 		for (Iterator iterator = botoesTimeBaixo.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);
-			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo, timeBaixo
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
-				botao.setCentro(mesaPanel.golBaixo());
-			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniforme(timeBaixo, timeBaixo
-								.isSegundoUniforme() ? 2 : 1, botao));
+			if (controleJogo.isJogoOnlineCliente()) {
+				if (botao instanceof Goleiro || botao.isGoleiro()) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniformeGoleiro(timeBaixo, timeBaixo
+									.isSegundoUniforme() ? 2 : 1,
+									(Goleiro) botao));
+					botao.setCentro(mesaPanel.golBaixo());
+				} else {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniforme(timeBaixo, timeBaixo
+									.isSegundoUniforme() ? 2 : 1, botao));
+				}
 			}
-
+		}
+		if (controleJogo.isJogoOnlineSrvidor()) {
+			String campoTimeComBola = timeBola.equals(timeCima) ? timeCima
+					.getCampo() : timeBaixo.getCampo();
+			processaTempoJogo(controleJogo.getJogoServidor()
+					.getDadosJogoSrvMesa11().getTempoJogo());
+			iniciaTempoJogada(controleJogo.getJogoServidor()
+					.getDadosJogoSrvMesa11().getTempoJogoJogada(),
+					campoTimeComBola);
 		}
 	}
-
 }

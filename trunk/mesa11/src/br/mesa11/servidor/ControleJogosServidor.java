@@ -3,6 +3,8 @@ package br.mesa11.servidor;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.hibernate.Time;
+import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
@@ -11,12 +13,15 @@ import br.tos.MsgSrv;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
+	private ControlePersistencia controlePersistencia;
 	private DadosMesa11 dadosMesa11;
 	private Map mapaJogos = new HashMap<String, JogoServidor>();
 
-	public ControleJogosServidor(DadosMesa11 dadosMesa11) {
+	public ControleJogosServidor(DadosMesa11 dadosMesa11,
+			ControlePersistencia controlePersistencia) {
 		super();
 		this.dadosMesa11 = dadosMesa11;
+		this.controlePersistencia = controlePersistencia;
 	}
 
 	public DadosMesa11 getDadosMesa11() {
@@ -48,15 +53,50 @@ public class ControleJogosServidor {
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			Mesa11TO mesa11to = new Mesa11TO();
 			mesa11to.setData(dadosJogoSrvMesa11);
+			inciaJogoServidor(jogoSrvMesa11);
 			return mesa11to;
 		}
 		return new MsgSrv(Lang.msg("jogoInexistente"));
+	}
+
+	private void inciaJogoServidor(JogoServidor jogoSrvMesa11) {
+		ControleJogo controleJogo = new ControleJogo(jogoSrvMesa11);
+		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = jogoSrvMesa11
+				.getDadosJogoSrvMesa11();
+		Time timeCasa = controlePersistencia.obterTime(dadosJogoSrvMesa11
+				.getTimeCasa());
+		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
+				.getTimeVisita());
+		jogoSrvMesa11.setTimeCasa(timeCasa);
+		jogoSrvMesa11.setTimeVisita(timeVisita);
+		jogoSrvMesa11.setControleJogo(controleJogo);
+		controleJogo.iniciaJogoOnline(jogoSrvMesa11.getDadosJogoSrvMesa11(),
+				timeCasa, timeVisita);
+
 	}
 
 	public Object obterDadosJogo(String nomejogo) {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
 			return new MsgSrv(Lang.msg("jogoInexistente"));
+		}
+		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = jogoSrvMesa11
+				.getDadosJogoSrvMesa11();
+		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
+		if (controleJogo != null) {
+			dadosJogoSrvMesa11.setTimeVez(controleJogo.timeJogadaVez()
+					.getNome());
+			dadosJogoSrvMesa11.setGolsCasa(controleJogo
+					.verGolsInt(jogoSrvMesa11.getTimeCasa()));
+			dadosJogoSrvMesa11.setGolsVisita(controleJogo
+					.verGolsInt(jogoSrvMesa11.getTimeVisita()));
+			dadosJogoSrvMesa11.setTempoJogoFormatado(controleJogo
+					.tempoJogoFormatado());
+			dadosJogoSrvMesa11.setTempoRestanteJogoFormatado(controleJogo
+					.tempoRestanteJogoFormatado());
+			dadosJogoSrvMesa11.setTempoJogadaRestanteJogoFormatado(controleJogo
+					.tempoJogadaRestanteJogoFormatado());
+
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());

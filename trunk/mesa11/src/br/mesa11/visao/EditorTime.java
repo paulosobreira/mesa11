@@ -290,7 +290,7 @@ public class EditorTime extends JPanel {
 		JPanel panelBotoes = new JPanel(new GridLayout(1, 2));
 		panelBotoes.add(inserirLinha);
 		panelBotoes.add(removerLinha);
-		if (!controleJogo.isJogoOnline()) {
+		if (!controleJogo.isJogoOnlineCliente()) {
 			panelTabela.add(panelBotoes, BorderLayout.SOUTH);
 		}
 		return panelTabela;
