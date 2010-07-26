@@ -7,19 +7,17 @@ import br.hibernate.Botao;
 
 public class Animacao implements Serializable {
 
-	private Botao objetoAnimacao;
+	private Long objetoAnimacao;
 	public boolean valida = true;
 	private int index;
 
 	private List pontosAnimacao;
 
-	public Botao getObjetoAnimacao() {
+	public Long getObjetoAnimacao() {
 		return objetoAnimacao;
 	}
 
-	public void setObjetoAnimacao(Botao objetoAnimacao) {
-		if (objetoAnimacao.getCentroInicio() == null)
-			objetoAnimacao.setCentroInicio(objetoAnimacao.getCentro());
+	public void setObjetoAnimacao(Long objetoAnimacao) {
 		this.objetoAnimacao = objetoAnimacao;
 	}
 
