@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -54,12 +55,14 @@ import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
 	private Map botoesImagens = new HashMap();
 	private Map botoesComThread = new HashMap();
+	private List<Animacao> listaAnimacoes = new LinkedList<Animacao>();
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
@@ -216,6 +219,10 @@ public class ControleJogo {
 		this.jogoServidor = jogoServidor;
 	}
 
+	public List<Animacao> getListaAnimacoes() {
+		return listaAnimacoes;
+	}
+
 	public Map getBotoesImagens() {
 		return botoesImagens;
 	}
@@ -367,7 +374,7 @@ public class ControleJogo {
 	}
 
 	protected void propagaColisao(Animacao animacao, Botao causador) {
-		if (numRecursoes > 22) {
+		if (numRecursoes > 11) {
 			return;
 		}
 		numRecursoes++;
@@ -1274,7 +1281,7 @@ public class ControleJogo {
 		return controlePartida.tempoJogadaRestanteJogoFormatado();
 	}
 
-	public void processaJogada() {
+	public void zerarTimerJogada() {
 		controlePartida.zerarTimerJogada();
 
 	}
@@ -1756,9 +1763,18 @@ public class ControleJogo {
 	}
 
 	public void efetuarJogada() {
-		Evento evento = new Evento();
+		if (isJogoOnlineCliente()) {
+			efetuaJogadaCliente();
+			return;
+		}
+
 		Point p1 = getPontoClicado();
 		Point p2 = getPontoPasando();
+		efetuaJogada(p1, p2);
+	}
+
+	public void efetuaJogada(Point p1, Point p2) {
+		Evento evento = new Evento();
 		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
 		Animacao animacao = null;
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
@@ -1828,8 +1844,8 @@ public class ControleJogo {
 				double angulo = GeoUtil.calculaAngulo(botao.getCentro(), p2,
 						270);
 				if (isChutaBola()) {
-					angulo = GeoUtil.calculaAngulo(botao.getCentro(),
-							getBola().getCentro(), 90);
+					angulo = GeoUtil.calculaAngulo(botao.getCentro(), getBola()
+							.getCentro(), 90);
 				}
 
 				Point destino = GeoUtil.calculaPonto(angulo, Util
@@ -1860,13 +1876,52 @@ public class ControleJogo {
 		getBotoesComThread().clear();
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacao.getObjetoAnimacao(),
-				thread);
+		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
 		thread.start();
 		setPontoClicado(null);
-		processaJogada();
+		zerarTimerJogada();
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
 
 	}
+
+	private void efetuaJogadaCliente() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
+				dadosJogoSrvMesa11);
+		jogadaMesa11.setPontoClicado(getPontoClicado());
+		jogadaMesa11.setPontoSolto(getPontoPasando());
+		mesa11to.setData(jogadaMesa11);
+		mesa11to.setComando(ConstantesMesa11.JOGADA);
+		Object ret = enviarObjeto(mesa11to);
+
+	}
+
+	public Object obterUltimaJogada() {
+		int size = listaAnimacoes.size() - 1;
+		if (size < 0) {
+			return null;
+		}
+		Animacao animacao = listaAnimacoes.get(size);
+		animacao.setIndex(size);
+		return animacao;
+	}
+
+	public void executaAnimacao(Animacao animacao) {
+		Animador animador = new Animador(animacao, this);
+		Thread thread = new Thread(animador);
+		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
+		thread.start();
+	}
+
+	public void atualizaBotoesClienteOnline(Map btns) {
+		synchronized (botoes) {
+			for (Iterator iterator = btns.keySet().iterator(); iterator
+					.hasNext();) {
+				Long id = (Long) iterator.next();
+				botoes.put(id, btns.get(id));
+			}
+		}
+	}
+
 }

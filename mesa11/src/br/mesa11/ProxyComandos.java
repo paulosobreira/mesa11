@@ -9,6 +9,7 @@ import br.mesa11.servidor.ControlePersistencia;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 
 public class ProxyComandos {
@@ -34,6 +35,17 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
 				.getComando())) {
 			return controleJogosServidor.obterDadosJogo((String) mesa11TO
+					.getData());
+		} else if (ConstantesMesa11.OBTER_ULTIMA_JOGADA.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterUltimaJogada((String) mesa11TO
+					.getData());
+		} else if (ConstantesMesa11.OBTER_POSICAO_BOTOES.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterPosicaoBotoes((String) mesa11TO
+					.getData());
+		} else if (ConstantesMesa11.JOGADA.equals(mesa11TO.getComando())) {
+			return controleJogosServidor.jogada((JogadaMesa11) mesa11TO
 					.getData());
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
 			return controleLogin.logar((ClienteMesa11) mesa11TO.getData());

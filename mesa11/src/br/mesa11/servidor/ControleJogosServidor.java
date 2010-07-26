@@ -8,8 +8,10 @@ import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
+import br.tos.PosicaoBtnsSrvMesa11;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
@@ -100,6 +102,50 @@ public class ControleJogosServidor {
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());
+		return mesa11to;
+	}
+
+	public Object jogada(JogadaMesa11 jogadaMesa11) {
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(jogadaMesa11
+				.getDadosJogoSrvMesa11().getNomeJogo());
+		if (jogoSrvMesa11 == null) {
+			return new MsgSrv(Lang.msg("jogoInexistente"));
+		}
+		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
+		if (controleJogo.timeJogadaVez().getNome().equals(
+				jogadaMesa11.getTimeClienteOnline())
+				&& !controleJogo.isAnimando()) {
+			jogoSrvMesa11.getControleJogo().efetuaJogada(
+					jogadaMesa11.getPontoClicado(),
+					jogadaMesa11.getPontoSolto());
+		}
+		return null;
+	}
+
+	public Object obterUltimaJogada(String nomejogo) {
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
+		if (jogoSrvMesa11 == null) {
+			return new MsgSrv(Lang.msg("jogoInexistente"));
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(jogoSrvMesa11.getControleJogo().obterUltimaJogada());
+		return mesa11to;
+	}
+
+	public Object obterPosicaoBotoes(String nomejogo) {
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
+		if (jogoSrvMesa11 == null) {
+			return new MsgSrv(Lang.msg("jogoInexistente"));
+		}
+		if (jogoSrvMesa11.getControleJogo().isAnimando()) {
+			return null;
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
+		posicaoBtnsSrvMesa11.setBotoes(jogoSrvMesa11.getControleJogo()
+				.getBotoes());
+		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
+		mesa11to.setData(posicaoBtnsSrvMesa11);
 		return mesa11to;
 	}
 }

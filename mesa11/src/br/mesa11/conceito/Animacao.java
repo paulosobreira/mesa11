@@ -1,13 +1,15 @@
 package br.mesa11.conceito;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.hibernate.Botao;
 
-public class Animacao {
+public class Animacao implements Serializable {
 
 	private Botao objetoAnimacao;
 	public boolean valida = true;
+	private int index;
 
 	private List pontosAnimacao;
 
@@ -35,6 +37,14 @@ public class Animacao {
 
 	public void setValida(boolean valida) {
 		this.valida = valida;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 }
