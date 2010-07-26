@@ -38,7 +38,8 @@ public class Animador implements Runnable {
 			return;
 		if (!anim.isValida())
 			return;
-		Botao botao = anim.getObjetoAnimacao();
+		Botao botao = (Botao) controleJogo.getBotoes().get(
+				anim.getObjetoAnimacao());
 		List elements = anim.getPontosAnimacao();
 		for (int i = 0; i < elements.size(); i++) {
 			Object object = (Object) elements.get(i);

@@ -378,7 +378,7 @@ public class ControleJogo {
 			return;
 		}
 		numRecursoes++;
-		Botao botao = animacao.getObjetoAnimacao();
+		Botao botao = (Botao) botoes.get(animacao.getObjetoAnimacao());
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
 		boolean bolaBateu = false;
@@ -499,7 +499,10 @@ public class ControleJogo {
 								.inte(detAtingido), botaoAnalisado.getCentro());
 						botaoAnalisado.setDestino(destino);
 						animacao = new Animacao();
-						animacao.setObjetoAnimacao(botaoAnalisado);
+						if (botaoAnalisado.getCentroInicio() == null)
+							botaoAnalisado.setCentroInicio(botaoAnalisado
+									.getCentro());
+						animacao.setObjetoAnimacao(botaoAnalisado.getId());
 						animacao.setPontosAnimacao(botaoAnalisado
 								.getTrajetoria());
 						trajetoriaBotao.set(i, animacao);
@@ -1854,7 +1857,9 @@ public class ControleJogo {
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);
 				animacao = new Animacao();
-				animacao.setObjetoAnimacao(botao);
+				if (botao.getCentroInicio() == null)
+					botao.setCentroInicio(botao.getCentro());
+				animacao.setObjetoAnimacao(botao.getId());
 				animacao.setPontosAnimacao(botao.getTrajetoria());
 				setNumRecursoes(0);
 				setEventoAtual(evento);
