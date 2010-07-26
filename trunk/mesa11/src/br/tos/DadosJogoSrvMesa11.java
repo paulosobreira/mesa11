@@ -2,6 +2,8 @@ package br.tos;
 
 import java.io.Serializable;
 
+import br.mesa11.conceito.Animacao;
+
 public class DadosJogoSrvMesa11 implements Serializable {
 
 	private String nomeJogo;

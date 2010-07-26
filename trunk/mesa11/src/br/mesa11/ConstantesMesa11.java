@@ -93,5 +93,8 @@ public class ConstantesMesa11 {
 	public static final String OBTER_DADOS_JOGO = "OBTER_DADOS_JOGO";
 	public static final String ENTRAR_JOGO = "ENTRAR_JOGO";
 	public static final String VERIFICA_VEZ = "VERIFICA_VEZ";
+	public static final String JOGADA = "JOGADA";
+	public static final String OBTER_ULTIMA_JOGADA = "OBTER_ULTIMA_JOGADA";
+	public static final String OBTER_POSICAO_BOTOES = "OBTER_POSICAO_BOTOES";
 
 }

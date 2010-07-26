@@ -1,30 +1,20 @@
 package br.mesa11.conceito;
 
 import java.awt.Point;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 import br.hibernate.Bola;
 import br.hibernate.Botao;
-import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
 
 public class Animador implements Runnable {
 
 	private Animacao animacao;
-	private MesaPanel mesaPanel;
-	private boolean ativo;
 	private ControleJogo controleJogo;
-	private boolean raiz;
 
 	public Animador(Animacao animacao, ControleJogo controleJogo) {
 		super();
 		this.animacao = animacao;
-		this.mesaPanel = controleJogo.getMesaPanel();
 		this.controleJogo = controleJogo;
 	}
 
@@ -33,6 +23,9 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 		} finally {
+			if (!controleJogo.isJogoOnlineCliente()) {
+				controleJogo.getListaAnimacoes().add(animacao);
+			}
 			controleJogo.getBotoesComThread().remove(
 					animacao.getObjetoAnimacao());
 		}
@@ -59,18 +52,22 @@ public class Animador implements Runnable {
 
 				try {
 					if (botao instanceof Bola) {
-						if (!controleJogo.isBolaFora()) {
-							if (controleJogo.verificaGol(botao)) {
-								controleJogo.setGol(botao);
-								Logger.logar("animar gol");
-							} else if (controleJogo
-									.verificaMetaEscanteio(botao)) {
-								controleJogo.setMetaEscanteio(botao);
-								Logger.logar("animar MetaEscanteio");
-							} else if (!controleJogo.verificaDentroCampo(botao)) {
-								if (controleJogo.getLateral() == null) {
-									controleJogo.setLateral(botao.getCentro());
-									Logger.logar("animar lateral");
+						if (!controleJogo.isJogoOnlineCliente()) {
+							if (!controleJogo.isBolaFora()) {
+								if (controleJogo.verificaGol(botao)) {
+									controleJogo.setGol(botao);
+									Logger.logar("animar gol");
+								} else if (controleJogo
+										.verificaMetaEscanteio(botao)) {
+									controleJogo.setMetaEscanteio(botao);
+									Logger.logar("animar MetaEscanteio");
+								} else if (!controleJogo
+										.verificaDentroCampo(botao)) {
+									if (controleJogo.getLateral() == null) {
+										controleJogo.setLateral(botao
+												.getCentro());
+										Logger.logar("animar lateral");
+									}
 								}
 							}
 						}
@@ -95,8 +92,10 @@ public class Animador implements Runnable {
 				if (threadRodando == null) {
 					Animador animador = new Animador(animIn, controleJogo);
 					Thread thread = new Thread(animador);
-					controleJogo.getBotoesComThread().put(
-							animIn.getObjetoAnimacao(), thread);
+					if (!controleJogo.isJogoOnlineCliente()) {
+						controleJogo.getBotoesComThread().put(
+								animIn.getObjetoAnimacao(), thread);
+					}
 					thread.start();
 				}
 			}
@@ -107,14 +106,6 @@ public class Animador implements Runnable {
 		double val = 100;
 		val *= 0.2;
 		System.out.println(val);
-	}
-
-	public boolean isRaiz() {
-		return raiz;
-	}
-
-	public void setRaiz(boolean raiz) {
-		this.raiz = raiz;
 	}
 
 }
