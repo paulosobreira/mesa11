@@ -1,12 +1,12 @@
 package br.tos;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.List;
 
 public class PosicaoBtnsSrvMesa11 implements Serializable {
 
 	long timeStamp;
-	private Map botoes;
+	private List<BotaoPosSrvMesa11> botoes;
 
 	public long getTimeStamp() {
 		return timeStamp;
@@ -16,11 +16,11 @@ public class PosicaoBtnsSrvMesa11 implements Serializable {
 		this.timeStamp = timeStamp;
 	}
 
-	public Map getBotoes() {
+	public List<BotaoPosSrvMesa11> getBotoes() {
 		return botoes;
 	}
 
-	public void setBotoes(Map botoes) {
+	public void setBotoes(List<BotaoPosSrvMesa11> botoes) {
 		this.botoes = botoes;
 	}
 

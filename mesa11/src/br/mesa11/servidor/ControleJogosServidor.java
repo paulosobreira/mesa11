@@ -1,11 +1,17 @@
 package br.mesa11.servidor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
+import br.hibernate.Botao;
+import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
+import br.tos.BotaoPosSrvMesa11;
 import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.JogadaMesa11;
@@ -142,8 +148,23 @@ public class ControleJogosServidor {
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
-		posicaoBtnsSrvMesa11.setBotoes(jogoSrvMesa11.getControleJogo()
-				.getBotoes());
+		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
+		for (Iterator iterator = jogoSrvMesa11.getControleJogo().getBotoes()
+				.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) jogoSrvMesa11.getControleJogo().getBotoes()
+					.get(id);
+			BotaoPosSrvMesa11 botaoPosSrvMesa11 = new BotaoPosSrvMesa11();
+			botaoPosSrvMesa11.setId(id);
+			botaoPosSrvMesa11.setPos(botao.getCentro());
+			if (botao instanceof Goleiro) {
+				Goleiro goleiro = (Goleiro) botao;
+				botaoPosSrvMesa11.setRotacao(goleiro.getRotacao());
+			}
+			botaoPosSrvMesa11List.add(botaoPosSrvMesa11);
+
+		}
+		posicaoBtnsSrvMesa11.setBotoes(botaoPosSrvMesa11List);
 		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
 		mesa11to.setData(posicaoBtnsSrvMesa11);
 		return mesa11to;
