@@ -9,6 +9,7 @@ public class Animacao implements Serializable {
 
 	private Long objetoAnimacao;
 	private int index;
+	private long timeStamp;
 
 	private List pontosAnimacao;
 
@@ -34,6 +35,14 @@ public class Animacao implements Serializable {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public long getTimeStamp() {
+		return timeStamp;
+	}
+
+	public void setTimeStamp(long timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 
 }

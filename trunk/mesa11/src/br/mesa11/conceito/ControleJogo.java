@@ -52,6 +52,7 @@ import br.nnpe.PopupListener;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
+import br.tos.BotaoPosSrvMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
@@ -1899,6 +1900,8 @@ public class ControleJogo {
 						}
 					}
 					listaAnimacoes.add(animacao);
+					ControleJogo.this.animacao = animacao;
+					animacao.setTimeStamp(System.currentTimeMillis());
 				}
 			});
 			threadAnimacaoSrv.start();
@@ -1919,12 +1922,12 @@ public class ControleJogo {
 	}
 
 	public Object obterUltimaJogada() {
-		int size = listaAnimacoes.size() - 1;
-		if (size < 0) {
-			return null;
-		}
-		Animacao animacao = listaAnimacoes.get(size);
-		animacao.setIndex(size);
+		// int size = listaAnimacoes.size() - 1;
+		// if (size < 0) {
+		// return null;
+		// }
+		// Animacao animacao = listaAnimacoes.get(size);
+		// animacao.setIndex(size);
 		return animacao;
 	}
 
@@ -1959,17 +1962,19 @@ public class ControleJogo {
 			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
 					.getData();
 			if (posicaoBtnsSrvMesa11 != null) {
-				Map btns = posicaoBtnsSrvMesa11.getBotoes();
+				List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
 				synchronized (botoes) {
-					for (Iterator iterator = btns.keySet().iterator(); iterator
-							.hasNext();) {
-						Long id = (Long) iterator.next();
-						Botao botaoSrv = (Botao) btns.get(id);
-						Botao botao = (Botao) botoes.get(id);
-						botao.setCentroTodos(botaoSrv.getCentro());
+					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
+						Botao botao = (Botao) botoes.get(botaoPosSrvMesa11
+								.getId());
+						botao.setCentroTodos(new Point(botaoPosSrvMesa11
+								.getPos()));
+						if (botao instanceof Goleiro) {
+							Goleiro goleiro = (Goleiro) botao;
+							goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
+						}
 					}
 				}
-
 			}
 		}
 

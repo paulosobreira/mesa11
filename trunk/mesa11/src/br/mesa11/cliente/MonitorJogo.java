@@ -18,9 +18,8 @@ public class MonitorJogo extends Thread {
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
-	private int indexAnimacaoAtual = 0;
 	private long tempoDormir = 1000;
-	private long timeStampPosicoes;
+	private long timeStampAnimacao;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -83,12 +82,10 @@ public class MonitorJogo extends Thread {
 			mesa11to = (Mesa11TO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
 			if (!controleJogo.isAnimando() && animacao != null
-					&& animacao.getIndex() > indexAnimacaoAtual) {
-				indexAnimacaoAtual = animacao.getIndex();
+					&& animacao.getTimeStamp() > timeStampAnimacao) {
+				timeStampAnimacao = animacao.getTimeStamp();
 				controleJogo.executaAnimacao(animacao);
-				System.out
-						.println("controleJogo.executaAnimacao(animacao); indexAnimacaoAtual"
-								+ indexAnimacaoAtual);
+
 			}
 
 		}
