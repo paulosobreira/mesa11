@@ -13,13 +13,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.Paper;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -57,6 +55,7 @@ import br.recursos.Lang;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
+import br.tos.PosicaoBtnsSrvMesa11;
 
 public class ControleJogo {
 	private Map botoes = new HashMap();
@@ -86,6 +85,7 @@ public class ControleJogo {
 	private JogoServidor jogoServidor;
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
+	private Animacao animacao = null;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -1779,7 +1779,7 @@ public class ControleJogo {
 	public void efetuaJogada(Point p1, Point p2) {
 		Evento evento = new Evento();
 		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
-		Animacao animacao = null;
+
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
@@ -1887,6 +1887,22 @@ public class ControleJogo {
 		zerarTimerJogada();
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
+		if (isJogoOnlineSrvidor()) {
+			Thread threadAnimacaoSrv = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					while (isAnimando()) {
+						try {
+							Thread.sleep(500);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+					listaAnimacoes.add(animacao);
+				}
+			});
+			threadAnimacaoSrv.start();
+		}
 
 	}
 
@@ -1917,16 +1933,46 @@ public class ControleJogo {
 		Thread thread = new Thread(animador);
 		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
 		thread.start();
+		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (isAnimando()) {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				atualizaBotoesClienteOnline();
+			}
+		});
+		threadAtualizaBotoesClienteOnline.start();
 	}
 
-	public void atualizaBotoesClienteOnline(Map btns) {
-		synchronized (botoes) {
-			for (Iterator iterator = btns.keySet().iterator(); iterator
-					.hasNext();) {
-				Long id = (Long) iterator.next();
-				botoes.put(id, btns.get(id));
+	public void atualizaBotoesClienteOnline() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
+		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
+		Object ret = enviarObjeto(mesa11to);
+		if (ret != null && ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
+					.getData();
+			if (posicaoBtnsSrvMesa11 != null) {
+				Map btns = posicaoBtnsSrvMesa11.getBotoes();
+				synchronized (botoes) {
+					for (Iterator iterator = btns.keySet().iterator(); iterator
+							.hasNext();) {
+						Long id = (Long) iterator.next();
+						Botao botaoSrv = (Botao) btns.get(id);
+						Botao botao = (Botao) botoes.get(id);
+						botao.setCentroTodos(botaoSrv.getCentro());
+					}
+				}
+
 			}
 		}
+
 	}
 
 }
