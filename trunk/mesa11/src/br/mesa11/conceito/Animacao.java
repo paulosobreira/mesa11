@@ -8,7 +8,6 @@ import br.hibernate.Botao;
 public class Animacao implements Serializable {
 
 	private Long objetoAnimacao;
-	public boolean valida = true;
 	private int index;
 
 	private List pontosAnimacao;
@@ -27,14 +26,6 @@ public class Animacao implements Serializable {
 
 	public void setPontosAnimacao(List pontosAnimacao) {
 		this.pontosAnimacao = pontosAnimacao;
-	}
-
-	public boolean isValida() {
-		return valida;
-	}
-
-	public void setValida(boolean valida) {
-		this.valida = valida;
 	}
 
 	public int getIndex() {

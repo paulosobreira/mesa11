@@ -5,7 +5,10 @@ import java.util.List;
 
 import br.hibernate.Bola;
 import br.hibernate.Botao;
+import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
+import br.tos.Mesa11TO;
+import br.tos.PosicaoBtnsSrvMesa11;
 
 public class Animador implements Runnable {
 
@@ -23,20 +26,13 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 		} finally {
-			if (!controleJogo.isJogoOnlineCliente()) {
-				controleJogo.getListaAnimacoes().add(animacao);
-			}
 			controleJogo.getBotoesComThread().remove(
 					animacao.getObjetoAnimacao());
 		}
-		if (animacao != null)
-			animacao.setValida(false);
 	}
 
 	private void animar(Animacao anim) {
 		if (anim == null)
-			return;
-		if (!anim.isValida())
 			return;
 		Botao botao = (Botao) controleJogo.getBotoes().get(
 				anim.getObjetoAnimacao());
