@@ -89,11 +89,12 @@ public class MonitorJogo extends Thread {
 			}
 
 		}
+		//tempoDormir = controleChatCliente.getLatenciaReal();
 
 	}
 
 	private void iniciaJogo() {
-		tempoDormir = 500;
+		tempoDormir = 200;
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);

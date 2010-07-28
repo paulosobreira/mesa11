@@ -87,6 +87,7 @@ public class ControleJogo {
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 	private Animacao animacao = null;
+	private boolean esperandoJogadaOnline;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -1316,7 +1317,7 @@ public class ControleJogo {
 	public void reversaoJogada() {
 		controlePartida.zerarJogadas();
 		controlePartida.reversaoJogada();
-
+		verificaIntervalo();
 	}
 
 	public void zeraJogadaTime(Time time) {
@@ -1651,12 +1652,13 @@ public class ControleJogo {
 
 	public String verGols(Time time) {
 		if (dadosJogoSrvMesa11 != null) {
-			if (time.getNome().equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
+			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeCasa())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsCasa());
 			}
-			if (time.getNome().equals(dadosJogoSrvMesa11.getBolaCampoVisita())) {
+			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeVisita())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsVisita());
 			}
+			return " Erro ";
 		}
 		if (controlePartida == null) {
 			return null;
@@ -1694,8 +1696,20 @@ public class ControleJogo {
 	}
 
 	public void verificaIntervalo() {
-		controlePartida.verificaIntervalo();
-
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				while (isAnimando()) {
+					try {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				controlePartida.verificaIntervalo();
+			}
+		});
+		thread.start();
 	}
 
 	public Goleiro obterGoleiroCima() {
@@ -1894,7 +1908,7 @@ public class ControleJogo {
 				public void run() {
 					while (isAnimando()) {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(50);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
@@ -1918,6 +1932,7 @@ public class ControleJogo {
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
 		Object ret = enviarObjeto(mesa11to);
+		esperandoJogadaOnline = true;
 
 	}
 
@@ -1941,7 +1956,7 @@ public class ControleJogo {
 			public void run() {
 				while (isAnimando()) {
 					try {
-						Thread.sleep(500);
+						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -1976,8 +1991,17 @@ public class ControleJogo {
 					}
 				}
 			}
+			esperandoJogadaOnline = false;
 		}
 
+	}
+
+	public boolean isEsperandoJogadaOnline() {
+		return esperandoJogadaOnline;
+	}
+
+	public void setEsperandoJogadaOnline(boolean esperandoJogadaOnline) {
+		this.esperandoJogadaOnline = esperandoJogadaOnline;
 	}
 
 }

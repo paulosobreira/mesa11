@@ -87,7 +87,6 @@ public class ControleEvento implements Runnable {
 			}
 		} else if (ConstantesMesa11.GOL.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
-			System.out.println("Gol Time Ultimo Contato " + time);
 			if (timeCima.equals(time)) {
 				if (controleJogo.getMesaPanel().getAreaGolCima().intersects(
 						controleJogo.getUltGol().getBounds())) {
@@ -106,8 +105,7 @@ public class ControleEvento implements Runnable {
 				}
 			}
 		}
-		controleJogo.verificaIntervalo();
-		System.out.println("ProcessadorEvento" + controleJogo.getEventoAtual());
+		
 
 	}
 }
