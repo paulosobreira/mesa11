@@ -86,8 +86,10 @@ public class ControleJogo {
 	private JogoServidor jogoServidor;
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
-	private Animacao animacao = null;
+	private Animacao animacaoCliente = null;
+	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
+	private int numeroJogadas;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -1673,10 +1675,15 @@ public class ControleJogo {
 		return controlePartida.verGolsInt(time);
 	}
 
-	public Object obterNumJogadas(Time time) {
+	public Integer obterNumJogadas(Time time) {
 		if (isJogoOnlineCliente()) {
-			return "TD";
-			// if(time.getNome().equals(dadosJogoSrvMesa11.get))
+			if (dadosJogoSrvMesa11.getTimeCasa().equals(time.getNome())) {
+				return dadosJogoSrvMesa11.getNumeroJogadasTimeCasa();
+			}
+			if (dadosJogoSrvMesa11.getTimeVisita().equals(time.getNome())) {
+				return dadosJogoSrvMesa11.getNumeroJogadasTimeVisita();
+			}
+			return null;
 		}
 		if (controlePartida == null) {
 			return null;
@@ -1793,6 +1800,8 @@ public class ControleJogo {
 
 	public void efetuaJogada(Point p1, Point p2) {
 		Evento evento = new Evento();
+		animacaoCliente = null;
+		animacaoJogada = null;
 		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
 
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
@@ -1871,20 +1880,20 @@ public class ControleJogo {
 				botao.setDestino(destino);
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);
-				animacao = new Animacao();
+				animacaoJogada = new Animacao();
 				if (botao.getCentroInicio() == null)
 					botao.setCentroInicio(botao.getCentro());
-				animacao.setObjetoAnimacao(botao.getId());
-				animacao.setPontosAnimacao(botao.getTrajetoria());
+				animacaoJogada.setObjetoAnimacao(botao.getId());
+				animacaoJogada.setPontosAnimacao(botao.getTrajetoria());
 				setNumRecursoes(0);
 				setEventoAtual(evento);
-				propagaColisao(animacao, botao);
+				propagaColisao(animacaoJogada, botao);
 				verificaBolaParouEmCimaBotao();
 				break;
 			}
 
 		}
-		if (animacao == null) {
+		if (animacaoJogada == null) {
 			return;
 		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
@@ -1894,33 +1903,14 @@ public class ControleJogo {
 				botao.setCentro(botao.getCentroInicio());
 		}
 		getBotoesComThread().clear();
-		Animador animador = new Animador(animacao, this);
+		Animador animador = new Animador(animacaoJogada, this);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
+		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), thread);
 		thread.start();
 		setPontoClicado(null);
 		zerarTimerJogada();
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
-		if (isJogoOnlineSrvidor()) {
-			Thread threadAnimacaoSrv = new Thread(new Runnable() {
-				@Override
-				public void run() {
-					while (isAnimando()) {
-						try {
-							Thread.sleep(50);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}
-					listaAnimacoes.add(animacao);
-					ControleJogo.this.animacao = animacao;
-					animacao.setTimeStamp(System.currentTimeMillis());
-				}
-			});
-			threadAnimacaoSrv.start();
-		}
-
 	}
 
 	private void efetuaJogadaCliente() {
@@ -1942,7 +1932,7 @@ public class ControleJogo {
 		// }
 		// Animacao animacao = listaAnimacoes.get(size);
 		// animacao.setIndex(size);
-		return animacao;
+		return animacaoCliente;
 	}
 
 	public void executaAnimacao(Animacao animacao) {
@@ -1950,7 +1940,6 @@ public class ControleJogo {
 		Thread thread = new Thread(animador);
 		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
 		thread.start();
-		
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1996,12 +1985,33 @@ public class ControleJogo {
 
 	}
 
+	public int getNumeroJogadas() {
+		if (isJogoOnlineSrvidor() || isJogoOnlineCliente()) {
+			if (dadosJogoSrvMesa11 != null)
+				return dadosJogoSrvMesa11.getNumeroJogadas();
+		}
+		return numeroJogadas;
+	}
+
+	public void setNumeroJogadas(int numeroJogadas) {
+		this.numeroJogadas = numeroJogadas;
+	}
+
 	public boolean isEsperandoJogadaOnline() {
 		return esperandoJogadaOnline;
 	}
 
 	public void setEsperandoJogadaOnline(boolean esperandoJogadaOnline) {
 		this.esperandoJogadaOnline = esperandoJogadaOnline;
+	}
+
+	public void configuraAnimacaoServidor() {
+		if (isJogoOnlineSrvidor()) {
+			listaAnimacoes.add(animacaoJogada);
+			ControleJogo.this.animacaoCliente = animacaoJogada;
+			animacaoCliente.setTimeStamp(System.currentTimeMillis());
+		}
+
 	}
 
 }

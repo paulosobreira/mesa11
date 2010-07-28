@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class DadosMesa11 implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
-	private Collection clientes = new HashSet();
+	private Collection<SessaoCliente> clientes = new HashSet<SessaoCliente>();
 	private Collection jogosCriados = new HashSet();
 	private Collection jogosAndamento = new HashSet();
 	private String linhaChat = "";
@@ -41,7 +41,7 @@ public class DadosMesa11 implements Serializable {
 		this.linhaChat = linhaChat;
 	}
 
-	public Collection getClientes() {
+	public Collection<SessaoCliente> getClientes() {
 		return clientes;
 	}
 

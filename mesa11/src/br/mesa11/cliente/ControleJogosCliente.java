@@ -148,7 +148,20 @@ public class ControleJogosCliente {
 		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);
 		escolhaTimesPanel.add(uniformesPanel, BorderLayout.CENTER);
 
-		JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel opcoesJogoPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroJogadas");
+			}
+		});
+		JComboBox numJogadaCombo = new JComboBox();
+		for (int i = 3; i < 21; i++) {
+			numJogadaCombo.addItem(new Integer(i));
+		}
+
+		opcoesJogoPanel.add(numJogadaCombo);
+
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -212,6 +225,8 @@ public class ControleJogosCliente {
 			dadosJogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
 			dadosJogoSrvMesa11.setTempoJogo((Integer) tempoJogoCombo
 					.getSelectedItem());
+			dadosJogoSrvMesa11.setNumeroJogadas((Integer) numJogadaCombo
+					.getSelectedItem());
 			dadosJogoSrvMesa11.setTempoJogoJogada((Integer) tempoJogadaCombo
 					.getSelectedItem());
 			dadosJogoSrvMesa11.setBolaCampoCasa(Lang
@@ -240,7 +255,6 @@ public class ControleJogosCliente {
 					.msg("jaEstaEmUmJogo"));
 			return;
 		}
-		System.out.println("ln 231");
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(jogoSelecionado);
@@ -353,7 +367,20 @@ public class ControleJogosCliente {
 		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);
 		escolhaTimesPanel.add(uniformesPanel, BorderLayout.CENTER);
 
-		JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+		JPanel opcoesJogoPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroJogadas");
+			}
+		});
+
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return "" + dadosJogoSrvMesa11.getNumeroJogadas();
+			}
+		});
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {

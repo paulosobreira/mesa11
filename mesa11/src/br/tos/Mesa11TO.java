@@ -6,6 +6,8 @@ public class Mesa11TO implements Serializable {
 
 	private String comando;
 
+	private SessaoCliente sessaoCliente;
+
 	private Object Data;
 
 	private byte[] dataBytes;
@@ -32,6 +34,14 @@ public class Mesa11TO implements Serializable {
 
 	public void setData(Object data) {
 		Data = data;
+	}
+
+	public SessaoCliente getSessaoCliente() {
+		return sessaoCliente;
+	}
+
+	public void setSessaoCliente(SessaoCliente sessaoCliente) {
+		this.sessaoCliente = sessaoCliente;
 	}
 
 }

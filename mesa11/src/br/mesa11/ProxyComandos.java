@@ -90,6 +90,10 @@ public class ProxyComandos {
 	private Object atualizarDadosVisao() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosMesa11);
+		if (mesa11to.getSessaoCliente() != null) {
+			controleChatServidor.atualizaSessaoCliente(mesa11to
+					.getSessaoCliente());
+		}
 		return mesa11to;
 	}
 }
