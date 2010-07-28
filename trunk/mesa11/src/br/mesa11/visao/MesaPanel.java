@@ -34,8 +34,8 @@ public class MesaPanel extends JPanel {
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0);
 	public final static Color green = Color.GREEN;
-//	 public final static Color green2 = Color.white;
-//	 public final static Color green = Color.white;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -349,15 +349,33 @@ public class MesaPanel extends JPanel {
 					+ " " + (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
 
 			y += 25;
-			g2d.setColor(ImageUtil.gerarCorTransparente(c1, 200));
-			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
-			if (time.isCorMeiaNumero()) {
-				g2d.setColor(c3);
+			if (controleJogo.isEsperandoJogadaOnline()) {
+				g2d.setColor(lightWhite);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				g2d.setColor(Color.BLACK);
+				g2d.drawString(Lang.msg("aguarde"), x, y);
 			} else {
-				g2d.setColor(c2);
+				g2d.setColor(ImageUtil.gerarCorTransparente(c1, 200));
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				if (time.isCorMeiaNumero()) {
+					g2d.setColor(c3);
+				} else {
+					g2d.setColor(c2);
+				}
+				g2d
+						.drawString(time.getNome()
+								+ " "
+								+ controleJogo
+										.tempoJogadaRestanteJogoFormatado(), x,
+								y);
 			}
-			g2d.drawString(time.getNome() + " "
-					+ controleJogo.tempoJogadaRestanteJogoFormatado(), x, y);
+		}
+		if (controleJogo.isEsperandoJogadaOnline()) {
+			x = limitesViewPort.getBounds().x
+					+ (limitesViewPort.getBounds().width / 3);
+			y = limitesViewPort.getBounds().y
+					+ (limitesViewPort.getBounds().height - 60);
+			// dicas
 		}
 	}
 

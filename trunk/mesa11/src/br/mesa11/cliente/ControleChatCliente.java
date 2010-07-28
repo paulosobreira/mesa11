@@ -52,7 +52,7 @@ public class ControleChatCliente {
 			public void run() {
 				try {
 					while (comunicacaoServer) {
-						Thread.sleep((5000 + ((int) Math.random() * 1000)));
+						Thread.sleep(1000);
 						atualizaVisao();
 					}
 				} catch (Exception e) {
