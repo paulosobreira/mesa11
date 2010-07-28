@@ -226,7 +226,20 @@ public class ControlePartida {
 
 		escolhaTimesPanel.add(bolaBaixo);
 
-		JPanel tempoJogoPanel = new JPanel();
+		JPanel tempoJogoPanel = new JPanel(new GridLayout(3, 2));
+		tempoJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroJogadas");
+			}
+		});
+		JComboBox numJogadaCombo = new JComboBox();
+		for (int i = 3; i < 21; i++) {
+			numJogadaCombo.addItem(new Integer(i));
+		}
+
+		tempoJogoPanel.add(numJogadaCombo);
+
 		tempoJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -355,6 +368,8 @@ public class ControlePartida {
 		if (timeBaixo.getId() == null) {
 			timeBaixo.setId(timeCima.getId() + 1);
 		}
+		controleJogo.setNumeroJogadas((Integer) numJogadaCombo
+				.getSelectedItem());
 		mapaGols.put(timeCima, new Integer(0));
 		mapaGols.put(timeBaixo, new Integer(0));
 		mapaJogadas.put(timeCima, new Integer(0));
@@ -626,7 +641,7 @@ public class ControlePartida {
 	public boolean incrementaJogada() {
 		Time time = timeJogadaVez();
 		Integer numJogadas = (Integer) mapaJogadas.get(time);
-		if (numJogadas.intValue() > ConstantesMesa11.NUM_JOGADAS) {
+		if (numJogadas.intValue() >= (controleJogo.getNumeroJogadas() - 1)) {
 			zerarJogadas();
 			return false;
 		} else {
@@ -643,7 +658,7 @@ public class ControlePartida {
 		}
 	}
 
-	public Object obterNumJogadas(Time time) {
+	public Integer obterNumJogadas(Time time) {
 		return mapaJogadas.get(time);
 	}
 

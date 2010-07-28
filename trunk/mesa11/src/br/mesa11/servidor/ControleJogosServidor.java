@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
@@ -104,6 +105,8 @@ public class ControleJogosServidor {
 					.tempoRestanteJogoFormatado());
 			dadosJogoSrvMesa11.setTempoJogadaRestanteJogoFormatado(controleJogo
 					.tempoJogadaRestanteJogoFormatado());
+			dadosJogoSrvMesa11.setNumeroJogadasTimeCasa(controleJogo
+					.obterNumJogadas(jogoSrvMesa11.getTimeCasa()));
 
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -160,6 +163,9 @@ public class ControleJogosServidor {
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				botaoPosSrvMesa11.setRotacao(goleiro.getRotacao());
+			}
+			if (botao instanceof Bola) {
+				System.out.println("envia bola pos");
 			}
 			botaoPosSrvMesa11List.add(botaoPosSrvMesa11);
 

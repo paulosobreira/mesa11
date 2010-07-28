@@ -20,6 +20,9 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private int tempoJogoJogada;
 	private int golsCasa;
 	private int golsVisita;
+	private int numeroJogadas;
+	private int numeroJogadasTimeCasa;
+	private int numeroJogadasTimeVisita;
 	private String timeVez;
 	private String tempoJogoFormatado;
 	private String tempoRestanteJogoFormatado;
@@ -56,6 +59,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public void setTimeVez(String timeVez) {
 		this.timeVez = timeVez;
+	}
+
+	public int getNumeroJogadas() {
+		return numeroJogadas;
+	}
+
+	public void setNumeroJogadas(int numeroJogadas) {
+		this.numeroJogadas = numeroJogadas;
 	}
 
 	public int getGolsCasa() {
@@ -185,6 +196,22 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public void setBolaCampoVisita(String bolaCampoVisita) {
 		this.bolaCampoVisita = bolaCampoVisita;
+	}
+
+	public int getNumeroJogadasTimeCasa() {
+		return numeroJogadasTimeCasa;
+	}
+
+	public void setNumeroJogadasTimeCasa(int numeroJogadasTimeCasa) {
+		this.numeroJogadasTimeCasa = numeroJogadasTimeCasa;
+	}
+
+	public int getNumeroJogadasTimeVisita() {
+		return numeroJogadasTimeVisita;
+	}
+
+	public void setNumeroJogadasTimeVisita(int numeroJogadasTimeVisita) {
+		this.numeroJogadasTimeVisita = numeroJogadasTimeVisita;
 	}
 
 }

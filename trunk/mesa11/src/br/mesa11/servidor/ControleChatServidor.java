@@ -5,6 +5,7 @@ import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
+import br.tos.SessaoCliente;
 
 public class ControleChatServidor {
 	private DadosMesa11 dadosMesa11;
@@ -25,6 +26,10 @@ public class ControleChatServidor {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosMesa11);
 		return mesa11to;
+	}
+
+	public void atualizaSessaoCliente(SessaoCliente sessaoCliente) {
+		dadosMesa11.atualizaAtividade(sessaoCliente.getNomeJogador());
 	}
 
 }

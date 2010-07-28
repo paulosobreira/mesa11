@@ -91,12 +91,6 @@ public class MonitorJogo extends Thread {
 			}
 
 		}
-		dormir(tempoDormir);
-		if (!controleJogo.isAnimando()
-				&& !controleJogo.isEsperandoJogadaOnline()
-				&& contAtualizacao % 3 == 0 && controleJogo.verificaVezOnline()) {
-			controleJogo.atualizaBotoesClienteOnline();
-		}
 		// tempoDormir = controleChatCliente.getLatenciaReal();
 
 	}

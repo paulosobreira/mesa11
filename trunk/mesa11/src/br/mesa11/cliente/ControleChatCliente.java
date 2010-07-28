@@ -93,6 +93,7 @@ public class ControleChatCliente {
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.ATUALIZAR_VISAO);
+		mesa11to.setSessaoCliente(sessaoCliente);
 		Object ret = enviarObjeto(mesa11to);
 		if (ret == null) {
 			return;
@@ -207,7 +208,6 @@ public class ControleChatCliente {
 			return;
 		}
 		String jogoSelecionado = chatWindow.obterJogoSelecionado();
-		System.out.println("entarJogo() jogoSelecionado " + jogoSelecionado);
 		if (jogoSelecionado == null) {
 			return;
 		}
