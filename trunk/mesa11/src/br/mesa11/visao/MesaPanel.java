@@ -349,7 +349,8 @@ public class MesaPanel extends JPanel {
 					+ " " + (ConstantesMesa11.NUM_JOGADAS + 2), x, y);
 
 			y += 25;
-			if (controleJogo.isEsperandoJogadaOnline()) {
+			if (controleJogo.isEsperandoJogadaOnline()
+					|| controleJogo.isAnimando()) {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 				g2d.setColor(Color.BLACK);

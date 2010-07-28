@@ -1931,9 +1931,8 @@ public class ControleJogo {
 		jogadaMesa11.setPontoSolto(getPontoPasando());
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
-		Object ret = enviarObjeto(mesa11to);
 		esperandoJogadaOnline = true;
-
+		Object ret = enviarObjeto(mesa11to);
 	}
 
 	public Object obterUltimaJogada() {
@@ -1951,6 +1950,7 @@ public class ControleJogo {
 		Thread thread = new Thread(animador);
 		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
 		thread.start();
+		
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override
 			public void run() {
