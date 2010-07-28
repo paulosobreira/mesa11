@@ -20,6 +20,7 @@ public class MonitorJogo extends Thread {
 	private String timeClienteOnline;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
+	private long contAtualizacao;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -38,6 +39,7 @@ public class MonitorJogo extends Thread {
 		System.out.println("run timeClienteOnline " + timeClienteOnline);
 		while (controleChatCliente.isComunicacaoServer()) {
 			dormir(tempoDormir);
+			contAtualizacao++;
 			if (timesSelecionados() && controleJogo == null) {
 				iniciaJogo();
 			}
@@ -89,7 +91,13 @@ public class MonitorJogo extends Thread {
 			}
 
 		}
-		//tempoDormir = controleChatCliente.getLatenciaReal();
+		dormir(tempoDormir);
+		if (!controleJogo.isAnimando()
+				&& !controleJogo.isEsperandoJogadaOnline()
+				&& contAtualizacao % 3 == 0 && controleJogo.verificaVezOnline()) {
+			controleJogo.atualizaBotoesClienteOnline();
+		}
+		// tempoDormir = controleChatCliente.getLatenciaReal();
 
 	}
 
