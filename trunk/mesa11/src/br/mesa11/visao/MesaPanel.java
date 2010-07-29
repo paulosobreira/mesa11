@@ -32,10 +32,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-//	public final static Color green2 = new Color(0, 200, 0);
-//	public final static Color green = Color.GREEN;
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0);
+	public final static Color green = Color.GREEN;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -299,7 +299,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(cM2);
 			}
-			g2d.drawString(timeMandante.getNome(), newx - 90, y);
+			g2d.drawString("" + timeMandante.getNome(), newx - 90, y);
 			g2d.setColor(ImageUtil.gerarCorTransparente(cM2, 200));
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
 			if (timeMandante.isCorMeiaNumero()) {
@@ -307,7 +307,8 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(cM1);
 			}
-			g2d.drawString(controleJogo.verGols(timeMandante), newx + 12, y);
+			g2d.drawString("" + controleJogo.verGols(timeMandante), newx + 12,
+					y);
 
 			Color cV1 = new Color(timeVisita.getCor1());
 			Color cV2 = new Color(timeVisita.getCor2());
@@ -319,7 +320,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(cV2);
 			}
-			g2d.drawString(timeVisita.getNome(), newx + 70, y);
+			g2d.drawString("" + timeVisita.getNome(), newx + 70, y);
 			g2d.setColor(ImageUtil.gerarCorTransparente(cV2, 200));
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
 			if (timeVisita.isCorMeiaNumero()) {
@@ -327,7 +328,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(cV1);
 			}
-			g2d.drawString(controleJogo.verGols(timeVisita), newx + 48, y);
+			g2d.drawString("" + controleJogo.verGols(timeVisita), newx + 48, y);
 		}
 		Time time = controleJogo.timeJogadaVez();
 		if (time != null) {

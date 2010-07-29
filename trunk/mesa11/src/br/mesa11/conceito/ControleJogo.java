@@ -90,6 +90,7 @@ public class ControleJogo {
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
+	private long stampUltimaJogadaOnline;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -104,6 +105,7 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
+		frame.setTitle(timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowListener() {
 
@@ -1100,6 +1102,9 @@ public class ControleJogo {
 	}
 
 	public boolean verificaTemBotao(Point p) {
+		if (p == null) {
+			return false;
+		}
 		return verificaTemBotao(p, null);
 	}
 
@@ -1919,10 +1924,21 @@ public class ControleJogo {
 				dadosJogoSrvMesa11);
 		jogadaMesa11.setPontoClicado(getPontoClicado());
 		jogadaMesa11.setPontoSolto(getPontoPasando());
+		if (jogadaMesa11.getPontoClicado() == null
+				|| jogadaMesa11.getPontoSolto() == null
+				|| (stampUltimaJogadaOnline + 5000) > System
+						.currentTimeMillis()
+				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
+			return;
+		}
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
 		esperandoJogadaOnline = true;
+		stampUltimaJogadaOnline = System.currentTimeMillis();
 		Object ret = enviarObjeto(mesa11to);
+		if (!ConstantesMesa11.OK.equals(ret)) {
+			esperandoJogadaOnline = false;
+		}
 	}
 
 	public Object obterUltimaJogada() {
@@ -1945,7 +1961,7 @@ public class ControleJogo {
 			public void run() {
 				while (isAnimando()) {
 					try {
-						Thread.sleep(50);
+						Thread.sleep(20);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -1971,6 +1987,9 @@ public class ControleJogo {
 					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
 						Botao botao = (Botao) botoes.get(botaoPosSrvMesa11
 								.getId());
+						if (botao instanceof Bola) {
+							System.out.println("Pos bola Cli " + botao);
+						}
 						botao.setCentroTodos(new Point(botaoPosSrvMesa11
 								.getPos()));
 						if (botao instanceof Goleiro) {
@@ -1982,13 +2001,16 @@ public class ControleJogo {
 			}
 			esperandoJogadaOnline = false;
 		}
+		centralizaBola();
 
 	}
 
 	public int getNumeroJogadas() {
-		if (isJogoOnlineSrvidor() || isJogoOnlineCliente()) {
-			if (dadosJogoSrvMesa11 != null)
-				return dadosJogoSrvMesa11.getNumeroJogadas();
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getNumeroJogadas();
+		}
+		if (isJogoOnlineSrvidor()) {
+			return jogoServidor.getDadosJogoSrvMesa11().getNumeroJogadas();
 		}
 		return numeroJogadas;
 	}
@@ -1999,10 +2021,6 @@ public class ControleJogo {
 
 	public boolean isEsperandoJogadaOnline() {
 		return esperandoJogadaOnline;
-	}
-
-	public void setEsperandoJogadaOnline(boolean esperandoJogadaOnline) {
-		this.esperandoJogadaOnline = esperandoJogadaOnline;
 	}
 
 	public void configuraAnimacaoServidor() {

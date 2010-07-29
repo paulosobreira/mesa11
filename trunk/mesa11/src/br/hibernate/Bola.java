@@ -10,4 +10,9 @@ public class Bola extends Botao {
 		return 30;
 	}
 
+	@Override
+	public String toString() {
+		return "Bola :" + getCentro();
+	}
+
 }
