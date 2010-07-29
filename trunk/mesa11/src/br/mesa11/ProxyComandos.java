@@ -6,11 +6,13 @@ import br.mesa11.servidor.ControleChatServidor;
 import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
 import br.mesa11.servidor.ControlePersistencia;
+import br.mesa11.servidor.MonitorAtividade;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
+import br.tos.SessaoCliente;
 
 public class ProxyComandos {
 	private ControleLogin controleLogin;
@@ -18,6 +20,7 @@ public class ProxyComandos {
 	private ControleChatServidor controleChatServidor;
 	private ControleJogosServidor controleJogosServidor;
 	private DadosMesa11 dadosMesa11;
+	private MonitorAtividade monitorAtividade;
 
 	public ProxyComandos(String webDir, String webInfDir) {
 		dadosMesa11 = new DadosMesa11();
@@ -26,6 +29,8 @@ public class ProxyComandos {
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
 		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
 				controlePersistencia);
+		monitorAtividade = new MonitorAtividade(this);
+		monitorAtividade.start();
 	}
 
 	public Object processarObjeto(Object object) {
@@ -96,4 +101,18 @@ public class ProxyComandos {
 		}
 		return mesa11to;
 	}
+
+	public DadosMesa11 getDadosMesa11() {
+		return dadosMesa11;
+	}
+
+	public void removerClienteInativo(SessaoCliente sessaoClienteRemover) {
+		controleJogosServidor.removerClienteInativo(sessaoClienteRemover);
+		dadosMesa11.getClientes().remove(sessaoClienteRemover);
+	}
+
+	public ControleJogosServidor getControleJogosServidor() {
+		return controleJogosServidor;
+	}
+
 }

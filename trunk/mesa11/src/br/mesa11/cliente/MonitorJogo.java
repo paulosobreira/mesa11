@@ -18,6 +18,7 @@ public class MonitorJogo extends Thread {
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
+	private String timeVez;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
 	private long contAtualizacao;
@@ -71,6 +72,13 @@ public class MonitorJogo extends Thread {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
+			if (timeVez != null
+					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
+					&& controleJogo != null && !controleJogo.isAnimando()) {
+				dormir(tempoDormir);
+				controleJogo.atualizaBotoesClienteOnline();
+			}
+			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		}
 		if (dadosJogoSrvMesa11 == null) {
 			return;

@@ -1917,13 +1917,15 @@ public class ControleJogo {
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
 	}
-
-	private void efetuaJogadaCliente() {
+	
+	private void sairJogoOnline() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
 				dadosJogoSrvMesa11);
-		jogadaMesa11.setPontoClicado(getPontoClicado());
-		jogadaMesa11.setPontoSolto(getPontoPasando());
+		Point p1 = getPontoClicado();
+		Point p2 = getPontoPasando();
+		jogadaMesa11.setPontoClicado(p1);
+		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
 				|| jogadaMesa11.getPontoSolto() == null
 				|| (stampUltimaJogadaOnline + 5000) > System
@@ -1931,6 +1933,34 @@ public class ControleJogo {
 				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
 			return;
 		}
+
+		mesa11to.setData(jogadaMesa11);
+		mesa11to.setComando(ConstantesMesa11.JOGADA);
+		esperandoJogadaOnline = true;
+		stampUltimaJogadaOnline = System.currentTimeMillis();
+		Object ret = enviarObjeto(mesa11to);
+		if (!ConstantesMesa11.OK.equals(ret)) {
+			esperandoJogadaOnline = false;
+		}
+	}
+	
+
+	private void efetuaJogadaCliente() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
+				dadosJogoSrvMesa11);
+		Point p1 = getPontoClicado();
+		Point p2 = getPontoPasando();
+		jogadaMesa11.setPontoClicado(p1);
+		jogadaMesa11.setPontoSolto(p2);
+		if (jogadaMesa11.getPontoClicado() == null
+				|| jogadaMesa11.getPontoSolto() == null
+				|| (stampUltimaJogadaOnline + 5000) > System
+						.currentTimeMillis()
+				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
+			return;
+		}
+
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
 		esperandoJogadaOnline = true;
