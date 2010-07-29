@@ -3,11 +3,14 @@ package br.mesa11.servidor;
 import br.hibernate.Time;
 import br.mesa11.conceito.ControleJogo;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.SessaoCliente;
 
 public class JogoServidor {
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 	private Time timeCasa;
 	private Time timeVisita;
+	private SessaoCliente sessaoClienteCasa;
+	private SessaoCliente sessaoClienteVisita;
 	private ControleJogo controleJogo;
 
 	public JogoServidor(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -45,6 +48,22 @@ public class JogoServidor {
 
 	public void setTimeVisita(Time timeVisita) {
 		this.timeVisita = timeVisita;
+	}
+
+	public SessaoCliente getSessaoClienteCasa() {
+		return sessaoClienteCasa;
+	}
+
+	public void setSessaoClienteCasa(SessaoCliente sessaoClienteCasa) {
+		this.sessaoClienteCasa = sessaoClienteCasa;
+	}
+
+	public SessaoCliente getSessaoClienteVisita() {
+		return sessaoClienteVisita;
+	}
+
+	public void setSessaoClienteVisita(SessaoCliente sessaoClienteVisita) {
+		this.sessaoClienteVisita = sessaoClienteVisita;
 	}
 
 }

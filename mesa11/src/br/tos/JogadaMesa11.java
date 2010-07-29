@@ -8,6 +8,8 @@ public class JogadaMesa11 implements Serializable {
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 	private Point pontoClicado;
 	private Point pontoSolto;
+	private int idGoleiro;
+	private double rotacaoGoleiro;
 
 	public JogadaMesa11(String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -46,6 +48,22 @@ public class JogadaMesa11 implements Serializable {
 
 	public void setPontoSolto(Point pontoSolto) {
 		this.pontoSolto = pontoSolto;
+	}
+
+	public int getIdGoleiro() {
+		return idGoleiro;
+	}
+
+	public void setIdGoleiro(int idGoleiro) {
+		this.idGoleiro = idGoleiro;
+	}
+
+	public double getRotacaoGoleiro() {
+		return rotacaoGoleiro;
+	}
+
+	public void setRotacaoGoleiro(double rotacaoGoleiro) {
+		this.rotacaoGoleiro = rotacaoGoleiro;
 	}
 
 }

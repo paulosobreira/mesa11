@@ -59,4 +59,14 @@ public class DadosMesa11 implements Serializable {
 		}
 	}
 
+	public SessaoCliente obterSessaoPeloNome(String nomeJogador) {
+		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iterator.next();
+			if (sessaoCliente.getNomeJogador().equals(nomeJogador)) {
+				return sessaoCliente;
+			}
+		}
+		return null;
+	}
+
 }

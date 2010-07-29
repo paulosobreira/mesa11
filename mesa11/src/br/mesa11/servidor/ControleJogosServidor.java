@@ -20,12 +20,13 @@ import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
 import br.tos.PosicaoBtnsSrvMesa11;
+import br.tos.SessaoCliente;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
 	private ControlePersistencia controlePersistencia;
 	private DadosMesa11 dadosMesa11;
-	private Map mapaJogos = new HashMap<String, JogoServidor>();
+	private Map<String, JogoServidor> mapaJogos = new HashMap<String, JogoServidor>();
 
 	public ControleJogosServidor(DadosMesa11 dadosMesa11,
 			ControlePersistencia controlePersistencia) {
@@ -80,6 +81,10 @@ public class ControleJogosServidor {
 		jogoSrvMesa11.setTimeCasa(timeCasa);
 		jogoSrvMesa11.setTimeVisita(timeVisita);
 		jogoSrvMesa11.setControleJogo(controleJogo);
+		jogoSrvMesa11.setSessaoClienteCasa(dadosMesa11
+				.obterSessaoPeloNome(dadosJogoSrvMesa11.getNomeCriador()));
+		jogoSrvMesa11.setSessaoClienteVisita(dadosMesa11
+				.obterSessaoPeloNome(dadosJogoSrvMesa11.getNomeVisitante()));
 		controleJogo.iniciaJogoOnline(jogoSrvMesa11.getDadosJogoSrvMesa11(),
 				timeCasa, timeVisita);
 
@@ -178,5 +183,14 @@ public class ControleJogosServidor {
 		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
 		mesa11to.setData(posicaoBtnsSrvMesa11);
 		return mesa11to;
+	}
+
+	public Map<String, JogoServidor> getMapaJogos() {
+		return mapaJogos;
+	}
+
+	public void removerClienteInativo(SessaoCliente sessaoClienteRemover) {
+		System.out.println("removerClienteInativo");
+
 	}
 }
