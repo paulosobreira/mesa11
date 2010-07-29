@@ -10,6 +10,7 @@ import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
 import br.tos.BotaoPosSrvMesa11;
@@ -107,6 +108,8 @@ public class ControleJogosServidor {
 					.tempoJogadaRestanteJogoFormatado());
 			dadosJogoSrvMesa11.setNumeroJogadasTimeCasa(controleJogo
 					.obterNumJogadas(jogoSrvMesa11.getTimeCasa()));
+			dadosJogoSrvMesa11.setNumeroJogadasTimeVisita(controleJogo
+					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
 
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -127,6 +130,7 @@ public class ControleJogosServidor {
 			jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
 					jogadaMesa11.getPontoSolto());
+			return ConstantesMesa11.OK;
 		}
 		return null;
 	}

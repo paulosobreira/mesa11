@@ -87,10 +87,9 @@ public class MonitorJogo extends Thread {
 					&& animacao.getTimeStamp() > timeStampAnimacao) {
 				timeStampAnimacao = animacao.getTimeStamp();
 				controleJogo.executaAnimacao(animacao);
-
 			}
-
 		}
+
 		// tempoDormir = controleChatCliente.getLatenciaReal();
 
 	}

@@ -89,10 +89,8 @@ public class Animador implements Runnable {
 				if (threadRodando == null) {
 					Animador animador = new Animador(animIn, controleJogo);
 					Thread thread = new Thread(animador);
-					if (!controleJogo.isJogoOnlineCliente()) {
-						controleJogo.getBotoesComThread().put(
-								animIn.getObjetoAnimacao(), thread);
-					}
+					controleJogo.getBotoesComThread().put(
+							animIn.getObjetoAnimacao(), thread);
 					thread.start();
 				}
 			}
