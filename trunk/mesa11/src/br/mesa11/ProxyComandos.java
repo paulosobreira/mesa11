@@ -52,6 +52,8 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.JOGADA.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.jogada((JogadaMesa11) mesa11TO
 					.getData());
+		} else if (ConstantesMesa11.SAIR_JOGO.equals(mesa11TO.getComando())) {
+			return controleJogosServidor.sairJogo((String) mesa11TO.getData());
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
 			return controleLogin.logar((ClienteMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.NOVO_USUARIO.equals(mesa11TO.getComando())) {

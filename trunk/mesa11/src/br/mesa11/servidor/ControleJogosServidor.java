@@ -191,6 +191,11 @@ public class ControleJogosServidor {
 
 	public void removerClienteInativo(SessaoCliente sessaoClienteRemover) {
 		System.out.println("removerClienteInativo");
+		sairJogo(sessaoClienteRemover.getNomeJogador());
+	}
 
+	public Object sairJogo(String nomeJogador) {
+		System.out.println("Sair JOgo");
+		return null;
 	}
 }
