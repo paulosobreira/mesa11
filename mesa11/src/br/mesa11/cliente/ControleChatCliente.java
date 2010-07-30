@@ -330,4 +330,11 @@ public class ControleChatCliente {
 		}
 
 	}
+
+	public void sairJogo() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
+		mesa11to.setData(sessaoCliente.getNomeJogador());
+		Object ret = enviarObjeto(mesa11to);
+	}
 }

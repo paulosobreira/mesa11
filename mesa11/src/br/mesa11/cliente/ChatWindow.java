@@ -89,11 +89,11 @@ public class ChatWindow {
 			return Lang.msg("verDetalhes");
 		}
 	};
-	private JButton classificacao = new JButton("Classificação") {
+	private JButton sairJogo = new JButton("sairJogo") {
 
 		public String getText() {
 
-			return Lang.msg("classificacao");
+			return Lang.msg("sairJogo");
 		}
 	};
 
@@ -199,9 +199,9 @@ public class ChatWindow {
 			}
 
 		});
-		classificacao.addActionListener(new ActionListener() {
+		sairJogo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				controleChatCliente.verClassificacao();
+				controleChatCliente.sairJogo();
 
 			}
 
@@ -290,7 +290,7 @@ public class ChatWindow {
 		buttonsPanel.add(verDetalhes);
 		buttonsPanel.add(criarTime);
 		buttonsPanel.add(editarTime);
-		buttonsPanel.add(classificacao);
+		buttonsPanel.add(sairJogo);
 		buttonsPanel.add(comboIdiomas);
 		comboIdiomas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -333,7 +333,7 @@ public class ChatWindow {
 		ChatWindow paddockWindow = new ChatWindow(null);
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(paddockWindow.getMainPanel());
-		frame.setSize(640, 480);
+		frame.setSize(740, 320);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
