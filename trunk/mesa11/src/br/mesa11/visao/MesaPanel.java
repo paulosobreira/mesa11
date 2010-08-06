@@ -32,8 +32,8 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-//	public final static Color green2 = new Color(0, 200, 0);
-//	public final static Color green = Color.GREEN;
+	// public final static Color green2 = new Color(0, 200, 0);
+	// public final static Color green = Color.GREEN;
 	public final static Color green2 = Color.white;
 	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
@@ -377,7 +377,10 @@ public class MesaPanel extends JPanel {
 					+ (limitesViewPort.getBounds().width / 3);
 			y = limitesViewPort.getBounds().y
 					+ (limitesViewPort.getBounds().height - 60);
-			// dicas
+			String dica = controleJogo.obterDica();
+			if (Util.isNullOrEmpty(dica)) {
+
+			}
 		}
 	}
 

@@ -441,11 +441,8 @@ public class ControlePartida {
 
 	public void verificaFalhaPorTempo() {
 		if (tempoJogadaFimMilis < System.currentTimeMillis()) {
-			campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
-					: ConstantesMesa11.CAMPO_BAIXO);
 			Logger.logar("verificaFalhaPorTempo");
-			zerarJogadas();
-			zerarTimerJogada();
+			reversaoJogada();
 		}
 	}
 
@@ -464,11 +461,11 @@ public class ControlePartida {
 			Time aux = timeBaixo;
 			timeBaixo = timeCima;
 			timeCima = aux;
-			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroCima);
+			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroBaixo);
 			if (!bateuCentroCima) {
 				zeraJogadaTime(timeCima);
 			}
-			controleFormacao.posicionaTimeBaixo(timeBaixo, !bateuCentroBaixo);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, !bateuCentroCima);
 			if (!bateuCentroBaixo) {
 				zeraJogadaTime(timeBaixo);
 			}
@@ -525,6 +522,7 @@ public class ControlePartida {
 		Logger.logar("reversaoJogada");
 		zerarJogadas();
 		zerarTimerJogada();
+		controleJogo.verificaIntervalo();
 	}
 
 	public void zeraJogadaTime(Time time) {

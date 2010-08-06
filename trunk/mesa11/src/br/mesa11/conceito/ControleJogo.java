@@ -1322,9 +1322,7 @@ public class ControleJogo {
 	}
 
 	public void reversaoJogada() {
-		controlePartida.zerarJogadas();
 		controlePartida.reversaoJogada();
-		verificaIntervalo();
 	}
 
 	public void zeraJogadaTime(Time time) {
@@ -1715,7 +1713,7 @@ public class ControleJogo {
 					try {
 						Thread.sleep(50);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						Logger.logarExept(e);
 					}
 				}
 				controlePartida.verificaIntervalo();
@@ -1917,7 +1915,7 @@ public class ControleJogo {
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
 	}
-	
+
 	private void sairJogoOnline() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
@@ -1943,7 +1941,6 @@ public class ControleJogo {
 			esperandoJogadaOnline = false;
 		}
 	}
-	
 
 	private void efetuaJogadaCliente() {
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -2060,6 +2057,11 @@ public class ControleJogo {
 			animacaoCliente.setTimeStamp(System.currentTimeMillis());
 		}
 
+	}
+
+	public String obterDica() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
