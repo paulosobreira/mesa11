@@ -1,86 +1,199 @@
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
 <%
-	response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
-	response.setHeader("Pragma", "no-cache"); //HTTP 1.0
-	response.setDateHeader("Expires", -1); //evita o caching no servidor proxy
+    response.setHeader("Cache-Control","no-cache"); //HTTP 1.1
+    response.setHeader("Pragma","no-cache"); //HTTP 1.0
+    response.setDateHeader ("Expires", -1); //evita o caching no servidor proxy
 %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-<title>Mesa 11 Online</title>
+<title>Mesa-11</title>
+<META NAME="description"
+	CONTENT="Futebol de botão,times,futebol,campeonato brasileiro">
+
 <style type="text/css">
-.class1 A:link {
+div {
+	cursor: pointer;
+	font-family: sans-serif;
+}
+
+table{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+}
+
+A:link {text-decoration: none; 
+		color: #0084B4;}
+A:visited {text-decoration: none;
+		color: #0084B4;} 
+A:active {text-decoration: none;
+		color: #0084B4;}
+A:hover {text-decoration: underline overline; color: black;}
+
+#link {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	text-align: center;
+	padding: 3px;
+	padding-left: 20px;
+	padding-right: 20px;
+	cursor: pointer;
+	font-family: sans-serif;
+	color: #0084B4;
 	text-decoration: none;
-	color: white;
 }
 
-.class1 A:visited {
-	text-decoration: none;
-	color: white;
+
+img {
+	border-style: none;
+	border-width: 0px;
+	border-color: #5C5E5D;
+	padding: 10px;
+	padding-left: 0px;
+	padding-right: 0px;
 }
 
-.class1 A:active {
-	text-decoration: none;
-	color: white;
+#title {
+	border-style: none;
+	text-align: left;
+	font-family: Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 24px;
+	height: 100px;
 }
 
-.class1 A:hover {
-	text-decoration: underline;
-	color: black;
+#adds {
+	font-family: Arial, sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	position: relative;
+	float :left;
 }
 
-.class2 A:link {
-	text-decoration: none;
-	color: black;
+#main{
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B8CFE5;
+	padding: 3px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-style: none;
+	position: relative;
+	float: right;	
 }
 
-.class2 A:visited {
-	text-decoration: none;
-	color: black;
+#shots{
+	text-align: left;
+	padding: 0px;
 }
 
-.class2 A:active {
-	text-decoration: none;
-	color: black;
-}
-
-.class2 A:hover {
-	text-decoration: underline;
-	color: black;
+#description {
+	color: #666666;
+	font-size: 13px;
+	font-style: italic;
 }
 </style>
+<script type="text/javascript" src="highslide/highslide-full.js"></script>
+<link rel="stylesheet" type="text/css" href="highslide/highslide.css" />
+
+<!--
+	2) Optionally override the settings defined at the top
+	of the highslide.js file. The parameter hs.graphicsDir is important!
+-->
+
+<script type="text/javascript">
+	
+	hs.graphicsDir = 'highslide/graphics/';
+	hs.align = 'center';
+	hs.transitions = ['expand', 'crossfade'];
+	hs.outlineType = 'rounded-white';
+	hs.fadeInOut = true;
+	hs.dimmingOpacity = 0.75;
+
+	// define the restraining box
+	hs.useBox = true;
+	hs.width = 800;
+	hs.height = 600;
+
+	// Add the controlbar
+	hs.addSlideshow({
+		//slideshowGroup: 'group1',
+		interval: 5000,
+		repeat: false,
+		useControls: true,
+		fixedControls: 'fit',
+		overlayOptions: {
+			opacity: 1,
+			position: 'bottom center',
+			hideOnMouseOut: true
+		}
+	});
+
+
+	
+</script>
+
 </head>
-<body style="background-color: white">
+<body>
 <center>
-
-<div><applet code="br.applet.Mesa11Applet.class"
-	archive="mesa11.jar" width="850px" height="480px"></applet></div>
-<div>
-	<span class="class2"> 
-		<a	href="http://sowbreira.appspot.com/">http://sowbreira.appspot.com/</a>
-	</span> 
-	<br>
-	<span class="class2">
-		<a href="http://www.java.com/pt_BR/">
-			Se abaixo nao aparecer nada Clique Aqui e instale a versao mais nova do
-			Java. 
-		</a>
-		<br>
-		<a href="http://sowbreira.appspot.com/f1mane/F1Mane.html">
-			Vers&atilde;odo Jogo modo 1 jogador 
-		</a> 
-		<a href="ServletBaseDados?tipo="> Bkp dados
-		</a>
-	</span>
-
-	<span class="class2"> <a href="mailto:sowbreira@gmail.com">
-		Duvidas, Criticas, Sugestões, Bugs ,Colaborar ...</a> 
-	</span>
-</div>
+<table >
+	<tr> 
+	<td>
+	<div id="adds">
+		<script type="text/javascript"><!--
+		google_ad_client = "pub-1471236111248665";
+		/* 120x600, criado 14/06/10 */
+		google_ad_slot = "5219714006";
+		google_ad_width = 120;
+		google_ad_height = 600;
+		//-->
+		</script>
+		<script type="text/javascript"
+		src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+		</script>
+	</div>
+	</td>
+	<td>
+	<div id="main">
+		<div id="title">	
+			<span >Mesa-11
+				<h1 id="description">Futebol de botão</h1>
+			</span>
+			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
+				href="http://twitter.com/mesa11" style="text-align: right;"
+				target="_BLANK">Twitter</a>
+			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
+				href="http://sowbreira.appspot.com/" style="text-align: right;"
+				target="_BLANK">Site Autor</a>
+			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
+				href="mailto:sowbreira@gmail.com" style="text-align: right;"
+				target="_BLANK">Sugestões, Bugs ,Colaborar ...</a>		
+			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
+				href="http://www.java.com/" style="text-align: right;"
+				target="_BLANK">Instale o Java</a>
+			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
+				href="F1Mane.html" style="text-align: right;"
+				target="_BLANK">Versao 1 Jogador</a>	
+			<br>					
+		</div>
+		<div style="text-align: left;">
+			<applet code="br.applet.Mesa11Applet.class"	archive="mesa11.jar" width="820px" height="380px"> 
+			</applet>
+		</div>
+		<div id="shots" class="highslide-gallery">
+			<a href="fm1.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm1.jpg" width="130" height="120" /></a>
+			<a href="fm2.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm2.jpg" width="130" height="120" /></a>
+			<a href="fm3.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm3.jpg" width="130" height="120" /></a>
+			<a href="fm4.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm4.jpg" width="130" height="120" /></a>
+			<a href="fm5.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm5.jpg" width="130" height="120" /></a>
+			<a href="fm6.jpg" onclick="if (!(navigator.userAgent.indexOf('Firefox')==-1)) {return hs.expand(this)}"> <img src="fm6.jpg" width="130" height="120" /></a>
+		</div>
+	</div>
+	</td>
+	</tr>
+</table>
 </center>
 </body>
 </html>
