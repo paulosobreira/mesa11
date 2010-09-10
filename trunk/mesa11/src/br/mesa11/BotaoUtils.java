@@ -132,8 +132,6 @@ public class BotaoUtils {
 				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
 		graphics.setColor(cor3);
 		graphics.setStroke(new BasicStroke(2.5f));
-		// graphics.drawOval(5, 5, botao.getDiamentro() - 10,
-		// botao.getDiamentro() - 10);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics

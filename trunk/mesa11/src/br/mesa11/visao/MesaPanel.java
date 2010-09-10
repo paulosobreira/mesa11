@@ -32,10 +32,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	// public final static Color green2 = new Color(0, 200, 0);
-	// public final static Color green = Color.GREEN;
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -238,23 +238,12 @@ public class MesaPanel extends JPanel {
 					continue;
 				}
 				Botao botao = (Botao) botoes.get(id);
-				// g.setColor(Color.RED);
-				// if (botao.getDestino() != null) {
-				// g.drawLine((int) (botao.getCentro().x * zoom), (int) (botao
-				// .getCentro().y * zoom),
-				// (int) (botao.getDestino().x * zoom), (int) (botao
-				// .getDestino().y * zoom));
-				// }
 				if (botao instanceof Goleiro) {
 					Goleiro goleiro = (Goleiro) botao;
 					desenhaGoleiro(goleiro, g2d);
 				} else {
 					desenhaBotao(botao, g2d);
 				}
-				// g.drawOval((int) (botao.getPosition().x * ZOOM), (int) (botao
-				// .getPosition().y * ZOOM),
-				// (int) (botao.getDiamentro() * ZOOM), (int) (botao
-				// .getDiamentro() * ZOOM));
 
 			}
 			desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
@@ -505,18 +494,21 @@ public class MesaPanel extends JPanel {
 				BufferedImage.TYPE_INT_ARGB);
 
 		affineTransformOp.filter(botaoImg, zoomBuffer);
-		BufferedImage newBuffer = new BufferedImage(
-				(int) (botaoImg.getWidth() * zoom),
-				(int) (botaoImg.getHeight() * zoom),
-				BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-		Ellipse2D externo = new Ellipse2D.Double(0, 0,
-				(botao.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
+
 		if (botao.getId() == 0) {
+			BufferedImage newBuffer = new BufferedImage((int) (botaoImg
+					.getWidth() * zoom), (int) (botaoImg.getHeight() * zoom),
+					BufferedImage.TYPE_INT_ARGB);
+
+			Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+			Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao
+					.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
 			graphics2d.setClip(externo);
+			graphics2d.drawImage(zoomBuffer, 0, 0, null);
+			zoomBuffer = newBuffer;
+
 		}
-		graphics2d.drawImage(zoomBuffer, 0, 0, null);
-		g.drawImage(newBuffer, botx, boty, null);
+		g.drawImage(zoomBuffer, botx, boty, null);
 		// g.setColor(Color.black);
 		// g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
 		// .inte(botao.getDiamentro() * zoom));
