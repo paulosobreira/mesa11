@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.List;
 
+import br.hibernate.Goleiro;
 import br.mesa11.visao.MesaPanel;
 
 public class MesaMouseMotionListener implements MouseMotionListener {
@@ -25,7 +26,6 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 			controleJogo.getBotaoSelecionado().setCentro(p);
 		}
 		controleJogo.setPontoPasando(p);
-
 	}
 
 	@Override
