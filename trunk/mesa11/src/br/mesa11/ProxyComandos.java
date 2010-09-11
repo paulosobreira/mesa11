@@ -36,7 +36,7 @@ public class ProxyComandos {
 	public Object processarObjeto(Object object) {
 		Mesa11TO mesa11TO = (Mesa11TO) object;
 		if (ConstantesMesa11.ATUALIZAR_VISAO.equals(mesa11TO.getComando())) {
-			return atualizarDadosVisao();
+			return atualizarDadosVisao(mesa11TO);
 		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
 				.getComando())) {
 			return controleJogosServidor.obterDadosJogo((String) mesa11TO
@@ -94,13 +94,12 @@ public class ProxyComandos {
 		return null;
 	}
 
-	private Object atualizarDadosVisao() {
-		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setData(dadosMesa11);
+	private Object atualizarDadosVisao(Mesa11TO mesa11to) {
 		if (mesa11to.getSessaoCliente() != null) {
 			controleChatServidor.atualizaSessaoCliente(mesa11to
 					.getSessaoCliente());
 		}
+		mesa11to.setData(dadosMesa11);
 		return mesa11to;
 	}
 
