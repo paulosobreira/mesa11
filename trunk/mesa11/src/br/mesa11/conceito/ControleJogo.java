@@ -2002,7 +2002,8 @@ public class ControleJogo {
 	public void atualizaBotoesClienteOnline() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
-		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo() + "-"
+				+ timeClienteOnline);
 		Object ret = enviarObjeto(mesa11to);
 		if (ret != null && ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
@@ -2062,6 +2063,10 @@ public class ControleJogo {
 	public String obterDica() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Animacao getAnimacaoCliente() {
+		return animacaoCliente;
 	}
 
 }
