@@ -11,6 +11,7 @@ import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
 import br.recursos.Lang;
 import br.tos.BotaoPosSrvMesa11;
@@ -150,12 +151,19 @@ public class ControleJogosServidor {
 		return mesa11to;
 	}
 
-	public Object obterPosicaoBotoes(String nomejogo) {
-		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
+	public Object obterPosicaoBotoes(String... dadosJogo) {
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(dadosJogo[0]);
 		if (jogoSrvMesa11 == null) {
 			return new MsgSrv(Lang.msg("jogoInexistente"));
 		}
 		if (jogoSrvMesa11.getControleJogo().isAnimando()) {
+			return null;
+		}
+		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
+		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
+				.getAnimacaoCliente();
+		if (animacaoCliente != null
+				&& tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
 			return null;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
