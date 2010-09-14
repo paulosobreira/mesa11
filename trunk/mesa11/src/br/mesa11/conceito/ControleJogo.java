@@ -388,7 +388,7 @@ public class ControleJogo {
 		List trajetoriaBotao = animacao.getPontosAnimacao();
 		Set bolaIngnora = new HashSet();
 		boolean bolaBateu = false;
-		for (int i = 0; i < trajetoriaBotao.size(); i++) {
+		for (int i = 0; i < trajetoriaBotao.size(); i += 5) {
 			Object objTrajetoria = trajetoriaBotao.get(i);
 			if (objTrajetoria instanceof Point) {
 				Point point = (Point) objTrajetoria;
@@ -496,7 +496,9 @@ public class ControleJogo {
 										.setEventoCod(ConstantesMesa11.CONTATO_BOTAO_BOLA);
 								detAtingido *= 0.05;
 							} else {
-								Logger.logar("Teste");
+								Logger
+										.logar("botaoAnalisado "
+												+ botaoAnalisado);
 								detAtingido *= 0.3;
 							}
 
@@ -1322,6 +1324,9 @@ public class ControleJogo {
 	}
 
 	public void reversaoJogada() {
+		if (isJogoOnlineCliente()) {
+			return;
+		}
 		controlePartida.reversaoJogada();
 	}
 
@@ -1978,7 +1983,7 @@ public class ControleJogo {
 		return animacaoCliente;
 	}
 
-	public void executaAnimacao(Animacao animacao) {
+	public void executaAnimacao(final Animacao animacao) {
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
 		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
@@ -1993,17 +1998,17 @@ public class ControleJogo {
 						e.printStackTrace();
 					}
 				}
-				atualizaBotoesClienteOnline();
+				atualizaBotoesClienteOnline(animacao.getTimeStamp());
 			}
 		});
 		threadAtualizaBotoesClienteOnline.start();
 	}
 
-	public void atualizaBotoesClienteOnline() {
+	public void atualizaBotoesClienteOnline(long timeStampAnimacao) {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo() + "-"
-				+ timeClienteOnline);
+				+ timeStampAnimacao);
 		Object ret = enviarObjeto(mesa11to);
 		if (ret != null && ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
@@ -2027,8 +2032,9 @@ public class ControleJogo {
 					}
 				}
 			}
-			esperandoJogadaOnline = false;
 		}
+		esperandoJogadaOnline = false;
+
 		centralizaBola();
 
 	}

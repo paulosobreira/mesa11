@@ -262,7 +262,7 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 250);
+				return new Dimension(120, 300);
 			}
 		};
 		usersPanel.add(jogsPane);
@@ -270,14 +270,14 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 100);
+				return new Dimension(120, 130);
 			}
 		};
 		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 100);
+				return new Dimension(120, 130);
 			}
 		};
 		jogsPanelCriados.add(jogsCriados);
@@ -333,7 +333,7 @@ public class ChatWindow {
 		ChatWindow paddockWindow = new ChatWindow(null);
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(paddockWindow.getMainPanel());
-		frame.setSize(740, 320);
+		frame.setSize(820, 380);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
@@ -392,36 +392,6 @@ public class ChatWindow {
 			chatTimes.add(dadosMesa11.getDataTime());
 		}
 	}
-
-	// public JPanel gerarPainelJogadores(DetalhesJogo detalhesJogo) {
-	// JPanel panelJogadores = new JPanel();
-	//
-	// Map detMap = detalhesJogo.getJogadoresPilotos();
-	// panelJogadores.setLayout(new GridLayout(detMap.size(), 2));
-	// for (Iterator iter = detMap.keySet().iterator(); iter.hasNext();) {
-	// String key = (String) iter.next();
-	// panelJogadores.add(new JLabel(key + ": "));
-	// panelJogadores.add(new JLabel((String) detMap.get(key)));
-	// }
-	// if (detMap.isEmpty()) {
-	// panelJogadores.add(new JLabel("Nenhum ") {
-	//
-	// public String getText() {
-	//
-	// return Lang.msg("202");
-	// }
-	// });
-	// panelJogadores.add(new JLabel("Jogador") {
-	//
-	// public String getText() {
-	//
-	// return Lang.msg("162");
-	// }
-	// });
-	//
-	// }
-	// return panelJogadores;
-	// }
 
 	public void mostrarDetalhesJogador(Object object) {
 		// JPanel panel = new JPanel();

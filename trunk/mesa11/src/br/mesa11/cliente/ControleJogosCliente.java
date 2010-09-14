@@ -361,7 +361,8 @@ public class ControleJogosCliente {
 				return Lang.msg("escolhaTime");
 			}
 		});
-		panelComboTimes.add(new JLabel(dadosJogoSrvMesa11.getTimeCasa()));
+		panelComboTimes.add(new JLabel(dadosJogoSrvMesa11.getTimeCasa() + " "
+				+ dadosJogoSrvMesa11.getNomeCriador()));
 		panelComboTimes.add(jComboBoxTimes);
 		JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
 		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);

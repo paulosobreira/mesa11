@@ -76,7 +76,7 @@ public class MonitorJogo extends Thread {
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()) {
 				dormir(tempoDormir);
-				controleJogo.atualizaBotoesClienteOnline();
+				controleJogo.atualizaBotoesClienteOnline(this.timeStampAnimacao);
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		}
@@ -97,9 +97,6 @@ public class MonitorJogo extends Thread {
 				controleJogo.executaAnimacao(animacao);
 			}
 		}
-
-		// tempoDormir = controleChatCliente.getLatenciaReal();
-
 	}
 
 	private void iniciaJogo() {
