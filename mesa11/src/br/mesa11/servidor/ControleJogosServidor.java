@@ -117,7 +117,7 @@ public class ControleJogosServidor {
 					.obterNumJogadas(jogoSrvMesa11.getTimeCasa()));
 			dadosJogoSrvMesa11.setNumeroJogadasTimeVisita(controleJogo
 					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
-
+			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());

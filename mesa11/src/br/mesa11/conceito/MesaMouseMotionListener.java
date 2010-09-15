@@ -30,6 +30,9 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
 		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
 				.getPoint().y / mesaPanel.zoom));
 		controleJogo.setPontoPasando(p);

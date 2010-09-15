@@ -91,6 +91,8 @@ public class ControleJogo {
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
 	private long stampUltimaJogadaOnline;
+	private String dica;
+	private boolean jogoTerminado;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -1282,6 +1284,9 @@ public class ControleJogo {
 		if (controlePartida == null) {
 			return "";
 		}
+		if (jogoTerminado) {
+			return "0";
+		}
 		return controlePartida.tempoRestanteJogoFormatado();
 	}
 
@@ -1291,6 +1296,9 @@ public class ControleJogo {
 		}
 		if (controlePartida == null) {
 			return "";
+		}
+		if (jogoTerminado) {
+			return "0";
 		}
 		return controlePartida.tempoJogadaRestanteJogoFormatado();
 	}
@@ -1710,23 +1718,6 @@ public class ControleJogo {
 		controlePartida.zerarJogadas();
 	}
 
-	public void verificaIntervalo() {
-		Thread thread = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (isAnimando()) {
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						Logger.logarExept(e);
-					}
-				}
-				controlePartida.verificaIntervalo();
-			}
-		});
-		thread.start();
-	}
-
 	public Goleiro obterGoleiroCima() {
 		return controlePartida.getTimeCima().obterGoleiro();
 	}
@@ -1828,9 +1819,23 @@ public class ControleJogo {
 							evento
 									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
 						} else {
-							goleiro.setCentro(p2);
-							evento.setPonto(p2);
-							evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+							Point centroGoleiro = goleiro.getCentro();
+							goleiro.setCentroTodos(p2);
+							if ((goleiro.getTime().equals(getTimeCima()) && mesaPanel
+									.getGrandeAreaCima().contains(
+											goleiro.getShape(1).getBounds()))
+									|| (goleiro.getTime()
+											.equals(getTimeBaixo()) && mesaPanel
+											.getGrandeAreaBaixo().contains(
+													goleiro.getShape(1)
+															.getBounds()))) {
+								goleiro.setCentroTodos(p2);
+								evento.setPonto(p2);
+								evento
+										.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+							} else {
+								goleiro.setCentroTodos(centroGoleiro);
+							}
 						}
 						setPontoClicado(null);
 						return;
@@ -1874,6 +1879,7 @@ public class ControleJogo {
 				}
 				setLateral(null);
 				if (botao instanceof Goleiro) {
+					setPontoClicado(null);
 					return;
 				}
 				double angulo = GeoUtil.calculaAngulo(botao.getCentro(), p2,
@@ -1902,6 +1908,7 @@ public class ControleJogo {
 
 		}
 		if (animacaoJogada == null) {
+			setPontoClicado(null);
 			return;
 		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
@@ -2066,13 +2073,27 @@ public class ControleJogo {
 
 	}
 
-	public String obterDica() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public Animacao getAnimacaoCliente() {
 		return animacaoCliente;
+	}
+
+	public String getDica() {
+		return dica;
+	}
+
+	public void setDica(String dica) {
+		this.dica = dica;
+	}
+
+	public boolean isJogoTerminado() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.isJogoTerminado();
+		}
+		return jogoTerminado;
+	}
+
+	public void setJogoTerminado(boolean jogoTerminado) {
+		this.jogoTerminado = jogoTerminado;
 	}
 
 }

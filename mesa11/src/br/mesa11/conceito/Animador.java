@@ -41,6 +41,9 @@ public class Animador implements Runnable {
 			Object object = (Object) elements.get(i);
 			if (object instanceof Point) {
 				Point point = (Point) object;
+				if (i % 2 == 0) {
+					continue;
+				}
 				if (controleJogo.verificaForaDosLimites(point)) {
 					return;
 				}

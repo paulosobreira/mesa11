@@ -71,6 +71,7 @@ public class ControlePartida {
 	private boolean bateuCentroBaixo;
 	private boolean segundoUniformeCima;
 	private boolean segundoUniformeBaixo;
+	private Thread timerJogo;
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -247,9 +248,12 @@ public class ControlePartida {
 			}
 		});
 		JComboBox tempoJogoCombo = new JComboBox();
+		tempoJogoCombo.addItem(new Integer(5));
 		tempoJogoCombo.addItem(new Integer(10));
+		tempoJogoCombo.addItem(new Integer(15));
 		tempoJogoCombo.addItem(new Integer(20));
 		tempoJogoCombo.addItem(new Integer(30));
+		tempoJogoCombo.addItem(new Integer(45));
 		tempoJogoPanel.add(tempoJogoCombo);
 		tempoJogoPanel.add(new JLabel() {
 			@Override
@@ -380,6 +384,14 @@ public class ControlePartida {
 		tempoJogadaSegundos = (Integer) selectedItem;
 		this.campoTimeComBola = timeComBola;
 		zerarTimerJogada();
+		if (controleJogo.isJogoOnlineCliente()) {
+			return;
+		}
+		if (timerJogo != null) {
+			timerJogo.interrupt();
+		}
+		timerJogo = new TimerJogo(this, controleJogo);
+		timerJogo.start();
 		Logger.logar("timeComBola " + timeComBola);
 	}
 
@@ -435,7 +447,6 @@ public class ControlePartida {
 		if (Util.isNullOrEmpty(campoTimeComBola)) {
 			return "";
 		}
-		verificaFalhaPorTempo();
 		return formatarTempo(tempoJogadaFimMilis - System.currentTimeMillis());
 	}
 
@@ -457,17 +468,20 @@ public class ControlePartida {
 		if (virouTimes) {
 			return;
 		}
+		if (controleJogo.isAnimando()) {
+			return;
+		}
 		if (System.currentTimeMillis() > (inicioJogoMilis + (tempoJogoMilis / 2))) {
 			Time aux = timeBaixo;
 			timeBaixo = timeCima;
 			timeCima = aux;
 			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroBaixo);
 			if (!bateuCentroCima) {
-				zeraJogadaTime(timeCima);
+				zeraJogadaTime(timeBaixo);
 			}
 			controleFormacao.posicionaTimeBaixo(timeBaixo, !bateuCentroCima);
 			if (!bateuCentroBaixo) {
-				zeraJogadaTime(timeBaixo);
+				zeraJogadaTime(timeCima);
 			}
 			centralizaGoleiroBaixo();
 			centralizaGoleiroCima();
@@ -522,7 +536,6 @@ public class ControlePartida {
 		Logger.logar("reversaoJogada");
 		zerarJogadas();
 		zerarTimerJogada();
-		controleJogo.verificaIntervalo();
 	}
 
 	public void zeraJogadaTime(Time time) {
@@ -675,12 +688,14 @@ public class ControlePartida {
 				timeCima = timeVisita;
 				timeBaixo = timeCasa;
 				timeBola = timeBaixo;
+				bateuCentroBaixo = true;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeVisita, false);
 				controleFormacao.posicionaTimeCima(timeCasa, true);
 				timeCima = timeCasa;
 				timeBaixo = timeVisita;
 				timeBola = timeCima;
+				bateuCentroCima = true;
 			}
 		}
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
@@ -692,12 +707,14 @@ public class ControlePartida {
 				timeCima = timeCasa;
 				timeBaixo = timeVisita;
 				timeBola = timeBaixo;
+				bateuCentroBaixo = true;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeCasa, false);
 				controleFormacao.posicionaTimeCima(timeVisita, true);
 				timeCima = timeVisita;
 				timeBaixo = timeCasa;
 				timeBola = timeCima;
+				bateuCentroCima = true;
 			}
 		}
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
@@ -745,5 +762,17 @@ public class ControlePartida {
 					.getDadosJogoSrvMesa11().getTempoJogoJogada(),
 					campoTimeComBola);
 		}
+	}
+
+	public void verificaFimJogo() {
+		if (controleJogo.isAnimando()) {
+			return;
+		}
+		if (System.currentTimeMillis() > fimJogoMilis) {
+			controleJogo.setDica("fimJogo");
+			controleJogo.setJogoTerminado(true);
+			Logger.logar("fimJogo");
+		}
+
 	}
 }
