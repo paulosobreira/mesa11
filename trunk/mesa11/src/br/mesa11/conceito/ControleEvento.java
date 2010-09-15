@@ -105,7 +105,6 @@ public class ControleEvento implements Runnable {
 				}
 			}
 		}
-		controleJogo.verificaIntervalo();
 		controleJogo.configuraAnimacaoServidor();
 
 	}

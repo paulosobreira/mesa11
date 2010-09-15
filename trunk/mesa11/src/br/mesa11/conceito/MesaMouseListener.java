@@ -30,6 +30,9 @@ public class MesaMouseListener implements MouseListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
 		if (controleJogo.isAnimando() || controleJogo.getPontoClicado() == null
 				&& controleJogo.getPontoPasando() == null
 				|| (MouseEvent.BUTTON1 != e.getButton()) || botoes == null) {
@@ -47,10 +50,16 @@ public class MesaMouseListener implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
 		selecionaBotao(e);
 	}
 
 	private void selecionaBotao(MouseEvent e) {
+		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
 		Point pontoClicado = new Point((int) (e.getPoint().x / mesaPanel.zoom),
 				(int) (e.getPoint().y / mesaPanel.zoom));
 		if (MouseEvent.BUTTON3 == e.getButton()) {

@@ -361,15 +361,19 @@ public class MesaPanel extends JPanel {
 								y);
 			}
 		}
-		if (controleJogo.isEsperandoJogadaOnline()) {
-			x = limitesViewPort.getBounds().x
-					+ (limitesViewPort.getBounds().width / 3);
-			y = limitesViewPort.getBounds().y
-					+ (limitesViewPort.getBounds().height - 60);
-			String dica = controleJogo.obterDica();
-			if (Util.isNullOrEmpty(dica)) {
-
-			}
+		x = limitesViewPort.getBounds().x
+				+ (limitesViewPort.getBounds().width / 2);
+		y = limitesViewPort.getBounds().y
+				+ (limitesViewPort.getBounds().height - 60);
+		String dica = controleJogo.getDica();
+		if (!Util.isNullOrEmpty(dica)) {
+			g2d.setColor(lightWhite);
+			String msg = Lang.msg(dica);
+			int largura = msg.length() * 7;
+			x -= largura / 2;
+			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(msg, x, y);
 		}
 	}
 

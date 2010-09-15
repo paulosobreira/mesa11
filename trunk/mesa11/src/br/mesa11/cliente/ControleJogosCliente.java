@@ -169,9 +169,10 @@ public class ControleJogosCliente {
 			}
 		});
 		JComboBox tempoJogoCombo = new JComboBox();
+		tempoJogoCombo.addItem(new Integer(5));
 		tempoJogoCombo.addItem(new Integer(10));
+		tempoJogoCombo.addItem(new Integer(15));
 		tempoJogoCombo.addItem(new Integer(20));
-		tempoJogoCombo.addItem(new Integer(30));
 		opcoesJogoPanel.add(tempoJogoCombo);
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
@@ -180,11 +181,11 @@ public class ControleJogosCliente {
 			}
 		});
 		JComboBox tempoJogadaCombo = new JComboBox();
-		tempoJogadaCombo.addItem(new Integer(20));
 		tempoJogadaCombo.addItem(new Integer(30));
 		tempoJogadaCombo.addItem(new Integer(40));
 		tempoJogadaCombo.addItem(new Integer(50));
 		tempoJogadaCombo.addItem(new Integer(60));
+		tempoJogadaCombo.addItem(new Integer(90));
 		opcoesJogoPanel.add(tempoJogadaCombo);
 
 		JComboBox campoBolaCombo = new JComboBox();
