@@ -21,7 +21,6 @@ public class MonitorJogo extends Thread {
 	private String timeVez;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
-	private long contAtualizacao;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -37,22 +36,15 @@ public class MonitorJogo extends Thread {
 
 	@Override
 	public void run() {
-		System.out.println("run timeClienteOnline " + timeClienteOnline);
 		while (controleChatCliente.isComunicacaoServer()) {
 			dormir(tempoDormir);
-			contAtualizacao++;
 			if (timesSelecionados() && controleJogo == null) {
 				iniciaJogo();
 			}
-			if (controleJogo != null) {
+			if (controleJogo != null && !controleJogo.isJogoTerminado()) {
 				atualizaDadosJogoSrvMesa11();
 			}
-
-			// && controleJogosCliente
-			// .verificaJogosNasListas(dadosJogoSrvMesa11
-			// .getNomeJogo()
 		}
-		System.out.println("end run timeClienteOnline " + timeClienteOnline);
 	}
 
 	private void dormir(long i) {
@@ -76,7 +68,8 @@ public class MonitorJogo extends Thread {
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()) {
 				dormir(tempoDormir);
-				controleJogo.atualizaBotoesClienteOnline(this.timeStampAnimacao);
+				controleJogo
+						.atualizaBotoesClienteOnline(this.timeStampAnimacao);
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		}
@@ -107,15 +100,16 @@ public class MonitorJogo extends Thread {
 		Object ret = enviarObjeto(mesa11to);
 		mesa11to = (Mesa11TO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
+		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
+				.isSegundoUniformeTimeCasa());
 		mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
 		mesa11to = (Mesa11TO) ret;
 		Time timeVisita = (Time) mesa11to.getData();
-		System.out.println("iniciaJogo()");
-		System.out.println("timeCasa " + timeCasa);
-		System.out.println("timeVisita " + timeVisita);
+		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
+				.isSegundoUniformeTimeVisita());
 		controleJogo = new ControleJogo(mesa11Applet, timeClienteOnline,
 				dadosJogoSrvMesa11);
 		controleJogo.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa, timeVisita);
