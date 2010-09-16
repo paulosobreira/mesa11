@@ -28,6 +28,15 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoJogoFormatado;
 	private String tempoRestanteJogoFormatado;
 	private String tempoJogadaRestanteJogoFormatado;
+	private String dica;
+
+	public String getDica() {
+		return dica;
+	}
+
+	public void setDica(String dica) {
+		this.dica = dica;
+	}
 
 	public String getTempoJogadaRestanteJogoFormatado() {
 		return tempoJogadaRestanteJogoFormatado;

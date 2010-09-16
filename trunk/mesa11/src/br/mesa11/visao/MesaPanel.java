@@ -19,6 +19,8 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
+import org.apache.commons.collections.map.HashedMap;
+
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
@@ -486,6 +488,18 @@ public class MesaPanel extends JPanel {
 		}
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				zoom, zoom);
+//		Map hints = new HashedMap();
+//		hints.put(RenderingHints.KEY_ANTIALIASING,
+//				RenderingHints.VALUE_ANTIALIAS_ON);
+//		hints.put(RenderingHints.KEY_RENDERING,
+//				RenderingHints.VALUE_RENDER_QUALITY);
+//		hints.put(RenderingHints.KEY_DITHERING,
+//				RenderingHints.VALUE_DITHER_ENABLE);
+//		hints.put(RenderingHints.KEY_INTERPOLATION,
+//				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//
+//		
+//		RenderingHints renderingHints = new RenderingHints(hints);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
 				affineTransform, AffineTransformOp.TYPE_BILINEAR);
 		BufferedImage botaoImg = (BufferedImage) controleJogo

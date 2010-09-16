@@ -78,8 +78,12 @@ public class ControleJogosServidor {
 				.getDadosJogoSrvMesa11();
 		Time timeCasa = controlePersistencia.obterTime(dadosJogoSrvMesa11
 				.getTimeCasa());
+		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
+				.isSegundoUniformeTimeCasa());
 		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
 				.getTimeVisita());
+		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
+				.isSegundoUniformeTimeVisita());
 		jogoSrvMesa11.setTimeCasa(timeCasa);
 		jogoSrvMesa11.setTimeVisita(timeVisita);
 		jogoSrvMesa11.setControleJogo(controleJogo);
@@ -118,6 +122,7 @@ public class ControleJogosServidor {
 			dadosJogoSrvMesa11.setNumeroJogadasTimeVisita(controleJogo
 					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
 			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
+			dadosJogoSrvMesa11.setDica(controleJogo.getDica());
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());
@@ -134,10 +139,14 @@ public class ControleJogosServidor {
 		if (controleJogo.timeJogadaVez().getNome().equals(
 				jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
-			jogoSrvMesa11.getControleJogo().efetuaJogada(
+			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
-					jogadaMesa11.getPontoSolto());
-			return ConstantesMesa11.OK;
+					jogadaMesa11.getPontoSolto())) {
+				return ConstantesMesa11.OK;
+			} else {
+				return null;
+			}
+
 		}
 		return null;
 	}
@@ -163,9 +172,10 @@ public class ControleJogosServidor {
 		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
 		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
 				.getAnimacaoCliente();
+		boolean pulaPosicaoBotoes = false;
 		if (animacaoCliente != null
 				&& tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
-			return null;
+			pulaPosicaoBotoes = true;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
@@ -175,15 +185,15 @@ public class ControleJogosServidor {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) jogoSrvMesa11.getControleJogo().getBotoes()
 					.get(id);
+			if (!(botao instanceof Goleiro) && pulaPosicaoBotoes) {
+				continue;
+			}
 			BotaoPosSrvMesa11 botaoPosSrvMesa11 = new BotaoPosSrvMesa11();
 			botaoPosSrvMesa11.setId(id);
 			botaoPosSrvMesa11.setPos(botao.getCentro());
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				botaoPosSrvMesa11.setRotacao(goleiro.getRotacao());
-			}
-			if (botao instanceof Bola) {
-				System.out.println("envia bola pos");
 			}
 			botaoPosSrvMesa11List.add(botaoPosSrvMesa11);
 

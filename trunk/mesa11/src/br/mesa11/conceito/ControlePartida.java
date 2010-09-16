@@ -689,6 +689,7 @@ public class ControlePartida {
 				timeBaixo = timeCasa;
 				timeBola = timeBaixo;
 				bateuCentroBaixo = true;
+				bateuCentroCima = false;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeVisita, false);
 				controleFormacao.posicionaTimeCima(timeCasa, true);
@@ -696,6 +697,7 @@ public class ControlePartida {
 				timeBaixo = timeVisita;
 				timeBola = timeCima;
 				bateuCentroCima = true;
+				bateuCentroBaixo = false;
 			}
 		}
 		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
@@ -708,6 +710,7 @@ public class ControlePartida {
 				timeBaixo = timeVisita;
 				timeBola = timeBaixo;
 				bateuCentroBaixo = true;
+				bateuCentroCima = false;
 			} else {
 				controleFormacao.posicionaTimeBaixo(timeCasa, false);
 				controleFormacao.posicionaTimeCima(timeVisita, true);
@@ -715,6 +718,7 @@ public class ControlePartida {
 				timeBaixo = timeCasa;
 				timeBola = timeCima;
 				bateuCentroCima = true;
+				bateuCentroBaixo = false;
 			}
 		}
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);

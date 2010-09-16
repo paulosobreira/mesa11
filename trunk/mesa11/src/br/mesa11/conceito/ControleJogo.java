@@ -1797,7 +1797,7 @@ public class ControleJogo {
 		efetuaJogada(p1, p2);
 	}
 
-	public void efetuaJogada(Point p1, Point p2) {
+	public boolean efetuaJogada(Point p1, Point p2) {
 		Evento evento = new Evento();
 		animacaoCliente = null;
 		animacaoJogada = null;
@@ -1810,6 +1810,7 @@ public class ControleJogo {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p1)) {
 					if (veririficaVez(goleiro)) {
+						boolean returnGoleiro = false;
 						double retaGoleiro = GeoUtil.distaciaEntrePontos(
 								goleiro.getCentro(), p1);
 						if (retaGoleiro > (goleiro.getRaio() / 2)) {
@@ -1833,12 +1834,13 @@ public class ControleJogo {
 								evento.setPonto(p2);
 								evento
 										.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+								returnGoleiro = true;
 							} else {
 								goleiro.setCentroTodos(centroGoleiro);
 							}
 						}
 						setPontoClicado(null);
-						return;
+						return returnGoleiro;
 					}
 				}
 			}
@@ -1850,7 +1852,7 @@ public class ControleJogo {
 			if (raioPonto <= botao.getRaio()) {
 				if (!veririficaVez(botao)) {
 					setPontoClicado(null);
-					return;
+					return false;
 				}
 				if (botao instanceof Bola) {
 					boolean areaGoleiroCima = false;
@@ -1880,7 +1882,7 @@ public class ControleJogo {
 				setLateral(null);
 				if (botao instanceof Goleiro) {
 					setPontoClicado(null);
-					return;
+					return false;
 				}
 				double angulo = GeoUtil.calculaAngulo(botao.getCentro(), p2,
 						270);
@@ -1909,7 +1911,7 @@ public class ControleJogo {
 		}
 		if (animacaoJogada == null) {
 			setPontoClicado(null);
-			return;
+			return false;
 		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
@@ -1926,6 +1928,7 @@ public class ControleJogo {
 		zerarTimerJogada();
 		Thread threadEventos = new Thread(new ControleEvento(this));
 		threadEventos.start();
+		return true;
 	}
 
 	private void sairJogoOnline() {
@@ -2027,9 +2030,6 @@ public class ControleJogo {
 					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
 						Botao botao = (Botao) botoes.get(botaoPosSrvMesa11
 								.getId());
-						if (botao instanceof Bola) {
-							System.out.println("Pos bola Cli " + botao);
-						}
 						botao.setCentroTodos(new Point(botaoPosSrvMesa11
 								.getPos()));
 						if (botao instanceof Goleiro) {
@@ -2078,6 +2078,9 @@ public class ControleJogo {
 	}
 
 	public String getDica() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getDica();
+		}
 		return dica;
 	}
 
