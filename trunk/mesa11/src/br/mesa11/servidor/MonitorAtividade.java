@@ -44,16 +44,31 @@ public class MonitorAtividade extends Thread {
 				}
 				Map<String, JogoServidor> jogos = proxyComandos
 						.getControleJogosServidor().getMapaJogos();
+				String jogoRemover = null;
 				for (Iterator iter = jogos.keySet().iterator(); iter.hasNext();) {
-					// SessaoCliente key = (SessaoCliente) iter.next();
-					// JogoServidor jogoServidor = (JogoServidor)
-					// jogos.get(key);
-					// if ((timeNow - jogoServidor.getTempoCriacao()) > 300000)
-					// {
-					// jogoServidor.iniciarJogo();
-					// }
-					// regra remover jogo por inatividade
+
+					String key = (String) iter.next();
+
+					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
+					if (jogoServidor.jogoTerminado()) {
+						/**
+						 * Apaga o jogo em 5 minutos apos termino
+						 */
+
+						if ((timeNow - jogoServidor.getTempoTerminado()) > 300000) {
+							jogoRemover = key;
+						}
+					} else {
+						/**
+						 * Apaga o jogo em 35 minutos apos criacão
+						 */
+						if ((timeNow - jogoServidor.getTempoCriacao()) > 2100000) {
+							jogoRemover = key;
+						}
+					}
 				}
+				if (jogoRemover != null)
+					jogos.remove(jogoRemover);
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}

@@ -134,7 +134,8 @@ public class ControleJogosCliente {
 				return Lang.msg("cliqueSegundoUniforme");
 			}
 		});
-		uniformesPanel.add(uniforme);
+		
+		//uniformesPanel.add(uniforme);
 
 		panelComboTimes.setBorder(new TitledBorder("") {
 			@Override
@@ -353,8 +354,8 @@ public class ControleJogosCliente {
 				return Lang.msg("CliqueSegundoUniforme");
 			}
 		});
-		uniformesPanel.add(uniformeCasa);
-		uniformesPanel.add(uniforme);
+		//uniformesPanel.add(uniformeCasa);
+		//uniformesPanel.add(uniforme);
 		JPanel panelComboTimes = new JPanel(new GridLayout(1, 2));
 		panelComboTimes.setBorder(new TitledBorder("") {
 			@Override

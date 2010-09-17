@@ -12,6 +12,11 @@ public class JogoServidor {
 	private SessaoCliente sessaoClienteCasa;
 	private SessaoCliente sessaoClienteVisita;
 	private ControleJogo controleJogo;
+	private long tempoCriacao = System.currentTimeMillis();
+
+	public long getTempoCriacao() {
+		return tempoCriacao;
+	}
 
 	public JogoServidor(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
 		super();
@@ -64,6 +69,28 @@ public class JogoServidor {
 
 	public void setSessaoClienteVisita(SessaoCliente sessaoClienteVisita) {
 		this.sessaoClienteVisita = sessaoClienteVisita;
+	}
+
+	public void jogadorSaiuJogo(String nomeJogador) {
+		if (controleJogo != null) {
+			controleJogo.setJogoTerminado(true);
+			controleJogo.setDica("WO");
+		}
+
+	}
+
+	public long getTempoTerminado() {
+		if (controleJogo != null) {
+			return controleJogo.getTempoTerminado();
+		}
+		return 0;
+	}
+
+	public boolean jogoTerminado() {
+		if (controleJogo != null) {
+			return controleJogo.isJogoTerminado();
+		}
+		return false;
 	}
 
 }
