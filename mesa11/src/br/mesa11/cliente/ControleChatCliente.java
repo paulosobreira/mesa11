@@ -230,8 +230,8 @@ public class ControleChatCliente {
 			return;
 		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("entrarJogo") + jogoSelecionado, Lang
-						.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("verDetalhesJogo") + " " + jogoSelecionado, Lang
+						.msg("verDetalhesJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.verDetalhesJogo(jogoSelecionado);
 		}
