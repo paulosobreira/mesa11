@@ -225,7 +225,16 @@ public class ControleChatCliente {
 			logar();
 			return;
 		}
-		// TODO Auto-generated method stub
+		String jogoSelecionado = chatWindow.obterJogoSelecionado();
+		if (jogoSelecionado == null) {
+			return;
+		}
+		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
+				Lang.msg("entrarJogo") + jogoSelecionado, Lang
+						.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			controleJogosCliente.verDetalhesJogo(jogoSelecionado);
+		}
 
 	}
 
