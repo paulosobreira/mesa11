@@ -329,7 +329,7 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(controleJogo.tempoRestanteJogoFormatado(), x, y);
+			g2d.drawString(""+controleJogo.tempoRestanteJogoFormatado(), x, y);
 			g2d.drawString(" " + Lang.msg("de") + " ", x + 25, y);
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 50, y);
 			y += 25;
@@ -375,7 +375,7 @@ public class MesaPanel extends JPanel {
 			x -= largura / 2;
 			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(msg, x, y);
+			g2d.drawString(""+msg, x, y);
 		}
 	}
 

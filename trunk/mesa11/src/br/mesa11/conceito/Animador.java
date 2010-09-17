@@ -26,13 +26,14 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 		} finally {
-			controleJogo.getBotoesComThread().remove(
-					animacao.getObjetoAnimacao());
+			if (animacao != null && animacao.getObjetoAnimacao() != null)
+				controleJogo.getBotoesComThread().remove(
+						animacao.getObjetoAnimacao());
 		}
 	}
 
 	private void animar(Animacao anim) {
-		if (anim == null)
+		if (anim == null || anim.getObjetoAnimacao() == null)
 			return;
 		Botao botao = (Botao) controleJogo.getBotoes().get(
 				anim.getObjetoAnimacao());

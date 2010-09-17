@@ -1819,6 +1819,7 @@ public class ControleJogo {
 							evento.setPonto(p2);
 							evento
 									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+							returnGoleiro = true;
 						} else {
 							Point centroGoleiro = goleiro.getCentro();
 							goleiro.setCentroTodos(p2);
@@ -1840,6 +1841,11 @@ public class ControleJogo {
 							}
 						}
 						setPontoClicado(null);
+						if (isJogoOnlineSrvidor() && returnGoleiro) {
+							animacaoCliente = new Animacao();
+							animacaoCliente.setTimeStamp(System
+									.currentTimeMillis());
+						}
 						return returnGoleiro;
 					}
 				}
@@ -1996,14 +2002,15 @@ public class ControleJogo {
 	public void executaAnimacao(final Animacao animacao) {
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
+		if (animacao.getObjetoAnimacao() != null)
+			getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
 		thread.start();
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				while (isAnimando()) {
 					try {
-						Thread.sleep(20);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -2067,7 +2074,7 @@ public class ControleJogo {
 	public void configuraAnimacaoServidor() {
 		if (isJogoOnlineSrvidor()) {
 			listaAnimacoes.add(animacaoJogada);
-			ControleJogo.this.animacaoCliente = animacaoJogada;
+			animacaoCliente = animacaoJogada;
 			animacaoCliente.setTimeStamp(System.currentTimeMillis());
 		}
 

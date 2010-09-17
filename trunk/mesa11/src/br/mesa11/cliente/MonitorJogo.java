@@ -93,7 +93,7 @@ public class MonitorJogo extends Thread {
 	}
 
 	private void iniciaJogo() {
-		tempoDormir = 200;
+		tempoDormir = 400;
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
