@@ -93,6 +93,7 @@ public class ControleJogo {
 	private long stampUltimaJogadaOnline;
 	private String dica;
 	private boolean jogoTerminado;
+	private long tempoTerminado;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -153,6 +154,10 @@ public class ControleJogo {
 
 			}
 		});
+	}
+
+	public long getTempoTerminado() {
+		return tempoTerminado;
 	}
 
 	public ControleJogo(JFrame frame) {
@@ -2103,6 +2108,9 @@ public class ControleJogo {
 	}
 
 	public void setJogoTerminado(boolean jogoTerminado) {
+		if (tempoTerminado == 0) {
+			tempoTerminado = System.currentTimeMillis();
+		}
 		this.jogoTerminado = jogoTerminado;
 	}
 

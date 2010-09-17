@@ -6,18 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import br.hibernate.Bola;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
-import br.nnpe.Logger;
 import br.recursos.Lang;
 import br.tos.BotaoPosSrvMesa11;
-import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
@@ -209,12 +207,24 @@ public class ControleJogosServidor {
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoClienteRemover) {
-		System.out.println("removerClienteInativo");
 		sairJogo(sessaoClienteRemover.getNomeJogador());
 	}
 
 	public Object sairJogo(String nomeJogador) {
-		System.out.println("Sair JOgo");
+		String jogoSrvMesa11 = null;
+		for (Iterator iterator = mapaJogos.keySet().iterator(); iterator
+				.hasNext();) {
+			String nomeJogo = (String) iterator.next();
+			JogoServidor jogoServidor = mapaJogos.get(nomeJogo);
+			if (nomeJogador.equals(jogoServidor.getSessaoClienteCasa()
+					.getNomeJogador())
+					|| nomeJogador.equals(jogoServidor.getSessaoClienteVisita()
+							.getNomeJogador())) {
+				jogoServidor.jogadorSaiuJogo(nomeJogador);
+				jogoSrvMesa11 = nomeJogo;
+			}
+		}
+
 		return null;
 	}
 }
