@@ -19,6 +19,7 @@ import org.hibernate.criterion.Restrictions;
 import br.hibernate.Botao;
 import br.hibernate.HibernateUtil;
 import br.hibernate.Time;
+import br.mesa11.ConstantesMesa11;
 import br.nnpe.Dia;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -50,6 +51,7 @@ public class ControlePersistencia {
 		Dia dia = new Dia("01/06/2009");
 		Dia hj = new Dia();
 		Logger.logar(hj.daysBetween(dia));
+		System.out.println("ALEMANHA".length());
 	}
 
 	public byte[] obterBytesBase() {
@@ -146,6 +148,21 @@ public class ControlePersistencia {
 	}
 
 	public Object salvarTime(Time time) {
+		if (Util.isNullOrEmpty(time.getNome())) {
+			return new MsgSrv("timeSemNome");
+		}
+		if (time.getNome().length() > ConstantesMesa11.TAMANHO_MAX_NOME_TIME) {
+			return new MsgSrv("nomeTimeMuitoGrande");
+		}
+		List botoes = time.getBotoes();
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (Util.isNullOrEmpty(botao.getNome())) {
+				botao.setNome(time.getNome());
+			} else if (botao.getNome().length() > ConstantesMesa11.TAMANHO_MAX_NOME_TIME) {
+				return new MsgSrv("nomeBotaoMuitoGrande");
+			}
+		}
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		try {

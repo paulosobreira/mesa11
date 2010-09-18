@@ -168,19 +168,8 @@ public class ChatWindow {
 		});
 		verDetalhes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Object object = listaJogosCriados.getSelectedValue();
-				if (object != null) {
-					controleChatCliente.verDetalhesJogo(mapaJogosCriados
-							.get(object));
-				} else {
-					object = listaClientes.getSelectedValue();
-					if (object != null) {
-						controleChatCliente.verDetalhesJogador(object);
-					} else {
-						JOptionPane.showMessageDialog(getMainPanel(), Lang
-								.msg("183"));
-					}
-				}
+				controleChatCliente.verDetalhesJogo();
+				controleChatCliente.verDetalhesJogador();
 
 			}
 
@@ -262,7 +251,7 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 300);
+				return new Dimension(120, 330);
 			}
 		};
 		usersPanel.add(jogsPane);
@@ -270,14 +259,14 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 130);
+				return new Dimension(120, 160);
 			}
 		};
 		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 130);
+				return new Dimension(120, 160);
 			}
 		};
 		jogsPanelCriados.add(jogsCriados);
