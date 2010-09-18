@@ -220,7 +220,7 @@ public class ControleChatCliente {
 
 	}
 
-	public void verDetalhesJogo(Object object) {
+	public void verDetalhesJogo() {
 		if (sessaoCliente == null) {
 			logar();
 			return;
@@ -238,7 +238,7 @@ public class ControleChatCliente {
 
 	}
 
-	public void verDetalhesJogador(Object object) {
+	public void verDetalhesJogador() {
 		if (sessaoCliente == null) {
 			logar();
 			return;
@@ -255,24 +255,26 @@ public class ControleChatCliente {
 		Time time = new Time();
 		time.setLoginCriador(sessaoCliente.getNomeJogador());
 		time.setNomeJogador(sessaoCliente.getNomeJogador());
-		time.setQtdePontos(Util.intervalo(100, 1000));
+		time.setQtdePontos(0);
 		Goleiro goleiro = new Goleiro();
-		goleiro.setForca(Util.intervalo(500, 1000));
-		goleiro.setPrecisao(Util.intervalo(500, 1000));
-		goleiro.setDefesa(Util.intervalo(500, 1000));
+		goleiro.setForca(500);
+		goleiro.setPrecisao(500);
+		goleiro.setDefesa(500);
 		goleiro.setGoleiro(true);
 		goleiro.setTitular(true);
 		goleiro.setTime(time);
+		goleiro.setNumero(1);
 		goleiro.setLoginCriador(sessaoCliente.getNomeJogador());
 		time.getBotoes().add(goleiro);
 		for (int i = 0; i < 10; i++) {
 			Botao botao = new Botao();
-			botao.setForca(Util.intervalo(500, 1000));
-			botao.setPrecisao(Util.intervalo(500, 1000));
-			botao.setDefesa(Util.intervalo(500, 1000));
+			botao.setForca(500);
+			botao.setPrecisao(500);
+			botao.setDefesa(500);
 			botao.setGoleiro(false);
 			botao.setTitular(false);
 			botao.setTime(time);
+			botao.setNumero(i+2);
 			botao.setLoginCriador(sessaoCliente.getNomeJogador());
 			time.getBotoes().add(botao);
 		}

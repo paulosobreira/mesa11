@@ -1,15 +1,14 @@
 package br.mesa11;
 
 import br.hibernate.Time;
-import br.mesa11.cliente.ControleJogosCliente;
 import br.mesa11.servidor.ControleChatServidor;
 import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
 import br.mesa11.servidor.ControlePersistencia;
 import br.mesa11.servidor.MonitorAtividade;
 import br.tos.ClienteMesa11;
-import br.tos.DadosMesa11;
 import br.tos.DadosJogoSrvMesa11;
+import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
 import br.tos.Mesa11TO;
 import br.tos.SessaoCliente;

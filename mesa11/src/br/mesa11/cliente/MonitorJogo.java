@@ -5,6 +5,7 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
+import br.mesa11.servidor.JogoServidor;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.tos.DadosJogoSrvMesa11;
@@ -36,13 +37,15 @@ public class MonitorJogo extends Thread {
 
 	@Override
 	public void run() {
-		while (controleChatCliente.isComunicacaoServer()) {
+		boolean jogoTerminado = false;
+		while (controleChatCliente.isComunicacaoServer() && !jogoTerminado) {
 			dormir(tempoDormir);
 			if (timesSelecionados() && controleJogo == null) {
 				iniciaJogo();
 			}
-			if (controleJogo != null && !controleJogo.isJogoTerminado()) {
+			if (controleJogo != null) {
 				atualizaDadosJogoSrvMesa11();
+				jogoTerminado = controleJogo.isJogoTerminado();
 			}
 		}
 	}

@@ -67,8 +67,10 @@ public class MonitorAtividade extends Thread {
 						}
 					}
 				}
-				if (jogoRemover != null)
+				if (jogoRemover != null){
 					jogos.remove(jogoRemover);
+					proxyComandos.getDadosMesa11().getJogosAndamento().remove(jogoRemover);
+				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
