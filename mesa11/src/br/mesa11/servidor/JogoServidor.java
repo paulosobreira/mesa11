@@ -72,11 +72,16 @@ public class JogoServidor {
 	}
 
 	public void jogadorSaiuJogo(String nomeJogador) {
+		if (nomeJogador.equals(dadosJogoSrvMesa11.getNomeCriador())) {
+			dadosJogoSrvMesa11.setSaiuCriador(true);
+		}
+		if (nomeJogador.equals(dadosJogoSrvMesa11.getNomeVisitante())) {
+			dadosJogoSrvMesa11.setSaiuVisitante(true);
+		}
 		if (controleJogo != null) {
 			controleJogo.setJogoTerminado(true);
 			controleJogo.setDica("WO");
 		}
-
 	}
 
 	public long getTempoTerminado() {
@@ -93,4 +98,17 @@ public class JogoServidor {
 		return false;
 	}
 
+	public long getTempoIniciado() {
+		if (controleJogo != null) {
+			return controleJogo.getTempoIniciado();
+		}
+		return 0;
+	}
+
+	public boolean jogoIniciado() {
+		if (controleJogo != null) {
+			return controleJogo.isJogoIniciado();
+		}
+		return false;
+	}
 }

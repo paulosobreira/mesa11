@@ -2,6 +2,9 @@ package br.mesa11;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -34,7 +37,28 @@ public class MainFrame {
 		if (mesa11Applet == null) {
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		} else {
-			frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+			frame.addWindowListener(new WindowAdapter() {
+
+				public void windowClosing(WindowEvent e) {
+					if (controleJogo == null) {
+						return;
+					}
+//					int ret = JOptionPane.showConfirmDialog(controleJogo
+//							.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
+//							JOptionPane.YES_NO_OPTION);
+//					if (ret == JOptionPane.NO_OPTION) {
+//						return;
+//					}
+					//controleJogo.abandonar();
+					super.windowClosing(e);
+//					if (controleJogo.getMainFrame().isModoApplet()) {
+//						controleJogo.getMainFrame().setVisible(false);
+//					} else {
+//						System.exit(0);
+//					}
+				}
+			});
 		}
 
 		this.mesa11Applet = mesa11Applet;

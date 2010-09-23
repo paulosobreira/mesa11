@@ -94,6 +94,8 @@ public class ControleJogo {
 	private String dica;
 	private boolean jogoTerminado;
 	private long tempoTerminado;
+	private boolean jogoIniciado;
+	private long tempoIniciado;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
@@ -160,6 +162,10 @@ public class ControleJogo {
 
 	public long getTempoTerminado() {
 		return tempoTerminado;
+	}
+
+	public long getTempoIniciado() {
+		return tempoIniciado;
 	}
 
 	public ControleJogo(JFrame frame) {
@@ -300,6 +306,7 @@ public class ControleJogo {
 	public void iniciaJogoLivre() {
 		controlePartida = new ControlePartida(this);
 		controlePartida.iniciaJogoLivre();
+		setJogoIniciado(true);
 	}
 
 	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
@@ -314,6 +321,7 @@ public class ControleJogo {
 		controlePartida.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa,
 				timeVisita);
 		bolaCentro();
+		setJogoIniciado(true);
 
 	}
 
@@ -2116,4 +2124,18 @@ public class ControleJogo {
 		this.jogoTerminado = jogoTerminado;
 	}
 
+	public boolean isJogoIniciado() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.isJogoTerminado();
+		}
+		return jogoIniciado;
+	}
+
+	public void setJogoIniciado(boolean jogoIniciado) {
+		if (tempoIniciado == 0) {
+			tempoIniciado = System.currentTimeMillis();
+		}
+		this.jogoIniciado = jogoIniciado;
+	}
+	
 }
