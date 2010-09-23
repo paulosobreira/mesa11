@@ -6,6 +6,7 @@ import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
 import br.mesa11.servidor.ControlePersistencia;
 import br.mesa11.servidor.MonitorAtividade;
+import br.nnpe.Logger;
 import br.tos.ClienteMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
@@ -107,6 +108,7 @@ public class ProxyComandos {
 	}
 
 	public void removerClienteInativo(SessaoCliente sessaoClienteRemover) {
+		Logger.logar("removerClienteInativo " + sessaoClienteRemover);
 		controleJogosServidor.removerClienteInativo(sessaoClienteRemover);
 		dadosMesa11.getClientes().remove(sessaoClienteRemover);
 	}

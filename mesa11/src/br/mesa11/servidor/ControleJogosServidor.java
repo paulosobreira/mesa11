@@ -12,6 +12,7 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.Util;
 import br.recursos.Lang;
 import br.tos.BotaoPosSrvMesa11;
 import br.tos.DadosJogoSrvMesa11;
@@ -56,6 +57,11 @@ public class ControleJogosServidor {
 	public Object entrarJogo(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
 				.get(dadosJogoSrvMesa11.getNomeJogo());
+		if (jogoSrvMesa11.getDadosJogoSrvMesa11() != null
+				&& !Util.isNullOrEmpty(jogoSrvMesa11.getDadosJogoSrvMesa11()
+						.getNomeVisitante())) {
+			return new MsgSrv(Lang.msg("jogoInciado"));
+		}
 		if (jogoSrvMesa11 != null) {
 			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			dadosMesa11.getJogosCriados().remove(
