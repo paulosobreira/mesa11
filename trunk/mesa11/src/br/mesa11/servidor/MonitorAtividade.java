@@ -57,6 +57,12 @@ public class MonitorAtividade extends Thread {
 						jogoRemover = key;
 					}
 
+					if (jogoServidor.jogoIniciado()
+							&& verificaSemSessao(jogoServidor
+									.getDadosJogoSrvMesa11().getNomeVisitante())) {
+						jogoRemover = key;
+					}
+
 					if (jogoServidor.jogoTerminado()) {
 						/**
 						 * Apaga o jogo em 5 minutos apos termino

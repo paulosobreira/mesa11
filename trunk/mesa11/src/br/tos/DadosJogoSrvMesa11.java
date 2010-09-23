@@ -8,13 +8,16 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	private String nomeJogo;
 	private String nomeCriador;
+	private boolean saiuCriador;
 	private String nomeVisitante;
+	private boolean saiuVisitante;
 	private String senhaJogo;
 	private String timeCasa;
 	private boolean SegundoUniformeTimeCasa;
 	private String timeVisita;
 	private boolean SegundoUniformeTimeVisita;
 	private boolean jogoTerminado;
+	private boolean jogoIniciado;
 	private String bolaCampoCasa;
 	private String bolaCampoVisita;
 	private int tempoJogo;
@@ -230,6 +233,30 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public void setJogoTerminado(boolean jogoTerminado) {
 		this.jogoTerminado = jogoTerminado;
+	}
+
+	public boolean isJogoIniciado() {
+		return jogoIniciado;
+	}
+
+	public void setJogoIniciado(boolean jogoIniciado) {
+		this.jogoIniciado = jogoIniciado;
+	}
+
+	public boolean isSaiuCriador() {
+		return saiuCriador;
+	}
+
+	public void setSaiuCriador(boolean saiuCriador) {
+		this.saiuCriador = saiuCriador;
+	}
+
+	public boolean isSaiuVisitante() {
+		return saiuVisitante;
+	}
+
+	public void setSaiuVisitante(boolean saiuVisitante) {
+		this.saiuVisitante = saiuVisitante;
 	}
 
 }

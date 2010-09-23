@@ -75,12 +75,14 @@ public class Animador implements Runnable {
 						if (i % 3 == 0) {
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
-							Thread.sleep(10);
+							if (!controleJogo.isJogoOnlineSrvidor())
+								Thread.sleep(10);
 						}
 
 					} else {
 						if (i % 3 == 0) {
-							Thread.sleep(15);
+							if (!controleJogo.isJogoOnlineSrvidor())
+								Thread.sleep(15);
 						}
 					}
 				} catch (InterruptedException e) {

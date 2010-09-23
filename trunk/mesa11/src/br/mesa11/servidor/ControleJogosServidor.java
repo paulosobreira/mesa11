@@ -218,6 +218,9 @@ public class ControleJogosServidor {
 
 	public Object sairJogo(String nomeJogador) {
 		String jogoSrvMesa11 = null;
+		if (Util.isNullOrEmpty(nomeJogador)) {
+			return null;
+		}
 		for (Iterator iterator = mapaJogos.keySet().iterator(); iterator
 				.hasNext();) {
 			String nomeJogo = (String) iterator.next();
