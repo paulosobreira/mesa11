@@ -108,7 +108,9 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
-		frame.setTitle(timeClienteOnline);
+		frame
+				.setTitle(ConstantesMesa11.TITULO_VERSAO + " "
+						+ timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowListener() {
 

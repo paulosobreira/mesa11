@@ -251,7 +251,7 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 330);
+				return new Dimension(120, 340);
 			}
 		};
 		usersPanel.add(jogsPane);
@@ -259,14 +259,14 @@ public class ChatWindow {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 160);
+				return new Dimension(120, 155);
 			}
 		};
 		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
 			@Override
 			public Dimension getPreferredSize() {
 				Dimension preferredSize = super.getPreferredSize();
-				return new Dimension(120, 160);
+				return new Dimension(120, 155);
 			}
 		};
 		jogsPanelCriados.add(jogsCriados);

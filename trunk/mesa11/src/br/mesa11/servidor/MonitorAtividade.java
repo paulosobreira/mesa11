@@ -7,6 +7,7 @@ import java.util.Map;
 
 import br.mesa11.ProxyComandos;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.tos.SessaoCliente;
 
 /**
@@ -27,14 +28,14 @@ public class MonitorAtividade extends Thread {
 	public void run() {
 		while (viva) {
 			try {
-				sleep((5000 + ((int) Math.random() * 1000)));
+				sleep(5000);
 				long timeNow = System.currentTimeMillis();
 				Collection<SessaoCliente> clientes = proxyComandos
 						.getDadosMesa11().getClientes();
 				SessaoCliente sessaoClienteRemover = null;
 				for (Iterator iter = clientes.iterator(); iter.hasNext();) {
 					SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
-					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 150000) {
+					if ((timeNow - sessaoCliente.getUlimaAtividade()) > 100000) {
 						sessaoClienteRemover = sessaoCliente;
 						break;
 					}
@@ -50,6 +51,12 @@ public class MonitorAtividade extends Thread {
 					String key = (String) iter.next();
 
 					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
+
+					if (verificaSemSessao(jogoServidor.getDadosJogoSrvMesa11()
+							.getNomeCriador())) {
+						jogoRemover = key;
+					}
+
 					if (jogoServidor.jogoTerminado()) {
 						/**
 						 * Apaga o jogo em 5 minutos apos termino
@@ -67,14 +74,31 @@ public class MonitorAtividade extends Thread {
 						}
 					}
 				}
-				if (jogoRemover != null){
+				if (jogoRemover != null) {
 					jogos.remove(jogoRemover);
-					proxyComandos.getDadosMesa11().getJogosAndamento().remove(jogoRemover);
+					proxyComandos.getDadosMesa11().getJogosAndamento().remove(
+							jogoRemover);
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
 		}
+
+	}
+
+	private boolean verificaSemSessao(String nomeCriador) {
+		if (Util.isNullOrEmpty(nomeCriador)) {
+			return true;
+		}
+		Collection<SessaoCliente> clientes = proxyComandos.getDadosMesa11()
+				.getClientes();
+		for (Iterator iter = clientes.iterator(); iter.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
+			if (nomeCriador.equals(sessaoCliente.getNomeJogador())) {
+				return false;
+			}
+		}
+		return true;
 
 	}
 
