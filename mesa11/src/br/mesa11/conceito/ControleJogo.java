@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.geom.Point2D;
@@ -96,9 +97,10 @@ public class ControleJogo {
 	private long tempoTerminado;
 	private boolean jogoIniciado;
 	private long tempoIniciado;
+	private String nomeJogadorOnline;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
-			DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
+			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
 		this.mesa11Applet = mesa11Applet;
 		this.timeClienteOnline = timeClienteOnline;
 		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
@@ -110,41 +112,12 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
+		this.nomeJogadorOnline = nomeJogadorOnline;
 		frame
 				.setTitle(ConstantesMesa11.TITULO_VERSAO + " "
 						+ timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+		frame.addWindowListener(new WindowAdapter() {
 
 			@Override
 			public void windowClosed(WindowEvent e) {
@@ -152,11 +125,6 @@ public class ControleJogo {
 
 			}
 
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 	}
 
@@ -1952,7 +1920,7 @@ public class ControleJogo {
 		return true;
 	}
 
-	private void sairJogoOnline() {
+	public void sairJogoOnline() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
 				dadosJogoSrvMesa11);
@@ -1980,28 +1948,9 @@ public class ControleJogo {
 
 	private void efetuaJogadaCliente() {
 		Mesa11TO mesa11to = new Mesa11TO();
-		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
-				dadosJogoSrvMesa11);
-		Point p1 = getPontoClicado();
-		Point p2 = getPontoPasando();
-		jogadaMesa11.setPontoClicado(p1);
-		jogadaMesa11.setPontoSolto(p2);
-		if (jogadaMesa11.getPontoClicado() == null
-				|| jogadaMesa11.getPontoSolto() == null
-				|| (stampUltimaJogadaOnline + 5000) > System
-						.currentTimeMillis()
-				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
-			return;
-		}
-
-		mesa11to.setData(jogadaMesa11);
-		mesa11to.setComando(ConstantesMesa11.JOGADA);
-		esperandoJogadaOnline = true;
-		stampUltimaJogadaOnline = System.currentTimeMillis();
+		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
+		mesa11to.setData(nomeJogadorOnline);
 		Object ret = enviarObjeto(mesa11to);
-		if (!ConstantesMesa11.OK.equals(ret)) {
-			esperandoJogadaOnline = false;
-		}
 	}
 
 	public Object obterUltimaJogada() {
@@ -2137,5 +2086,5 @@ public class ControleJogo {
 		}
 		this.jogoIniciado = jogoIniciado;
 	}
-	
+
 }
