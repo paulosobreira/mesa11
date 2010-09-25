@@ -274,13 +274,13 @@ public class ControleChatCliente {
 			botao.setGoleiro(false);
 			botao.setTitular(false);
 			botao.setTime(time);
-			botao.setNumero(i+2);
+			botao.setNumero(i + 2);
 			botao.setLoginCriador(sessaoCliente.getNomeJogador());
 			time.getBotoes().add(botao);
 		}
 
 		EditorTime editorTime = new EditorTime(time, new ControleJogo(
-				mesa11Applet, null, null));
+				mesa11Applet, null, null, null));
 		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), editorTime);
 	}
 
@@ -334,7 +334,8 @@ public class ControleChatCliente {
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
 				EditorTime editorTime = new EditorTime((Time) mesa11to
-						.getData(), new ControleJogo(mesa11Applet, null, null));
+						.getData(), new ControleJogo(mesa11Applet, null, null,
+						null));
 				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
 						editorTime);
 			}

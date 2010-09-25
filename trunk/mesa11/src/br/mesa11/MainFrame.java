@@ -44,19 +44,19 @@ public class MainFrame {
 					if (controleJogo == null) {
 						return;
 					}
-//					int ret = JOptionPane.showConfirmDialog(controleJogo
-//							.getMainFrame(), Lang.msg("095"), Lang.msg("094"),
-//							JOptionPane.YES_NO_OPTION);
-//					if (ret == JOptionPane.NO_OPTION) {
-//						return;
-//					}
-					//controleJogo.abandonar();
+					int ret = JOptionPane.showConfirmDialog(frame, Lang
+							.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
+							JOptionPane.YES_NO_OPTION);
+					if (ret == JOptionPane.NO_OPTION) {
+						return;
+					}
+					controleJogo.sairJogoOnline();
 					super.windowClosing(e);
-//					if (controleJogo.getMainFrame().isModoApplet()) {
-//						controleJogo.getMainFrame().setVisible(false);
-//					} else {
-//						System.exit(0);
-//					}
+					// if (controleJogo.getMainFrame().isModoApplet()) {
+					// controleJogo.getMainFrame().setVisible(false);
+					// } else {
+					// System.exit(0);
+					// }
 				}
 			});
 		}

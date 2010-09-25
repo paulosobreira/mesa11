@@ -114,7 +114,8 @@ public class MonitorJogo extends Thread {
 		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
 				.isSegundoUniformeTimeVisita());
 		controleJogo = new ControleJogo(mesa11Applet, timeClienteOnline,
-				dadosJogoSrvMesa11);
+				dadosJogoSrvMesa11, controleChatCliente.getSessaoCliente()
+						.getNomeJogador());
 		controleJogo.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa, timeVisita);
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
