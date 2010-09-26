@@ -446,6 +446,8 @@ public class ControleJogosCliente {
 			dadosJogoSrvMesa11.setBolaCampoVisita(Lang
 					.key((String) campoBolaCombo.getSelectedItem()));
 			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
+			dadosJogoSrvMesa11.setNomeVisitante(controleChatCliente
+					.getSessaoCliente().getNomeJogador());
 			mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.ENTRAR_JOGO);
 			mesa11to.setData(dadosJogoSrvMesa11);
