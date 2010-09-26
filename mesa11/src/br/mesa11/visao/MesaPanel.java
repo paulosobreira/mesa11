@@ -34,10 +34,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-//	public final static Color green2 = new Color(0, 200, 0, 150);
-//	public final static Color green = new Color(0, 255, 0, 150);
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+//	public final static Color green2 = Color.white;
+//	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;

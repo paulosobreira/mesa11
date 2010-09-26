@@ -68,14 +68,19 @@ public class MonitorAtividade extends Thread {
 						 * Apaga o jogo em 5 minutos apos termino
 						 */
 
-						if ((timeNow - jogoServidor.getTempoTerminado()) > 300000) {
+						if ((timeNow - jogoServidor.getTempoTerminado()) > 60000) {
+							Logger
+									.logar("Apaga o jogo em 5 minutos apos termino");
 							jogoRemover = key;
 						}
 					} else {
 						/**
 						 * Apaga o jogo em 35 minutos apos criacão
 						 */
+
 						if ((timeNow - jogoServidor.getTempoCriacao()) > 2100000) {
+							Logger
+									.logar("Apaga o jogo em 35 minutos apos criacão");
 							jogoRemover = key;
 						}
 					}

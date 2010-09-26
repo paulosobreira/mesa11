@@ -1922,6 +1922,13 @@ public class ControleJogo {
 
 	public void sairJogoOnline() {
 		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
+		mesa11to.setData(nomeJogadorOnline);
+		Object ret = enviarObjeto(mesa11to);
+	}
+
+	private void efetuaJogadaCliente() {
+		Mesa11TO mesa11to = new Mesa11TO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
 				dadosJogoSrvMesa11);
 		Point p1 = getPontoClicado();
@@ -1944,13 +1951,6 @@ public class ControleJogo {
 		if (!ConstantesMesa11.OK.equals(ret)) {
 			esperandoJogadaOnline = false;
 		}
-	}
-
-	private void efetuaJogadaCliente() {
-		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
-		mesa11to.setData(nomeJogadorOnline);
-		Object ret = enviarObjeto(mesa11to);
 	}
 
 	public Object obterUltimaJogada() {
