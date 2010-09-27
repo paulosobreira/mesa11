@@ -204,6 +204,7 @@ public class ControleLogin {
 		} catch (Exception e) {
 			return new ErroServ(e);
 		}
+		String email = usuario.getEmail();
 		Transaction transaction = session.beginTransaction();
 		try {
 			session.saveOrUpdate(usuario);
@@ -212,7 +213,6 @@ public class ControleLogin {
 			transaction.rollback();
 			return new ErroServ(e);
 		}
-		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { usuario
-				.getEmail() }));
+		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { email }));
 	}
 }
