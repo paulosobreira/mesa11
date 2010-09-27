@@ -98,6 +98,7 @@ public class ControleJogo {
 	private boolean jogoIniciado;
 	private long tempoIniciado;
 	private String nomeJogadorOnline;
+	private ControleDicas controleDicas;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -106,7 +107,6 @@ public class ControleJogo {
 		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
 		this.frame = new JFrame();
 		mesaPanel = new MesaPanel(this);
-		criarPopupMenu();
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -273,6 +273,7 @@ public class ControleJogo {
 
 	public void iniciaJogoLivre() {
 		controlePartida = new ControlePartida(this);
+		controleDicas = new ControleDicas(this);
 		controlePartida.iniciaJogoLivre();
 		setJogoIniciado(true);
 	}
@@ -286,6 +287,7 @@ public class ControleJogo {
 		}
 		botoes.put(bola.getId(), bola);
 		controlePartida = new ControlePartida(this);
+		controleDicas = new ControleDicas(this);
 		controlePartida.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa,
 				timeVisita);
 		bolaCentro();
@@ -603,7 +605,7 @@ public class ControleJogo {
 				if (goleiro.getShape(1).intersects(r)) {
 					// if (Math.random() > .7) {
 					// bolaIngnora.add(goleiro);
-					// System.out.println("frango");
+					// Logger.logar("frango");
 					// return false;
 					// }
 					Logger.logar("Goleiro Defendeu");
@@ -1512,9 +1514,9 @@ public class ControleJogo {
 	public boolean verificaGol(Botao botao) {
 		if (mesaPanel == null)
 			return true;
-		return (mesaPanel.getAreaGolBaixo().intersects(
+		return (mesaPanel.getAreaGolBaixo().contains(
 				botao.getShape(1).getBounds2D()) || mesaPanel.getAreaGolCima()
-				.intersects(botao.getShape(1).getBounds2D()));
+				.contains(botao.getShape(1).getBounds2D()));
 	}
 
 	public void setGol(Botao botao) {
@@ -1528,9 +1530,9 @@ public class ControleJogo {
 	public boolean verificaMetaEscanteio(Botao botao) {
 		if (mesaPanel == null)
 			return true;
-		return (mesaPanel.getAreaEscateioBaixo().intersects(
+		return (mesaPanel.getAreaEscateioBaixo().contains(
 				botao.getShape(1).getBounds2D()) || mesaPanel
-				.getAreaEscateioCima().intersects(
+				.getAreaEscateioCima().contains(
 						botao.getShape(1).getBounds2D()));
 	}
 
@@ -1581,7 +1583,7 @@ public class ControleJogo {
 			}
 		}
 		reversaoJogada();
-		System.out.println("Escanteio " + time);
+		Logger.logar("Escanteio " + time);
 
 	}
 
@@ -1600,14 +1602,14 @@ public class ControleJogo {
 
 	public void processarGolContra(Time time) {
 		controlePartida.processarGolContra(time);
-		System.out.println("GolContra " + time);
+		Logger.logar("GolContra " + time);
 
 	}
 
 	public void processarGol(Time time) {
 		controlePartida.processarGol(time);
 		reversaoJogada();
-		System.out.println("Gol " + time);
+		Logger.logar("Gol " + time);
 
 	}
 
@@ -1735,7 +1737,7 @@ public class ControleJogo {
 						getBola().getCentro(), botao.getCentro());
 				if (distaciaEntrePontos < botao.getDiamentro()) {
 					eventoAtual.setUltimoContato(botao);
-					System.out.println("verificaBolaParouEmCimaBotao " + botao);
+					Logger.logar("verificaBolaParouEmCimaBotao " + botao);
 				}
 			}
 		}
@@ -1774,13 +1776,15 @@ public class ControleJogo {
 			efetuaJogadaCliente();
 			return;
 		}
-
 		Point p1 = getPontoClicado();
 		Point p2 = getPontoPasando();
 		efetuaJogada(p1, p2);
 	}
 
 	public boolean efetuaJogada(Point p1, Point p2) {
+		if (controleDicas != null) {
+			controleDicas.mudarDica();
+		}
 		Evento evento = new Evento();
 		animacaoCliente = null;
 		animacaoJogada = null;
@@ -2085,6 +2089,13 @@ public class ControleJogo {
 			tempoIniciado = System.currentTimeMillis();
 		}
 		this.jogoIniciado = jogoIniciado;
+	}
+
+	public void mudarDica() {
+		if (controleDicas != null) {
+			controleDicas.mudarDica();
+		}
+
 	}
 
 }

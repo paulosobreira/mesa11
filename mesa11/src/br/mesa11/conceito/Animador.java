@@ -106,7 +106,7 @@ public class Animador implements Runnable {
 	public static void main(String[] args) {
 		double val = 100;
 		val *= 0.2;
-		System.out.println(val);
+		Logger.logar(val);
 	}
 
 }

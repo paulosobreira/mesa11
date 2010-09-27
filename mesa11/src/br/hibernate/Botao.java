@@ -216,7 +216,7 @@ public class Botao extends Mesa11Dados {
 
 	public Shape getShape(double zoom) {
 		if (getPosition() == null) {
-			System.out.println("getShape getPosition null id " + id + " "
+			Logger.logar("getShape getPosition null id " + id + " "
 					+ getClass());
 		}
 		Ellipse2D e2D = new Ellipse2D.Double(getPosition().x * zoom,

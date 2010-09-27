@@ -456,7 +456,7 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				DadosJogoSrvMesa11 dadosJogoSrvMesa11Jogo = (DadosJogoSrvMesa11) mesa11to
 						.getData();
-				System.out.println("Entar Jogo");
+				Logger.logar("Entar Jogo");
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
 						dadosJogoSrvMesa11Jogo, mesa11Applet,
 						dadosJogoSrvMesa11.getTimeVisita());

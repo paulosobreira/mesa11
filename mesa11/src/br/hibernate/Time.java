@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
+import br.nnpe.Logger;
 import br.nnpe.Util;
 
 @Entity
@@ -169,7 +170,7 @@ public class Time extends Mesa11Dados {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(Color.BLUE.toString());
+		Logger.logar(Color.BLUE.toString());
 		Color color = new Color(100);
 		color.getRGB();
 

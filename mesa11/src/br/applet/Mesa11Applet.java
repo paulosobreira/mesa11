@@ -51,7 +51,7 @@ public class Mesa11Applet extends JApplet {
 	public static void main(String[] args) {
 		LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
 		for (int i = 0; i < looks.length; i++) {
-			System.out.println(looks[i].getClassName());
+			Logger.logar(looks[i].getClassName());
 
 		}
 	}

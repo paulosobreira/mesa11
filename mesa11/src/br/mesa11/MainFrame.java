@@ -52,11 +52,6 @@ public class MainFrame {
 					}
 					controleJogo.sairJogoOnline();
 					super.windowClosing(e);
-					// if (controleJogo.getMainFrame().isModoApplet()) {
-					// controleJogo.getMainFrame().setVisible(false);
-					// } else {
-					// System.exit(0);
-					// }
 				}
 			});
 		}

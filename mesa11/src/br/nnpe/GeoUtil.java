@@ -133,8 +133,8 @@ public class GeoUtil {
 		double ang = Math.toRadians(angulo);
 		x = (int) (comprimento * Math.sin(ang));
 		y = (int) (comprimento * Math.cos(ang));
-		// System.out.println("Angulo : "+ang);
-		// System.out.println("Pontos x="+x+" y="+y);
+		// Logger.logar("Angulo : "+ang);
+		// Logger.logar("Pontos x="+x+" y="+y);
 		return new Point(p1.x + x, p1.y - y);
 	}
 
@@ -170,8 +170,8 @@ public class GeoUtil {
 		HashSet set = new HashSet(circlePoints);
 		boundaryFill4con(new Point(centerX, centerY), set);
 		/*
-		 * System.out.println("tempo "+(System.currentTimeMillis()-s));
-		 * System.out.println(set.size());
+		 * Logger.logar("tempo "+(System.currentTimeMillis()-s));
+		 * Logger.logar(set.size());
 		 */
 		return new ArrayList(set);
 	}
