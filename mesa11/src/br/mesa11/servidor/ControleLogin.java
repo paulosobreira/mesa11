@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -21,6 +23,7 @@ import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.servlet.ServletMesa11;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.ErroServ;
@@ -73,7 +76,6 @@ public class ControleLogin {
 		usuario.setLoginCriador(clienteMesa11.getNomeJogador());
 		usuario.setEmail(clienteMesa11.getEmailJogador());
 		try {
-
 			geraSenhaMandaMail(usuario);
 		} catch (Exception e) {
 			return new ErroServ(e);
@@ -117,13 +119,27 @@ public class ControleLogin {
 		return mesa11to;
 	}
 
-	private void geraSenhaMandaMail(Usuario usuario)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	private void geraSenhaMandaMail(Usuario usuario) throws Exception {
 		PassGenerator generator = new PassGenerator();
 		String senha = generator.generateIt();
-
 		Logger.logar("geraSenhaMandaMail " + usuario + " senha " + senha);
 		usuario.setSenha(Util.md5(senha));
+		try {
+			mandaMailSenha(usuario.getLogin(), usuario.getEmail(), senha);
+		} catch (Exception e1) {
+			Logger.logarExept(e1);
+			if (ServletMesa11.email != null)
+				throw new Exception("srvEmailFora");
+		}
+
+	}
+
+	private void mandaMailSenha(String nome, String email, String senha)
+			throws AddressException, MessagingException {
+		Logger.logar("Senha :" + senha);
+		ServletMesa11.email.sendSimpleMail("Mesa-11 Game Password",
+				new String[] { email }, "admin@f1mane.com",
+				"Your game user:password is " + nome + ":" + senha, false);
 	}
 
 	public Object logar(ClienteMesa11 clienteMesa11) {
@@ -172,6 +188,12 @@ public class ControleLogin {
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario == null) {
+			usuarios = session.createCriteria(Usuario.class).add(
+					Restrictions.eq("email", clienteMesa11.getEmailJogador()))
+					.list();
+			usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
+		}
+		if (usuario == null) {
 			return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
 		}
 		if ((System.currentTimeMillis() - usuario.getUltimaRecuperacao()) < 300000) {
@@ -183,8 +205,13 @@ public class ControleLogin {
 			return new ErroServ(e);
 		}
 		Transaction transaction = session.beginTransaction();
-		session.saveOrUpdate(usuario);
-		transaction.commit();
+		try {
+			session.saveOrUpdate(usuario);
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			return new ErroServ(e);
+		}
 		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { usuario
 				.getEmail() }));
 	}

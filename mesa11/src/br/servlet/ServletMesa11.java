@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
+import br.nnpe.Email;
 import br.nnpe.Logger;
 import br.nnpe.ZipUtil;
 import br.recursos.Lang;
@@ -28,16 +29,8 @@ public class ServletMesa11 extends HttpServlet {
 	public static String webInfDir;
 
 	public static String webDir;
-
-	public static String mapasDir;
-
-	public static String npcsDir;
-
-	public static String itensDir;
-
-	public static String cenariosDir;
-
 	private ProxyComandos proxyComandos;
+	public static Email email;
 
 	public void init() throws ServletException {
 		super.init();
@@ -45,6 +38,13 @@ public class ServletMesa11 extends HttpServlet {
 		webInfDir = webDir + "WEB-INF" + File.separator;
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
+		try {
+			email = new Email(getServletContext().getRealPath("")
+					+ File.separator + "WEB-INF" + File.separator);
+		} catch (Exception e) {
+			Logger.logarExept(e);
+			email = null;
+		}
 	}
 
 	public void destroy() {
