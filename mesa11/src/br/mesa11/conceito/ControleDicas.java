@@ -6,7 +6,7 @@ public class ControleDicas {
 
 	private ControleJogo controleJogo;
 	private int dicaAtual = 0;
-	private int maxDiaca = 10;
+	private int maxDiaca = 11;
 
 	public ControleDicas(ControleJogo controleJogo) {
 		super();
