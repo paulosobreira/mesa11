@@ -21,7 +21,7 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,sign_jar">
+	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,atualizaLib,criarWar">
 	</target>
 
 	<target name="compilarClasses">
@@ -43,7 +43,7 @@
 	</target>
 
 	<target name="criarJar">
-		<jar jarfile="WebContent/mesa11.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
+		<jar jarfile="mesa11.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
 			<fileset dir="build">
 				<exclude name=".*" />
 				<exclude name=".*/" />
@@ -52,13 +52,26 @@
 			</fileset>
 		</jar>
 	</target>
-
-	<target name="sign_jar">
-		<!---
-		<signjar jar="WebContent/mesa11.jar" signedjar="WebContent/a-mesa11.jar" alias="mesa11-key" keystore="jar-keystore" storepass="123456" keypass="123456">
-		</signjar>
+	
+	<target name="atualizaLib">
+		<delete file="WebContent/WEB-INF/lib/mesa11.jar" />
 		<delete file="WebContent/mesa11.jar" />
-		-->
+		<copy file="mesa11.jar" todir="WebContent" />
+		<copy file="mesa11.jar" todir="WebContent/WEB-INF/lib" />
+		<delete file="mesa11.jar" />
+	</target>
+
+	<target name="criarWar" depends="">
+		<delete dir="${env.TOMCAT_HOME}/webapps/mesa11" />
+		<war compress="on"  destfile="${env.TOMCAT_HOME}/webapps/mesa11.war">
+			<fileset dir="WebContent">
+				<exclude name="**/*.jar" />
+			</fileset>
+			<fileset dir="WebContent">
+				<include name="WEB-INF/lib/mesa11.jar" />
+				<include name="mesa11.jar" />
+			</fileset>
+		</war>
 	</target>
 
 </project>
