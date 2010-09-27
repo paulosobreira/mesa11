@@ -37,23 +37,7 @@ public class MainFrame {
 		if (mesa11Applet == null) {
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		} else {
-			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-			frame.addWindowListener(new WindowAdapter() {
-
-				public void windowClosing(WindowEvent e) {
-					if (controleJogo == null) {
-						return;
-					}
-					int ret = JOptionPane.showConfirmDialog(frame, Lang
-							.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
-							JOptionPane.YES_NO_OPTION);
-					if (ret == JOptionPane.NO_OPTION) {
-						return;
-					}
-					controleJogo.sairJogoOnline();
-					super.windowClosing(e);
-				}
-			});
+			
 		}
 
 		this.mesa11Applet = mesa11Applet;

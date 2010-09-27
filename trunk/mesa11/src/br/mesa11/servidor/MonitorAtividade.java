@@ -62,13 +62,17 @@ public class MonitorAtividade extends Thread {
 									.getDadosJogoSrvMesa11().getNomeVisitante())) {
 						jogoRemover = key;
 					}
+					
+					if(jogoServidor.isSaiuJogoNaoIniciado()){
+						jogoRemover = key;
+					}
 
 					if (jogoServidor.jogoTerminado()) {
 						/**
 						 * Apaga o jogo em 5 minutos apos termino
 						 */
 
-						if ((timeNow - jogoServidor.getTempoTerminado()) > 60000) {
+						if ((timeNow - jogoServidor.getTempoTerminado()) > 1000) {
 							Logger
 									.logar("Apaga o jogo em 5 minutos apos termino");
 							jogoRemover = key;
@@ -88,6 +92,8 @@ public class MonitorAtividade extends Thread {
 				if (jogoRemover != null) {
 					jogos.remove(jogoRemover);
 					proxyComandos.getDadosMesa11().getJogosAndamento().remove(
+							jogoRemover);
+					proxyComandos.getDadosMesa11().getJogosCriados().remove(
 							jogoRemover);
 				}
 			} catch (Exception e) {

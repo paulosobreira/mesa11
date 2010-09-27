@@ -602,4 +602,12 @@ public class ControleJogosCliente {
 		return false;
 	}
 
+	public void sairJogo() {
+		if (monitorJogo != null) {
+			monitorJogo.setJogoTerminado(true);
+			monitorJogo.interrupt();
+		}
+		monitorJogo = null;
+	}
+
 }

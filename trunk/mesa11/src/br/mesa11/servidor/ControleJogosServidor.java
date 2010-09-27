@@ -212,7 +212,6 @@ public class ControleJogosServidor {
 	}
 
 	public Object sairJogo(String nomeJogador) {
-		String jogoSrvMesa11 = null;
 		if (Util.isNullOrEmpty(nomeJogador)) {
 			return null;
 		}
@@ -225,10 +224,8 @@ public class ControleJogosServidor {
 					|| nomeJogador.equals(jogoServidor.getDadosJogoSrvMesa11()
 							.getNomeVisitante())) {
 				jogoServidor.jogadorSaiuJogo(nomeJogador);
-				jogoSrvMesa11 = nomeJogo;
 			}
 		}
-
 		return null;
 	}
 }

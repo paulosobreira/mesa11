@@ -10,6 +10,7 @@ public class JogoServidor {
 	private Time timeCasa;
 	private Time timeVisita;
 	private ControleJogo controleJogo;
+	private boolean saiuJogoNaoIniciado;
 	private long tempoCriacao = System.currentTimeMillis();
 
 	public long getTempoCriacao() {
@@ -64,6 +65,12 @@ public class JogoServidor {
 			controleJogo.setJogoTerminado(true);
 			controleJogo.setDica("WO");
 		}
+		saiuJogoNaoIniciado = true;
+	}
+
+	
+	public boolean isSaiuJogoNaoIniciado() {
+		return saiuJogoNaoIniciado;
 	}
 
 	public long getTempoTerminado() {

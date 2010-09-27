@@ -332,7 +332,7 @@ public class MesaPanel extends JPanel {
 					.drawString("" + controleJogo.tempoRestanteJogoFormatado(),
 							x, y);
 			g2d.drawString(Lang.msg("de") + " ", x + 35, y);
-			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 50, y);
+			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 55, y);
 			y += 25;
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
