@@ -14,7 +14,6 @@ import br.tos.PosicaoBtnsSrvMesa11;
 
 public class MonitorJogo extends Thread {
 	private ControleChatCliente controleChatCliente;
-	private ControleJogosCliente controleJogosCliente;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
@@ -30,7 +29,6 @@ public class MonitorJogo extends Thread {
 			String timeClienteOnline) {
 		super();
 		this.controleChatCliente = controleChatCliente;
-		this.controleJogosCliente = controleJogosCliente;
 		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
 		this.mesa11Applet = mesa11Applet;
 		this.timeClienteOnline = timeClienteOnline;
@@ -70,9 +68,9 @@ public class MonitorJogo extends Thread {
 			if (timeVez != null
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()) {
-				dormir(tempoDormir);
 				controleJogo
 						.atualizaBotoesClienteOnline(this.timeStampAnimacao);
+				dormir(tempoDormir);
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		}
