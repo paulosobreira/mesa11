@@ -22,6 +22,7 @@ public class MonitorJogo extends Thread {
 	private String timeVez;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
+	private boolean jogoTerminado;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -37,7 +38,6 @@ public class MonitorJogo extends Thread {
 
 	@Override
 	public void run() {
-		boolean jogoTerminado = false;
 		while (controleChatCliente.isComunicacaoServer() && !jogoTerminado) {
 			dormir(tempoDormir);
 			if (timesSelecionados() && controleJogo == null) {
@@ -144,6 +144,10 @@ public class MonitorJogo extends Thread {
 			return null;
 		}
 		return mesa11Applet.enviarObjeto(mesa11to);
+	}
+
+	public void setJogoTerminado(boolean jogoTerminado) {
+		this.jogoTerminado = jogoTerminado;
 	}
 
 }

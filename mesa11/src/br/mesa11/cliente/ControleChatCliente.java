@@ -348,5 +348,8 @@ public class ControleChatCliente {
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
+		if(controleJogosCliente!=null){
+			controleJogosCliente.sairJogo();
+		}
 	}
 }

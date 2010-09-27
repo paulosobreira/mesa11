@@ -125,6 +125,17 @@ public class ControleJogo {
 
 			}
 
+			public void windowClosing(WindowEvent e) {
+				int ret = JOptionPane.showConfirmDialog(frame, Lang
+						.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
+						JOptionPane.YES_NO_OPTION);
+				if (ret == JOptionPane.NO_OPTION) {
+					return;
+				}
+				sairJogoOnline();
+				super.windowClosing(e);
+			}
+
 		});
 	}
 
@@ -1532,8 +1543,8 @@ public class ControleJogo {
 			return true;
 		return (mesaPanel.getAreaEscateioBaixo().contains(
 				botao.getShape(1).getBounds2D()) || mesaPanel
-				.getAreaEscateioCima().contains(
-						botao.getShape(1).getBounds2D()));
+				.getAreaEscateioCima()
+				.contains(botao.getShape(1).getBounds2D()));
 	}
 
 	public void setMetaEscanteio(Botao botao) {
