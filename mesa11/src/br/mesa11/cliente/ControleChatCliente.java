@@ -278,10 +278,15 @@ public class ControleChatCliente {
 			botao.setLoginCriador(sessaoCliente.getNomeJogador());
 			time.getBotoes().add(botao);
 		}
-
-		EditorTime editorTime = new EditorTime(time, new ControleJogo(
-				mesa11Applet, null, null, null));
-		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), editorTime);
+		ControleJogo controleJogo = new ControleJogo(mesa11Applet, null, null,
+				null);
+		EditorTime editorTime = new EditorTime(time, controleJogo);
+		int ret = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
+				editorTime, Lang.msg("criarTime"), JOptionPane.YES_NO_OPTION);
+		if (ret == JOptionPane.NO_OPTION) {
+			return;
+		}
+		controleJogo.salvarTime(time);
 	}
 
 	public void verClassificacao() {
@@ -333,11 +338,17 @@ public class ControleChatCliente {
 			ret = enviarObjeto(mesa11to);
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
-				EditorTime editorTime = new EditorTime((Time) mesa11to
-						.getData(), new ControleJogo(mesa11Applet, null, null,
-						null));
-				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-						editorTime);
+				Time time = (Time) mesa11to.getData();
+				ControleJogo controleJogo = new ControleJogo(mesa11Applet,
+						null, null, null);
+				EditorTime editorTime = new EditorTime(time, controleJogo);
+				int retOpt = JOptionPane.showConfirmDialog(chatWindow
+						.getMainPanel(), editorTime, Lang.msg("editarTime"),
+						JOptionPane.YES_NO_OPTION);
+				if (retOpt == JOptionPane.NO_OPTION) {
+					return;
+				}
+				controleJogo.salvarTime(time);
 			}
 		}
 
@@ -348,7 +359,7 @@ public class ControleChatCliente {
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
-		if(controleJogosCliente!=null){
+		if (controleJogosCliente != null) {
 			controleJogosCliente.sairJogo();
 		}
 	}

@@ -180,7 +180,7 @@ public class EditorTime extends JPanel {
 
 			}
 		});
-		add(salvarTime, BorderLayout.SOUTH);
+		//add(salvarTime, BorderLayout.SOUTH);
 	}
 
 	private Component gerarTabelaAtributosBotao() {

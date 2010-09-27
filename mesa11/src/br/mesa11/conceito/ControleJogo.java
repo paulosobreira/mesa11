@@ -152,49 +152,19 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.addWindowListener(new WindowListener() {
-
-			@Override
-			public void windowOpened(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
+		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void windowClosed(WindowEvent e) {
+				int ret = JOptionPane.showConfirmDialog(
+						ControleJogo.this.frame, Lang.msg("sairJogo"), Lang
+								.msg("confirmaSairJogo"),
+						JOptionPane.YES_NO_OPTION);
+				if (ret == JOptionPane.NO_OPTION) {
+					return;
+				}
 				limparJogo();
-
+				super.windowClosing(e);
 			}
 
-			@Override
-			public void windowActivated(WindowEvent e) {
-				// TODO Auto-generated method stub
-
-			}
 		});
 		bola = new Bola(0);
 		botoesImagens.put(bola.getId(), CarregadorRecursos
