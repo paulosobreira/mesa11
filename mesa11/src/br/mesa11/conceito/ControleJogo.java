@@ -119,12 +119,6 @@ public class ControleJogo {
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		frame.addWindowListener(new WindowAdapter() {
 
-			@Override
-			public void windowClosed(WindowEvent e) {
-				limparJogo();
-
-			}
-
 			public void windowClosing(WindowEvent e) {
 				int ret = JOptionPane.showConfirmDialog(frame, Lang
 						.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
@@ -133,6 +127,7 @@ public class ControleJogo {
 					return;
 				}
 				sairJogoOnline();
+				limparJogo();
 				super.windowClosing(e);
 			}
 
