@@ -3,6 +3,7 @@ package br.mesa11.conceito;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
+import br.nnpe.Logger;
 
 public class ControleEvento implements Runnable {
 
@@ -52,7 +53,7 @@ public class ControleEvento implements Runnable {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
 				.equals(evento.getEventoCod())) {
-			System.out.println("GOLEIRO_DEFESA ult contato "
+			Logger.logar("GOLEIRO_DEFESA ult contato "
 					+ evento.getUltimoContato());
 			if (evento.getUltimoContato() != null
 					&& !(evento.getUltimoContato() instanceof Goleiro)

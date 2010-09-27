@@ -228,7 +228,7 @@ public class FormLogin extends JPanel {
 				.msg("formularioLogin"), JOptionPane.OK_CANCEL_OPTION);
 
 		if (JOptionPane.OK_OPTION == result) {
-			System.out.println("ok");
+			Logger.logar("ok");
 		}
 	}
 

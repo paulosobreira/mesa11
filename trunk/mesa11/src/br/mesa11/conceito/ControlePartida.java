@@ -358,7 +358,7 @@ public class ControlePartida {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
-			// System.out.println(id + " " + botao.getPosition() + " "
+			// Logger.logar(id + " " + botao.getPosition() + " "
 			// + botao.getNumero() + " " + botao.getNome() + " "
 			// + botao.isGoleiro() + " " + botao.getClass());
 		}
@@ -453,6 +453,7 @@ public class ControlePartida {
 	public void verificaFalhaPorTempo() {
 		if (tempoJogadaFimMilis < System.currentTimeMillis()) {
 			Logger.logar("verificaFalhaPorTempo");
+			controleJogo.mudarDica();
 			reversaoJogada();
 		}
 	}
@@ -475,6 +476,8 @@ public class ControlePartida {
 			Time aux = timeBaixo;
 			timeBaixo = timeCima;
 			timeCima = aux;
+			timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
+			timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroBaixo);
 			if (!bateuCentroCima) {
 				zeraJogadaTime(timeBaixo);
@@ -488,6 +491,7 @@ public class ControlePartida {
 			zerarJogadas();
 			controleJogo.bolaCentro();
 			virouTimes = true;
+
 			Logger.logar("Intervalo");
 		}
 	}

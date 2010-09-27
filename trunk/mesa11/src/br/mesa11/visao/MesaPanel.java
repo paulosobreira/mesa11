@@ -19,8 +19,6 @@ import java.util.Map;
 
 import javax.swing.JPanel;
 
-import org.apache.commons.collections.map.HashedMap;
-
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
@@ -28,6 +26,7 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
 
@@ -36,8 +35,8 @@ public class MesaPanel extends JPanel {
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0, 150);
 	public final static Color green = new Color(0, 255, 0, 150);
-//	public final static Color green2 = Color.white;
-//	public final static Color green = Color.white;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public static final String MUTEX = "MUTEX";
 	public static final int LARGURA_MESA = 3430;
@@ -329,8 +328,10 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(""+controleJogo.tempoRestanteJogoFormatado(), x, y);
-			g2d.drawString(" " + Lang.msg("de") + " ", x + 25, y);
+			g2d
+					.drawString("" + controleJogo.tempoRestanteJogoFormatado(),
+							x, y);
+			g2d.drawString(Lang.msg("de") + " ", x + 35, y);
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 50, y);
 			y += 25;
 			g2d.setColor(lightWhite);
@@ -371,11 +372,14 @@ public class MesaPanel extends JPanel {
 		if (!Util.isNullOrEmpty(dica)) {
 			g2d.setColor(lightWhite);
 			String msg = Lang.msg(dica);
-			int largura = msg.length() * 7;
+			int largura = 0;
+			for (int i = 0; i < msg.length(); i++) {
+				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			}
 			x -= largura / 2;
-			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(""+msg, x, y);
+			g2d.drawString("" + msg, x, y);
 		}
 	}
 
@@ -488,18 +492,18 @@ public class MesaPanel extends JPanel {
 		}
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				zoom, zoom);
-//		Map hints = new HashedMap();
-//		hints.put(RenderingHints.KEY_ANTIALIASING,
-//				RenderingHints.VALUE_ANTIALIAS_ON);
-//		hints.put(RenderingHints.KEY_RENDERING,
-//				RenderingHints.VALUE_RENDER_QUALITY);
-//		hints.put(RenderingHints.KEY_DITHERING,
-//				RenderingHints.VALUE_DITHER_ENABLE);
-//		hints.put(RenderingHints.KEY_INTERPOLATION,
-//				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//
-//		
-//		RenderingHints renderingHints = new RenderingHints(hints);
+		// Map hints = new HashedMap();
+		// hints.put(RenderingHints.KEY_ANTIALIASING,
+		// RenderingHints.VALUE_ANTIALIAS_ON);
+		// hints.put(RenderingHints.KEY_RENDERING,
+		// RenderingHints.VALUE_RENDER_QUALITY);
+		// hints.put(RenderingHints.KEY_DITHERING,
+		// RenderingHints.VALUE_DITHER_ENABLE);
+		// hints.put(RenderingHints.KEY_INTERPOLATION,
+		// RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		//
+		//		
+		// RenderingHints renderingHints = new RenderingHints(hints);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
 				affineTransform, AffineTransformOp.TYPE_BILINEAR);
 		BufferedImage botaoImg = (BufferedImage) controleJogo
@@ -845,6 +849,9 @@ public class MesaPanel extends JPanel {
 		// g.fill(centro);
 		// g.fill(penaltyCima);
 		// g.fill(penaltyBaixo);
+//		g.setColor(Color.cyan);
+//		g.fill(areaGolBaixo);
+//		g.fill(areaGolCima);
 
 	}
 
@@ -929,7 +936,7 @@ public class MesaPanel extends JPanel {
 	public static void main(String[] args) {
 		for (int i = 0; i < FAIXAS; i++) {
 			if (i % 2 == 0) {
-				System.out.println(i);
+				Logger.logar(i);
 			}
 		}
 

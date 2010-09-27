@@ -9,8 +9,6 @@ public class JogoServidor {
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
 	private Time timeCasa;
 	private Time timeVisita;
-	private SessaoCliente sessaoClienteCasa;
-	private SessaoCliente sessaoClienteVisita;
 	private ControleJogo controleJogo;
 	private long tempoCriacao = System.currentTimeMillis();
 
@@ -53,22 +51,6 @@ public class JogoServidor {
 
 	public void setTimeVisita(Time timeVisita) {
 		this.timeVisita = timeVisita;
-	}
-
-	public SessaoCliente getSessaoClienteCasa() {
-		return sessaoClienteCasa;
-	}
-
-	public void setSessaoClienteCasa(SessaoCliente sessaoClienteCasa) {
-		this.sessaoClienteCasa = sessaoClienteCasa;
-	}
-
-	public SessaoCliente getSessaoClienteVisita() {
-		return sessaoClienteVisita;
-	}
-
-	public void setSessaoClienteVisita(SessaoCliente sessaoClienteVisita) {
-		this.sessaoClienteVisita = sessaoClienteVisita;
 	}
 
 	public void jogadorSaiuJogo(String nomeJogador) {

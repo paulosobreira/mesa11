@@ -91,13 +91,8 @@ public class ControleJogosServidor {
 		jogoSrvMesa11.setTimeCasa(timeCasa);
 		jogoSrvMesa11.setTimeVisita(timeVisita);
 		jogoSrvMesa11.setControleJogo(controleJogo);
-		jogoSrvMesa11.setSessaoClienteCasa(dadosMesa11
-				.obterSessaoPeloNome(dadosJogoSrvMesa11.getNomeCriador()));
-		jogoSrvMesa11.setSessaoClienteVisita(dadosMesa11
-				.obterSessaoPeloNome(dadosJogoSrvMesa11.getNomeVisitante()));
 		controleJogo.iniciaJogoOnline(jogoSrvMesa11.getDadosJogoSrvMesa11(),
 				timeCasa, timeVisita);
-
 	}
 
 	public Object obterDadosJogo(String nomejogo) {
@@ -225,10 +220,10 @@ public class ControleJogosServidor {
 				.hasNext();) {
 			String nomeJogo = (String) iterator.next();
 			JogoServidor jogoServidor = mapaJogos.get(nomeJogo);
-			if (nomeJogador.equals(jogoServidor.getSessaoClienteCasa()
-					.getNomeJogador())
-					|| nomeJogador.equals(jogoServidor.getSessaoClienteVisita()
-							.getNomeJogador())) {
+			if (nomeJogador.equals(jogoServidor.getDadosJogoSrvMesa11()
+					.getNomeCriador())
+					|| nomeJogador.equals(jogoServidor.getDadosJogoSrvMesa11()
+							.getNomeVisitante())) {
 				jogoServidor.jogadorSaiuJogo(nomeJogador);
 				jogoSrvMesa11 = nomeJogo;
 			}
