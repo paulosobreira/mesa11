@@ -1931,6 +1931,8 @@ public class ControleJogo {
 		if (!ConstantesMesa11.OK.equals(ret)) {
 			esperandoJogadaOnline = false;
 		}
+		setPontoClicado(null);
+		setPontoPasando(null);
 	}
 
 	public Object obterUltimaJogada() {
@@ -2078,6 +2080,14 @@ public class ControleJogo {
 		if (controleDicas != null) {
 			controleDicas.mudarDica();
 		}
+
+	}
+
+	public void fimJogoServidor() {
+		if (isJogoOnlineSrvidor()) {
+			return;
+		}
+		jogoServidor.fimJogoServidor();
 
 	}
 
