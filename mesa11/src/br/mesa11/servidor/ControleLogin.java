@@ -215,4 +215,20 @@ public class ControleLogin {
 		}
 		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { email }));
 	}
+
+	public boolean verificaSemSessao(String nomeCriador) {
+		if (Util.isNullOrEmpty(nomeCriador)) {
+			return true;
+		}
+		Collection<SessaoCliente> clientes = dadosMesa11.getClientes();
+		for (Iterator iter = clientes.iterator(); iter.hasNext();) {
+			SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
+			if (nomeCriador.equals(sessaoCliente.getNomeJogador())) {
+				return false;
+			}
+		}
+		return true;
+
+	}
+
 }

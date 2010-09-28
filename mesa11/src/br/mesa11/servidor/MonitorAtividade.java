@@ -52,13 +52,13 @@ public class MonitorAtividade extends Thread {
 
 					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
 
-					if (verificaSemSessao(jogoServidor.getDadosJogoSrvMesa11()
+					if (proxyComandos.verificaSemSessao(jogoServidor.getDadosJogoSrvMesa11()
 							.getNomeCriador())) {
 						jogoRemover = key;
 					}
 
 					if (jogoServidor.jogoIniciado()
-							&& verificaSemSessao(jogoServidor
+							&& proxyComandos.verificaSemSessao(jogoServidor
 									.getDadosJogoSrvMesa11().getNomeVisitante())) {
 						jogoRemover = key;
 					}
@@ -103,21 +103,6 @@ public class MonitorAtividade extends Thread {
 
 	}
 
-	private boolean verificaSemSessao(String nomeCriador) {
-		if (Util.isNullOrEmpty(nomeCriador)) {
-			return true;
-		}
-		Collection<SessaoCliente> clientes = proxyComandos.getDadosMesa11()
-				.getClientes();
-		for (Iterator iter = clientes.iterator(); iter.hasNext();) {
-			SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
-			if (nomeCriador.equals(sessaoCliente.getNomeJogador())) {
-				return false;
-			}
-		}
-		return true;
-
-	}
 
 	private void dormir(long l) {
 		try {
