@@ -10,6 +10,7 @@ import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Util;
@@ -25,15 +26,18 @@ import br.tos.SessaoCliente;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
+	private ProxyComandos proxyComandos;
 	private ControlePersistencia controlePersistencia;
 	private DadosMesa11 dadosMesa11;
 	private Map<String, JogoServidor> mapaJogos = new HashMap<String, JogoServidor>();
 
 	public ControleJogosServidor(DadosMesa11 dadosMesa11,
-			ControlePersistencia controlePersistencia) {
+			ControlePersistencia controlePersistencia,
+			ProxyComandos proxyComandos) {
 		super();
 		this.dadosMesa11 = dadosMesa11;
 		this.controlePersistencia = controlePersistencia;
+		this.proxyComandos = proxyComandos;
 	}
 
 	public DadosMesa11 getDadosMesa11() {
@@ -47,7 +51,8 @@ public class ControleJogosServidor {
 	public Object criarJogo(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
 		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
-		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11);
+		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
+				proxyComandos);
 		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11);

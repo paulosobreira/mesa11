@@ -18,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Botao;
 import br.hibernate.HibernateUtil;
+import br.hibernate.Mesa11Dados;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Dia;
@@ -224,4 +225,20 @@ public class ControlePersistencia {
 		mesa11to.setData(retorno);
 		return mesa11to;
 	}
+
+	public void gravarDados(Mesa11Dados... mesa11Dados) throws Exception {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		try {
+			for (int i = 0; i < mesa11Dados.length; i++) {
+				session.saveOrUpdate(mesa11Dados[i]);
+			}
+			transaction.commit();
+		} catch (Exception e) {
+			transaction.rollback();
+			throw e;
+		}
+
+	}
+
 }
