@@ -72,7 +72,7 @@ public class MonitorAtividade extends Thread {
 						 * Apaga o jogo em 5 minutos apos termino
 						 */
 
-						if ((timeNow - jogoServidor.getTempoTerminado()) > 10000) {
+						if ((timeNow - jogoServidor.getTempoTerminado()) > 300000) {
 							Logger
 									.logar("Apaga o jogo em 5 minutos apos termino");
 							jogoRemover = key;

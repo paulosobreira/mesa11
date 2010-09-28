@@ -1979,6 +1979,9 @@ public class ControleJogo {
 				List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
 				synchronized (botoes) {
 					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
+						if (isAnimando()) {
+							continue;
+						}
 						Botao botao = (Botao) botoes.get(botaoPosSrvMesa11
 								.getId());
 						botao.setCentroTodos(new Point(botaoPosSrvMesa11
@@ -2026,6 +2029,10 @@ public class ControleJogo {
 
 	public Animacao getAnimacaoCliente() {
 		return animacaoCliente;
+	}
+
+	public void setAnimacaoCliente(Animacao animacaoCliente) {
+		this.animacaoCliente = animacaoCliente;
 	}
 
 	public String getDica() {
