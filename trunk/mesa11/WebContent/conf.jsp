@@ -23,13 +23,12 @@ A:active {text-decoration: none;
 		color: #0084B4;}
 A:hover {text-decoration: underline overline; color: black;}
 </style>
-<title>Mesa-11</title>
 </head>
 <body>
 <table>
 	<thead>
 		<tr>
-			<th colspan="2" align="left" class="info-header">F1Mane
+			<th colspan="2" align="left" class="info-header">Mesa-11
 			Configuration Environment</th>
 		</tr>
 	</thead>
@@ -149,7 +148,7 @@ A:hover {text-decoration: underline overline; color: black;}
 			Schema </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="ServletBaseDados?tipo=x"> Exceptions
+			<td class="c1"><a href="ServletMesa11?tipo=x"> Exceptions
 			</a></td>
 		</tr>
 	</tbody>
