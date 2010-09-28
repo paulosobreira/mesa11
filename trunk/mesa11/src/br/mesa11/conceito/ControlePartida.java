@@ -493,6 +493,18 @@ public class ControlePartida {
 			virouTimes = true;
 
 			Logger.logar("Intervalo");
+			if (controleJogo.isJogoOnlineSrvidor()) {
+				while (controleJogo.isAnimando()) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						Logger.logarExept(e);
+					}
+				}
+				Animacao animacao = new Animacao();
+				animacao.setTimeStamp(System.currentTimeMillis());
+				controleJogo.setAnimacaoCliente(animacao);
+			}
 		}
 	}
 
@@ -609,6 +621,7 @@ public class ControlePartida {
 			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botao.setCentro(mesaPanel.golBaixo());
+				botao.setAngulo(0);
 				break;
 			}
 		}
@@ -621,6 +634,7 @@ public class ControlePartida {
 			Botao botao = (Botao) timeCima.getBotoes().get(i);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botao.setCentro(mesaPanel.golCima());
+				botao.setAngulo(0);
 				break;
 			}
 		}
