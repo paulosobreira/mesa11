@@ -1,5 +1,6 @@
 package br.mesa11;
 
+import br.hibernate.Mesa11Dados;
 import br.hibernate.Time;
 import br.mesa11.servidor.ControleChatServidor;
 import br.mesa11.servidor.ControleJogosServidor;
@@ -28,7 +29,7 @@ public class ProxyComandos {
 		controleChatServidor = new ControleChatServidor(dadosMesa11);
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
 		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
-				controlePersistencia);
+				controlePersistencia, this);
 		monitorAtividade = new MonitorAtividade(this);
 		monitorAtividade.start();
 	}
@@ -115,6 +116,14 @@ public class ProxyComandos {
 
 	public ControleJogosServidor getControleJogosServidor() {
 		return controleJogosServidor;
+	}
+
+	public boolean verificaSemSessao(String nomeCriador) {
+		return controleLogin.verificaSemSessao(nomeCriador);
+	}
+
+	public void gravarDados(Mesa11Dados... mesa11Dados) throws Exception {
+		controlePersistencia.gravarDados(mesa11Dados);
 	}
 
 }
