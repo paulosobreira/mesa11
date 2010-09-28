@@ -68,7 +68,6 @@ public class MonitorJogo extends Thread {
 			if (timeVez != null
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()) {
-				dormir(tempoDormir);
 				controleJogo
 						.atualizaBotoesClienteOnline(this.timeStampAnimacao);
 			}
@@ -94,7 +93,6 @@ public class MonitorJogo extends Thread {
 	}
 
 	private void iniciaJogo() {
-		tempoDormir = 400;
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
