@@ -793,6 +793,7 @@ public class ControlePartida {
 		if (System.currentTimeMillis() > fimJogoMilis) {
 			controleJogo.setDica("fimJogo");
 			controleJogo.setJogoTerminado(true);
+			controleJogo.fimJogoServidor();
 			Logger.logar("fimJogo");
 		}
 
