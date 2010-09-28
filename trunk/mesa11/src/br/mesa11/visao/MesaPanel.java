@@ -105,6 +105,7 @@ public class MesaPanel extends JPanel {
 	private Ellipse2D zoomedCentro;
 	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS / 2];
 	private Shape limitesViewPort;
+	private Point centroBolaOld;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
@@ -492,18 +493,6 @@ public class MesaPanel extends JPanel {
 		}
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
 				zoom, zoom);
-		// Map hints = new HashedMap();
-		// hints.put(RenderingHints.KEY_ANTIALIASING,
-		// RenderingHints.VALUE_ANTIALIAS_ON);
-		// hints.put(RenderingHints.KEY_RENDERING,
-		// RenderingHints.VALUE_RENDER_QUALITY);
-		// hints.put(RenderingHints.KEY_DITHERING,
-		// RenderingHints.VALUE_DITHER_ENABLE);
-		// hints.put(RenderingHints.KEY_INTERPOLATION,
-		// RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		//
-		//		
-		// RenderingHints renderingHints = new RenderingHints(hints);
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
 				affineTransform, AffineTransformOp.TYPE_BILINEAR);
 		BufferedImage botaoImg = (BufferedImage) controleJogo
@@ -528,7 +517,14 @@ public class MesaPanel extends JPanel {
 			graphics2d.setClip(externo);
 			graphics2d.drawImage(zoomBuffer, 0, 0, null);
 			zoomBuffer = newBuffer;
-
+			Point restroBola = new Point(botx, boty);
+			if (centroBolaOld != null) {
+				if (GeoUtil.distaciaEntrePontos(restroBola, centroBolaOld) > 5) {
+					g.drawImage(zoomBuffer, centroBolaOld.x, centroBolaOld.y,
+							null);
+				}
+			}
+			centroBolaOld = new Point(botx, boty);
 		}
 		g.drawImage(zoomBuffer, botx, boty, null);
 		// g.setColor(Color.black);
@@ -849,9 +845,9 @@ public class MesaPanel extends JPanel {
 		// g.fill(centro);
 		// g.fill(penaltyCima);
 		// g.fill(penaltyBaixo);
-//		g.setColor(Color.cyan);
-//		g.fill(areaGolBaixo);
-//		g.fill(areaGolCima);
+		// g.setColor(Color.cyan);
+		// g.fill(areaGolBaixo);
+		// g.fill(areaGolCima);
 
 	}
 
