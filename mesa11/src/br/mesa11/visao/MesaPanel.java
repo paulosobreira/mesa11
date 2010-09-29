@@ -283,21 +283,26 @@ public class MesaPanel extends JPanel {
 			Color cM1 = new Color(timeMandante.getCor1());
 			Color cM2 = new Color(timeMandante.getCor2());
 			Color cM3 = new Color(timeMandante.getCor3());
-
-			g2d.setColor(ImageUtil.gerarCorTransparente(cM1, 200));
+			Color corFundo = ImageUtil.gerarCorTransparente(cM1, 200);
+			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
-			if (timeMandante.isCorMeiaNumero()) {
-				g2d.setColor(cM3);
+			int valor = (corFundo.getRed() + corFundo.getGreen() + corFundo
+					.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
 			} else {
-				g2d.setColor(cM2);
+				g2d.setColor(Color.WHITE);
 			}
 			g2d.drawString("" + timeMandante.getNome(), newx - 90, y);
-			g2d.setColor(ImageUtil.gerarCorTransparente(cM2, 200));
+			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
+			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
-			if (timeMandante.isCorMeiaNumero()) {
-				g2d.setColor(cM3);
+			valor = (corFundo.getRed() + corFundo.getGreen() + corFundo
+					.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
 			} else {
-				g2d.setColor(cM1);
+				g2d.setColor(Color.WHITE);
 			}
 			g2d.drawString("" + controleJogo.verGols(timeMandante), newx + 12,
 					y);
@@ -305,20 +310,26 @@ public class MesaPanel extends JPanel {
 			Color cV1 = new Color(timeVisita.getCor1());
 			Color cV2 = new Color(timeVisita.getCor2());
 			Color cV3 = new Color(timeVisita.getCor3());
-			g2d.setColor(ImageUtil.gerarCorTransparente(cV1, 200));
+			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 10, 10);
-			if (timeVisita.isCorMeiaNumero()) {
-				g2d.setColor(cV3);
+			valor = (corFundo.getRed() + corFundo.getGreen() + corFundo
+					.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
 			} else {
-				g2d.setColor(cV2);
+				g2d.setColor(Color.WHITE);
 			}
 			g2d.drawString("" + timeVisita.getNome(), newx + 70, y);
-			g2d.setColor(ImageUtil.gerarCorTransparente(cV2, 200));
+			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
-			if (timeVisita.isCorMeiaNumero()) {
-				g2d.setColor(cV3);
+			valor = (corFundo.getRed() + corFundo.getGreen() + corFundo
+					.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
 			} else {
-				g2d.setColor(cV1);
+				g2d.setColor(Color.WHITE);
 			}
 			g2d.drawString("" + controleJogo.verGols(timeVisita), newx + 48, y);
 		}
@@ -351,12 +362,15 @@ public class MesaPanel extends JPanel {
 				g2d.setColor(Color.BLACK);
 				g2d.drawString(Lang.msg("aguarde"), x, y);
 			} else {
-				g2d.setColor(ImageUtil.gerarCorTransparente(c1, 200));
+				Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
+				g2d.setColor(corFundo);
 				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
-				if (time.isCorMeiaNumero()) {
-					g2d.setColor(c3);
+				int valor = (corFundo.getRed() + corFundo.getGreen() + corFundo
+						.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
 				} else {
-					g2d.setColor(c2);
+					g2d.setColor(Color.WHITE);
 				}
 				g2d
 						.drawString(time.getNome()
