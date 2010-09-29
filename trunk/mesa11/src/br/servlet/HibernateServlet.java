@@ -3,6 +3,8 @@ package br.servlet;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +19,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
 import br.hibernate.HibernateUtil;
+import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira [sowbreira@gmail.com]
@@ -26,8 +29,8 @@ public class HibernateServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		PrintWriter printWriter = response.getWriter();
+		response.setContentType("text/html");
 		try {
 			printWriter.println("<html><body>");
 
@@ -41,6 +44,8 @@ public class HibernateServlet extends HttpServlet {
 				createSchema(cfg, sessionFactory, printWriter);
 			} else if ("update_schema".equals(param)) {
 				updateSchema(cfg, sessionFactory, printWriter);
+			} else if ("x".equals(param)) {
+				topExceptions(response, printWriter);
 			}
 			printWriter.println("<br/> " + param + " done");
 		} catch (Exception e) {
@@ -49,6 +54,24 @@ public class HibernateServlet extends HttpServlet {
 		printWriter.println("<br/><a href='mesa11.jsp'>back</a>");
 		printWriter.println("</body></html>");
 		response.flushBuffer();
+	}
+
+	private void topExceptions(HttpServletResponse res, PrintWriter printWriter)
+			throws IOException {
+
+		printWriter.write("<h2>Mesa-11 Exceções</h2><br><hr>");
+		synchronized (Logger.topExceptions) {
+			Set top = Logger.topExceptions.keySet();
+			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+				String exept = (String) iterator.next();
+				printWriter.write("Quantidade : "
+						+ Logger.topExceptions.get(exept));
+				printWriter.write("<br>");
+				printWriter.write(exept);
+				printWriter.write("<br><hr>");
+			}
+		}
+		res.flushBuffer();
 	}
 
 	private void updateSchema(AnnotationConfiguration cfg,

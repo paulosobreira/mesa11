@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 import br.applet.Mesa11Applet;
@@ -117,6 +118,7 @@ public class ControleJogo {
 				.setTitle(ConstantesMesa11.TITULO_VERSAO + " "
 						+ timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent e) {
@@ -126,7 +128,9 @@ public class ControleJogo {
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
 				}
-				sairJogoOnline();
+				if (isJogoOnlineCliente()) {
+					sairJogoOnline();
+				}
 				limparJogo();
 				super.windowClosing(e);
 			}
@@ -152,6 +156,7 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
+		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				int ret = JOptionPane.showConfirmDialog(
@@ -160,6 +165,9 @@ public class ControleJogo {
 						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
+				}
+				if (isJogoOnlineCliente()) {
+					sairJogoOnline();
 				}
 				limparJogo();
 				super.windowClosing(e);
@@ -974,8 +982,8 @@ public class ControleJogo {
 			if (b instanceof Bola || b instanceof Goleiro) {
 				continue;
 			}
-			List reta = GeoUtil.drawBresenhamLine(p, b.getCentro());
-			if (reta.size() < ConstantesMesa11.PERIMETRO) {
+			double reta = GeoUtil.distaciaEntrePontos(p, b.getCentro());
+			if (reta < ConstantesMesa11.PERIMETRO) {
 				posicionaBotaoAleatoriamenteNoSeuCampo(b);
 			}
 		}
@@ -1319,13 +1327,15 @@ public class ControleJogo {
 						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
 			} else {
-				limparPerimetroCirculo(ponto);
-				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
-						.golBaixo(), ponto, 90);
-				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-						.getDiamentro(), ponto);
-				levouFalta.setCentroTodos(p);
-				bola.setCentroTodos(ponto);
+				if (verificaBolaNoPerimetro(ponto)) {
+					limparPerimetroCirculo(ponto);
+					double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
+							.golBaixo(), ponto, 90);
+					Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+							.getDiamentro(), ponto);
+					levouFalta.setCentroTodos(p);
+					bola.setCentroTodos(ponto);
+				}
 			}
 		} else {
 			if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
@@ -1340,17 +1350,27 @@ public class ControleJogo {
 						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
 			} else {
-				limparPerimetroCirculo(ponto);
-				double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
-						.golCima(), ponto, 90);
-				Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-						.getDiamentro(), ponto);
-				levouFalta.setCentroTodos(p);
-				bola.setCentroTodos(ponto);
+				if (verificaBolaNoPerimetro(ponto)) {
+					limparPerimetroCirculo(ponto);
+					double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
+							.golCima(), ponto, 90);
+					Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
+							.getDiamentro(), ponto);
+					levouFalta.setCentroTodos(p);
+					bola.setCentroTodos(ponto);
+				}
 			}
 		}
 
 		zeraJogadaTime(levouFalta.getTime());
+	}
+
+	private boolean verificaBolaNoPerimetro(Point ponto) {
+		if (ponto == null) {
+			return false;
+		}
+		double reta = GeoUtil.distaciaEntrePontos(ponto, bola.getCentro());
+		return (reta < ConstantesMesa11.PERIMETRO);
 	}
 
 	public void porcessaLateral() {
@@ -1363,10 +1383,10 @@ public class ControleJogo {
 		for (Iterator iterator = btnsLateral.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			if (!(botao instanceof Goleiro)) {
-				List reta = GeoUtil.drawBresenhamLine(ultLateral, botao
+				double reta = GeoUtil.distaciaEntrePontos(ultLateral, botao
 						.getCentro());
-				if (reta.size() < tamretaMin) {
-					tamretaMin = reta.size();
+				if (reta < tamretaMin) {
+					tamretaMin = (int) reta;
 					botaoLateral = botao;
 				}
 			}
@@ -1596,6 +1616,7 @@ public class ControleJogo {
 			frame.removeWindowListener(windowListeners[i]);
 		}
 		frame.getContentPane().removeAll();
+		frame.setVisible(false);
 		pararVideo();
 
 	}
@@ -1917,7 +1938,7 @@ public class ControleJogo {
 		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
 				|| jogadaMesa11.getPontoSolto() == null
-				|| (stampUltimaJogadaOnline + 5000) > System
+				|| (stampUltimaJogadaOnline + 1000) > System
 						.currentTimeMillis()
 				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
 			return;
