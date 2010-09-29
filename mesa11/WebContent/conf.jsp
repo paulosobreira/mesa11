@@ -148,7 +148,7 @@ A:hover {text-decoration: underline overline; color: black;}
 			Schema </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="ServletMesa11?tipo=x"> Exceptions
+			<td class="c1"><a href="hibernate?act=x"> Exceptions
 			</a></td>
 		</tr>
 	</tbody>
