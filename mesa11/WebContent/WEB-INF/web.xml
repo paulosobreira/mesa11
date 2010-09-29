@@ -29,16 +29,12 @@
 		<servlet-name>mesa11</servlet-name>
 		<url-pattern>/mesa11</url-pattern>
 	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>ServletBackUp</servlet-name>
-		<servlet-class>br.servlet.ServletBackUp</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ServletBackUp</servlet-name>
-		<url-pattern>/ServletBackUp</url-pattern>
-	</servlet-mapping>
-
+	<!--
+		<servlet> <servlet-name>ServletBackUp</servlet-name>
+		<servlet-class>br.servlet.ServletBackUp</servlet-class> </servlet>
+		<servlet-mapping> <servlet-name>ServletBackUp</servlet-name>
+		<url-pattern>/ServletBackUp</url-pattern> </servlet-mapping>
+	-->
 
 
 	<welcome-file-list>
