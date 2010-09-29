@@ -106,6 +106,7 @@ public class MesaPanel extends JPanel {
 	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS / 2];
 	private Shape limitesViewPort;
 	private Point centroBolaOld;
+	private double oldZoom;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
@@ -518,12 +519,14 @@ public class MesaPanel extends JPanel {
 			graphics2d.drawImage(zoomBuffer, 0, 0, null);
 			zoomBuffer = newBuffer;
 			Point restroBola = new Point(botx, boty);
-			if (centroBolaOld != null) {
-				if (GeoUtil.distaciaEntrePontos(restroBola, centroBolaOld) > 5) {
+			if (centroBolaOld != null && zoom == oldZoom) {
+				if (GeoUtil.distaciaEntrePontos(restroBola, centroBolaOld) > Util
+						.intervalo(1, 4)) {
 					g.drawImage(zoomBuffer, centroBolaOld.x, centroBolaOld.y,
 							null);
 				}
 			}
+			oldZoom = zoom;
 			centroBolaOld = new Point(botx, boty);
 		}
 		g.drawImage(zoomBuffer, botx, boty, null);

@@ -479,12 +479,12 @@ public class ControlePartida {
 			timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 			timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 			controleFormacao.posicionaTimeCima(timeCima, !bateuCentroBaixo);
-			if (bateuCentroCima) {
-				zeraJogadaTime(timeBaixo);
+			if (!bateuCentroBaixo) {
+				zeraJogadaTime(timeCima);
 			}
 			controleFormacao.posicionaTimeBaixo(timeBaixo, !bateuCentroCima);
-			if (bateuCentroBaixo) {
-				zeraJogadaTime(timeCima);
+			if (!bateuCentroCima) {
+				zeraJogadaTime(timeBaixo);
 			}
 			centralizaGoleiroBaixo();
 			centralizaGoleiroCima();

@@ -61,12 +61,7 @@ public class ServletMesa11 extends HttpServlet {
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
-		String tipo = req.getParameter("tipo");
-		if (!Util.isNullOrEmpty(tipo)) {
-			if ("x".equals(tipo)) {
-				topExceptions(res);
-			}
-		}
+
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(req
 					.getInputStream());
@@ -104,25 +99,7 @@ public class ServletMesa11 extends HttpServlet {
 		}
 	}
 
-	private void topExceptions(HttpServletResponse res) throws IOException {
-		res.setContentType("text/html");
-		PrintWriter printWriter = res.getWriter();
-		printWriter.write("<html><body>");
-		printWriter.write("<h2>Mesa-11 Exceções</h2><br><hr>");
-		synchronized (Logger.topExceptions) {
-			Set top = Logger.topExceptions.keySet();
-			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-				String exept = (String) iterator.next();
-				printWriter.write("Quantidade : "
-						+ Logger.topExceptions.get(exept));
-				printWriter.write("<br>");
-				printWriter.write(exept);
-				printWriter.write("<br><hr>");
-			}
-		}
-		printWriter.write("</body></html>");
-		res.flushBuffer();
-	}
+
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
