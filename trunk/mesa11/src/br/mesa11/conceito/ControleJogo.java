@@ -1949,9 +1949,6 @@ public class ControleJogo {
 		esperandoJogadaOnline = true;
 		stampUltimaJogadaOnline = System.currentTimeMillis();
 		Object ret = enviarObjeto(mesa11to);
-		if (!ConstantesMesa11.OK.equals(ret)) {
-			esperandoJogadaOnline = false;
-		}
 		setPontoClicado(null);
 		setPontoPasando(null);
 	}
@@ -1983,6 +1980,7 @@ public class ControleJogo {
 					}
 				}
 				atualizaBotoesClienteOnline(animacao.getTimeStamp());
+				esperandoJogadaOnline = false;
 			}
 		});
 		threadAtualizaBotoesClienteOnline.start();
