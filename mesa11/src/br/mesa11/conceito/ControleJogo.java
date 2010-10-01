@@ -118,7 +118,11 @@ public class ControleJogo {
 				.setTitle(ConstantesMesa11.TITULO_VERSAO + " "
 						+ timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		if (isJogoOnlineCliente()) {
+			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		} else {
+			frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		}
 		frame.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent e) {
@@ -156,7 +160,11 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-		frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		if (isJogoOnlineCliente()) {
+			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		} else {
+			frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		}
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				int ret = JOptionPane.showConfirmDialog(
@@ -1611,12 +1619,12 @@ public class ControleJogo {
 
 	public void limparJogo() {
 		Logger.logar("matarTodasThreads");
+		frame.setVisible(false);
 		WindowListener[] windowListeners = frame.getWindowListeners();
 		for (int i = 0; i < windowListeners.length; i++) {
 			frame.removeWindowListener(windowListeners[i]);
 		}
 		frame.getContentPane().removeAll();
-		frame.setVisible(false);
 		pararVideo();
 
 	}
@@ -1854,6 +1862,7 @@ public class ControleJogo {
 						areaGoleiroCima = true;
 						evento.setUltimoContato(goleiroCima);
 						evento.setNaBola(true);
+						evento.setEventoCod(ConstantesMesa11.CHUTE_GOLEIRO);
 					}
 					boolean areaGoleiroBaixo = false;
 					Goleiro goleiroBaixo = obterGoleiroBaixo();
@@ -1864,6 +1873,7 @@ public class ControleJogo {
 						areaGoleiroBaixo = true;
 						evento.setUltimoContato(goleiroBaixo);
 						evento.setNaBola(true);
+						evento.setEventoCod(ConstantesMesa11.CHUTE_GOLEIRO);
 					}
 					if (!areaGoleiroBaixo && !areaGoleiroCima) {
 						continue;
@@ -1938,9 +1948,9 @@ public class ControleJogo {
 		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
 				|| jogadaMesa11.getPontoSolto() == null
-				|| (stampUltimaJogadaOnline + 1000) > System
-						.currentTimeMillis()
+				|| (stampUltimaJogadaOnline + 500) > System.currentTimeMillis()
 				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
+			setDica(ConstantesMesa11.JOGADA_INVALIDA);
 			return;
 		}
 
@@ -1949,6 +1959,10 @@ public class ControleJogo {
 		esperandoJogadaOnline = true;
 		stampUltimaJogadaOnline = System.currentTimeMillis();
 		Object ret = enviarObjeto(mesa11to);
+		if (!ConstantesMesa11.OK.equals(ret)) {
+			setDica(ConstantesMesa11.PROBLEMA_REDE);
+			esperandoJogadaOnline = false;
+		}
 		setPontoClicado(null);
 		setPontoPasando(null);
 	}
@@ -2103,7 +2117,7 @@ public class ControleJogo {
 	}
 
 	public void fimJogoServidor() {
-		if (isJogoOnlineSrvidor()) {
+		if (!isJogoOnlineSrvidor()) {
 			return;
 		}
 		jogoServidor.fimJogoServidor();

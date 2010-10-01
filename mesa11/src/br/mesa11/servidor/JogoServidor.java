@@ -109,11 +109,23 @@ public class JogoServidor {
 	}
 
 	public void fimJogoServidor() {
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeCriador()));
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeVisitante()));
+		Logger.logar("dadosJogoSrvMesa11.isSaiuCriador()"
+				+ dadosJogoSrvMesa11.isSaiuCriador());
+		Logger.logar("dadosJogoSrvMesa11.isSaiuVisitante()"
+				+ dadosJogoSrvMesa11.isSaiuVisitante());
 		if (proxyComandos
 				.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())
 				|| proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
 						.getNomeVisitante())
-				|| dadosJogoSrvMesa11.isSaiuCriador()
+				|| dadosJogoSrvMesa11.isSaiuVisitante()
 				|| dadosJogoSrvMesa11.isSaiuCriador() || controleJogo == null) {
 			return;
 		}

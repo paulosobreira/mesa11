@@ -97,7 +97,9 @@ public class ConstantesMesa11 {
 	public static final String OBTER_POSICAO_BOTOES = "OBTER_POSICAO_BOTOES";
 	public static final String SAIR_JOGO = "SAIR_JOGO";
 	public static final int TAMANHO_MAX_NOME_TIME = 11;
-	public static final String TITULO_VERSAO = "Mesa11 Ver 1.0";
-	
+	public static final String TITULO_VERSAO = "Mesa11 Ver 1.1";
+	public static final String PROBLEMA_REDE = "problemaRede";
+	public static final String JOGADA_INVALIDA = "jogadaInvalida";
+	public static final String CHUTE_GOLEIRO = "CHUTE_GOLEIRO";
 
 }
