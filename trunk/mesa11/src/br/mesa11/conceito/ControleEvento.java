@@ -27,7 +27,9 @@ public class ControleEvento implements Runnable {
 		Evento evento = controleJogo.getEventoAtual();
 		Time timeCima = controleJogo.getTimeCima();
 		Time timeBaixo = controleJogo.getTimeBaixo();
-		if ((ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(evento.getEventoCod()) || ConstantesMesa11.CONTATO_BOLA_BOTAO
+		if ((ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(evento.getEventoCod())
+				|| ConstantesMesa11.CONTATO_BOLA_BOTAO.equals(evento
+						.getEventoCod()) || ConstantesMesa11.CHUTE_GOLEIRO
 				.equals(evento.getEventoCod()))
 				&& evento.getUltimoContato().getId() != 0) {
 			if (controleJogo.incrementaJogada()) {
@@ -53,13 +55,17 @@ public class ControleEvento implements Runnable {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
 				.equals(evento.getEventoCod())) {
-			Logger.logar("GOLEIRO_DEFESA ult contato "
+			Logger.logar("GOLEIRO_DEFESA ultimo contato "
 					+ evento.getUltimoContato());
 			if (evento.getUltimoContato() != null
 					&& !(evento.getUltimoContato() instanceof Goleiro)
 					&& evento.getUltimoContato().getTime() != null
 					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
 							.getUltimoContato().getTime())) {
+				controleJogo.reversaoJogada();
+			}
+			if (evento.getUltimoContato().getTime().obterGoleiro().equals(
+					evento.getUltimoContato())) {
 				controleJogo.reversaoJogada();
 			}
 		} else if (ConstantesMesa11.META_ESCANTEIO
