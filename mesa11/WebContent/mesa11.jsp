@@ -174,7 +174,7 @@ img {
 				href="http://www.java.com/" style="text-align: right;"
 				target="_BLANK">Instale o Java</a>
 			<a id="link" style="position: absolute; left: 370px; top: 50px;font-size: 16px;"
-				href="F1Mane.html" style="text-align: right;"
+				href="mesa11.html" style="text-align: right;"
 				target="_BLANK">Versao 1 Jogador</a>	
 			<br>					
 		</div>
