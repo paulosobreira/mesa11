@@ -83,22 +83,248 @@ public class BotaoUtils {
 		return botaoImg;
 	}
 
-	public static void setarHints(Graphics2D g2d) {
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-				RenderingHints.VALUE_DITHER_ENABLE);
-		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	}
-
 	public static BufferedImage desenhaUniforme(Time time, int uniforme) {
 		return desenhaUniforme(time, uniforme, null);
 	}
 
 	public static BufferedImage desenhaUniforme(Time time, int uniforme,
+			Botao botao) {
+		if (time.getTipoUniforme() == 0) {
+			return desenhaUniforme0(time, uniforme, botao);
+		}
+		return desenhaUniforme0(time, uniforme, botao);
+	}
+
+	public static BufferedImage desenhaUniforme0(Time time, int uniforme,
+			Botao botao) {
+		Color cor1, cor2, cor3;
+		if (uniforme == 1) {
+			cor1 = new Color(time.getCor1RGB());
+			cor2 = new Color(time.getCor2RGB());
+			cor3 = new Color(time.getCor3RGB());
+		} else {
+			cor1 = new Color(time.getCor4RGB());
+			cor2 = new Color(time.getCor5RGB());
+			cor3 = new Color(time.getCor6RGB());
+
+		}
+		if (botao == null) {
+			botao = new Botao();
+			botao.setNome("Mesa");
+			botao.setNumero(11);
+		}
+		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
+				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
+		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
+		AlphaComposite composite = AlphaComposite
+				.getInstance(AlphaComposite.SRC_IN);
+		graphics.setComposite(composite);
+		int x = 0;
+		for (int i = 0; i < 5; i++) {
+			if (i % 2 == 0) {
+				graphics.setColor(cor1);
+			} else {
+				graphics.setColor(cor3);
+				graphics
+						.fillRect(x - 2, 0, Util
+								.inte(botao.getDiamentro() * .35), botao
+								.getDiamentro());
+				graphics.setColor(cor2);
+			}
+			graphics.fillRect(x, 0, Util.inte(botao.getDiamentro() * .35),
+					botao.getDiamentro());
+
+			x += Util.inte(botao.getDiamentro() * .2);
+
+		}
+
+		x = 0;
+		for (int i = 0; i < 5; i++) {
+
+			if (i % 2 == 0) {
+				graphics.setColor(cor3);
+				graphics.fillRect(
+						4 + x + Util.inte(botao.getDiamentro() * .35), 0, 2,
+						botao.getDiamentro());
+			}
+			x += Util.inte(botao.getDiamentro() * .2);
+
+		}
+
+		graphics.setColor(cor3);
+		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
+				botao.getDiamentro() - 2);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 24));
+		graphics.setColor(cor2);
+		if (cor2.equals(cor1)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.drawString(botao.getNome(), 8, Util
+				.inte(botao.getDiamentro() * .55));
+		graphics.setColor(cor1);
+		if (cor1.equals(cor2)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
+				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+
+		graphics.dispose();
+		return botaoImg;
+	}
+
+	public static BufferedImage desenhaUniforme3(Time time, int uniforme,
+			Botao botao) {
+		Color cor1, cor2, cor3;
+		if (uniforme == 1) {
+			cor1 = new Color(time.getCor1RGB());
+			cor2 = new Color(time.getCor2RGB());
+			cor3 = new Color(time.getCor3RGB());
+		} else {
+			cor1 = new Color(time.getCor4RGB());
+			cor2 = new Color(time.getCor5RGB());
+			cor3 = new Color(time.getCor6RGB());
+
+		}
+		if (botao == null) {
+			botao = new Botao();
+			botao.setNome("Mesa");
+			botao.setNumero(11);
+		}
+		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
+				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
+		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
+		AlphaComposite composite = AlphaComposite
+				.getInstance(AlphaComposite.SRC_IN);
+		graphics.setComposite(composite);
+		int x = 0;
+		for (int i = 0; i < 5; i++) {
+			if (i % 2 == 0) {
+				graphics.setColor(cor1);
+			} else {
+				graphics.setColor(cor2);
+			}
+			graphics.fillRect(x, 0, Util.inte(botao.getDiamentro() * .35),
+					botao.getDiamentro());
+
+			x += Util.inte(botao.getDiamentro() * .2);
+
+		}
+		graphics.setColor(cor3);
+		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
+				botao.getDiamentro() - 2);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 24));
+		graphics.setColor(cor2);
+		if (cor2.equals(cor1)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.drawString(botao.getNome(), 8, Util
+				.inte(botao.getDiamentro() * .55));
+		graphics.setColor(cor1);
+		if (cor1.equals(cor2)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
+				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+
+		graphics.dispose();
+		return botaoImg;
+	}
+
+	public static BufferedImage desenhaUniforme1(Time time, int uniforme,
+			Botao botao) {
+		Color cor1, cor2, cor3;
+		if (uniforme == 1) {
+			cor1 = new Color(time.getCor1RGB());
+			cor2 = new Color(time.getCor2RGB());
+			cor3 = new Color(time.getCor3RGB());
+		} else {
+			cor1 = new Color(time.getCor4RGB());
+			cor2 = new Color(time.getCor5RGB());
+			cor3 = new Color(time.getCor6RGB());
+
+		}
+		if (botao == null) {
+			botao = new Botao();
+			botao.setNome("Mesa");
+			botao.setNumero(11);
+		}
+		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
+				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
+		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
+		AlphaComposite composite = AlphaComposite
+				.getInstance(AlphaComposite.SRC_IN);
+		graphics.setComposite(composite);
+		int y = 0;
+		for (int i = 0; i < 5; i++) {
+			if (i % 2 == 0) {
+				graphics.setColor(cor1);
+			} else {
+				graphics.setColor(cor2);
+			}
+			graphics.fillRect(0, y, botao.getDiamentro(), Util.inte(botao
+					.getDiamentro() * .35));
+
+			y += Util.inte(botao.getDiamentro() * .2);
+
+		}
+		graphics.setColor(cor3);
+		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
+				botao.getDiamentro() - 2);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 24));
+		graphics.setColor(cor2);
+		if (cor2.equals(cor1)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.drawString(botao.getNome(), 8, Util
+				.inte(botao.getDiamentro() * .55));
+		graphics.setColor(cor1);
+		if (cor1.equals(cor2)) {
+			graphics.setColor(cor3);
+		}
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2()))
+			graphics.setColor(cor3);
+		graphics.setFont(new Font(graphics.getFont().getName(), graphics
+				.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
+				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+
+		graphics.dispose();
+		return botaoImg;
+	}
+
+	public static BufferedImage desenhaUniforme2(Time time, int uniforme,
 			Botao botao) {
 		Color cor1, cor2, cor3;
 		if (uniforme == 1) {
@@ -183,4 +409,14 @@ public class BotaoUtils {
 		return botao;
 	}
 
+	public static void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	}
 }
