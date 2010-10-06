@@ -150,7 +150,8 @@ public class EditorTime extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selVal = (String) uniformeAlternativo1.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme1(new Integer(selVal));
+				EditorTime.this.time.setTipoUniforme1(new Integer(selVal)
+						.intValue());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 1)));
 				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
@@ -189,7 +190,8 @@ public class EditorTime extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selVal = (String) uniformeAlternativo2.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme2(new Integer(selVal));
+				EditorTime.this.time.setTipoUniforme2(new Integer(selVal)
+						.intValue());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 2)));
 				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
@@ -466,7 +468,7 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
-				if(color==null){
+				if (color == null) {
 					return;
 				}
 				setCor(color, labelCor6);
