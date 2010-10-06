@@ -20,6 +20,8 @@ import br.nnpe.Util;
 public class BotaoUtils {
 	public final static Color lightBlack = new Color(0, 0, 0, 100);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
+	public final static BasicStroke bordaBotao = new BasicStroke(2.0f,
+			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
 	public static BufferedImage desenhaUniformeGoleiro(Time time, int uniforme) {
 		return desenhaUniformeGoleiro(time, uniforme, null);
@@ -200,7 +202,7 @@ public class BotaoUtils {
 		}
 
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
@@ -324,7 +326,7 @@ public class BotaoUtils {
 		}
 
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
@@ -428,7 +430,7 @@ public class BotaoUtils {
 
 		}
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
@@ -533,7 +535,7 @@ public class BotaoUtils {
 
 		}
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
@@ -630,7 +632,7 @@ public class BotaoUtils {
 		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
 				.inte(botao.getDiamentro() * .35), botao.getDiamentro());
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
@@ -730,7 +732,7 @@ public class BotaoUtils {
 		graphics.fillRect(0, Util.inte(botao.getDiamentro() * .7), botao
 				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
 		graphics.setColor(cor3);
-		graphics.setStroke(new BasicStroke(2.5f));
+		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
