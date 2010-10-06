@@ -61,8 +61,10 @@ public class EditorTime extends JPanel {
 	private JTextField textFieldNomeTime;
 	private Time time;
 	private JTable tabelaBotoes;
-	private JCheckBox corMeiaCorNumero1;
-	private JCheckBox corMeiaCorNumero2;
+	private JCheckBox corAlternativa1;
+	private JCheckBox corAlternativa2;
+	private JComboBox uniformeAlternativo1;
+	private JComboBox uniformeAlternativo2;
 	private ControleJogo controleJogo;
 
 	/**
@@ -124,15 +126,15 @@ public class EditorTime extends JPanel {
 		panelTime.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("corMeiaCorNumero");
+				return Lang.msg("corMeiaCorNumero1");
 			}
 		});
-		corMeiaCorNumero1 = new JCheckBox();
-		corMeiaCorNumero1.addActionListener(new ActionListener() {
+		corAlternativa1 = new JCheckBox();
+		corAlternativa1.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero1(corMeiaCorNumero1
+				EditorTime.this.time.setCorMeiaNumero1(corAlternativa1
 						.isSelected());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 1)));
@@ -141,19 +143,37 @@ public class EditorTime extends JPanel {
 
 			}
 		});
-		panelTime.add(corMeiaCorNumero1);
-		panelTime.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("corMeiaCorNumero");
-			}
-		});
-		corMeiaCorNumero2 = new JCheckBox();
-		corMeiaCorNumero2.addActionListener(new ActionListener() {
+		uniformeAlternativo1 = new JComboBox(new String[] { "0", "1", "2", "3",
+				"4", "5" });
+		uniformeAlternativo1.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero2(corMeiaCorNumero2
+				String selVal = (String) uniformeAlternativo1.getSelectedItem();
+				EditorTime.this.time.setTipoUniforme1(new Integer(selVal));
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
+
+			}
+		});
+		JPanel alts1 = new JPanel(new GridLayout(1, 2));
+		alts1.add(corAlternativa1);
+		alts1.add(uniformeAlternativo1);
+		panelTime.add(alts1);
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("corMeiaCorNumero2");
+			}
+		});
+		corAlternativa2 = new JCheckBox();
+		corAlternativa2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.time.setCorMeiaNumero2(corAlternativa2
 						.isSelected());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 						EditorTime.this.time, 2)));
@@ -161,7 +181,25 @@ public class EditorTime extends JPanel {
 						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
 			}
 		});
-		panelTime.add(corMeiaCorNumero2);
+
+		uniformeAlternativo2 = new JComboBox(new String[] { "0", "1", "2", "3",
+				"4", "5" });
+		uniformeAlternativo2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selVal = (String) uniformeAlternativo2.getSelectedItem();
+				EditorTime.this.time.setTipoUniforme2(new Integer(selVal));
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
+			}
+		});
+		JPanel alts2 = new JPanel(new GridLayout(1, 2));
+		alts2.add(corAlternativa2);
+		alts2.add(uniformeAlternativo2);
+		panelTime.add(alts2);
 		add(panelTime, BorderLayout.NORTH);
 		add(jTabbedPane, BorderLayout.CENTER);
 
@@ -339,6 +377,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if (color == null) {
+					return;
+				}
 				setCor(color, labelCor1);
 				time.setCor1RGB(color.getRGB());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils
@@ -354,6 +395,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if (color == null) {
+					return;
+				}
 				setCor(color, labelCor2);
 				time.setCor2RGB(color.getRGB());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils
@@ -368,6 +412,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if (color == null) {
+					return;
+				}
 				setCor(color, labelCor3);
 				time.setCor3RGB(color.getRGB());
 				imgUn1.setIcon(new ImageIcon(BotaoUtils
@@ -383,6 +430,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if (color == null) {
+					return;
+				}
 				setCor(color, labelCor4);
 				time.setCor4RGB(color.getRGB());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils
@@ -398,6 +448,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if (color == null) {
+					return;
+				}
 				setCor(color, labelCor5);
 				time.setCor5RGB(color.getRGB());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils
@@ -413,6 +466,9 @@ public class EditorTime extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				Color color = JColorChooser.showDialog(EditorTime.this, Lang
 						.msg("escolhaCor"), Color.WHITE);
+				if(color==null){
+					return;
+				}
 				setCor(color, labelCor6);
 				time.setCor6RGB(color.getRGB());
 				imgUn2.setIcon(new ImageIcon(BotaoUtils
