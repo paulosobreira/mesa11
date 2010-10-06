@@ -35,16 +35,23 @@ public class Time extends Mesa11Dados {
 	private int cor4RGB;
 	private int cor5RGB;
 	private int cor6RGB;
-	private int tipoUniforme;
-	
-	
+	private int tipoUniforme1;
+	private int tipoUniforme2;
 
-	public int getTipoUniforme() {
-		return tipoUniforme;
+	public int getTipoUniforme1() {
+		return tipoUniforme1;
 	}
 
-	public void setTipoUniforme(int tipoUniforme) {
-		this.tipoUniforme = tipoUniforme;
+	public void setTipoUniforme1(int tipoUniforme1) {
+		this.tipoUniforme1 = tipoUniforme1;
+	}
+
+	public int getTipoUniforme2() {
+		return tipoUniforme2;
+	}
+
+	public void setTipoUniforme2(int tipoUniforme2) {
+		this.tipoUniforme2 = tipoUniforme2;
 	}
 
 	public int getCor1() {
