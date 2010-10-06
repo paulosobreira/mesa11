@@ -67,9 +67,6 @@ img {
 }
 
 #main{
-	border-style: solid;
-	border-width: 1px;
-	border-color: #B8CFE5;
 	padding: 3px;
 	padding-left: 20px;
 	padding-right: 20px;
@@ -88,7 +85,7 @@ img {
 	border-width: 1px;
 	border-color: #B8CFE5;
 	text-align: center;
-	padding: 0px;
+	padding: 15px;
 }
 
 #description {
