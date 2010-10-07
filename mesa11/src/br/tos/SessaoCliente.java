@@ -31,6 +31,9 @@ public class SessaoCliente implements Serializable {
 	}
 
 	public boolean equals(Object obj) {
+		if (nomeJogador == null) {
+			return super.equals(obj);
+		}
 		SessaoCliente sessaoCliente = (SessaoCliente) obj;
 		return nomeJogador.equals(sessaoCliente.getNomeJogador());
 	}
@@ -38,7 +41,7 @@ public class SessaoCliente implements Serializable {
 	@Override
 	public int hashCode() {
 		if (nomeJogador == null) {
-			super.hashCode();
+			return super.hashCode();
 		}
 		return nomeJogador.hashCode();
 	}
