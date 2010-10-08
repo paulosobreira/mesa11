@@ -20,7 +20,7 @@ import br.nnpe.Util;
 public class BotaoUtils {
 	public final static Color lightBlack = new Color(0, 0, 0, 100);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
-	public final static BasicStroke bordaBotao = new BasicStroke(2.0f,
+	public final static BasicStroke bordaBotao = new BasicStroke(4f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
 	public static BufferedImage desenhaUniformeGoleiro(Time time, int uniforme) {
@@ -166,11 +166,10 @@ public class BotaoUtils {
 		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
 				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao.getDiamentro()),
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
-
-		setarHints(graphics);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		int y = 0;
 		for (int i = 0; i < 5; i++) {
@@ -288,10 +287,10 @@ public class BotaoUtils {
 		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
 				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao.getDiamentro()),
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
-		setarHints(graphics);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		int x = 0;
 		for (int i = 0; i < 5; i++) {
@@ -410,11 +409,10 @@ public class BotaoUtils {
 		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
 				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao.getDiamentro()),
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
-
-		setarHints(graphics);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		int x = 0;
 		for (int i = 0; i < 5; i++) {
@@ -515,11 +513,10 @@ public class BotaoUtils {
 		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
 				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao.getDiamentro()),
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
-
-		setarHints(graphics);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		int y = 0;
 		for (int i = 0; i < 5; i++) {
@@ -719,11 +716,12 @@ public class BotaoUtils {
 		BufferedImage botaoImg = new BufferedImage(botao.getDiamentro() + 10,
 				botao.getDiamentro() + 10, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = (Graphics2D) botaoImg.getGraphics();
+		setarHints(graphics);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao.getDiamentro()),
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
 
-		setarHints(graphics);
+		
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		graphics.setColor(cor1);
 		graphics.fillRect(0, 0, botao.getDiamentro(), Util.inte(botao
