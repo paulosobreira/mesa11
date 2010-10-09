@@ -1804,7 +1804,7 @@ public class ControleJogo {
 				if (goleiro.getShape(1).contains(p1)) {
 					if (veririficaVez(goleiro)) {
 						boolean returnGoleiro = false;
-						double ang = goleiro.getAngulo();
+						double rotacao = goleiro.getRotacao();
 						Point centroGoleiro = goleiro.getCentro();
 						double retaGoleiro = GeoUtil.distaciaEntrePontos(
 								goleiro.getCentro(), p1);
@@ -1812,20 +1812,32 @@ public class ControleJogo {
 						if (retaGoleiro > (goleiro.getRaio() / 2)) {
 							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
 									.getCentro(), p2, 0));
-							evento.setPonto(p2);
-							evento
-									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
-							returnGoleiro = true;
+							if (((goleiro.getTime().equals(getTimeCima()) && mesaPanel
+									.getGrandeAreaCima().contains(
+											goleiro.getShape(1).getBounds())) || (goleiro
+									.getTime().equals(getTimeBaixo()) && mesaPanel
+									.getGrandeAreaBaixo().contains(
+											goleiro.getShape(1).getBounds())))
+									&& !goleiro.getShape(1).intersects(
+											bola.getShape(1).getBounds2D())) {
+								evento.setPonto(p2);
+								evento
+										.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+
+								returnGoleiro = true;
+							} else {
+								goleiro.setRotacao(rotacao);
+							}
 						} else {
 							goleiro.setCentroTodos(p2);
-							if ((goleiro.getTime().equals(getTimeCima()) && mesaPanel
+							if (((goleiro.getTime().equals(getTimeCima()) && mesaPanel
 									.getGrandeAreaCima().contains(
-											goleiro.getShape(1).getBounds()))
-									|| (goleiro.getTime()
-											.equals(getTimeBaixo()) && mesaPanel
-											.getGrandeAreaBaixo().contains(
-													goleiro.getShape(1)
-															.getBounds()))) {
+											goleiro.getShape(1).getBounds())) || (goleiro
+									.getTime().equals(getTimeBaixo()) && mesaPanel
+									.getGrandeAreaBaixo().contains(
+											goleiro.getShape(1).getBounds())))
+									&& !goleiro.getShape(1).intersects(
+											bola.getShape(1).getBounds2D())) {
 								goleiro.setCentroTodos(p2);
 								evento.setPonto(p2);
 								evento
@@ -1836,12 +1848,6 @@ public class ControleJogo {
 							}
 						}
 						setPontoClicado(null);
-						if (goleiro.getShape(1).intersects(
-								bola.getShape(1).getBounds2D())) {
-							goleiro.setCentroTodos(centroGoleiro);
-							goleiro.setAngulo(ang);
-							returnGoleiro = false;
-						}
 						if (isJogoOnlineSrvidor() && returnGoleiro) {
 							animacaoCliente = new Animacao();
 							animacaoCliente.setTimeStamp(System
