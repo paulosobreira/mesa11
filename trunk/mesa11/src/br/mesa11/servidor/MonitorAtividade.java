@@ -52,18 +52,22 @@ public class MonitorAtividade extends Thread {
 
 					JogoServidor jogoServidor = (JogoServidor) jogos.get(key);
 
-					if (proxyComandos.verificaSemSessao(jogoServidor.getDadosJogoSrvMesa11()
-							.getNomeCriador())) {
-						jogoRemover = key;
+					if (proxyComandos.verificaSemSessao(jogoServidor
+							.getDadosJogoSrvMesa11().getNomeCriador())) {
+						jogoServidor.jogadorSaiuJogo(jogoServidor
+								.getDadosJogoSrvMesa11().getNomeCriador());
 					}
 
 					if (jogoServidor.jogoIniciado()
-							&& proxyComandos.verificaSemSessao(jogoServidor
-									.getDadosJogoSrvMesa11().getNomeVisitante())) {
-						jogoRemover = key;
+							&& proxyComandos
+									.verificaSemSessao(jogoServidor
+											.getDadosJogoSrvMesa11()
+											.getNomeVisitante())) {
+						jogoServidor.jogadorSaiuJogo(jogoServidor
+								.getDadosJogoSrvMesa11().getNomeVisitante());
 					}
-					
-					if(jogoServidor.isSaiuJogoNaoIniciado()){
+
+					if (jogoServidor.isSaiuJogoNaoIniciado()) {
 						jogoRemover = key;
 					}
 
@@ -102,7 +106,6 @@ public class MonitorAtividade extends Thread {
 		}
 
 	}
-
 
 	private void dormir(long l) {
 		try {
