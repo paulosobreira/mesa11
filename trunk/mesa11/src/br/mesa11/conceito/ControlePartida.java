@@ -248,12 +248,14 @@ public class ControlePartida {
 			}
 		});
 		JComboBox tempoJogoCombo = new JComboBox();
-		tempoJogoCombo.addItem(new Integer(5));
+		tempoJogoCombo.addItem(new Integer(8));
 		tempoJogoCombo.addItem(new Integer(10));
-		tempoJogoCombo.addItem(new Integer(15));
+		tempoJogoCombo.addItem(new Integer(16));
 		tempoJogoCombo.addItem(new Integer(20));
 		tempoJogoCombo.addItem(new Integer(30));
-		tempoJogoCombo.addItem(new Integer(45));
+		tempoJogoCombo.addItem(new Integer(40));
+		tempoJogoCombo.addItem(new Integer(60));
+		tempoJogoCombo.addItem(new Integer(90));
 		tempoJogoPanel.add(tempoJogoCombo);
 		tempoJogoPanel.add(new JLabel() {
 			@Override

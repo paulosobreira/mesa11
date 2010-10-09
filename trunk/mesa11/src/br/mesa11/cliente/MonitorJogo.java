@@ -67,9 +67,10 @@ public class MonitorJogo extends Thread {
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (timeVez != null
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
-					&& controleJogo != null && !controleJogo.isAnimando()) {
-				controleJogo
-						.atualizaBotoesClienteOnline(this.timeStampAnimacao);
+					&& controleJogo != null && !controleJogo.isAnimando()
+					&& !controleJogo.isEsperandoJogadaOnline()) {
+				controleJogo.atualizaBotoesClienteOnline(
+						this.timeStampAnimacao, true);
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		}

@@ -159,7 +159,7 @@ public class ControleJogosCliente {
 		for (int i = 3; i < 21; i++) {
 			numJogadaCombo.addItem(new Integer(i));
 		}
-
+		numJogadaCombo.setSelectedIndex(1);
 		opcoesJogoPanel.add(numJogadaCombo);
 
 		opcoesJogoPanel.add(new JLabel() {
@@ -169,10 +169,13 @@ public class ControleJogosCliente {
 			}
 		});
 		JComboBox tempoJogoCombo = new JComboBox();
-		tempoJogoCombo.addItem(new Integer(5));
+		tempoJogoCombo.addItem(new Integer(8));
 		tempoJogoCombo.addItem(new Integer(10));
-		tempoJogoCombo.addItem(new Integer(15));
+		tempoJogoCombo.addItem(new Integer(16));
 		tempoJogoCombo.addItem(new Integer(20));
+		tempoJogoCombo.addItem(new Integer(40));
+		tempoJogoCombo.addItem(new Integer(60));
+		tempoJogoCombo.addItem(new Integer(90));
 		opcoesJogoPanel.add(tempoJogoCombo);
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
@@ -181,11 +184,13 @@ public class ControleJogosCliente {
 			}
 		});
 		JComboBox tempoJogadaCombo = new JComboBox();
+		tempoJogadaCombo.addItem(new Integer(20));
 		tempoJogadaCombo.addItem(new Integer(30));
 		tempoJogadaCombo.addItem(new Integer(40));
 		tempoJogadaCombo.addItem(new Integer(50));
 		tempoJogadaCombo.addItem(new Integer(60));
 		tempoJogadaCombo.addItem(new Integer(90));
+		tempoJogadaCombo.setSelectedIndex(1);
 		opcoesJogoPanel.add(tempoJogadaCombo);
 
 		JComboBox campoBolaCombo = new JComboBox();
