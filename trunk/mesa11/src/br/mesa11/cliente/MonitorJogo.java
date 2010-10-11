@@ -76,6 +76,8 @@ public class MonitorJogo extends Thread {
 		}
 		if (dadosJogoSrvMesa11 == null) {
 			return;
+		} else {
+			jogoTerminado = true;
 		}
 		dormir(tempoDormir);
 		mesa11to = new Mesa11TO();
@@ -90,6 +92,8 @@ public class MonitorJogo extends Thread {
 				timeStampAnimacao = animacao.getTimeStamp();
 				controleJogo.executaAnimacao(animacao);
 			}
+		} else {
+			jogoTerminado = true;
 		}
 	}
 
