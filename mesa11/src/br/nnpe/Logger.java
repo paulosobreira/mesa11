@@ -17,6 +17,8 @@ public class Logger {
 
 	public static boolean debug = true;
 
+	public static boolean novaSession = false;
+
 	public static void topExecpts(Exception e) {
 		if (debug) {
 			logarExept(e);

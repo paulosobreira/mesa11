@@ -363,4 +363,10 @@ public class ControleChatCliente {
 			controleJogosCliente.sairJogo();
 		}
 	}
+
+	public void atualizaInfo() {
+		if (chatWindow != null)
+			chatWindow.atualizaInfo();
+
+	}
 }

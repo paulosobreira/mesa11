@@ -183,30 +183,30 @@ public class Mesa11Applet extends JApplet {
 	}
 
 	private void atualizarLantenciaMinima(long envioT, long retornoT) {
-		synchronized (pacotes) {
-
-			if (pacotes.size() > 10) {
-				pacotes.remove(0);
+		if (pacotes.size() > 10) {
+			pacotes.remove(0);
+		}
+		pacotes.add(new Long(retornoT - envioT));
+		if (pacotes.size() >= 10) {
+			long somatorio = 0;
+			for (Iterator iter = pacotes.iterator(); iter.hasNext();) {
+				Long longElement = (Long) iter.next();
+				somatorio += longElement.longValue();
 			}
-			pacotes.add(new Long(retornoT - envioT));
-			if (pacotes.size() >= 10) {
-				long somatorio = 0;
-				for (Iterator iter = pacotes.iterator(); iter.hasNext();) {
-					Long longElement = (Long) iter.next();
-					somatorio += longElement.longValue();
-				}
-				int media = (int) (somatorio / 10);
-				if (media > 240) {
-					setLatenciaMinima(240);
-				} else {
-					setLatenciaMinima(media);
-				}
-				if (media < 120)
-					setLatenciaMinima(120);
-				else if (media < 240) {
-					setLatenciaMinima(media);
-				}
-				setLatenciaReal(media);
+			int media = (int) (somatorio / 10);
+			if (media > 240) {
+				setLatenciaMinima(240);
+			} else {
+				setLatenciaMinima(media);
+			}
+			if (media < 120)
+				setLatenciaMinima(120);
+			else if (media < 240) {
+				setLatenciaMinima(media);
+			}
+			setLatenciaReal(media);
+			if (controleChatCliente != null) {
+				controleChatCliente.atualizaInfo();
 			}
 		}
 	}
