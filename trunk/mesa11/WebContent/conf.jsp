@@ -142,13 +142,13 @@ A:hover {text-decoration: underline overline; color: black;}
 			</td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="hibernate?act=create_schema"> Create
+			<td class="c1"><a href="mesa11?act=create_schema"> Create
 			Schema </a></td>
-			<td class="c2"><a href="hibernate?act=update_schema"> Update
+			<td class="c2"><a href="mesa11?act=update_schema"> Update
 			Schema </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="hibernate?act=x"> Exceptions
+			<td class="c1"><a href="mesa11?act=x"> Exceptions
 			</a></td>
 		</tr>
 	</tbody>
