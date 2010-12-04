@@ -2051,7 +2051,6 @@ public class ControleJogo {
 		esperandoJogadaOnline = false;
 		if (centralizaBola)
 			centralizaBola();
-
 	}
 
 	public int getNumeroJogadas() {

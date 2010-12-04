@@ -68,7 +68,7 @@ public class MonitorJogo extends Thread {
 			if (controleJogo != null && !controleJogo.isAnimando()
 					&& !controleJogo.isEsperandoJogadaOnline()) {
 				controleJogo.atualizaBotoesClienteOnline(
-						this.timeStampAnimacao, true);
+						this.timeStampAnimacao, false);
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		} else {

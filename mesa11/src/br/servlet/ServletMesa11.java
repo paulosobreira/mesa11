@@ -57,6 +57,9 @@ public class ServletMesa11 extends HttpServlet {
 			Logger.logarExept(e);
 			email = null;
 		}
+		if (ConstantesMesa11.debug) {
+			email = null;
+		}
 	}
 
 	public void destroy() {
