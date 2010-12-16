@@ -65,12 +65,15 @@ public class MonitorJogo extends Thread {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
-			if (controleJogo != null && !controleJogo.isAnimando()
+			if (timeVez != null
+					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
+					&& controleJogo != null && !controleJogo.isAnimando()
 					&& !controleJogo.isEsperandoJogadaOnline()
 					&& controleJogo.verificaPosicaoDiffBotoes()) {
 				controleJogo.atualizaBotoesClienteOnline(
-						this.timeStampAnimacao, false);
+						this.timeStampAnimacao, true);
 			}
+
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 		} else {
 			jogoTerminado = true;

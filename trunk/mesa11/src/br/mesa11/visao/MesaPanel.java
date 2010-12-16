@@ -353,7 +353,7 @@ public class MesaPanel extends JPanel {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString(Lang.msg("aguarde"), x, y);
+				g2d.drawString(""+Lang.msg("aguarde"), x, y);
 			} else {
 				Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
 				g2d.setColor(corFundo);
