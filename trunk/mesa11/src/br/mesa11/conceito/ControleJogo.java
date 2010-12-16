@@ -37,6 +37,8 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import org.apache.jasper.tagplugins.jstl.core.ForEach;
+
 import br.applet.Mesa11Applet;
 import br.hibernate.Bola;
 import br.hibernate.Botao;
@@ -2142,4 +2144,25 @@ public class ControleJogo {
 
 	}
 
+	public boolean verificaPosicaoDiffBotoes() {
+		int sumx = 0;
+		int sumy = 0;
+		int sumAng = 0;
+		Set keySet = botoes.keySet();
+		for (Object object : keySet) {
+			Botao botao = (Botao) botoes.get(keySet);
+			sumx += botao.getCentro().x;
+			sumy += botao.getCentro().y;
+			sumAng += botao.getAngulo();
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.VERIFICA_POSICAO_DIFF_BOTOES);
+		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo() + "-" + sumx + ""
+				+ sumy + "" + sumAng);
+		Object ret = enviarObjeto(mesa11to);
+		if (ConstantesMesa11.OK.equals(ret)) {
+			return true;
+		}
+		return false;
+	}
 }

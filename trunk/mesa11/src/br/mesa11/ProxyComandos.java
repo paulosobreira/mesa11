@@ -38,6 +38,11 @@ public class ProxyComandos {
 		Mesa11TO mesa11TO = (Mesa11TO) object;
 		if (ConstantesMesa11.ATUALIZAR_VISAO.equals(mesa11TO.getComando())) {
 			return atualizarDadosVisao(mesa11TO);
+		} else if (ConstantesMesa11.VERIFICA_POSICAO_DIFF_BOTOES
+				.equals(mesa11TO.getComando())) {
+			return controleJogosServidor
+					.verificaPosicaoDiffBotoes(((String) mesa11TO.getData())
+							.split("-"));
 		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
 				.getComando())) {
 			return controleJogosServidor.obterDadosJogo((String) mesa11TO

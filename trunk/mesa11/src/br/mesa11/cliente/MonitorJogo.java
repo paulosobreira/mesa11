@@ -66,7 +66,8 @@ public class MonitorJogo extends Thread {
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (controleJogo != null && !controleJogo.isAnimando()
-					&& !controleJogo.isEsperandoJogadaOnline()) {
+					&& !controleJogo.isEsperandoJogadaOnline()
+					&& controleJogo.verificaPosicaoDiffBotoes()) {
 				controleJogo.atualizaBotoesClienteOnline(
 						this.timeStampAnimacao, false);
 			}

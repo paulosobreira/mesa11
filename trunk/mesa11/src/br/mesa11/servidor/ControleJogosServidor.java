@@ -233,4 +233,30 @@ public class ControleJogosServidor {
 		}
 		return null;
 	}
+
+	public Object verificaPosicaoDiffBotoes(String... dadosJogo) {
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(dadosJogo[0]);
+		if (jogoSrvMesa11 == null) {
+			return null;
+		}
+		if (jogoSrvMesa11.getControleJogo().isAnimando()) {
+			return null;
+		}
+		int sumx = 0;
+		int sumy = 0;
+		int sumAng = 0;
+		for (Iterator iterator = jogoSrvMesa11.getControleJogo().getBotoes()
+				.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) jogoSrvMesa11.getControleJogo().getBotoes()
+					.get(id);
+			sumx += botao.getCentro().x;
+			sumy += botao.getCentro().y;
+			sumAng += botao.getAngulo();
+		}
+		String somas = sumx + "" + sumy + "" + sumAng;
+		if (somas.equals(dadosJogo[1]))
+			return ConstantesMesa11.OK;
+		return null;
+	}
 }
