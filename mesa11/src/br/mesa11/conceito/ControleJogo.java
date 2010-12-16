@@ -2145,14 +2145,22 @@ public class ControleJogo {
 	}
 
 	public boolean verificaPosicaoDiffBotoes() {
+		if (dadosJogoSrvMesa11 == null) {
+			return false;
+		}
+		if (botoes == null) {
+			return false;
+		}
 		int sumx = 0;
 		int sumy = 0;
 		int sumAng = 0;
 		Set keySet = botoes.keySet();
 		for (Object object : keySet) {
-			Botao botao = (Botao) botoes.get(keySet);
-			sumx += botao.getCentro().x;
-			sumy += botao.getCentro().y;
+			Botao botao = (Botao) botoes.get(object);
+			if (botao.getCentro() != null) {
+				sumx += botao.getCentro().x;
+				sumy += botao.getCentro().y;
+			}
 			sumAng += botao.getAngulo();
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
