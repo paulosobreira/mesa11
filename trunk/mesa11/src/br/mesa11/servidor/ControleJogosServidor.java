@@ -255,7 +255,7 @@ public class ControleJogosServidor {
 			sumAng += botao.getAngulo();
 		}
 		String somas = sumx + "" + sumy + "" + sumAng;
-		if (somas.equals(dadosJogo[1]))
+		if (!somas.equals(dadosJogo[1]))
 			return ConstantesMesa11.OK;
 		return null;
 	}
