@@ -1,15 +1,22 @@
 package br.servlet;
 
+import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,6 +50,8 @@ public class ServletMesa11 extends HttpServlet {
 	public static String webDir;
 	private ProxyComandos proxyComandos;
 	public static Email email;
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"dd/MM/yyyy");
 
 	public void init() throws ServletException {
 		super.init();
@@ -176,6 +185,23 @@ public class ServletMesa11 extends HttpServlet {
 				updateSchema(cfg, sessionFactory, printWriter);
 			} else if ("x".equals(param)) {
 				topExceptions(response, printWriter);
+			} else if ("backup".equals(param)) {
+				try {
+					response.setHeader("Content-Disposition",
+							"attachment;filename=\"" + "algol_data" + "_"
+									+ dateFormat.format(new Date()) + ".zip"
+									+ "\"");
+
+					byte[] ret = obterBytesBase();
+					if (ret == null) {
+						return;
+					}
+					response.getOutputStream().write(ret);
+					response.flushBuffer();
+				} catch (Exception e) {
+					Logger.topExecpts(e);
+				}
+				return;
 			}
 			printWriter.println("<br/> " + param + " done");
 		} catch (Exception e) {
@@ -184,6 +210,76 @@ public class ServletMesa11 extends HttpServlet {
 		printWriter.println("<br/><a href='conf.jsp'>back</a>");
 		printWriter.println("</body></html>");
 		response.flushBuffer();
+	}
+
+	public byte[] obterBytesBase() {
+		try {
+
+			ZipOutputStream zipOutputStream = new ZipOutputStream(
+					new FileOutputStream(webInfDir + "mesa11bkp.zip"));
+
+			zipDir(webDir + "midia", zipOutputStream);
+
+			zipOutputStream.close();
+
+			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+			BufferedInputStream bufferedInputStream = new BufferedInputStream(
+					new FileInputStream(webInfDir + "algolbkp.zip"));
+			int byt = bufferedInputStream.read();
+
+			while (-1 != byt) {
+				arrayOutputStream.write(byt);
+				byt = bufferedInputStream.read();
+			}
+
+			arrayOutputStream.flush();
+
+			return arrayOutputStream.toByteArray();
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
+	}
+
+	public void zipDir(String dir2zip, ZipOutputStream zos) {
+		try {
+			// create a new File object based on the directory we
+			// have to zip File
+			File zipDir = new File(dir2zip);
+			// get a listing of the directory content
+			String[] dirList = zipDir.list();
+			byte[] readBuffer = new byte[2156];
+			int bytesIn = 0;
+			// loop through dirList, and zip the files
+			for (int i = 0; i < dirList.length; i++) {
+				File f = new File(zipDir, dirList[i]);
+				if (f.isDirectory()) {
+					// if the File object is a directory, call this
+					// function again to add its content recursively
+					String filePath = f.getPath();
+					zipDir(filePath, zos);
+					// loop again
+					continue;
+				}
+				// if we reached here, the File object f was not
+				// a directory
+				// create a FileInputStream on top of f
+				FileInputStream fis = new FileInputStream(f);
+				// create a new zip entry
+				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath().split(
+						"mesa11" + File.separator + File.separator)[1]);
+				// place the zip entry in the ZipOutputStream object
+				zos.putNextEntry(anEntry);
+				// now write the content of the file to the ZipOutputStream
+				while ((bytesIn = fis.read(readBuffer)) != -1) {
+					zos.write(readBuffer, 0, bytesIn);
+				}
+				// close the Stream
+				fis.close();
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	private void topExceptions(HttpServletResponse res, PrintWriter printWriter)
