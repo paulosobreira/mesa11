@@ -1755,7 +1755,7 @@ public class ControleJogo {
 		return mesa11Applet != null;
 	}
 
-	private Object enviarObjeto(Mesa11TO mesa11to) {
+	public Object enviarObjeto(Mesa11TO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;
