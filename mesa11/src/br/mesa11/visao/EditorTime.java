@@ -7,6 +7,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -21,6 +27,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -38,9 +45,13 @@ import javax.swing.table.TableColumn;
 import br.hibernate.Botao;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.ExampleFileFilter;
+import br.nnpe.ImageUtil;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.tos.Mesa11TO;
 
 /**
  * @author Sobreira 19/06/2010
@@ -66,6 +77,8 @@ public class EditorTime extends JPanel {
 	private JComboBox uniformeAlternativo1;
 	private JComboBox uniformeAlternativo2;
 	private ControleJogo controleJogo;
+	private JLabel imgIconLabel = new JLabel();
+	private String nomeImgIconLabel;
 
 	/**
 	 * 
@@ -78,6 +91,7 @@ public class EditorTime extends JPanel {
 		jTabbedPane
 				.addTab(Lang.msg("nomesBotoes"), gerarTabelaAtributosBotao());
 		jTabbedPane.addTab(Lang.msg("coresBotoes"), gerarTabelaCores());
+		jTabbedPane.addTab(Lang.msg("enviarImagem"), gerarEnviarImagem());
 
 		setLayout(new BorderLayout());
 		JPanel panelTime = new JPanel(new GridLayout(4, 2));
@@ -221,6 +235,97 @@ public class EditorTime extends JPanel {
 			}
 		});
 		// add(salvarTime, BorderLayout.SOUTH);
+	}
+
+	private Component gerarEnviarImagem() {
+		final int lado = ConstantesMesa11.DIAMENTRO_BOTAO + 10;
+		BufferedImage botaoImg = new BufferedImage(lado, lado,
+				BufferedImage.TYPE_INT_ARGB);
+		imgIconLabel.setIcon(new ImageIcon(botaoImg));
+		JButton escolherImagem = new JButton() {
+			public String getText() {
+				return Lang.msg("escolherImagem");
+			};
+		};
+		escolherImagem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+				ExampleFileFilter exampleFileFilter = new ExampleFileFilter(
+						"jpg");
+				fileChooser.setFileFilter(exampleFileFilter);
+
+				int result = fileChooser.showOpenDialog(null);
+
+				if (result == JFileChooser.CANCEL_OPTION) {
+					return;
+				}
+				File file = fileChooser.getSelectedFile();
+				nomeImgIconLabel = file.getName();
+				// imgIconLabel.setIcon(new ImageIcon(file.getAbsolutePath()));
+				BufferedImage botaoImg = ImageUtil
+						.toBufferedImage((new ImageIcon(file.getAbsolutePath()))
+								.getImage());
+				double menor = Double.MAX_VALUE;
+				if (botaoImg.getWidth() < menor) {
+					menor = botaoImg.getWidth();
+				}
+				if (botaoImg.getHeight() < menor) {
+					menor = botaoImg.getHeight();
+				}
+				BufferedImage newBuffer = new BufferedImage((int) (botaoImg
+						.getWidth()), (int) (botaoImg.getHeight()),
+						BufferedImage.TYPE_INT_ARGB);
+				Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor), (menor));
+				graphics2d.setClip(externo);
+				graphics2d.drawImage(botaoImg, 0, 0, null);
+
+				double zoom = (double) lado / menor;
+				AffineTransform affineTransform = AffineTransform
+						.getScaleInstance(zoom, zoom);
+				AffineTransformOp affineTransformOp = new AffineTransformOp(
+						affineTransform, AffineTransformOp.TYPE_BILINEAR);
+				BufferedImage zoomBuffer = new BufferedImage(
+						(int) (botaoImg.getWidth() * zoom), (int) (menor * zoom),
+						BufferedImage.TYPE_INT_ARGB);
+				affineTransformOp.filter(newBuffer, zoomBuffer);
+
+				imgIconLabel.setIcon(new ImageIcon(zoomBuffer));
+			}
+		});
+		JButton enviarImagem = new JButton() {
+			public String getText() {
+				return Lang.msg("enviarImagem");
+			};
+		};
+		enviarImagem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Mesa11TO mesa11to = new Mesa11TO();
+				if (Util.isNullOrEmpty(nomeImgIconLabel)) {
+					JOptionPane.showInternalMessageDialog(EditorTime.this, Lang
+							.msg("nomeVazio"), "", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				mesa11to.setComando(ConstantesMesa11.ENVIAR_IMAGEM);
+
+				mesa11to.setData(nomeImgIconLabel);
+				BufferedImage buff = ImageUtil
+						.toBufferedImage(((ImageIcon) imgIconLabel.getIcon())
+								.getImage());
+				mesa11to.setDataBytes(ImageUtil.bufferedImage2ByteArray(buff));
+				EditorTime.this.controleJogo.enviarObjeto(mesa11to);
+			}
+		});
+		JPanel jPanel = new JPanel(new BorderLayout(10, 20));
+		jPanel.add(escolherImagem, BorderLayout.NORTH);
+		jPanel.add(imgIconLabel, BorderLayout.CENTER);
+		jPanel.add(enviarImagem, BorderLayout.SOUTH);
+
+		return jPanel;
 	}
 
 	private Component gerarTabelaAtributosBotao() {
