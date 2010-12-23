@@ -1418,21 +1418,25 @@ public class ControleJogo {
 		if (isJogoOnlineCliente()) {
 			salvarTimeOnline(time);
 		} else {
-			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-			XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
-			encoder.writeObject(time);
-			encoder.flush();
-			JTextArea xmlArea = new JTextArea(30, 50);
-			xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
-					+ "</java>");
-			xmlArea.setEditable(false);
-			xmlArea.setSelectionStart(0);
-			xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
-			JScrollPane xmlPane = new JScrollPane(xmlArea);
-			xmlPane.setBorder(new TitledBorder(Lang.msg("salvarTimeInfo")));
-			JOptionPane.showMessageDialog(frame, xmlPane, Lang
-					.msg("salvarTime"), JOptionPane.INFORMATION_MESSAGE);
+			gerarXmlTime(time);
 		}
+	}
+
+	public void gerarXmlTime(Time time) {
+		ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+		XMLEncoder encoder = new XMLEncoder(byteArrayOutputStream);
+		encoder.writeObject(time);
+		encoder.flush();
+		JTextArea xmlArea = new JTextArea(30, 50);
+		xmlArea.setText(new String(byteArrayOutputStream.toByteArray())
+				+ "</java>");
+		xmlArea.setEditable(false);
+		xmlArea.setSelectionStart(0);
+		xmlArea.setSelectionEnd(xmlArea.getCaretPosition());
+		JScrollPane xmlPane = new JScrollPane(xmlArea);
+		xmlPane.setBorder(new TitledBorder(Lang.msg("salvarTimeInfo")));
+		JOptionPane.showMessageDialog(frame, xmlPane, Lang.msg("salvarTime"),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void salvarTimeOnline(Time time) {
