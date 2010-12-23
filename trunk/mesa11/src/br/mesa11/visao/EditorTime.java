@@ -264,7 +264,6 @@ public class EditorTime extends JPanel {
 				}
 				File file = fileChooser.getSelectedFile();
 				nomeImgIconLabel = file.getName();
-				// imgIconLabel.setIcon(new ImageIcon(file.getAbsolutePath()));
 				BufferedImage botaoImg = ImageUtil
 						.toBufferedImage((new ImageIcon(file.getAbsolutePath()))
 								.getImage());
@@ -288,8 +287,8 @@ public class EditorTime extends JPanel {
 						.getScaleInstance(zoom, zoom);
 				AffineTransformOp affineTransformOp = new AffineTransformOp(
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
-				BufferedImage zoomBuffer = new BufferedImage(
-						(int) (botaoImg.getWidth() * zoom), (int) (menor * zoom),
+				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
+						.getWidth() * zoom), (int) (menor * zoom),
 						BufferedImage.TYPE_INT_ARGB);
 				affineTransformOp.filter(newBuffer, zoomBuffer);
 
@@ -320,11 +319,27 @@ public class EditorTime extends JPanel {
 				EditorTime.this.controleJogo.enviarObjeto(mesa11to);
 			}
 		});
-		JPanel jPanel = new JPanel(new BorderLayout(10, 20));
-		jPanel.add(escolherImagem, BorderLayout.NORTH);
-		jPanel.add(imgIconLabel, BorderLayout.CENTER);
-		jPanel.add(enviarImagem, BorderLayout.SOUTH);
 
+		JButton gerarXmlTime = new JButton() {
+			public String getText() {
+				return Lang.msg("gerarXmlTime");
+			};
+		};
+		gerarXmlTime.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.controleJogo.gerarXmlTime(time);
+			}
+		});
+		JPanel jPanel = new JPanel(new BorderLayout());
+		JPanel botoes = new JPanel(new GridLayout(3, 1, 10, 5));
+		botoes.add(escolherImagem);
+		botoes.add(enviarImagem);
+		botoes.add(gerarXmlTime);
+		jPanel.add(botoes, BorderLayout.NORTH);
+		JPanel panelImg = new JPanel();
+		panelImg.add(imgIconLabel);
+		jPanel.add(panelImg, BorderLayout.CENTER);
 		return jPanel;
 	}
 
