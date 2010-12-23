@@ -1,5 +1,6 @@
 package br.mesa11.servidor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -13,8 +14,10 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.servlet.ServletMesa11;
 import br.tos.BotaoPosSrvMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
@@ -258,5 +261,19 @@ public class ControleJogosServidor {
 		if (!somas.equals(dadosJogo[1]))
 			return ConstantesMesa11.OK;
 		return null;
+	}
+
+	public Object gravarImagem(Mesa11TO mesa11to) {
+		File file = new File(ServletMesa11.mediaDir + mesa11to.getData());
+		if (file != null) {
+			return new MsgSrv("imagemExistente");
+		}
+		try {
+			Util.byteArray2file(mesa11to.getDataBytes(), ServletMesa11.mediaDir
+					+ mesa11to.getData());
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return ConstantesMesa11.OK;
 	}
 }

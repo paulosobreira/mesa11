@@ -49,6 +49,8 @@ public class ServletMesa11 extends HttpServlet {
 
 	public static String webDir;
 	private ProxyComandos proxyComandos;
+
+	public static String mediaDir;
 	public static Email email;
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy");
@@ -57,6 +59,7 @@ public class ServletMesa11 extends HttpServlet {
 		super.init();
 		webDir = getServletContext().getRealPath("") + File.separator;
 		webInfDir = webDir + "WEB-INF" + File.separator;
+		mediaDir = webDir + "midia" + File.separator;
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
 		try {
