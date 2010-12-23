@@ -24,16 +24,13 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 		newzoom += e.getWheelRotation() / 100.0;
 
 		mesaPanel.zoom = newzoom;
-		if (mesaPanel.zoom <= 0.3) {
-			mesaPanel.zoom = 0.3;
-		}
 		if (mesaPanel.zoom >= 1) {
 			mesaPanel.zoom = 1;
 		}
 		Rectangle rectangle = (Rectangle) controleJogo.limitesViewPort();
 		if (rectangle != null
-				&& mesaPanel.LARGURA_MESA * 1.05 * mesaPanel.zoom < rectangle.width) {
-			mesaPanel.zoom += .1;
+				&& mesaPanel.LARGURA_MESA * mesaPanel.zoom * 1.05 < rectangle.width) {
+			mesaPanel.zoom += .025;
 		}
 		lastScrool = System.currentTimeMillis();
 		controleJogo.centralizaBola();

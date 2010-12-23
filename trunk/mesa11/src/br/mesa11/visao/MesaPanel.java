@@ -35,8 +35,8 @@ public class MesaPanel extends JPanel {
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0, 150);
 	public final static Color green = new Color(0, 255, 0, 150);
-//	 public final static Color green2 = Color.white;
-//	 public final static Color green = Color.white;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -220,6 +220,11 @@ public class MesaPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		limitesViewPort = controleJogo.limitesViewPort();
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(limitesViewPort.getBounds().x,
+				limitesViewPort.getBounds().y, (int) limitesViewPort
+						.getBounds().getWidth(), (int) limitesViewPort
+						.getBounds().getHeight());
 		if (limitesViewPort == null) {
 			limitesViewPort = new Rectangle(0, 0, LARGURA_MESA, ALTURA_MESA);
 		} else {
@@ -353,7 +358,7 @@ public class MesaPanel extends JPanel {
 				g2d.setColor(lightWhite);
 				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 				g2d.setColor(Color.BLACK);
-				g2d.drawString(""+Lang.msg("aguarde"), x, y);
+				g2d.drawString("" + Lang.msg("aguarde"), x, y);
 			} else {
 				Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
 				g2d.setColor(corFundo);
