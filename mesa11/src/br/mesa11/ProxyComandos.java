@@ -97,6 +97,9 @@ public class ProxyComandos {
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.ENVIAR_IMAGEM.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.gravarImagem(mesa11TO);
+		} else if (ConstantesMesa11.OBTER_TODAS_IMAGENS.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterTodasImagens();
 		}
 
 		return null;

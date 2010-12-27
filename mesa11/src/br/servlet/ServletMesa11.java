@@ -171,8 +171,27 @@ public class ServletMesa11 extends HttpServlet {
 
 	public void doGetHtml(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		String param = request.getParameter("act");
+		if ("backup".equals(param)) {
+			try {
+				response
+						.setHeader("Content-Disposition",
+								"attachment;filename=\"" + "mesa11_data" + "_"
+										+ dateFormat.format(new Date())
+										+ ".zip" + "\"");
+
+				byte[] ret = obterBytesBase();
+				if (ret == null) {
+					return;
+				}
+				response.getOutputStream().write(ret);
+				response.flushBuffer();
+			} catch (Exception e) {
+				Logger.topExecpts(e);
+			}
+			return;
+		}
 		PrintWriter printWriter = response.getWriter();
-		response.setContentType("text/html");
 		try {
 			printWriter.println("<html><body>");
 
@@ -180,7 +199,6 @@ public class ServletMesa11 extends HttpServlet {
 			cfg.configure("hibernate.cfg.xml");
 
 			SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-			String param = request.getParameter("act");
 
 			if ("create_schema".equals(param)) {
 				createSchema(cfg, sessionFactory, printWriter);
@@ -188,23 +206,6 @@ public class ServletMesa11 extends HttpServlet {
 				updateSchema(cfg, sessionFactory, printWriter);
 			} else if ("x".equals(param)) {
 				topExceptions(response, printWriter);
-			} else if ("backup".equals(param)) {
-				try {
-					response.setHeader("Content-Disposition",
-							"attachment;filename=\"" + "algol_data" + "_"
-									+ dateFormat.format(new Date()) + ".zip"
-									+ "\"");
-
-					byte[] ret = obterBytesBase();
-					if (ret == null) {
-						return;
-					}
-					response.getOutputStream().write(ret);
-					response.flushBuffer();
-				} catch (Exception e) {
-					Logger.topExecpts(e);
-				}
-				return;
 			}
 			printWriter.println("<br/> " + param + " done");
 		} catch (Exception e) {
@@ -212,6 +213,7 @@ public class ServletMesa11 extends HttpServlet {
 		}
 		printWriter.println("<br/><a href='conf.jsp'>back</a>");
 		printWriter.println("</body></html>");
+		response.setContentType("text/html");
 		response.flushBuffer();
 	}
 
@@ -227,7 +229,7 @@ public class ServletMesa11 extends HttpServlet {
 
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			BufferedInputStream bufferedInputStream = new BufferedInputStream(
-					new FileInputStream(webInfDir + "algolbkp.zip"));
+					new FileInputStream(webInfDir + "mesa11bkp.zip"));
 			int byt = bufferedInputStream.read();
 
 			while (-1 != byt) {

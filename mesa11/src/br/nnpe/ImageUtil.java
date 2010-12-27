@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
  */
 public class ImageUtil {
 	// This method returns a buffered image with the contents of an image
+
 	public static BufferedImage toBufferedImage(Image image) {
 		if (image instanceof BufferedImage) {
 			return (BufferedImage) image;

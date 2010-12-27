@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -20,6 +22,8 @@ import java.awt.geom.Ellipse2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
@@ -27,6 +31,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
@@ -49,8 +54,10 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.ExampleFileFilter;
 import br.nnpe.ImageUtil;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.servlet.ServletMesa11;
 import br.tos.Mesa11TO;
 
 /**
@@ -77,8 +84,12 @@ public class EditorTime extends JPanel {
 	private JComboBox uniformeAlternativo1;
 	private JComboBox uniformeAlternativo2;
 	private ControleJogo controleJogo;
-	private JLabel imgIconLabel = new JLabel();
+	private JLabel imgLocalIconLabel = new JLabel();
+	private JLabel imgRemotaIconLabel = new JLabel();
 	private String nomeImgIconLabel;
+	private JComponent panelImgMostrar;
+	protected BufferedImage imagemEnviar;
+	private JComboBox comboBoxMstrar;
 
 	/**
 	 * 
@@ -241,13 +252,14 @@ public class EditorTime extends JPanel {
 		final int lado = ConstantesMesa11.DIAMENTRO_BOTAO + 10;
 		BufferedImage botaoImg = new BufferedImage(lado, lado,
 				BufferedImage.TYPE_INT_ARGB);
-		imgIconLabel.setIcon(new ImageIcon(botaoImg));
+		imgLocalIconLabel.setIcon(new ImageIcon(botaoImg));
 		JButton escolherImagem = new JButton() {
 			public String getText() {
 				return Lang.msg("escolherImagem");
 			};
 		};
 		escolherImagem.addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
@@ -276,7 +288,7 @@ public class EditorTime extends JPanel {
 				}
 				BufferedImage newBuffer = new BufferedImage((int) (botaoImg
 						.getWidth()), (int) (botaoImg.getHeight()),
-						BufferedImage.TYPE_INT_ARGB);
+						BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor), (menor));
 				graphics2d.setClip(externo);
@@ -289,10 +301,11 @@ public class EditorTime extends JPanel {
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
 				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
 						.getWidth() * zoom), (int) (menor * zoom),
-						BufferedImage.TYPE_INT_ARGB);
+						BufferedImage.TYPE_INT_RGB);
 				affineTransformOp.filter(newBuffer, zoomBuffer);
 
-				imgIconLabel.setIcon(new ImageIcon(zoomBuffer));
+				imgLocalIconLabel.setIcon(new ImageIcon(zoomBuffer));
+				imagemEnviar = zoomBuffer;
 			}
 		});
 		JButton enviarImagem = new JButton() {
@@ -304,8 +317,9 @@ public class EditorTime extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Mesa11TO mesa11to = new Mesa11TO();
-				if (Util.isNullOrEmpty(nomeImgIconLabel)) {
-					JOptionPane.showInternalMessageDialog(EditorTime.this, Lang
+				if (Util.isNullOrEmpty(nomeImgIconLabel)
+						|| imagemEnviar == null) {
+					JOptionPane.showMessageDialog(EditorTime.this, Lang
 							.msg("nomeVazio"), "", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
@@ -313,34 +327,137 @@ public class EditorTime extends JPanel {
 
 				mesa11to.setData(nomeImgIconLabel);
 				BufferedImage buff = ImageUtil
-						.toBufferedImage(((ImageIcon) imgIconLabel.getIcon())
-								.getImage());
+						.toBufferedImage(((ImageIcon) imgLocalIconLabel
+								.getIcon()).getImage());
 				mesa11to.setDataBytes(ImageUtil.bufferedImage2ByteArray(buff));
-				EditorTime.this.controleJogo.enviarObjeto(mesa11to);
+
+				// try {
+				// Util.byteArray2file(mesa11to.getDataBytes(),
+				// "c:\\temp\\teste.jpg");
+				// } catch (Exception e1) {
+				// e1.printStackTrace();
+				// }
+
+				if (ConstantesMesa11.OK.equals(EditorTime.this.controleJogo
+						.enviarObjeto(mesa11to))) {
+					recarregarComboImagens();
+					JOptionPane.showMessageDialog(EditorTime.this, Lang
+							.msg("imagemEnviada"), "",
+							JOptionPane.INFORMATION_MESSAGE);
+
+				}
+
 			}
 		});
 
-		JButton gerarXmlTime = new JButton() {
-			public String getText() {
-				return Lang.msg("gerarXmlTime");
-			};
-		};
-		gerarXmlTime.addActionListener(new ActionListener() {
+		comboBoxMstrar = new JComboBox();
+		recarregarComboImagens();
+		comboBoxMstrar.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.controleJogo.gerarXmlTime(time);
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					mostrarImagemRemota();
+				}
 			}
 		});
+		mostrarImagemRemota();
+
+		JButton buttonMostrar = new JButton() {
+			public String getText() {
+				return Lang.msg("escolherImagem");
+			};
+		};
+
 		JPanel jPanel = new JPanel(new BorderLayout());
-		JPanel botoes = new JPanel(new GridLayout(3, 1, 10, 5));
-		botoes.add(escolherImagem);
-		botoes.add(enviarImagem);
-		botoes.add(gerarXmlTime);
+
+		JPanel botoesEnviar = new JPanel(new GridLayout(2, 1, 10, 5));
+		botoesEnviar.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("enviarImagem");
+			}
+		});
+		botoesEnviar.add(escolherImagem);
+		botoesEnviar.add(enviarImagem);
+
+		JPanel botoesMostrar = new JPanel(new GridLayout(2, 1, 10, 5));
+		botoesMostrar.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("mostrarImagem");
+			}
+		});
+		botoesMostrar.add(comboBoxMstrar);
+		botoesMostrar.add(buttonMostrar);
+
+		JPanel botoes = new JPanel(new GridLayout(1, 2, 10, 10));
+		botoes.add(botoesEnviar);
+		botoes.add(botoesMostrar);
 		jPanel.add(botoes, BorderLayout.NORTH);
-		JPanel panelImg = new JPanel();
-		panelImg.add(imgIconLabel);
-		jPanel.add(panelImg, BorderLayout.CENTER);
+
+		JPanel panelImgEnviar = new JPanel();
+		panelImgEnviar.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("imagemLocal");
+			}
+		});
+		panelImgMostrar = new JPanel();
+		panelImgMostrar.add(imgRemotaIconLabel);
+		panelImgMostrar.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("imagemRemota");
+			}
+		});
+		panelImgEnviar.add(imgLocalIconLabel);
+		panelImgEnviar.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("imagemLocal");
+			}
+		});
+		JPanel panels = new JPanel(new GridLayout(1, 2, 10, 10));
+		panels.add(panelImgEnviar);
+		panels.add(panelImgMostrar);
+
+		jPanel.add(panels, BorderLayout.CENTER);
 		return jPanel;
+	}
+
+	protected void mostrarImagemRemota() {
+		String arquivo = (String) comboBoxMstrar.getSelectedItem();
+		if (arquivo == null || !arquivo.endsWith("jpg")) {
+			return;
+		}
+		URL url = null;
+		try {
+			url = new URL(controleJogo.getMesa11Applet().getCodeBase()
+					+ "midia/" + arquivo);
+			Logger.logar(url);
+		} catch (MalformedURLException e) {
+			Logger.logarExept(e);
+		}
+		ImageIcon icon = new ImageIcon(url);
+		imgRemotaIconLabel.setIcon(icon);
+
+	}
+
+	private void recarregarComboImagens() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_TODAS_IMAGENS);
+		Object ret = controleJogo.enviarObjeto(mesa11to);
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			String[] imagens = (String[]) mesa11to.getData();
+			if (imagens != null) {
+				comboBoxMstrar.removeAllItems();
+				for (int i = 0; i < imagens.length; i++) {
+					comboBoxMstrar.addItem(imagens[i]);
+				}
+			}
+		}
+
 	}
 
 	private Component gerarTabelaAtributosBotao() {
@@ -450,9 +567,24 @@ public class EditorTime extends JPanel {
 		JPanel panelBotoes = new JPanel(new GridLayout(1, 2));
 		panelBotoes.add(inserirLinha);
 		panelBotoes.add(removerLinha);
+
+		JButton gerarXmlTime = new JButton() {
+			public String getText() {
+				return Lang.msg("gerarXmlTime");
+			};
+		};
+		gerarXmlTime.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.controleJogo.gerarXmlTime(time);
+			}
+		});
+		JPanel painelSul = new JPanel(new BorderLayout());
+		painelSul.add(gerarXmlTime, BorderLayout.SOUTH);
 		if (!controleJogo.isJogoOnlineCliente()) {
-			panelTabela.add(panelBotoes, BorderLayout.SOUTH);
+			painelSul.add(panelBotoes, BorderLayout.CENTER);
 		}
+		panelTabela.add(painelSul, BorderLayout.SOUTH);
 		return panelTabela;
 	}
 

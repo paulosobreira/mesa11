@@ -265,7 +265,7 @@ public class ControleJogosServidor {
 
 	public Object gravarImagem(Mesa11TO mesa11to) {
 		File file = new File(ServletMesa11.mediaDir + mesa11to.getData());
-		if (file != null) {
+		if (file.exists()) {
 			return new MsgSrv("imagemExistente");
 		}
 		try {
@@ -275,5 +275,17 @@ public class ControleJogosServidor {
 			Logger.logarExept(e);
 		}
 		return ConstantesMesa11.OK;
+	}
+
+	public Object obterTodasImagens() {
+		File file = new File(ServletMesa11.mediaDir);
+		try {
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(file.list());
+			return mesa11to;
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 }
