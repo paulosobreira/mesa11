@@ -15,13 +15,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Mesa-11 Conf</title>
 <style type="text/css">
-A:link {text-decoration: none; 
-		color: #0084B4;}
-A:visited {text-decoration: none;
-		color: #0084B4;} 
-A:active {text-decoration: none;
-		color: #0084B4;}
-A:hover {text-decoration: underline overline; color: black;}
+A:link {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:visited {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:active {
+	text-decoration: none;
+	color: #0084B4;
+}
+
+A:hover {
+	text-decoration: underline overline;
+	color: black;
+}
 </style>
 </head>
 <body>
@@ -148,8 +160,8 @@ A:hover {text-decoration: underline overline; color: black;}
 			Schema </a></td>
 		</tr>
 		<tr>
-			<td class="c1"><a href="mesa11?act=x"> Exceptions
-			</a></td>
+			<td class="c1"><a href="mesa11?act=x"> Exceptions </a></td>
+			<td class="c1"><a href="mesa11?act=backup"> Imagens </a></td>
 		</tr>
 	</tbody>
 </table>
