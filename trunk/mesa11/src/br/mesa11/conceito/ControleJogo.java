@@ -1767,6 +1767,10 @@ public class ControleJogo {
 		return mesa11Applet.enviarObjeto(mesa11to);
 	}
 
+	public Mesa11Applet getMesa11Applet() {
+		return mesa11Applet;
+	}
+
 	public DadosJogoSrvMesa11 getDadosJogoSrvMesa11() {
 		return dadosJogoSrvMesa11;
 	}

@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
@@ -214,7 +215,8 @@ public class ChatWindow {
 		JPanel ePanel = new JPanel(new GridLayout(1, 2));
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		JPanel chatPanel = new JPanel();
-		chatPanel.setBorder(new TitledBorder("Mesa11 Chat Room v 1.0"));
+		chatPanel.setBorder(new TitledBorder("Chat Room "
+				+ ConstantesMesa11.TITULO_VERSAO));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {

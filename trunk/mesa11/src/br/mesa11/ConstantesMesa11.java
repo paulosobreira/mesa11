@@ -5,6 +5,8 @@ public class ConstantesMesa11 {
 	public static boolean debug = true;
 	public static boolean modoZip = true;
 
+	public static final String TITULO_VERSAO = "Mesa11 Ver 1.03";
+
 	public static String CAMPO_CIMA = "CAMPO_CIMA";
 
 	public static String CAMPO_BAIXO = "CAMPO_BAIXO";
@@ -97,10 +99,10 @@ public class ConstantesMesa11 {
 	public static final String OBTER_POSICAO_BOTOES = "OBTER_POSICAO_BOTOES";
 	public static final String SAIR_JOGO = "SAIR_JOGO";
 	public static final int TAMANHO_MAX_NOME_TIME = 11;
-	public static final String TITULO_VERSAO = "Mesa11 Ver 1.1";
 	public static final String PROBLEMA_REDE = "problemaRede";
 	public static final String JOGADA_INVALIDA = "jogadaInvalida";
 	public static final String CHUTE_GOLEIRO = "CHUTE_GOLEIRO";
 	public static final String VERIFICA_POSICAO_DIFF_BOTOES = "VERIFICA_POSICAO_DIFF_BOTOES";
 	public static final String ENVIAR_IMAGEM = "ENVIAR_IMAGEM";
+	public static final String OBTER_TODAS_IMAGENS = "OBTER_TODAS_IMAGENS";
 }
