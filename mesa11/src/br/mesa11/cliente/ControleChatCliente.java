@@ -283,10 +283,10 @@ public class ControleChatCliente {
 		EditorTime editorTime = new EditorTime(time, controleJogo);
 		int ret = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				editorTime, Lang.msg("criarTime"), JOptionPane.YES_NO_OPTION);
-		if (ret == JOptionPane.NO_OPTION) {
-			return;
+		if (ret == JOptionPane.YES_OPTION) {
+			controleJogo.salvarTime(time);
 		}
-		controleJogo.salvarTime(time);
+
 	}
 
 	public void verClassificacao() {
@@ -345,10 +345,10 @@ public class ControleChatCliente {
 				int retOpt = JOptionPane.showConfirmDialog(chatWindow
 						.getMainPanel(), editorTime, Lang.msg("editarTime"),
 						JOptionPane.YES_NO_OPTION);
-				if (retOpt == JOptionPane.NO_OPTION) {
-					return;
+				if (retOpt == JOptionPane.YES_OPTION) {
+					controleJogo.salvarTime(time);
 				}
-				controleJogo.salvarTime(time);
+
 			}
 		}
 
