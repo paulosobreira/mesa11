@@ -105,7 +105,7 @@ public class EditorTime extends JPanel {
 		jTabbedPane.addTab(Lang.msg("enviarImagem"), gerarEnviarImagem());
 
 		setLayout(new BorderLayout());
-		JPanel panelTime = new JPanel(new GridLayout(4, 2));
+		JPanel panelTime = new JPanel(new GridLayout(1, 4, 10, 30));
 		panelTime.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
@@ -148,85 +148,7 @@ public class EditorTime extends JPanel {
 			}
 		};
 		panelTime.add(qtdePts);
-		panelTime.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("corMeiaCorNumero1");
-			}
-		});
-		corAlternativa1 = new JCheckBox();
-		corAlternativa1.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero1(corAlternativa1
-						.isSelected());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
-
-			}
-		});
-		uniformeAlternativo1 = new JComboBox(new String[] { "0", "1", "2", "3",
-				"4", "5" });
-		uniformeAlternativo1.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String selVal = (String) uniformeAlternativo1.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme1(new Integer(selVal)
-						.intValue());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
-
-			}
-		});
-		JPanel alts1 = new JPanel(new GridLayout(1, 2));
-		alts1.add(corAlternativa1);
-		alts1.add(uniformeAlternativo1);
-		panelTime.add(alts1);
-		panelTime.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("corMeiaCorNumero2");
-			}
-		});
-		corAlternativa2 = new JCheckBox();
-		corAlternativa2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero2(corAlternativa2
-						.isSelected());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
-			}
-		});
-
-		uniformeAlternativo2 = new JComboBox(new String[] { "0", "1", "2", "3",
-				"4", "5" });
-		uniformeAlternativo2.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String selVal = (String) uniformeAlternativo2.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme2(new Integer(selVal)
-						.intValue());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
-			}
-		});
-		JPanel alts2 = new JPanel(new GridLayout(1, 2));
-		alts2.add(corAlternativa2);
-		alts2.add(uniformeAlternativo2);
-		panelTime.add(alts2);
 		add(panelTime, BorderLayout.NORTH);
 		add(jTabbedPane, BorderLayout.CENTER);
 
@@ -364,7 +286,7 @@ public class EditorTime extends JPanel {
 
 		JButton buttonMostrar = new JButton() {
 			public String getText() {
-				return Lang.msg("escolherImagem");
+				return Lang.msg("mostrarImagem");
 			};
 		};
 		buttonMostrar.addActionListener(new ActionListener() {
@@ -605,6 +527,98 @@ public class EditorTime extends JPanel {
 	}
 
 	private Component gerarTabelaCores() {
+		JPanel panelTime = new JPanel(new GridLayout(2, 2));
+		panelTime.setBorder(new TitledBorder("") {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see javax.swing.border.TitledBorder#getTitle()
+			 */
+			@Override
+			public String getTitle() {
+				return Lang.msg("coresAlternativas");
+			}
+		});
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("corMeiaCorNumero1");
+			}
+		});
+		corAlternativa1 = new JCheckBox();
+		corAlternativa1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.time.setCorMeiaNumero1(corAlternativa1
+						.isSelected());
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
+
+			}
+		});
+		uniformeAlternativo1 = new JComboBox(new String[] { "0", "1", "2", "3",
+				"4", "5" });
+		uniformeAlternativo1.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selVal = (String) uniformeAlternativo1.getSelectedItem();
+				EditorTime.this.time.setTipoUniforme1(new Integer(selVal)
+						.intValue());
+				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
+
+			}
+		});
+		JPanel alts1 = new JPanel(new GridLayout(1, 2));
+		alts1.add(corAlternativa1);
+		alts1.add(uniformeAlternativo1);
+		panelTime.add(alts1);
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("corMeiaCorNumero2");
+			}
+		});
+		corAlternativa2 = new JCheckBox();
+		corAlternativa2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.time.setCorMeiaNumero2(corAlternativa2
+						.isSelected());
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
+			}
+		});
+
+		uniformeAlternativo2 = new JComboBox(new String[] { "0", "1", "2", "3",
+				"4", "5" });
+		uniformeAlternativo2.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selVal = (String) uniformeAlternativo2.getSelectedItem();
+				EditorTime.this.time.setTipoUniforme2(new Integer(selVal)
+						.intValue());
+				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						EditorTime.this.time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
+						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
+			}
+		});
+		JPanel alts2 = new JPanel(new GridLayout(1, 2));
+		alts2.add(corAlternativa2);
+		alts2.add(uniformeAlternativo2);
+		panelTime.add(alts2);
+
 		JPanel cores1 = new JPanel(new GridLayout(1, 3));
 		cores1.add(labelCor1);
 		cores1.add(labelCor2);
@@ -637,7 +651,12 @@ public class EditorTime extends JPanel {
 		cores.setLayout(new GridLayout(2, 1));
 		cores.add(un1);
 		cores.add(un2);
-		return cores;
+
+		JPanel retorno = new JPanel(new BorderLayout());
+		retorno.add(panelTime, BorderLayout.SOUTH);
+		retorno.add(cores, BorderLayout.CENTER);
+
+		return retorno;
 	}
 
 	private void gerarLabelsCores() {
@@ -793,7 +812,7 @@ public class EditorTime extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		// TODO Auto-generated method stub
-		return new Dimension(600, 400);
+		return new Dimension(600, 500);
 	}
 
 	public static void main(String[] args) {
