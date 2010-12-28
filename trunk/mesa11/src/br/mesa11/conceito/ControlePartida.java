@@ -7,9 +7,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -42,6 +44,7 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.CarregadorRecursos;
@@ -323,8 +326,33 @@ public class ControlePartida {
 								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeCima, segundoUniformeCima ? 2 : 1, botao));
+				if (botao instanceof Goleiro || botao.isGoleiro()) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniformeGoleiro(timeCima, timeCima
+									.isSegundoUniforme() ? 2 : 1,
+									(Goleiro) botao));
+					botao.setCentro(mesaPanel.golCima());
+				} else {
+					if (Util.isNullOrEmpty(botao.getImagem())) {
+						botoesImagens.put(botao.getId(), BotaoUtils
+								.desenhaUniforme(timeCima, timeCima
+										.isSegundoUniforme() ? 2 : 1, botao));
+					} else {
+						URL url = null;
+						try {
+							url = new URL(controleJogo.getMesa11Applet()
+									.getCodeBase()
+									+ "midia/" + botao.getImagem());
+							Logger.logar(url);
+						} catch (MalformedURLException e) {
+							Logger.logarExept(e);
+						}
+						ImageIcon icon = new ImageIcon(url);
+						BufferedImage buff = ImageUtil
+								.toBufferedImage(((ImageIcon) icon).getImage());
+						botoesImagens.put(botao.getId(), buff);
+					}
+				}
 			}
 			botoes.put(botao.getId(), botao);
 
@@ -753,8 +781,25 @@ public class ControlePartida {
 								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeCima, timeCima.isSegundoUniforme() ? 2 : 1, botao));
+				if (Util.isNullOrEmpty(botao.getImagem())) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniforme(timeCima, timeCima
+									.isSegundoUniforme() ? 2 : 1, botao));
+				} else {
+					URL url = null;
+					try {
+						url = new URL(controleJogo.getMesa11Applet()
+								.getCodeBase()
+								+ "midia/" + botao.getImagem());
+						Logger.logar(url);
+					} catch (MalformedURLException e) {
+						Logger.logarExept(e);
+					}
+					ImageIcon icon = new ImageIcon(url);
+					BufferedImage buff = ImageUtil
+							.toBufferedImage(((ImageIcon) icon).getImage());
+					botoesImagens.put(botao.getId(), buff);
+				}
 			}
 		}
 		List botoesTimeBaixo = timeBaixo.getBotoes();
