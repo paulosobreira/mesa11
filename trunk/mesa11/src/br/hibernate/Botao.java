@@ -27,6 +27,7 @@ public class Botao extends Mesa11Dados {
 	private Point centroInicio;
 	private Point destino;
 	private String nome;
+	private String imagem;
 	private Integer numero;
 	private double angulo;
 	@ManyToOne
@@ -114,6 +115,14 @@ public class Botao extends Mesa11Dados {
 
 	public double getAngulo() {
 		return angulo;
+	}
+
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
 	}
 
 	public void setAngulo(double angulo) {

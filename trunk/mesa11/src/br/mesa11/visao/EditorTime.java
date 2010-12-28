@@ -89,7 +89,7 @@ public class EditorTime extends JPanel {
 	private String nomeImgIconLabel;
 	private JComponent panelImgMostrar;
 	protected BufferedImage imagemEnviar;
-	private JComboBox comboBoxMstrar;
+	private JComboBox comboBoxNomeImgs;
 
 	/**
 	 * 
@@ -299,8 +299,8 @@ public class EditorTime extends JPanel {
 						.getScaleInstance(zoom, zoom);
 				AffineTransformOp affineTransformOp = new AffineTransformOp(
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
-				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
-						.getWidth() * zoom), (int) (menor * zoom),
+				BufferedImage zoomBuffer = new BufferedImage(
+						(int) (menor * zoom), (int) (menor * zoom),
 						BufferedImage.TYPE_INT_RGB);
 				affineTransformOp.filter(newBuffer, zoomBuffer);
 
@@ -350,9 +350,9 @@ public class EditorTime extends JPanel {
 			}
 		});
 
-		comboBoxMstrar = new JComboBox();
+		comboBoxNomeImgs = new JComboBox();
 		recarregarComboImagens();
-		comboBoxMstrar.addItemListener(new ItemListener() {
+		comboBoxNomeImgs.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
@@ -367,7 +367,13 @@ public class EditorTime extends JPanel {
 				return Lang.msg("escolherImagem");
 			};
 		};
+		buttonMostrar.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mostrarImagemRemota();
+			}
+		});
 		JPanel jPanel = new JPanel(new BorderLayout());
 
 		JPanel botoesEnviar = new JPanel(new GridLayout(2, 1, 10, 5));
@@ -387,7 +393,8 @@ public class EditorTime extends JPanel {
 				return Lang.msg("mostrarImagem");
 			}
 		});
-		botoesMostrar.add(comboBoxMstrar);
+
+		botoesMostrar.add(comboBoxNomeImgs);
 		botoesMostrar.add(buttonMostrar);
 
 		JPanel botoes = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -426,7 +433,7 @@ public class EditorTime extends JPanel {
 	}
 
 	protected void mostrarImagemRemota() {
-		String arquivo = (String) comboBoxMstrar.getSelectedItem();
+		String arquivo = (String) comboBoxNomeImgs.getSelectedItem();
 		if (arquivo == null || !arquivo.endsWith("jpg")) {
 			return;
 		}
@@ -451,9 +458,9 @@ public class EditorTime extends JPanel {
 			mesa11to = (Mesa11TO) ret;
 			String[] imagens = (String[]) mesa11to.getData();
 			if (imagens != null) {
-				comboBoxMstrar.removeAllItems();
+				comboBoxNomeImgs.removeAllItems();
 				for (int i = 0; i < imagens.length; i++) {
-					comboBoxMstrar.addItem(imagens[i]);
+					comboBoxNomeImgs.addItem(imagens[i]);
 				}
 			}
 		}
@@ -463,7 +470,7 @@ public class EditorTime extends JPanel {
 	private Component gerarTabelaAtributosBotao() {
 		tabelaBotoes = new JTable();
 		final BotaoTableModel botaoTableModel = new BotaoTableModel(time
-				.getBotoes());
+				.getBotoes(), controleJogo);
 		tabelaBotoes.setModel(botaoTableModel);
 		botaoTableModel.addMouseListener(tabelaBotoes);
 		TableColumn columnNome = tabelaBotoes.getColumnModel().getColumn(0);
@@ -472,8 +479,17 @@ public class EditorTime extends JPanel {
 		TableColumn columnPrecisao = tabelaBotoes.getColumnModel().getColumn(4);
 		TableColumn columnForca = tabelaBotoes.getColumnModel().getColumn(5);
 		TableColumn columnDefesa = tabelaBotoes.getColumnModel().getColumn(6);
-		columnNome.setMaxWidth(250);
-		columnNome.setMinWidth(250);
+		TableColumn columnImgNome = tabelaBotoes.getColumnModel().getColumn(7);
+		TableColumn columnImg = tabelaBotoes.getColumnModel().getColumn(8);
+
+		columnNome.setMinWidth(120);
+		columnImg.setMinWidth(128);
+		tabelaBotoes.setRowHeight(32);
+		if (comboBoxNomeImgs == null) {
+			comboBoxNomeImgs = new JComboBox();
+		}
+		recarregarComboImagens();
+		columnImgNome.setCellEditor(new DefaultCellEditor(comboBoxNomeImgs));
 
 		JComboBox comboBoxSimNao = new JComboBox();
 		comboBoxSimNao.addItem(Lang.msg("sim"));
