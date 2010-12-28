@@ -170,7 +170,7 @@ public class BotaoTableModel extends AbstractTableModel {
 		case 7:
 			return Lang.msg("imgNome");
 		case 8:
-			return Lang.msg("img");
+			return Lang.msg("imagem");
 		default:
 			return "";
 		}
