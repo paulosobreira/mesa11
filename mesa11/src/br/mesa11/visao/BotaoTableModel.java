@@ -2,15 +2,20 @@ package br.mesa11.visao;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import br.hibernate.Botao;
+import br.mesa11.conceito.ControleJogo;
+import br.nnpe.Logger;
 import br.recursos.Lang;
 
 public class BotaoTableModel extends AbstractTableModel {
@@ -19,8 +24,10 @@ public class BotaoTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = -6491939723021276044L;
 	protected List data;
+	private ControleJogo controleJogo;
 
-	public BotaoTableModel(List data) {
+	public BotaoTableModel(List data, ControleJogo controleJogo) {
+		this.controleJogo = controleJogo;
 		this.data = data;
 	}
 
@@ -160,6 +167,10 @@ public class BotaoTableModel extends AbstractTableModel {
 			return Lang.msg("forca");
 		case 6:
 			return Lang.msg("defesa");
+		case 7:
+			return Lang.msg("imgNome");
+		case 8:
+			return Lang.msg("img");
 		default:
 			return "";
 		}
@@ -170,7 +181,7 @@ public class BotaoTableModel extends AbstractTableModel {
 	}
 
 	public int getColumnCount() {
-		return 7;
+		return 9;
 	}
 
 	public Object getValueAt(int rowIndex, int columnIndex) {
@@ -193,14 +204,34 @@ public class BotaoTableModel extends AbstractTableModel {
 			return botao.getForca() == null ? 0 : botao.getForca();
 		case 6:
 			return botao.getDefesa() == null ? 0 : botao.getDefesa();
-
+		case 7:
+			return botao.getImagem();
+		case 8:
+			String arquivo = botao.getImagem();
+			if (arquivo == null || !arquivo.endsWith("jpg")
+					|| controleJogo == null) {
+				return "";
+			}
+			URL url = null;
+			try {
+				url = new URL(controleJogo.getMesa11Applet().getCodeBase()
+						+ "midia/" + arquivo);
+				Logger.logar(url);
+			} catch (MalformedURLException e) {
+				Logger.logarExept(e);
+			}
+			ImageIcon icon = new ImageIcon(url);
+			return icon;
 		default:
 			return null;
 		}
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return true;
+		if (columnIndex < 8)
+			return true;
+		else
+			return false;
 	}
 
 	public Class getColumnClass(int columnIndex) {
@@ -219,8 +250,12 @@ public class BotaoTableModel extends AbstractTableModel {
 			return Integer.class;
 		case 6:
 			return Integer.class;
+		case 7:
+			return String.class;
+		case 8:
+			return ImageIcon.class;
 		default:
-			return null;
+			return super.getColumnClass(columnIndex);
 		}
 	}
 
@@ -231,7 +266,6 @@ public class BotaoTableModel extends AbstractTableModel {
 		case 0:
 			botao.setNome((String) aValue);
 			break;
-
 		case 1:
 			botao.setNumero((Integer) aValue);
 			break;
@@ -251,6 +285,9 @@ public class BotaoTableModel extends AbstractTableModel {
 			break;
 		case 6:
 			botao.setDefesa((Integer) aValue);
+			break;
+		case 7:
+			botao.setImagem((String) aValue);
 			break;
 		default:
 			break;
