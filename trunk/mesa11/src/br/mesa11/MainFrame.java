@@ -2,6 +2,8 @@ package br.mesa11;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.JApplet;
 import javax.swing.JFrame;
@@ -9,12 +11,15 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
 import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.conceito.ControleJogo;
 import br.mesa11.visao.EditorTime;
+import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
 
@@ -34,7 +39,7 @@ public class MainFrame {
 		if (mesa11Applet == null) {
 			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		} else {
-			
+
 		}
 
 		this.mesa11Applet = mesa11Applet;
@@ -113,6 +118,36 @@ public class MainFrame {
 	}
 
 	private void gerarMenusSobre(JMenu menu2) {
+		JMenuItem logs = new JMenuItem("Ver Logs") {
+			public String getText() {
+				return Lang.msg("verLogs");
+			}
+
+		};
+		logs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextArea area = new JTextArea(20, 50);
+					Set top = Logger.topExceptions.keySet();
+					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+						String exept = (String) iterator.next();
+						area.append("Quantidade : "
+								+ Logger.topExceptions.get(exept));
+						area.append("\n");
+						area.append(exept.replaceAll("<br>", "\n"));
+						area.append("\n");
+					}
+					area.setCaretPosition(0);
+					JOptionPane.showMessageDialog(MainFrame.this.frame,
+							new JScrollPane(area), Lang.msg("listaDeErros"),
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
+			}
+		});
+		menu2.add(logs);
+
 		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
 			public String getText() {
 				return Lang.msg("sobreAutor");

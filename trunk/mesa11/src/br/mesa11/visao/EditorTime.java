@@ -9,6 +9,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -26,6 +28,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.DefaultCellEditor;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -367,11 +370,15 @@ public class EditorTime extends JPanel {
 			url = new URL(controleJogo.getMesa11Applet().getCodeBase()
 					+ "midia/" + arquivo);
 			Logger.logar(url);
-		} catch (MalformedURLException e) {
+			ImageIcon icon = new ImageIcon(url);
+			imgRemotaIconLabel.setIcon(icon);
+			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+				Logger.logar("Status " + icon.getImageLoadStatus()
+						+ " Nao Carregado " + url);
+			}
+		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
-		ImageIcon icon = new ImageIcon(url);
-		imgRemotaIconLabel.setIcon(icon);
 
 	}
 
@@ -386,12 +393,18 @@ public class EditorTime extends JPanel {
 				if (comboBoxNomeImgsTabela != null) {
 					comboBoxNomeImgsTabela.removeAllItems();
 					for (int i = 0; i < imagens.length; i++) {
+						if (!imagens[i].endsWith("jpg")) {
+							continue;
+						}
 						comboBoxNomeImgsTabela.addItem(imagens[i]);
 					}
 				}
 				if (comboBoxNomeImgs != null) {
 					comboBoxNomeImgs.removeAllItems();
 					for (int i = 0; i < imagens.length; i++) {
+						if (!imagens[i].endsWith("jpg")) {
+							continue;
+						}
 						comboBoxNomeImgs.addItem(imagens[i]);
 					}
 				}
