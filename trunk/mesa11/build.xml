@@ -69,6 +69,7 @@
 			</fileset>
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/mesa11.jar" />
+				<include name="a-mesa11.jar" />
 				<include name="mesa11.jar" />
 			</fileset>
 		</war>
