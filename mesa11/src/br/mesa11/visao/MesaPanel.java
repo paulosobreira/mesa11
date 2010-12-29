@@ -483,6 +483,7 @@ public class MesaPanel extends JPanel {
 		BufferedImage newBuffer = new BufferedImage(400, 400,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		setarHints(graphics2d);
 		graphics2d.drawImage(botaoImg, 0, 170, null);
 		graphics2d.dispose();
 
@@ -518,20 +519,13 @@ public class MesaPanel extends JPanel {
 				.getBotoesImagens().get(botao.getId());
 		if (botaoImg == null)
 			return;
-		BufferedImage newBuffer = new BufferedImage((botaoImg.getWidth()+1),
-				(botaoImg.getHeight()+1), BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botaoImg.getWidth()),
-				(botaoImg.getHeight()));
-		graphics2d.setClip(externo);
-		graphics2d.drawImage(botaoImg, 1, 1, null);
 
 		BufferedImage zoomBuffer = new BufferedImage(
 				(int) (botaoImg.getWidth() * zoom),
 				(int) (botaoImg.getHeight() * zoom),
 				BufferedImage.TYPE_INT_ARGB);
 
-		affineTransformOp.filter(newBuffer, zoomBuffer);
+		affineTransformOp.filter(botaoImg, zoomBuffer);
 		if (botao.getId() == 0) {
 			// newBuffer = zoomBuffer;
 			Point restroBola = new Point(botx, boty);

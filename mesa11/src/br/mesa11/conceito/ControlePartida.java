@@ -2,15 +2,18 @@ package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.MediaTracker;
+import java.awt.RenderingHints;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -330,26 +333,9 @@ public class ControlePartida {
 									(Goleiro) botao));
 					botao.setCentro(mesaPanel.golCima());
 				} else {
-					if (Util.isNullOrEmpty(botao.getImagem())) {
-						botoesImagens.put(botao.getId(), BotaoUtils
-								.desenhaUniforme(timeCima, timeCima
-										.isSegundoUniforme() ? 2 : 1, botao));
-					} else {
-						URL url = null;
-						try {
-							url = new URL(controleJogo.getMesa11Applet()
-									.getCodeBase()
-									+ "midia/" + botao.getImagem());
-							Logger.logar(url);
-							ImageIcon icon = new ImageIcon(url);
-							BufferedImage buff = ImageUtil.toBufferedImage(icon
-									.getImage());
-							botoesImagens.put(botao.getId(), buff);
-						} catch (Exception e) {
-							Logger.logarExept(e);
-						}
-					}
+					carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
 				}
+
 			}
 			botoes.put(botao.getId(), botao);
 
@@ -375,25 +361,7 @@ public class ControlePartida {
 								segundoUniformeBaixo ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
-				if (Util.isNullOrEmpty(botao.getImagem())) {
-					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniforme(timeBaixo, timeBaixo
-									.isSegundoUniforme() ? 2 : 1, botao));
-				} else {
-					URL url = null;
-					try {
-						url = new URL(controleJogo.getMesa11Applet()
-								.getCodeBase()
-								+ "midia/" + botao.getImagem());
-						Logger.logar(url);
-						ImageIcon icon = new ImageIcon(url);
-						BufferedImage buff = ImageUtil.toBufferedImage(icon
-								.getImage());
-						botoesImagens.put(botao.getId(), buff);
-					} catch (Exception e) {
-						Logger.logarExept(e);
-					}
-				}
+				carregarBotaoImagemBotao(botoesImagens, botao, timeBaixo);
 			}
 			botoes.put(botao.getId(), botao);
 		}
@@ -422,6 +390,53 @@ public class ControlePartida {
 		mapaGols.put(timeBaixo, new Integer(0));
 		mapaJogadas.put(timeCima, new Integer(0));
 		mapaJogadas.put(timeBaixo, new Integer(0));
+	}
+
+	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,
+			Time time) {
+		BufferedImage buff = null;
+		if (!Util.isNullOrEmpty(botao.getImagem())) {
+			URL url = null;
+			try {
+				url = new URL(controleJogo.getMesa11Applet().getCodeBase()
+						+ "midia/" + botao.getImagem());
+				Logger.logar(url);
+				ImageIcon icon = new ImageIcon(url);
+				buff = ImageUtil.toBufferedImage(icon.getImage());
+				if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+					Logger.logar("Status " + icon.getImageLoadStatus()
+							+ " Nao Carregado " + url);
+					buff = null;
+				}
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
+		}
+		if (buff == null)
+			buff = BotaoUtils.desenhaUniforme(time,
+					time.isSegundoUniforme() ? 2 : 1, botao);
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth() + 1),
+				(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		setarHints(graphics2d);
+		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
+				.getHeight()));
+		graphics2d.setClip(externo);
+		graphics2d.drawImage(buff, 1, 1, null);
+		botoesImagens.put(botao.getId(), newBuffer);
+
+	}
+
+	private void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
 	}
 
 	private void iniciaTempoJogada(Object selectedItem, String timeComBola) {
@@ -795,25 +810,7 @@ public class ControlePartida {
 								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
-				if (Util.isNullOrEmpty(botao.getImagem())) {
-					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniforme(timeCima, timeCima
-									.isSegundoUniforme() ? 2 : 1, botao));
-				} else {
-					URL url = null;
-					try {
-						url = new URL(controleJogo.getMesa11Applet()
-								.getCodeBase()
-								+ "midia/" + botao.getImagem());
-						Logger.logar(url);
-						ImageIcon icon = new ImageIcon(url);
-						BufferedImage buff = ImageUtil.toBufferedImage(icon
-								.getImage());
-						botoesImagens.put(botao.getId(), buff);
-					} catch (Exception e) {
-						Logger.logarExept(e);
-					}
-				}
+				carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
 			}
 		}
 		List botoesTimeBaixo = timeBaixo.getBotoes();
@@ -826,25 +823,7 @@ public class ControlePartida {
 								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
-				if (Util.isNullOrEmpty(botao.getImagem())) {
-					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniforme(timeBaixo, timeBaixo
-									.isSegundoUniforme() ? 2 : 1, botao));
-				} else {
-					URL url = null;
-					try {
-						url = new URL(controleJogo.getMesa11Applet()
-								.getCodeBase()
-								+ "midia/" + botao.getImagem());
-						Logger.logar(url);
-						ImageIcon icon = new ImageIcon(url);
-						BufferedImage buff = ImageUtil.toBufferedImage(icon
-								.getImage());
-						botoesImagens.put(botao.getId(), buff);
-					} catch (Exception e) {
-						Logger.logarExept(e);
-					}
-				}
+				carregarBotaoImagemBotao(botoesImagens, botao, timeBaixo);
 			}
 		}
 		if (controleJogo.isJogoOnlineSrvidor()) {
