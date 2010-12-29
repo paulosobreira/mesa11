@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://localhost:8080/mesa11/" href="mesa11.jnlp">
+	codebase="http://www.f1mane.com/mesa11/" href="mesa11.jnlp">
 	<information>
 		<title>Mesa11</title>
 		<vendor>Paulo Sobreira</vendor>
