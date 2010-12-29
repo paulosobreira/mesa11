@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://localhost:8080/mesa11/" href="mesa11online.jnlp">
+	codebase="http://www.f1mane.com/mesa11/" href="mesa11online.jnlp">
 	<information>
-		<title>Mesa11 Online</title>
+		<title>Mesa11 Chat</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
 		<description>Mesa-11 (Futebol de Botao)</description>
@@ -24,8 +24,8 @@
     </resources>
 
 	  <applet-desc 
-	      documentBase="http://localhost:8080/mesa11" 
-	      name="Mesa11 Online" 
+	      documentBase="http://www.f1mane.com/mesa11" 
+	      name="Mesa11 Chat" 
 	      main-class="br.applet.Mesa11Applet" 
 	      width="820" 
 	      height="380"> 
