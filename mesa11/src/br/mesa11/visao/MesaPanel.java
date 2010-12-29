@@ -518,28 +518,26 @@ public class MesaPanel extends JPanel {
 				.getBotoesImagens().get(botao.getId());
 		if (botaoImg == null)
 			return;
+		BufferedImage newBuffer = new BufferedImage((botaoImg.getWidth()+1),
+				(botaoImg.getHeight()+1), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		Ellipse2D externo = new Ellipse2D.Double(0, 0, (botaoImg.getWidth()),
+				(botaoImg.getHeight()));
+		graphics2d.setClip(externo);
+		graphics2d.drawImage(botaoImg, 1, 1, null);
+
 		BufferedImage zoomBuffer = new BufferedImage(
 				(int) (botaoImg.getWidth() * zoom),
 				(int) (botaoImg.getHeight() * zoom),
 				BufferedImage.TYPE_INT_ARGB);
 
-		affineTransformOp.filter(botaoImg, zoomBuffer);
-
+		affineTransformOp.filter(newBuffer, zoomBuffer);
 		if (botao.getId() == 0) {
-			BufferedImage newBuffer = new BufferedImage((int) (botaoImg
-					.getWidth() * zoom), (int) (botaoImg.getHeight() * zoom),
-					BufferedImage.TYPE_INT_ARGB);
-
-			Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
-			Ellipse2D externo = new Ellipse2D.Double(0, 0, (botao
-					.getDiamentro() * zoom), (botao.getDiamentro() * zoom));
-			graphics2d.setClip(externo);
-			graphics2d.drawImage(zoomBuffer, 0, 0, null);
-			zoomBuffer = newBuffer;
+			// newBuffer = zoomBuffer;
 			Point restroBola = new Point(botx, boty);
 			if (centroBolaOld != null && zoom == oldZoom) {
 				if (GeoUtil.distaciaEntrePontos(restroBola, centroBolaOld) > Util
-						.intervalo(1, 4)) {
+						.intervalo(1, 3)) {
 					g.drawImage(zoomBuffer, centroBolaOld.x, centroBolaOld.y,
 							null);
 				}

@@ -89,6 +89,7 @@ public class EditorTime extends JPanel {
 	private String nomeImgIconLabel;
 	private JComponent panelImgMostrar;
 	protected BufferedImage imagemEnviar;
+	private JComboBox comboBoxNomeImgsTabela;
 	private JComboBox comboBoxNomeImgs;
 
 	/**
@@ -212,6 +213,9 @@ public class EditorTime extends JPanel {
 						.getWidth()), (int) (botaoImg.getHeight()),
 						BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+				graphics2d.setColor(Color.WHITE);
+				graphics2d.fillRect(0, 0, botaoImg.getWidth(), botaoImg
+						.getWidth());
 				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor), (menor));
 				graphics2d.setClip(externo);
 				graphics2d.drawImage(botaoImg, 0, 0, null);
@@ -271,7 +275,6 @@ public class EditorTime extends JPanel {
 
 			}
 		});
-
 		comboBoxNomeImgs = new JComboBox();
 		recarregarComboImagens();
 		comboBoxNomeImgs.addItemListener(new ItemListener() {
@@ -316,7 +319,7 @@ public class EditorTime extends JPanel {
 			}
 		});
 
-		botoesMostrar.add(comboBoxNomeImgs);
+		botoesMostrar.add(comboBoxNomeImgsTabela);
 		botoesMostrar.add(buttonMostrar);
 
 		JPanel botoes = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -355,7 +358,7 @@ public class EditorTime extends JPanel {
 	}
 
 	protected void mostrarImagemRemota() {
-		String arquivo = (String) comboBoxNomeImgs.getSelectedItem();
+		String arquivo = (String) comboBoxNomeImgsTabela.getSelectedItem();
 		if (arquivo == null || !arquivo.endsWith("jpg")) {
 			return;
 		}
@@ -380,9 +383,17 @@ public class EditorTime extends JPanel {
 			mesa11to = (Mesa11TO) ret;
 			String[] imagens = (String[]) mesa11to.getData();
 			if (imagens != null) {
-				comboBoxNomeImgs.removeAllItems();
-				for (int i = 0; i < imagens.length; i++) {
-					comboBoxNomeImgs.addItem(imagens[i]);
+				if (comboBoxNomeImgsTabela != null) {
+					comboBoxNomeImgsTabela.removeAllItems();
+					for (int i = 0; i < imagens.length; i++) {
+						comboBoxNomeImgsTabela.addItem(imagens[i]);
+					}
+				}
+				if (comboBoxNomeImgs != null) {
+					comboBoxNomeImgs.removeAllItems();
+					for (int i = 0; i < imagens.length; i++) {
+						comboBoxNomeImgs.addItem(imagens[i]);
+					}
 				}
 			}
 		}
@@ -406,12 +417,14 @@ public class EditorTime extends JPanel {
 
 		columnNome.setMinWidth(120);
 		columnImg.setMinWidth(128);
-		tabelaBotoes.setRowHeight(32);
-		if (comboBoxNomeImgs == null) {
-			comboBoxNomeImgs = new JComboBox();
+		columnImgNome.setMinWidth(128);
+		tabelaBotoes.setRowHeight(48);
+		if (comboBoxNomeImgsTabela == null) {
+			comboBoxNomeImgsTabela = new JComboBox();
 		}
 		recarregarComboImagens();
-		columnImgNome.setCellEditor(new DefaultCellEditor(comboBoxNomeImgs));
+		columnImgNome.setCellEditor(new DefaultCellEditor(
+				comboBoxNomeImgsTabela));
 
 		JComboBox comboBoxSimNao = new JComboBox();
 		comboBoxSimNao.addItem(Lang.msg("sim"));
@@ -812,7 +825,7 @@ public class EditorTime extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		// TODO Auto-generated method stub
-		return new Dimension(600, 500);
+		return new Dimension(800, 500);
 	}
 
 	public static void main(String[] args) {

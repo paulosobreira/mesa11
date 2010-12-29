@@ -106,7 +106,7 @@ public class ControleJogosServidor {
 	public Object obterDadosJogo(String nomejogo) {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
-			return new MsgSrv(Lang.msg("jogoInexistente"));
+			return null;
 		}
 		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = jogoSrvMesa11
 				.getDadosJogoSrvMesa11();
@@ -140,7 +140,7 @@ public class ControleJogosServidor {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(jogadaMesa11
 				.getDadosJogoSrvMesa11().getNomeJogo());
 		if (jogoSrvMesa11 == null) {
-			return new MsgSrv(Lang.msg("jogoInexistente"));
+			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
 		if (controleJogo.timeJogadaVez().getNome().equals(
@@ -161,7 +161,7 @@ public class ControleJogosServidor {
 	public Object obterUltimaJogada(String nomejogo) {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
-			return new MsgSrv(Lang.msg("jogoInexistente"));
+			return null;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getControleJogo().obterUltimaJogada());
@@ -171,7 +171,7 @@ public class ControleJogosServidor {
 	public Object obterPosicaoBotoes(String... dadosJogo) {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(dadosJogo[0]);
 		if (jogoSrvMesa11 == null) {
-			return new MsgSrv(Lang.msg("jogoInexistente"));
+			return null;
 		}
 		if (jogoSrvMesa11.getControleJogo().isAnimando()) {
 			return null;

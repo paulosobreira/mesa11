@@ -9,14 +9,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -41,7 +39,6 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
-import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
@@ -344,13 +341,13 @@ public class ControlePartida {
 									.getCodeBase()
 									+ "midia/" + botao.getImagem());
 							Logger.logar(url);
-						} catch (MalformedURLException e) {
+							ImageIcon icon = new ImageIcon(url);
+							BufferedImage buff = ImageUtil.toBufferedImage(icon
+									.getImage());
+							botoesImagens.put(botao.getId(), buff);
+						} catch (Exception e) {
 							Logger.logarExept(e);
 						}
-						ImageIcon icon = new ImageIcon(url);
-						BufferedImage buff = ImageUtil
-								.toBufferedImage(((ImageIcon) icon).getImage());
-						botoesImagens.put(botao.getId(), buff);
 					}
 				}
 			}
@@ -378,8 +375,25 @@ public class ControlePartida {
 								segundoUniformeBaixo ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils.desenhaUniforme(
-						timeBaixo, segundoUniformeBaixo ? 2 : 1, botao));
+				if (Util.isNullOrEmpty(botao.getImagem())) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniforme(timeBaixo, timeBaixo
+									.isSegundoUniforme() ? 2 : 1, botao));
+				} else {
+					URL url = null;
+					try {
+						url = new URL(controleJogo.getMesa11Applet()
+								.getCodeBase()
+								+ "midia/" + botao.getImagem());
+						Logger.logar(url);
+						ImageIcon icon = new ImageIcon(url);
+						BufferedImage buff = ImageUtil.toBufferedImage(icon
+								.getImage());
+						botoesImagens.put(botao.getId(), buff);
+					} catch (Exception e) {
+						Logger.logarExept(e);
+					}
+				}
 			}
 			botoes.put(botao.getId(), botao);
 		}
@@ -792,13 +806,13 @@ public class ControlePartida {
 								.getCodeBase()
 								+ "midia/" + botao.getImagem());
 						Logger.logar(url);
-					} catch (MalformedURLException e) {
+						ImageIcon icon = new ImageIcon(url);
+						BufferedImage buff = ImageUtil.toBufferedImage(icon
+								.getImage());
+						botoesImagens.put(botao.getId(), buff);
+					} catch (Exception e) {
 						Logger.logarExept(e);
 					}
-					ImageIcon icon = new ImageIcon(url);
-					BufferedImage buff = ImageUtil
-							.toBufferedImage(((ImageIcon) icon).getImage());
-					botoesImagens.put(botao.getId(), buff);
 				}
 			}
 		}
@@ -812,9 +826,25 @@ public class ControlePartida {
 								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniforme(timeBaixo, timeBaixo
-								.isSegundoUniforme() ? 2 : 1, botao));
+				if (Util.isNullOrEmpty(botao.getImagem())) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniforme(timeBaixo, timeBaixo
+									.isSegundoUniforme() ? 2 : 1, botao));
+				} else {
+					URL url = null;
+					try {
+						url = new URL(controleJogo.getMesa11Applet()
+								.getCodeBase()
+								+ "midia/" + botao.getImagem());
+						Logger.logar(url);
+						ImageIcon icon = new ImageIcon(url);
+						BufferedImage buff = ImageUtil.toBufferedImage(icon
+								.getImage());
+						botoesImagens.put(botao.getId(), buff);
+					} catch (Exception e) {
+						Logger.logarExept(e);
+					}
+				}
 			}
 		}
 		if (controleJogo.isJogoOnlineSrvidor()) {
