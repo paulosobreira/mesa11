@@ -391,13 +391,15 @@ public class ControlePartida {
 			try {
 				url = new URL(controleJogo.getMesa11Applet().getCodeBase()
 						+ "midia/" + botao.getImagem());
+				url.openConnection().setUseCaches(false);
 				Logger.logar(url);
 				ImageIcon icon = new ImageIcon(url);
-				buff = ImageUtil.toBufferedImage(icon.getImage());
 				if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
 					Logger.logar("Status " + icon.getImageLoadStatus()
 							+ " Nao Carregado " + url);
 					buff = null;
+				} else {
+					buff = ImageUtil.toBufferedImage(icon.getImage());
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);

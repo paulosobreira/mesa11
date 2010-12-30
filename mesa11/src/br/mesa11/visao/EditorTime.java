@@ -343,7 +343,7 @@ public class EditorTime extends JPanel {
 			}
 		});
 
-		botoesMostrar.add(comboBoxNomeImgsTabela);
+		botoesMostrar.add(comboBoxNomeImgs);
 		botoesMostrar.add(buttonMostrar);
 
 		JPanel botoes = new JPanel(new GridLayout(1, 2, 10, 10));
@@ -386,20 +386,11 @@ public class EditorTime extends JPanel {
 		if (arquivo == null || !arquivo.endsWith("jpg")) {
 			return;
 		}
-		URL url = null;
-		try {
-			url = new URL(controleJogo.getMesa11Applet().getCodeBase()
-					+ "midia/" + arquivo);
-			Logger.logar(url);
-			ImageIcon icon = new ImageIcon(url);
+		ImageIcon icon = ImageUtil.carregarImagem(controleJogo
+				.getMesa11Applet().getCodeBase()
+				+ "midia/" + arquivo);
+		if (icon != null)
 			imgRemotaIconLabel.setIcon(icon);
-			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Logger.logar("Status " + icon.getImageLoadStatus()
-						+ " Nao Carregado " + url);
-			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
 
 	}
 
