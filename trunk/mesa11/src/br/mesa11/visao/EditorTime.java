@@ -26,6 +26,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.Icon;
@@ -94,6 +96,7 @@ public class EditorTime extends JPanel {
 	protected BufferedImage imagemEnviar;
 	private JComboBox comboBoxNomeImgsTabela;
 	private JComboBox comboBoxNomeImgs;
+	private JTextField textFieldNomeAbrevTime;
 
 	/**
 	 * 
@@ -109,7 +112,7 @@ public class EditorTime extends JPanel {
 		jTabbedPane.addTab(Lang.msg("enviarImagem"), gerarEnviarImagem());
 
 		setLayout(new BorderLayout());
-		JPanel panelTime = new JPanel(new GridLayout(1, 4, 10, 30));
+		JPanel panelTime = new JPanel(new GridLayout(1, 6, 10, 30));
 		panelTime.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
@@ -122,13 +125,35 @@ public class EditorTime extends JPanel {
 				return Lang.msg("nomeTime");
 			}
 		});
-		textFieldNomeTime = new JTextField(time.getNome());
+		textFieldNomeTime = new JTextField(time.getNomeAbrev());
 		panelTime.add(textFieldNomeTime);
 		textFieldNomeTime.addFocusListener(new FocusListener() {
-
 			@Override
 			public void focusLost(FocusEvent e) {
 				EditorTime.this.time.setNome(textFieldNomeTime.getText());
+
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		panelTime.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("nomeAbrevTime");
+			}
+		});
+		textFieldNomeAbrevTime = new JTextField(time.getNomeAbrev());
+		panelTime.add(textFieldNomeAbrevTime);
+		textFieldNomeAbrevTime.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				EditorTime.this.time.setNomeAbrev(textFieldNomeAbrevTime
+						.getText());
 
 			}
 
@@ -260,20 +285,15 @@ public class EditorTime extends JPanel {
 								.getIcon()).getImage());
 				mesa11to.setDataBytes(ImageUtil.bufferedImage2ByteArray(buff));
 
-				// try {
-				// Util.byteArray2file(mesa11to.getDataBytes(),
-				// "c:\\temp\\teste.jpg");
-				// } catch (Exception e1) {
-				// e1.printStackTrace();
-				// }
-
 				if (ConstantesMesa11.OK.equals(EditorTime.this.controleJogo
 						.enviarObjeto(mesa11to))) {
 					recarregarComboImagens();
 					JOptionPane.showMessageDialog(EditorTime.this, Lang
 							.msg("imagemEnviada"), "",
 							JOptionPane.INFORMATION_MESSAGE);
-
+					if (comboBoxNomeImgs != null) {
+						comboBoxNomeImgs.setSelectedItem(nomeImgIconLabel);
+					}
 				}
 
 			}
@@ -361,7 +381,7 @@ public class EditorTime extends JPanel {
 	}
 
 	protected void mostrarImagemRemota() {
-		String arquivo = (String) comboBoxNomeImgsTabela.getSelectedItem();
+		String arquivo = (String) comboBoxNomeImgs.getSelectedItem();
 		if (arquivo == null || !arquivo.endsWith("jpg")) {
 			return;
 		}
@@ -389,6 +409,7 @@ public class EditorTime extends JPanel {
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			String[] imagens = (String[]) mesa11to.getData();
+			Arrays.sort(imagens);
 			if (imagens != null) {
 				if (comboBoxNomeImgsTabela != null) {
 					comboBoxNomeImgsTabela.removeAllItems();
@@ -854,7 +875,7 @@ public class EditorTime extends JPanel {
 		botao.setDefesa(Util.intervalo(500, 1000));
 		botao.setTime(time);
 		time.getBotoes().add(botao);
-		time.setNome("mesa11");
+		time.setNomeAbrev("mesa11");
 		ControleJogo controleJogo = new ControleJogo(new JFrame());
 		EditorTime editorTime = new EditorTime(time, controleJogo);
 		// JFrame frame = new JFrame();

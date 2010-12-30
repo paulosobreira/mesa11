@@ -113,7 +113,7 @@ public class ControleJogosServidor {
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
 		if (controleJogo != null) {
 			dadosJogoSrvMesa11.setTimeVez(controleJogo.timeJogadaVez()
-					.getNome());
+					.getNomeAbrev());
 			dadosJogoSrvMesa11.setGolsCasa(controleJogo
 					.verGolsInt(jogoSrvMesa11.getTimeCasa()));
 			dadosJogoSrvMesa11.setGolsVisita(controleJogo
@@ -143,7 +143,7 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome().equals(
+		if (controleJogo.timeJogadaVez().getNomeAbrev().equals(
 				jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(

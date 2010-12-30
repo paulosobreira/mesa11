@@ -322,20 +322,11 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima,
-								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeCima, timeCima
+								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
-				if (botao instanceof Goleiro || botao.isGoleiro()) {
-					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniformeGoleiro(timeCima, timeCima
-									.isSegundoUniforme() ? 2 : 1,
-									(Goleiro) botao));
-					botao.setCentro(mesaPanel.golCima());
-				} else {
-					carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
-				}
-
+				carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
 			}
 			botoes.put(botao.getId(), botao);
 
@@ -594,7 +585,7 @@ public class ControlePartida {
 
 	public Time timeJogadaVez() {
 		if (controleJogo.isJogoOnlineCliente()) {
-			return timeCima.getNome().equals(
+			return timeCima.getNomeAbrev().equals(
 					controleJogo.getDadosJogoSrvMesa11().getTimeVez()) ? timeCima
 					: timeBaixo;
 		}

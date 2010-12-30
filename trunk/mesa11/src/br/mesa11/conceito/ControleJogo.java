@@ -1,8 +1,10 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +14,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
@@ -185,10 +189,32 @@ public class ControleJogo {
 
 		});
 		bola = new Bola(0);
-		botoesImagens.put(bola.getId(), CarregadorRecursos
-				.carregaImg("bola.png"));
+
+		BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth()), (buff
+				.getHeight()), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		setarHints(graphics2d);
+		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
+				.getHeight()));
+		graphics2d.setClip(externo);
+		graphics2d.drawImage(buff, 1, 1, null);
+		botoesImagens.put(bola.getId(), newBuffer);
 		botoes.put(bola.getId(), bola);
+
 		bolaCentro();
+	}
+
+	private void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
 	}
 
 	public ControleJogo(JogoServidor jogoServidor) {
@@ -277,8 +303,16 @@ public class ControleJogo {
 			Time timeCasa, Time timeVisita) {
 		bola = new Bola(0);
 		if (isJogoOnlineCliente()) {
-			botoesImagens.put(bola.getId(), CarregadorRecursos
-					.carregaImg("bola.png"));
+			BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
+			BufferedImage newBuffer = new BufferedImage((buff.getWidth()),
+					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+			setarHints(graphics2d);
+			Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()),
+					(buff.getHeight()));
+			graphics2d.setClip(externo);
+			graphics2d.drawImage(buff, 1, 1, null);
+			botoesImagens.put(bola.getId(), newBuffer);
 		}
 		botoes.put(bola.getId(), bola);
 		controlePartida = new ControlePartida(this);
@@ -1290,7 +1324,7 @@ public class ControleJogo {
 
 	public boolean veririficaVez(Botao b) {
 		if (dadosJogoSrvMesa11 != null) {
-			return b.getTime().getNome()
+			return b.getTime().getNomeAbrev()
 					.equals(dadosJogoSrvMesa11.getTimeVez());
 		}
 		return controlePartida.veririficaVez(b);
@@ -1470,7 +1504,7 @@ public class ControleJogo {
 	public void inserirBotaoEditor(Time time, BotaoTableModel botaoTableModel) {
 		Botao botao = new Botao();
 		botao.setTime(time);
-		botao.setNome(time.getNome());
+		botao.setNome(time.getNomeAbrev());
 		int numero = 0;
 		List botoes = time.getBotoes();
 		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
@@ -1667,10 +1701,10 @@ public class ControleJogo {
 
 	public String verGols(Time time) {
 		if (dadosJogoSrvMesa11 != null) {
-			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeCasa())) {
+			if (time.getNomeAbrev().equals(dadosJogoSrvMesa11.getTimeCasa())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsCasa());
 			}
-			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeVisita())) {
+			if (time.getNomeAbrev().equals(dadosJogoSrvMesa11.getTimeVisita())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsVisita());
 			}
 			return " Erro ";
@@ -1690,10 +1724,10 @@ public class ControleJogo {
 
 	public Integer obterNumJogadas(Time time) {
 		if (isJogoOnlineCliente()) {
-			if (dadosJogoSrvMesa11.getTimeCasa().equals(time.getNome())) {
+			if (dadosJogoSrvMesa11.getTimeCasa().equals(time.getNomeAbrev())) {
 				return dadosJogoSrvMesa11.getNumeroJogadasTimeCasa();
 			}
-			if (dadosJogoSrvMesa11.getTimeVisita().equals(time.getNome())) {
+			if (dadosJogoSrvMesa11.getTimeVisita().equals(time.getNomeAbrev())) {
 				return dadosJogoSrvMesa11.getNumeroJogadasTimeVisita();
 			}
 			return null;
