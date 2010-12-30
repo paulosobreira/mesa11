@@ -406,14 +406,14 @@ public class ControlePartida {
 		if (buff == null)
 			buff = BotaoUtils.desenhaUniforme(time,
 					time.isSegundoUniforme() ? 2 : 1, botao);
-		BufferedImage newBuffer = new BufferedImage((buff.getWidth() + 1),
-				(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth()), (buff
+				.getHeight()), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
 				.getHeight()));
 		graphics2d.setClip(externo);
-		graphics2d.drawImage(buff, 1, 1, null);
+		graphics2d.drawImage(buff, 0, 0, null);
 		botoesImagens.put(botao.getId(), newBuffer);
 
 	}
@@ -585,7 +585,7 @@ public class ControlePartida {
 
 	public Time timeJogadaVez() {
 		if (controleJogo.isJogoOnlineCliente()) {
-			return timeCima.getNomeAbrev().equals(
+			return timeCima.getNome().equals(
 					controleJogo.getDadosJogoSrvMesa11().getTimeVez()) ? timeCima
 					: timeBaixo;
 		}

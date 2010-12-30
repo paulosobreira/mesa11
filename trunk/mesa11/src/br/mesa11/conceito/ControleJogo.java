@@ -1324,7 +1324,7 @@ public class ControleJogo {
 
 	public boolean veririficaVez(Botao b) {
 		if (dadosJogoSrvMesa11 != null) {
-			return b.getTime().getNomeAbrev()
+			return b.getTime().getNome()
 					.equals(dadosJogoSrvMesa11.getTimeVez());
 		}
 		return controlePartida.veririficaVez(b);
@@ -1701,10 +1701,10 @@ public class ControleJogo {
 
 	public String verGols(Time time) {
 		if (dadosJogoSrvMesa11 != null) {
-			if (time.getNomeAbrev().equals(dadosJogoSrvMesa11.getTimeCasa())) {
+			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeCasa())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsCasa());
 			}
-			if (time.getNomeAbrev().equals(dadosJogoSrvMesa11.getTimeVisita())) {
+			if (time.getNome().equals(dadosJogoSrvMesa11.getTimeVisita())) {
 				return String.valueOf(dadosJogoSrvMesa11.getGolsVisita());
 			}
 			return " Erro ";
@@ -1724,10 +1724,10 @@ public class ControleJogo {
 
 	public Integer obterNumJogadas(Time time) {
 		if (isJogoOnlineCliente()) {
-			if (dadosJogoSrvMesa11.getTimeCasa().equals(time.getNomeAbrev())) {
+			if (dadosJogoSrvMesa11.getTimeCasa().equals(time.getNome())) {
 				return dadosJogoSrvMesa11.getNumeroJogadasTimeCasa();
 			}
-			if (dadosJogoSrvMesa11.getTimeVisita().equals(time.getNomeAbrev())) {
+			if (dadosJogoSrvMesa11.getTimeVisita().equals(time.getNome())) {
 				return dadosJogoSrvMesa11.getNumeroJogadasTimeVisita();
 			}
 			return null;
