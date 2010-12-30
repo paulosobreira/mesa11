@@ -1,12 +1,15 @@
 package br.nnpe;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -14,6 +17,7 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
+import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -161,5 +165,24 @@ public class ImageUtil {
 	public static Color gerarCorTransparente(Color color, int transp) {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
 				transp);
+	}
+
+	public static ImageIcon carregarImagem(String stringUrl) {
+		try {
+			URL url = null;
+			url = new URL(stringUrl);
+			url.openConnection().setUseCaches(false);
+			Logger.logar(url);
+			ImageIcon icon = new ImageIcon(url);
+			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
+				Logger.logar("Status " + icon.getImageLoadStatus()
+						+ " Nao Carregado " + url);
+			} else {
+				return icon;
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		return null;
 	}
 }
