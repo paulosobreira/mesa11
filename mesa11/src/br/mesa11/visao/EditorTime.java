@@ -298,7 +298,8 @@ public class EditorTime extends JPanel {
 
 			}
 		});
-		comboBoxNomeImgs = new JComboBox();
+		if (comboBoxNomeImgs == null)
+			comboBoxNomeImgs = new JComboBox();
 		recarregarComboImagens();
 		comboBoxNomeImgs.addItemListener(new ItemListener() {
 			@Override

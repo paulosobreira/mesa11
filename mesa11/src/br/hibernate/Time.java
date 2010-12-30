@@ -235,7 +235,7 @@ public class Time extends Mesa11Dados {
 	public boolean equals(Object obj) {
 		if (getId() == null && !Util.isNullOrEmpty(nomeAbrev)) {
 			Time time = (Time) obj;
-			return nomeAbrev.equals(time.getNomeAbrev());
+			return nome.equals(time.getNome());
 		}
 		return super.equals(obj);
 	}

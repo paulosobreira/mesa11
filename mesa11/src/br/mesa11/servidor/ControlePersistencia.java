@@ -149,8 +149,11 @@ public class ControlePersistencia {
 	}
 
 	public Object salvarTime(Time time) {
-		if (Util.isNullOrEmpty(time.getNomeAbrev())) {
+		if (Util.isNullOrEmpty(time.getNome())) {
 			return new MsgSrv("timeSemNome");
+		}
+		if (Util.isNullOrEmpty(time.getNomeAbrev())) {
+			return new MsgSrv("timeSemNomeAbrev");
 		}
 		if (time.getNome().length() > ConstantesMesa11.TAMANHO_MAX_NOME_TIME) {
 			return new MsgSrv("nomeTimeMuitoGrande");
@@ -196,7 +199,7 @@ public class ControlePersistencia {
 		int i = 0;
 		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
 			Time time = (Time) iterator.next();
-			retorno[i] = time.getNomeAbrev();
+			retorno[i] = time.getNome();
 			i++;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
