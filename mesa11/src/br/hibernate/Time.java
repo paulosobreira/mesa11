@@ -21,6 +21,8 @@ public class Time extends Mesa11Dados {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "time", targetEntity = Botao.class)
 	private List botoes = new ArrayList();
 	@Column(nullable = false, unique = true)
+	private String nomeAbrev;
+	@Column(nullable = false, unique = true)
 	private String nome;
 	@Column(nullable = false)
 	private String nomeJogador;
@@ -166,12 +168,12 @@ public class Time extends Mesa11Dados {
 		this.botoes = botoes;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getNomeAbrev() {
+		return nomeAbrev;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setNomeAbrev(String nome) {
+		this.nomeAbrev = nome;
 	}
 
 	public boolean isAgol() {
@@ -184,7 +186,7 @@ public class Time extends Mesa11Dados {
 
 	@Override
 	public String toString() {
-		return " Nome: " + nome + " Campo: " + campo;
+		return " Nome: " + nomeAbrev + " Campo: " + campo;
 	}
 
 	public static void main(String[] args) {
@@ -231,17 +233,25 @@ public class Time extends Mesa11Dados {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (getId() == null && !Util.isNullOrEmpty(nome)) {
+		if (getId() == null && !Util.isNullOrEmpty(nomeAbrev)) {
 			Time time = (Time) obj;
-			return nome.equals(time.getNome());
+			return nomeAbrev.equals(time.getNomeAbrev());
 		}
 		return super.equals(obj);
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@Override
 	public int hashCode() {
-		if (getId() == null && !Util.isNullOrEmpty(nome)) {
-			return nome.hashCode();
+		if (getId() == null && !Util.isNullOrEmpty(nomeAbrev)) {
+			return nomeAbrev.hashCode();
 		}
 		return super.hashCode();
 	}

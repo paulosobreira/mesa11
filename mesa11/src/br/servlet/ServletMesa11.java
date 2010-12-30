@@ -173,6 +173,7 @@ public class ServletMesa11 extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		String param = request.getParameter("act");
 		if ("backup".equals(param)) {
+			response.setContentType("application/x-zip-compressed");
 			try {
 				response
 						.setHeader("Content-Disposition",
@@ -191,6 +192,7 @@ public class ServletMesa11 extends HttpServlet {
 			}
 			return;
 		}
+		response.setContentType("text/html");
 		PrintWriter printWriter = response.getWriter();
 		try {
 			printWriter.println("<html><body>");
@@ -207,13 +209,12 @@ public class ServletMesa11 extends HttpServlet {
 			} else if ("x".equals(param)) {
 				topExceptions(response, printWriter);
 			}
-			printWriter.println("<br/> " + param + " done");
+			printWriter.println("<br/> ");
 		} catch (Exception e) {
 			printWriter.println(e.getMessage());
 		}
 		printWriter.println("<br/><a href='conf.jsp'>back</a>");
 		printWriter.println("</body></html>");
-		response.setContentType("text/html");
 		response.flushBuffer();
 	}
 
@@ -271,8 +272,7 @@ public class ServletMesa11 extends HttpServlet {
 				// create a FileInputStream on top of f
 				FileInputStream fis = new FileInputStream(f);
 				// create a new zip entry
-				ZipEntry anEntry = new ZipEntry(f.getAbsolutePath().split(
-						"mesa11" + File.separator + File.separator)[1]);
+				ZipEntry anEntry = new ZipEntry(f.getName());
 				// place the zip entry in the ZipOutputStream object
 				zos.putNextEntry(anEntry);
 				// now write the content of the file to the ZipOutputStream
@@ -300,6 +300,7 @@ public class ServletMesa11 extends HttpServlet {
 				printWriter.write("<br>");
 				printWriter.write(exept);
 				printWriter.write("<br><hr>");
+
 			}
 		}
 		res.flushBuffer();

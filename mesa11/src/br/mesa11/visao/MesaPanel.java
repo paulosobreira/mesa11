@@ -297,7 +297,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeMandante.getNome(), newx - 90, y);
+			g2d.drawString("" + timeMandante.getNomeAbrev(), newx - 90, y);
 			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
@@ -321,7 +321,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeVisita.getNome(), newx + 70, y);
+			g2d.drawString("" + timeVisita.getNomeAbrev(), newx + 70, y);
 			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
@@ -370,7 +370,7 @@ public class MesaPanel extends JPanel {
 					g2d.setColor(Color.WHITE);
 				}
 				g2d
-						.drawString(time.getNome()
+						.drawString(time.getNomeAbrev()
 								+ " "
 								+ controleJogo
 										.tempoJogadaRestanteJogoFormatado(), x,
