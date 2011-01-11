@@ -106,4 +106,5 @@ public class ConstantesMesa11 {
 	public static final String VERIFICA_POSICAO_DIFF_BOTOES = "VERIFICA_POSICAO_DIFF_BOTOES";
 	public static final String ENVIAR_IMAGEM = "ENVIAR_IMAGEM";
 	public static final String OBTER_TODAS_IMAGENS = "OBTER_TODAS_IMAGENS";
+	public static final String NIVEL_MEDIO = "NIVEL_MEDIO";
 }

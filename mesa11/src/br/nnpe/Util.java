@@ -834,7 +834,7 @@ public class Util {
 	}
 
 	public static int inte(double d) {
-		return (int) d;
+		return (int) Math.round(d);
 	}
 
 	public static double intervalo(double val1, double val2) {
