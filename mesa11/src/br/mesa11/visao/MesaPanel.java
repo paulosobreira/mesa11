@@ -33,10 +33,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	public final static Color green2 = new Color(0, 200, 0, 150);
-	public final static Color green = new Color(0, 255, 0, 150);
-	// public final static Color green2 = Color.white;
-	// public final static Color green = Color.white;
+//	public final static Color green2 = new Color(0, 200, 0, 150);
+//	public final static Color green = new Color(0, 255, 0, 150);
+	public final static Color green2 = Color.white;
+	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -219,6 +219,9 @@ public class MesaPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
+//		if(true){
+//			return;
+//		}
 		limitesViewPort = controleJogo.limitesViewPort();
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(limitesViewPort.getBounds().x,
@@ -297,7 +300,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeMandante.getNomeAbrev(), newx - 90, y);
+			g2d.drawString("" + timeMandante.getNome(), newx - 90, y);
 			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
@@ -321,7 +324,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeVisita.getNomeAbrev(), newx + 70, y);
+			g2d.drawString("" + timeVisita.getNome(), newx + 70, y);
 			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
@@ -370,7 +373,7 @@ public class MesaPanel extends JPanel {
 					g2d.setColor(Color.WHITE);
 				}
 				g2d
-						.drawString(time.getNomeAbrev()
+						.drawString(time.getNome()
 								+ " "
 								+ controleJogo
 										.tempoJogadaRestanteJogoFormatado(), x,

@@ -65,6 +65,7 @@ public class MesaMouseListener implements MouseListener {
 		if (MouseEvent.BUTTON3 == e.getButton()) {
 			controleJogo.setPontoBtnDirClicado(new Point(pontoClicado.x,
 					pontoClicado.y));
+			controleJogo.jogadaCPU();
 		}
 		controleJogo.setPontoClicado(pontoClicado);
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {

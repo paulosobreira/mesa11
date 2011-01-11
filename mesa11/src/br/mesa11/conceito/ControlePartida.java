@@ -296,6 +296,11 @@ public class ControlePartida {
 		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
 			timesCima.addItem(iterator.next());
 		}
+		while (timesCima.getSelectedItem().equals(timesBaixo.getSelectedItem())) {
+			timesBaixo.setSelectedIndex(Util.intervalo(0, timesBaixo
+					.getItemCount() - 1));
+			Logger.logar("Selecionado Outro Time Baixo");
+		}
 		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
 				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
@@ -322,11 +327,20 @@ public class ControlePartida {
 			}
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, timeCima
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeCima,
+								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
-				carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
+				if (botao instanceof Goleiro || botao.isGoleiro()) {
+					botoesImagens.put(botao.getId(), BotaoUtils
+							.desenhaUniformeGoleiro(timeCima, timeCima
+									.isSegundoUniforme() ? 2 : 1,
+									(Goleiro) botao));
+					botao.setCentro(mesaPanel.golCima());
+				} else {
+					carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
+				}
+
 			}
 			botoes.put(botao.getId(), botao);
 
@@ -391,15 +405,13 @@ public class ControlePartida {
 			try {
 				url = new URL(controleJogo.getMesa11Applet().getCodeBase()
 						+ "midia/" + botao.getImagem());
-				url.openConnection().setUseCaches(false);
 				Logger.logar(url);
 				ImageIcon icon = new ImageIcon(url);
+				buff = ImageUtil.toBufferedImage(icon.getImage());
 				if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
 					Logger.logar("Status " + icon.getImageLoadStatus()
 							+ " Nao Carregado " + url);
 					buff = null;
-				} else {
-					buff = ImageUtil.toBufferedImage(icon.getImage());
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
@@ -408,14 +420,14 @@ public class ControlePartida {
 		if (buff == null)
 			buff = BotaoUtils.desenhaUniforme(time,
 					time.isSegundoUniforme() ? 2 : 1, botao);
-		BufferedImage newBuffer = new BufferedImage((buff.getWidth()), (buff
-				.getHeight()), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth() + 1),
+				(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
 		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
 				.getHeight()));
 		graphics2d.setClip(externo);
-		graphics2d.drawImage(buff, 0, 0, null);
+		graphics2d.drawImage(buff, 1, 1, null);
 		botoesImagens.put(botao.getId(), newBuffer);
 
 	}

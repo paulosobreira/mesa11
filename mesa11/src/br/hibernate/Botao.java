@@ -219,8 +219,13 @@ public class Botao extends Mesa11Dados {
 
 	@Override
 	public String toString() {
-		return "Id :" + getId() + " " + getClass().getSimpleName() + " Time "
-				+ (getTime() == null ? "Bola" : getTime().getNomeAbrev());
+		return "Id :"
+				+ getId()
+				+ " "
+				+ getClass().getSimpleName()
+				+ " Time "
+				+ (getTime() == null ? "Bola" : getTime().getNome() + " "
+						+ getNumero());
 	}
 
 	public Shape getShape(double zoom) {
