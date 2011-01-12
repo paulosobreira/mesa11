@@ -241,7 +241,7 @@ public class ControlePartida {
 		for (int i = 3; i < 21; i++) {
 			numJogadaCombo.addItem(new Integer(i));
 		}
-
+		numJogadaCombo.setSelectedItem(new Integer(7));
 		tempoJogoPanel.add(numJogadaCombo);
 
 		tempoJogoPanel.add(new JLabel() {
@@ -526,7 +526,7 @@ public class ControlePartida {
 		tempoJogadaAtualMilis = System.currentTimeMillis();
 		tempoJogadaFimMilis = tempoJogadaAtualMilis
 				+ (tempoJogadaSegundos * 1000);
-		Logger.logar("zerarTimerJogada");
+		//Logger.logar("zerarTimerJogada");
 	}
 
 	public void verificaIntervalo() {
@@ -620,7 +620,7 @@ public class ControlePartida {
 
 	public void zeraJogadaTime(Time time) {
 		campoTimeComBola = time.getCampo();
-		Logger.logar("zeraJogadaTime");
+		//Logger.logar("zeraJogadaTime");
 		zerarTimerJogada();
 	}
 
