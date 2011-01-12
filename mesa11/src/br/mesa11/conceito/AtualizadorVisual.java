@@ -10,6 +10,7 @@ public class AtualizadorVisual extends Thread {
 	private MesaPanel mesaPanel;
 	private boolean alive = true;
 	private int cont = 60, contAnimando = 20;
+	private int esperaJogada;
 
 	public AtualizadorVisual(ControleJogo controleJogo) {
 		super();
@@ -52,6 +53,13 @@ public class AtualizadorVisual extends Thread {
 								mesaPanel.repaint();
 							}
 						});
+					}
+					if (!controleJogo.isAnimando() && controleJogo.isJogarCpu()
+							&& esperaJogada < 0) {
+						controleJogo.jogadaCPU();
+						esperaJogada = 60;
+					} else {
+						esperaJogada--;
 					}
 				} catch (InterruptedException e) {
 				}
