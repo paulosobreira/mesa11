@@ -2321,7 +2321,29 @@ public class ControleJogo {
 		/**
 		 * Jogada Botão mais proximo chutar gol
 		 */
-		gol = obterTrajetoriaCPUGol(btnPrximo);
+		gol = caluclarPontGol(btnPrximo);
+		int contGol = 0;
+		double angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
+		ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio(), bola
+				.getCentro());
+		while (GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), ptDstBola) > GeoUtil
+				.distaciaEntrePontos(btnPrximo.getCentro(), bola.getCentro())) {
+			gol = caluclarPontGol(btnPrximo);
+			angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
+			ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio(),
+					bola.getCentro());
+			if (contGol > 50) {
+				break;
+			}
+			contGol++;
+		}
+
+		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
+				.getCentro(), 90);
+		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
+				.getCentro()) / 10.0;
+		int jogadasRestantes = numeroJogadas
+				- obterNumJogadas(btnPrximo.getTime());
 
 		boolean bolaCentro = false;
 		if (mesaPanel.getCentro().contains(bola.getCentro())) {
@@ -2329,31 +2351,14 @@ public class ControleJogo {
 		}
 
 		boolean chutarGol = false;
-		if (gol != null) {
+		if (mesaPanel.getAreaGolBaixo().contains(gol)
+				|| mesaPanel.getAreaGolCima().contains(gol)) {
 			chutarGol = true;
 		}
-
-		if (gol == null) {
-			gol = obterTrajetoriaCPUPenalty(btnPrximo);
-		}
-		if (gol == null) {
-			gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
-		}
 		boolean nabola = false;
-		if (gol == null) {
+		if (bola.getCentro().equals(gol)) {
 			nabola = true;
-			gol = bola.getCentro();
 		}
-
-		double angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
-		ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio(), bola
-				.getCentro());
-		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
-				.getCentro(), 90);
-		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
-				.getCentro()) / 10.0;
-		int jogadasRestantes = numeroJogadas
-				- obterNumJogadas(btnPrximo.getTime());
 		if (chutarGol) {
 			forca *= 4;
 		} else if (jogadasRestantes < 3) {
@@ -2368,6 +2373,20 @@ public class ControleJogo {
 		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, Util.inte(forca),
 				btnPrximo.getCentro());
 		efetuaJogada(btnPrximo.getCentro(), ptDstBtn);
+	}
+
+	private Point caluclarPontGol(Botao btnPrximo) {
+		obterTrajetoriaCPUGol(btnPrximo);
+		if (gol == null) {
+			gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
+		}
+		if (gol == null) {
+			gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
+		}
+		if (gol == null) {
+			gol = bola.getCentro();
+		}
+		return gol;
 	}
 
 	private Point obterTrajetoriaCPUCampoOposto(Botao btnPrximo) {
@@ -2398,19 +2417,30 @@ public class ControleJogo {
 		return null;
 	}
 
-	private Point obterTrajetoriaCPUPenalty(Botao btnPrximo) {
+	private Point obterTrajetoriaCPUGdAreaOposta(Botao btnPrximo) {
 		Point gol = null;
 		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
 			if (mesaPanel.getCampoCima().contains(bola.getCentro())) {
 				return null;
 			}
-			gol = mesaPanel.getPenaltyBaixo().getLocation();
+			gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaBaixo().x,
+					mesaPanel.getGrandeAreaBaixo().x
+							+ mesaPanel.getGrandeAreaBaixo().width), Util
+					.intervalo(mesaPanel.getGrandeAreaBaixo().y, mesaPanel
+							.getGrandeAreaBaixo().y
+							+ mesaPanel.getGrandeAreaBaixo().height));
 		} else {
 			if (mesaPanel.getCampoBaixo().contains(bola.getCentro())) {
 				return null;
 			}
-			gol = mesaPanel.getPenaltyCima().getLocation();
+			gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaCima().x,
+					mesaPanel.getGrandeAreaCima().x
+							+ mesaPanel.getGrandeAreaCima().width), Util
+					.intervalo(mesaPanel.getGrandeAreaCima().y, mesaPanel
+							.getGrandeAreaCima().y
+							+ mesaPanel.getGrandeAreaCima().height));
 		}
+
 		int jogadasRestantes = numeroJogadas
 				- obterNumJogadas(btnPrximo.getTime());
 		if (jogadasRestantes > 2
