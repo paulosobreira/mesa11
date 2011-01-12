@@ -964,7 +964,6 @@ public class ControleJogo {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				jogarCpu = !jogarCpu;
-				jogadaCPU();
 			}
 		});
 
@@ -2347,27 +2346,24 @@ public class ControleJogo {
 		}
 
 		double angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
-		int intervalo = Util.inte(Util.intervalo(btnPrximo.getRaio() * 0.5,
-				btnPrximo.getRaio() * 1.5));
-		if (chutarGol) {
-			intervalo = btnPrximo.getRaio();
-		}
-		ptDstBola = GeoUtil.calculaPonto(angBolaGol, intervalo, bola
+		ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio(), bola
 				.getCentro());
 		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
 				.getCentro(), 90);
 		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
-				.getCentro());
-		if (bolaCentro) {
-			forca /= 4;
-		} else if (chutarGol) {
+				.getCentro()) / 10.0;
+		int jogadasRestantes = numeroJogadas
+				- obterNumJogadas(btnPrximo.getTime());
+		if (chutarGol) {
+			forca *= 4;
+		} else if (jogadasRestantes < 3) {
 			forca *= 3;
 		} else if (nabola) {
-			forca /= 2;
-		} else if (obterNumJogadas(btnPrximo.getTime()) > 1) {
-			forca = Util.intervalo(forca * 0.5, forca * 1.5);
-		} else {
 			forca *= 2;
+		} else if (jogadasRestantes > 1) {
+			forca = Util.intervalo(forca * 2, forca * 3);
+		} else {
+			// forca *= 2;
 		}
 		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, Util.inte(forca),
 				btnPrximo.getCentro());
@@ -2420,9 +2416,7 @@ public class ControleJogo {
 		if (jogadasRestantes > 2
 				&& GeoUtil.distaciaEntrePontos(bola.getCentro(), gol) < MesaPanel.ALTURA_MESA / 2) {
 			Logger
-					.logar("===========obterTrajetoriaCPUPenalty====================="
-							+ GeoUtil
-									.distaciaEntrePontos(bola.getCentro(), gol));
+					.logar("===========obterTrajetoriaCPUPenalty=====================");
 			return gol;
 		}
 		return null;
@@ -2446,8 +2440,9 @@ public class ControleJogo {
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
 					.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist
-					&& (GeoUtil.distaciaEntrePontos(b.getCentro(), gol) < GeoUtil
-							.distaciaEntrePontos(bola.getCentro(), gol))) {
+					&& ((GeoUtil.distaciaEntrePontos(b.getCentro(), gol) - b
+							.getRaio()) < GeoUtil.distaciaEntrePontos(bola
+							.getCentro(), gol))) {
 				if (livre && !validaCaimho(b, bola.getCentro())) {
 					continue;
 				}
@@ -2455,13 +2450,15 @@ public class ControleJogo {
 				btnPrximo = b;
 			}
 		}
-		Logger.logar("obterBtnProximoAntesLinhaBola " + btnPrximo);
+		Logger.logar("****************obterBtnProximoAntesLinhaBola***********"
+				+ btnPrximo);
 		return btnPrximo;
 	}
 
 	private Botao obterBtnProximoLivre(List botoesTimeVez) {
 		Botao btnPrximo = null;
 		double menorDist = Integer.MAX_VALUE;
+		double ang = 0;
 		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
 			Botao b = (Botao) iterator.next();
 			if (b instanceof Goleiro) {
@@ -2472,15 +2469,18 @@ public class ControleJogo {
 			if (distaciaEntrePontos < menorDist
 					&& validaCaimho(b, bola.getCentro())) {
 				if (verificaDentroCampo(b)) {
-					double ang = GeoUtil.calculaAngulo(b.getCentro(), bola
-							.getCentro(), 90);
+
 					if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime()
 							.getCampo())) {
+						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
+								.getCentro(), 90);
 						if (ang < 90) {
 							continue;
 						}
 					} else {
-						if (ang > 90) {
+						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
+								.getCentro(), 270);
+						if (ang < 90) {
 							continue;
 						}
 					}
@@ -2489,7 +2489,10 @@ public class ControleJogo {
 				btnPrximo = b;
 			}
 		}
-		Logger.logar("obterBtnProximoLivre " + btnPrximo);
+		if (btnPrximo != null
+				&& ConstantesMesa11.CAMPO_BAIXO.equals(btnPrximo.getTime()
+						.getCampo()))
+			Logger.logar("***********obterBtnProximoLivre************ " + ang);
 		return btnPrximo;
 	}
 
@@ -2508,7 +2511,8 @@ public class ControleJogo {
 				btnPrximo = b;
 			}
 		}
-		Logger.logar("obterBtnProximo " + btnPrximo);
+		Logger.logar("************obterBtnProximo******************"
+				+ btnPrximo);
 		return btnPrximo;
 	}
 
