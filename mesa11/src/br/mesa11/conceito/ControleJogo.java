@@ -2376,7 +2376,7 @@ public class ControleJogo {
 	}
 
 	private Point caluclarPontGol(Botao btnPrximo) {
-		obterTrajetoriaCPUGol(btnPrximo);
+		gol = obterTrajetoriaCPUGol(btnPrximo);
 		if (gol == null) {
 			gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
 		}
