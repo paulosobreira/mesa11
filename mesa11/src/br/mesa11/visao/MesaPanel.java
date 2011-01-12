@@ -33,10 +33,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	// public final static Color green2 = new Color(0, 200, 0, 150);
-	// public final static Color green = new Color(0, 255, 0, 150);
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -274,10 +274,16 @@ public class MesaPanel extends JPanel {
 		// }
 		// desennhaCirculo(g2d);
 		desenhaInfoJogo(g2d);
-		if (controleJogo.ptDstBola != null) {
+		if (controleJogo.ptDstBola != null && controleJogo.getBola() != null) {
 			g2d.setColor(Color.BLACK);
 			g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom), Util
 					.inte(controleJogo.ptDstBola.y * zoom), 10, 10);
+			g2d.drawLine(
+					Util.inte(controleJogo.getBola().getCentro().x * zoom),
+					Util.inte(controleJogo.getBola().getCentro().y * zoom),
+					Util.inte(controleJogo.gol.x * zoom), Util
+							.inte(controleJogo.gol.y * zoom));
+			// g2d.drawLine(x1, y1, x2, y2);
 		}
 	}
 
@@ -545,9 +551,9 @@ public class MesaPanel extends JPanel {
 			centroBolaOld = new Point(botx, boty);
 		}
 		g.drawImage(zoomBuffer, botx, boty, null);
-//		g.setColor(Color.black);
-//		g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
-//				.inte(botao.getDiamentro() * zoom));
+		// g.setColor(Color.black);
+		// g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
+		// .inte(botao.getDiamentro() * zoom));
 	}
 
 	private void desenhaCampo(Graphics2D g) {
