@@ -1,8 +1,10 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,8 +14,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.ByteArrayInputStream;
@@ -36,8 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
-
-import org.apache.jasper.tagplugins.jstl.core.ForEach;
 
 import br.applet.Mesa11Applet;
 import br.hibernate.Bola;
@@ -104,6 +106,7 @@ public class ControleJogo {
 	private String nivelJogo = ConstantesMesa11.NIVEL_MEDIO;
 	private ControleDicas controleDicas;
 	public Point ptDstBola;
+	public Point gol;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -191,14 +194,36 @@ public class ControleJogo {
 				}
 				limparJogo();
 				super.windowClosing(e);
+				System.exit(0);
 			}
 
 		});
 		bola = new Bola(0);
-		botoesImagens.put(bola.getId(), CarregadorRecursos
-				.carregaImg("bola.png"));
+		BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth()), (buff
+				.getHeight()), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+		setarHints(graphics2d);
+		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
+				.getHeight()));
+		graphics2d.setClip(externo);
+		graphics2d.drawImage(buff, 1, 1, null);
+		botoesImagens.put(bola.getId(), newBuffer);
+
 		botoes.put(bola.getId(), bola);
 		bolaCentro();
+	}
+
+	private void setarHints(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
 	}
 
 	public ControleJogo(JogoServidor jogoServidor) {
@@ -287,8 +312,16 @@ public class ControleJogo {
 			Time timeCasa, Time timeVisita) {
 		bola = new Bola(0);
 		if (isJogoOnlineCliente()) {
-			botoesImagens.put(bola.getId(), CarregadorRecursos
-					.carregaImg("bola.png"));
+			BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
+			BufferedImage newBuffer = new BufferedImage((buff.getWidth()),
+					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
+			setarHints(graphics2d);
+			Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()),
+					(buff.getHeight()));
+			graphics2d.setClip(externo);
+			graphics2d.drawImage(buff, 1, 1, null);
+			botoesImagens.put(bola.getId(), newBuffer);
 		}
 		botoes.put(bola.getId(), bola);
 		controlePartida = new ControlePartida(this);
@@ -1833,12 +1866,17 @@ public class ControleJogo {
 						if (retaGoleiro > (goleiro.getRaio() / 2)) {
 							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
 									.getCentro(), p2, 0));
-							if (((goleiro.getTime().equals(getTimeCima()) && mesaPanel
+							if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
 									.getGrandeAreaCima().contains(
-											goleiro.getShape(1).getBounds())) || (goleiro
-									.getTime().equals(getTimeBaixo()) && mesaPanel
+											goleiro.getShape(1).getBounds()) || mesaPanel
+									.getAreaGolCima().intersects(
+											goleiro.getShape(1).getBounds()))
+
+							) || (goleiro.getTime().equals(getTimeBaixo()) && (mesaPanel
 									.getGrandeAreaBaixo().contains(
-											goleiro.getShape(1).getBounds())))
+											goleiro.getShape(1).getBounds()) || mesaPanel
+									.getAreaGolBaixo().intersects(
+											goleiro.getShape(1).getBounds()))))
 									&& !goleiro.getShape(1).intersects(
 											bola.getShape(1).getBounds2D())) {
 								evento.setPonto(p2);
@@ -1851,12 +1889,16 @@ public class ControleJogo {
 							}
 						} else {
 							goleiro.setCentroTodos(p2);
-							if (((goleiro.getTime().equals(getTimeCima()) && mesaPanel
+							if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
 									.getGrandeAreaCima().contains(
-											goleiro.getShape(1).getBounds())) || (goleiro
-									.getTime().equals(getTimeBaixo()) && mesaPanel
+											goleiro.getShape(1).getBounds()) || mesaPanel
+									.getAreaGolCima().intersects(
+											goleiro.getShape(1).getBounds()))) || (goleiro
+									.getTime().equals(getTimeBaixo()) && (mesaPanel
 									.getGrandeAreaBaixo().contains(
-											goleiro.getShape(1).getBounds())))
+											goleiro.getShape(1).getBounds()) || mesaPanel
+									.getAreaGolBaixo().intersects(
+											goleiro.getShape(1).getBounds()))))
 									&& !goleiro.getShape(1).intersects(
 											bola.getShape(1).getBounds2D())) {
 								goleiro.setCentroTodos(p2);
@@ -2194,6 +2236,9 @@ public class ControleJogo {
 	}
 
 	public void jogadaCPU() {
+		if (isAnimando()) {
+			return;
+		}
 		Time timeJogadaVez = timeJogadaVez();
 		List botoesTimeVez = timeJogadaVez.getBotoes();
 		Botao btnPrximo = obterBtnProximoLivre(botoesTimeVez);
@@ -2201,29 +2246,149 @@ public class ControleJogo {
 		 * Botão mais proximo
 		 */
 		if (btnPrximo == null) {
+			btnPrximo = obterBtnProximoAntesLinhaBola(botoesTimeVez);
+		}
+		if (btnPrximo == null) {
 			btnPrximo = obterBtnProximo(botoesTimeVez);
 		}
 
 		/**
 		 * Jogada Botão mais proximo chutar gol
 		 */
-		Point gol = obterTrajetoriaCPUGol(btnPrximo);
+		gol = obterTrajetoriaCPUGol(btnPrximo);
+
+		boolean bolaCentro = false;
+		if (mesaPanel.getCentro().contains(bola.getCentro())) {
+			bolaCentro = true;
+		}
+
+		boolean chutarGol = false;
+		if (gol != null) {
+			chutarGol = true;
+		}
 
 		if (gol == null) {
+			gol = obterTrajetoriaCPUPenalty(btnPrximo);
+		}
+		if (gol == null) {
+			gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
+		}
+
+		/**
+		 * Ponto nivel
+		 */
+
+		boolean nabola = false;
+		if (gol == null) {
+			nabola = true;
 			gol = bola.getCentro();
 		}
 
-		double angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 90);
-		ptDstBola = GeoUtil.calculaPonto(angBolaGol, Util.inte(Util.intervalo(
-				btnPrximo.getRaio() * 0.7, btnPrximo.getRaio() * 1.4)), bola
+		double angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
+		int intervalo = Util.inte(Util.intervalo(btnPrximo.getRaio() * 0.7,
+				btnPrximo.getRaio() * 1.4));
+		if (chutarGol) {
+			intervalo = btnPrximo.getRaio();
+		}
+		ptDstBola = GeoUtil.calculaPonto(angBolaGol, intervalo, bola
 				.getCentro());
 		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
 				.getCentro(), 90);
-		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, 100, btnPrximo
+		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
 				.getCentro());
+		if (bolaCentro) {
+			forca /= 4;
+		} else if (chutarGol) {
+			forca *= 3;
+		} else if (nabola) {
+			forca /= 2;
+		} else if (obterNumJogadas(btnPrximo.getTime()) > 1) {
+			forca = Util.intervalo(forca * 0.5, forca * 1.5);
+		} else {
+			forca *= 2;
+		}
+
+		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, Util.inte(forca),
+				btnPrximo.getCentro());
 		efetuaJogada(btnPrximo.getCentro(), ptDstBtn);
 		Logger.logar("jogadaCPU btnPrximo " + btnPrximo.toString());
 
+	}
+
+	private Point obterTrajetoriaCPUCampoOposto(Botao btnPrximo) {
+		Point gol = null;
+		for (int i = 0; i < 50; i++) {
+			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
+					.getCampo())) {
+				gol = new Point(Util.intervalo(mesaPanel.getCampoBaixo().x,
+						mesaPanel.getCampoBaixo().x
+								+ mesaPanel.getCampoBaixo().width), Util
+						.intervalo(mesaPanel.getCampoBaixo().y, mesaPanel
+								.getCampoBaixo().y
+								+ mesaPanel.getCampoBaixo().height));
+			} else {
+				gol = new Point(Util.intervalo(mesaPanel.getCampoCima().x,
+						mesaPanel.getCampoCima().x
+								+ mesaPanel.getCampoCima().width), Util
+						.intervalo(mesaPanel.getCampoCima().y, mesaPanel
+								.getCampoCima().y
+								+ mesaPanel.getCampoCima().height));
+			}
+			if (validaCaimhoGol(gol)) {
+				Logger.logar("obterTrajetoriaCPUGol retorna AREA GOL");
+				return gol;
+			}
+		}
+		return null;
+	}
+
+	private Point obterTrajetoriaCPUPenalty(Botao btnPrximo) {
+		Point gol = null;
+		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
+			if (mesaPanel.getCampoCima().contains(bola.getCentro())) {
+				return null;
+			}
+			gol = mesaPanel.getPenaltyBaixo().getLocation();
+		} else {
+			if (mesaPanel.getCampoBaixo().contains(bola.getCentro())) {
+				return null;
+			}
+			gol = mesaPanel.getPenaltyCima().getLocation();
+		}
+		if (obterNumJogadas(btnPrximo.getTime()) > 2
+				&& GeoUtil.distaciaEntrePontos(bola.getCentro(), gol) > MesaPanel.ALTURA_GDE_AREA) {
+			Logger.logar("obterTrajetoriaCPUGol retorna penalty "
+					+ GeoUtil.distaciaEntrePontos(bola.getCentro(), gol));
+			return gol;
+		}
+		return null;
+	}
+
+	private Botao obterBtnProximoAntesLinhaBola(List botoesTimeVez) {
+		Botao btnPrximo = null;
+		double menorDist = Integer.MAX_VALUE;
+		Point gol = null;
+		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
+			Botao b = (Botao) iterator.next();
+			if (b instanceof Goleiro) {
+				continue;
+			}
+			if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime().getCampo())) {
+				gol = mesaPanel.getPenaltyBaixo().getLocation();
+			} else {
+				gol = mesaPanel.getPenaltyCima().getLocation();
+			}
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
+					.getCentro(), b.getCentro());
+			if (distaciaEntrePontos < menorDist
+					&& (GeoUtil.distaciaEntrePontos(b.getCentro(), gol) < GeoUtil
+							.distaciaEntrePontos(bola.getCentro(), gol))) {
+				menorDist = distaciaEntrePontos;
+				btnPrximo = b;
+			}
+		}
+		Logger.logar("obterBtnProximoAntesLinhaBola " + btnPrximo);
+		return btnPrximo;
 	}
 
 	private Botao obterBtnProximoLivre(List botoesTimeVez) {
@@ -2231,15 +2396,29 @@ public class ControleJogo {
 		double menorDist = Integer.MAX_VALUE;
 		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
 			Botao b = (Botao) iterator.next();
+			if (b instanceof Goleiro) {
+				continue;
+			}
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
 					.getCentro(), b.getCentro());
+			double ang = GeoUtil.calculaAngulo(b.getCentro(), bola.getCentro(),
+					90);
+			if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime().getCampo())) {
+				if (ang < 90) {
+					continue;
+				}
+			} else {
+				if (ang > 90) {
+					continue;
+				}
+			}
 			if (distaciaEntrePontos < menorDist
 					&& validaCaimho(b, bola.getCentro())) {
 				menorDist = distaciaEntrePontos;
 				btnPrximo = b;
 			}
 		}
-		Logger.logar("obterBtnProximoLivre " + btnPrximo);
+		Logger.logar("OBTERBTNPROXIMOLIVRE " + btnPrximo);
 		return btnPrximo;
 	}
 
@@ -2248,6 +2427,9 @@ public class ControleJogo {
 		double menorDist = Integer.MAX_VALUE;
 		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
 			Botao b = (Botao) iterator.next();
+			if (b instanceof Goleiro) {
+				continue;
+			}
 			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
 					.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist) {
@@ -2260,33 +2442,10 @@ public class ControleJogo {
 	}
 
 	private Point obterTrajetoriaCPUGol(Botao btnPrximo) {
-		/**
-		 * Ponto nivel
-		 */
-		Point gol = null;
-
-		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
-			gol = mesaPanel.getPenaltyCima().getLocation();
-		} else {
-			gol = mesaPanel.getPenaltyBaixo().getLocation();
-		}
-
-		if (GeoUtil.distaciaEntrePontos(bola.getCentro(), gol) > 1000) {
-			Logger.logar("obterTrajetoriaCPUGol retorna penalty");
-			return gol;
-		}
 
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
-				gol = new Point(Util.inte(Util.intervalo(mesaPanel
-						.getAreaGolCima().x, mesaPanel.getAreaGolCima().x
-						+ mesaPanel.getAreaGolCima().getWidth())), Util
-						.inte(Util.intervalo(mesaPanel.getAreaGolCima().y,
-								mesaPanel.getAreaGolCima().y
-										+ mesaPanel.getAreaGolCima()
-												.getHeight())));
-			} else {
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
 						.getAreaGolBaixo().x, mesaPanel.getAreaGolBaixo().x
 						+ mesaPanel.getAreaGolBaixo().getWidth())), Util
@@ -2294,6 +2453,15 @@ public class ControleJogo {
 								mesaPanel.getAreaGolBaixo().y
 										+ mesaPanel.getAreaGolBaixo()
 												.getHeight())));
+			} else {
+				gol = new Point(Util.inte(Util.intervalo(mesaPanel
+						.getAreaGolCima().x, mesaPanel.getAreaGolCima().x
+						+ mesaPanel.getAreaGolCima().getWidth())), Util
+						.inte(Util.intervalo(mesaPanel.getAreaGolCima().y,
+								mesaPanel.getAreaGolCima().y
+										+ mesaPanel.getAreaGolCima()
+												.getHeight())));
+
 			}
 			if (validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUGol retorna AREA GOL");
@@ -2310,7 +2478,7 @@ public class ControleJogo {
 	private boolean validaCaimho(Botao ori, Point gol) {
 		List linha = GeoUtil.drawBresenhamLine(ori.getCentro(), gol);
 		boolean caminhoGol = true;
-		for (int j = 0; j < linha.size(); j += 5) {
+		for (int j = 0; j < linha.size(); j += 15) {
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
 				Long id = (Long) iterator.next();
@@ -2324,7 +2492,6 @@ public class ControleJogo {
 				}
 			}
 		}
-		Logger.logar("validaCaimho " + caminhoGol);
 		return caminhoGol;
 	}
 
