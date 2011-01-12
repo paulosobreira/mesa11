@@ -75,7 +75,7 @@ public class Evento {
 
 	public void setEventoCod(String eCod) {
 
-		Logger.logar("setEventoCod" + eCod);
+		//Logger.logar("setEventoCod" + eCod);
 
 		if (ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(eCod)
 				&& eventoCod != null) {
