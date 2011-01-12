@@ -19,7 +19,7 @@ public class ControleEvento implements Runnable {
 	public void run() {
 		while (controleJogo.isAnimando()) {
 			try {
-				Thread.sleep(20);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -113,6 +113,15 @@ public class ControleEvento implements Runnable {
 			}
 		}
 		controleJogo.configuraAnimacaoServidor();
-
+		while (controleJogo.isAnimando()) {
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		if (controleJogo.isJogarCpu()) {
+			controleJogo.jogadaCPU();
+		}
 	}
 }
