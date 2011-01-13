@@ -30,6 +30,7 @@ public class Time extends Mesa11Dados {
 	private boolean corMeiaNumero1;
 	private boolean corMeiaNumero2;
 	private boolean agol;
+	private boolean controladoCPU;
 	private boolean segundoUniforme;
 	private int cor1RGB;
 	private int cor2RGB;
@@ -39,6 +40,14 @@ public class Time extends Mesa11Dados {
 	private int cor6RGB;
 	private int tipoUniforme1 = 0;
 	private int tipoUniforme2 = 0;
+
+	public boolean isControladoCPU() {
+		return controladoCPU;
+	}
+
+	public void setControladoCPU(boolean controladoCPU) {
+		this.controladoCPU = controladoCPU;
+	}
 
 	public int getTipoUniforme1() {
 		return tipoUniforme1;

@@ -126,6 +126,7 @@ public class MonitorJogo extends Thread {
 		controleJogo.centroCampo();
 		controleJogo.setZoom(0.5);
 		tempoDormir = 500;
+
 	}
 
 	private boolean timesSelecionados() {

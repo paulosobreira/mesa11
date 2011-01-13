@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -96,12 +97,15 @@ public class ControlePartida {
 	}
 
 	public void iniciaJogoLivre() {
-		GridLayout gridLayout = new GridLayout(4, 2);
+		GridLayout gridLayout = new GridLayout(6, 2);
 		gridLayout.setHgap(15);
 		gridLayout.setVgap(5);
 		JPanel escolhaTimesPanel = new JPanel(gridLayout);
 		final JComboBox timesCima = new JComboBox();
 		final JComboBox timesBaixo = new JComboBox();
+
+		JCheckBox timeCimaCPU = new JCheckBox();
+		JCheckBox timeBaixoCPU = new JCheckBox();
 
 		JRadioButton bolaCima = new JRadioButton();
 		bolaCima.setSelected(true);
@@ -230,6 +234,23 @@ public class ControlePartida {
 
 		escolhaTimesPanel.add(bolaBaixo);
 
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("cpuCima");
+			}
+		});
+		escolhaTimesPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("cpuBaixo");
+			}
+		});
+
+		escolhaTimesPanel.add(timeCimaCPU);
+
+		escolhaTimesPanel.add(timeBaixoCPU);
+
 		JPanel tempoJogoPanel = new JPanel(new GridLayout(3, 2));
 		tempoJogoPanel.add(new JLabel() {
 			@Override
@@ -317,6 +338,7 @@ public class ControlePartida {
 		XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
 				.recursoComoStream(xmlCima));
 		timeCima = (Time) xmlDecoder.readObject();
+		timeCima.setControladoCPU(timeCimaCPU.isSelected());
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		timeCima.setSegundoUniforme(segundoUniformeCima);
 		for (int i = 0; i < 11; i++) {
@@ -352,6 +374,7 @@ public class ControlePartida {
 		xmlDecoder = new XMLDecoder(CarregadorRecursos
 				.recursoComoStream(xmlBaixo));
 		timeBaixo = (Time) xmlDecoder.readObject();
+		timeBaixo.setControladoCPU(timeBaixoCPU.isSelected());
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 		timeBaixo.setSegundoUniforme(segundoUniformeBaixo);
 		for (int i = 0; i < 11; i++) {
@@ -526,7 +549,7 @@ public class ControlePartida {
 		tempoJogadaAtualMilis = System.currentTimeMillis();
 		tempoJogadaFimMilis = tempoJogadaAtualMilis
 				+ (tempoJogadaSegundos * 1000);
-		//Logger.logar("zerarTimerJogada");
+		// Logger.logar("zerarTimerJogada");
 	}
 
 	public void verificaIntervalo() {
@@ -620,7 +643,7 @@ public class ControlePartida {
 
 	public void zeraJogadaTime(Time time) {
 		campoTimeComBola = time.getCampo();
-		//Logger.logar("zeraJogadaTime");
+		// Logger.logar("zeraJogadaTime");
 		zerarTimerJogada();
 	}
 

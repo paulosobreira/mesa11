@@ -55,7 +55,7 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 				List raioPonto = GeoUtil
 						.drawBresenhamLine(p, botao.getCentro());
 				if (raioPonto.size() <= botao.getRaio()) {
-					Logger.logar("Passando por " + botao);
+					//Logger.logar("Passando por " + botao);
 					break;
 				}
 			}
