@@ -2443,6 +2443,9 @@ public class ControleJogo {
 			}
 			contBtn++;
 		}
+		if (gol == null) {
+			gol = bola.getCentro();
+		}
 		if (ptDstBola == null) {
 			angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
 			ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio()
@@ -2455,11 +2458,6 @@ public class ControleJogo {
 				.getCentro()) / 10.0;
 		int jogadasRestantes = numeroJogadas
 				- obterNumJogadas(btnPrximo.getTime());
-
-		boolean bolaCentro = false;
-		if (mesaPanel.getCentro().contains(bola.getCentro())) {
-			bolaCentro = true;
-		}
 
 		boolean chutarGol = false;
 		if (mesaPanel.getAreaGolBaixo().contains(gol)
