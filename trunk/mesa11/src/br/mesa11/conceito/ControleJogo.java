@@ -2626,13 +2626,13 @@ public class ControleJogo {
 							.getCampo())) {
 						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
 								.getCentro(), 90);
-						if (ang < 120) {
+						if (ang < 90) {
 							continue;
 						}
 					} else {
 						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
 								.getCentro(), 270);
-						if (ang < 120) {
+						if (ang < 90) {
 							continue;
 						}
 					}
