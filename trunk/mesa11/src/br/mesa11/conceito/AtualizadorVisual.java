@@ -4,13 +4,13 @@ import javax.swing.SwingUtilities;
 
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 
 public class AtualizadorVisual extends Thread {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
 	private boolean alive = true;
 	private int cont = 60, contAnimando = 20;
-	private int esperaJogada;
 
 	public AtualizadorVisual(ControleJogo controleJogo) {
 		super();
@@ -25,6 +25,10 @@ public class AtualizadorVisual extends Thread {
 	public void run() {
 		while (alive) {
 			try {
+				if (controleJogo.isProcessando()) {
+					Thread.sleep(Util.intervalo(contAnimando, cont));
+					continue;
+				}
 				boolean scrooll = false;
 				if (controleJogo.getVelhoPontoTela() != controleJogo
 						.getNovoPontoTela()) {
@@ -42,9 +46,10 @@ public class AtualizadorVisual extends Thread {
 							.getNovoPontoTela());
 				}
 				try {
-					if (controleJogo.isAnimando())
+					if (controleJogo.isAnimando()
+							|| controleJogo.isProcessando()) {
 						Thread.sleep(contAnimando);
-					else
+					} else
 						Thread.sleep(cont);
 					if (!scrooll) {
 						SwingUtilities.invokeLater(new Runnable() {
@@ -54,18 +59,11 @@ public class AtualizadorVisual extends Thread {
 							}
 						});
 					}
-					if (!controleJogo.isAnimando() && controleJogo.isJogarCpu()
-							&& esperaJogada < 0) {
-						controleJogo.jogadaCPU();
-						esperaJogada = 60;
-					} else {
-						esperaJogada--;
-					}
 				} catch (InterruptedException e) {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 				try {
 					Thread.sleep(100);
 					if (cont < 120)

@@ -48,6 +48,7 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.cliente.AtualizadorJogadaCPU;
 import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.BotaoTableModel;
 import br.mesa11.visao.EditorTime;
@@ -105,9 +106,9 @@ public class ControleJogo {
 	private String nomeJogadorOnline;
 	private String nivelJogo = ConstantesMesa11.NIVEL_MEDIO;
 	private ControleDicas controleDicas;
-	private boolean jogarCpu = false;
 	public Point ptDstBola;
 	public Point gol;
+	private boolean processando;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -307,6 +308,9 @@ public class ControleJogo {
 		controleDicas = new ControleDicas(this);
 		controlePartida.iniciaJogoLivre();
 		setJogoIniciado(true);
+		AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
+				this);
+		atualizadorJogadaCPU.start();
 	}
 
 	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
@@ -963,7 +967,7 @@ public class ControleJogo {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				jogarCpu = !jogarCpu;
+				jogadaCPU();
 			}
 		});
 
@@ -1190,14 +1194,27 @@ public class ControleJogo {
 						botao.getShape(1).getBounds2D())) {
 			return true;
 		}
-		return (mesaPanel.getCampoBaixo().intersects(
-				botao.getShape(1).getBounds2D()) || mesaPanel.getCampoCima()
-				.intersects(botao.getShape(1).getBounds2D()));
+		boolean dt = (mesaPanel.getCampoBaixoSemLinhas().intersects(
+				botao.getShape(1).getBounds2D())
+				|| mesaPanel.getCampoCimaSemLinhas().intersects(
+						botao.getShape(1).getBounds2D())
+				|| mesaPanel.getLinhaGolBaixo().intersects(
+						botao.getShape(1).getBounds2D()) || mesaPanel
+				.getLinhaGolCima().intersects(botao.getShape(1).getBounds2D()));
+		return dt;
 	}
 
 	protected void chutarBola() {
 		chutaBola = !chutaBola;
 
+	}
+
+	public boolean isProcessando() {
+		return processando;
+	}
+
+	public void setProcessando(boolean processando) {
+		this.processando = processando;
 	}
 
 	protected void moverBotao() {
@@ -1247,14 +1264,6 @@ public class ControleJogo {
 
 	public boolean isAnimando() {
 		return !botoesComThread.isEmpty();
-	}
-
-	public boolean isJogarCpu() {
-		return jogarCpu;
-	}
-
-	public void setJogarCpu(boolean jogarCpu) {
-		this.jogarCpu = jogarCpu;
 	}
 
 	public Map getBotoes() {
@@ -1613,6 +1622,11 @@ public class ControleJogo {
 	public boolean verificaMetaEscanteio(Botao botao) {
 		if (mesaPanel == null)
 			return true;
+		if ((mesaPanel.getLinhaGolBaixo().intersects(
+				botao.getShape(1).getBounds2D()) || mesaPanel.getLinhaGolCima()
+				.intersects(botao.getShape(1).getBounds2D()))) {
+			return false;
+		}
 		return (mesaPanel.getAreaEscateioBaixo().contains(
 				botao.getShape(1).getBounds2D()) || mesaPanel
 				.getAreaEscateioCima()
@@ -2015,6 +2029,11 @@ public class ControleJogo {
 				propagaColisao(animacaoJogada, botao);
 				verificaBolaParouEmCimaBotao();
 				break;
+			} else {
+				if (botao.getId() != 0
+						&& verificaTemBotao(botao.getCentro(), botao)) {
+					posicionaBotaoAleatoriamenteNoSeuCampo(botao);
+				}
 			}
 
 		}
@@ -2269,6 +2288,13 @@ public class ControleJogo {
 			return;
 		}
 		Time timeJogadaVez = timeJogadaVez();
+		if (timeJogadaVez == null) {
+			return;
+		}
+
+		if (!timeJogadaVez.isControladoCPU()) {
+			return;
+		}
 
 		boolean bolaNaArea = false;
 
@@ -2281,6 +2307,32 @@ public class ControleJogo {
 				bolaNaArea = true;
 			}
 		}
+
+		Point metaCimaDireita = mesaPanel.getPequenaAreaCima().getLocation();
+		metaCimaDireita.y += mesaPanel.getPequenaAreaCima().getHeight()
+				- bola.getDiamentro();
+		Point metaCimaEsquerda = new Point(metaCimaDireita.x, metaCimaDireita.y);
+		metaCimaDireita.x += mesaPanel.getPequenaAreaCima().getWidth()
+				- bola.getDiamentro();
+
+		Point metaBaixoDireita = mesaPanel.getPequenaAreaBaixo().getLocation();
+		Point metaBaixoEsquerda = new Point(metaBaixoDireita.x,
+				metaBaixoDireita.y);
+		metaBaixoDireita.x += mesaPanel.getPequenaAreaBaixo().getWidth()
+				- bola.getDiamentro();
+		boolean meta = false;
+		if (GeoUtil.distaciaEntrePontos(bola.getCentro(), metaCimaDireita) < bola
+				.getDiamentro()
+				|| GeoUtil.distaciaEntrePontos(bola.getCentro(),
+						metaCimaEsquerda) < bola.getDiamentro()
+				|| GeoUtil.distaciaEntrePontos(bola.getCentro(),
+						metaBaixoDireita) < bola.getDiamentro()
+				|| GeoUtil.distaciaEntrePontos(bola.getCentro(),
+						metaBaixoEsquerda) < bola.getDiamentro()) {
+			meta = true;
+			bolaNaArea = false;
+		}
+
 		if (bolaNaArea) {
 			Goleiro goleiro = timeJogadaVez.obterGoleiro();
 			gol = obterTrajetoriaCPUCampoOposto(goleiro);
@@ -2365,7 +2417,10 @@ public class ControleJogo {
 		if (bola.getCentro().equals(gol)) {
 			nabola = true;
 		}
-		if (chutarGol) {
+
+		if (meta) {
+			forca *= 5;
+		} else if (chutarGol) {
 			forca *= 4;
 		} else if (jogadasRestantes < 3) {
 			forca *= 3;
@@ -2373,8 +2428,6 @@ public class ControleJogo {
 			forca *= 2;
 		} else if (jogadasRestantes > 1) {
 			forca = Util.intervalo(forca * 2, forca * 3);
-		} else {
-			// forca *= 2;
 		}
 		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, Util.inte(forca),
 				btnPrximo.getCentro());

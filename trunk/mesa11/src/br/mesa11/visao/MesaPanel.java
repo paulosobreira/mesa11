@@ -33,10 +33,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	// public final static Color green2 = new Color(0, 200, 0, 150);
-	// public final static Color green = new Color(0, 255, 0, 150);
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -59,10 +59,14 @@ public class MesaPanel extends JPanel {
 
 	public double zoom = 1;
 	private Rectangle campoCima;
+	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
+	private Rectangle campoBaixoSemLinhas;
 	private Rectangle areaEscateioCima;
 	private Rectangle areaGolCima;
+	private Rectangle linhaGolCima;
 	private Rectangle areaGolBaixo;
+	private Rectangle linhaGolBaixo;
 	private Rectangle areaEscateioBaixo;
 
 	private Rectangle grandeAreaCima;
@@ -112,14 +116,19 @@ public class MesaPanel extends JPanel {
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
 		areaEscateioCima = new Rectangle((BORDA_CAMPO + LINHA), 0,
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO);
+				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO
+						+ LINHA);
 		areaEscateioBaixo = new Rectangle((BORDA_CAMPO + LINHA),
-				(ALTURA_MESA - BORDA_CAMPO),
-				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO);
+				(ALTURA_MESA - BORDA_CAMPO) - LINHA, (LARGURA_MESA
+						- DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO + LINHA);
 		campoCima = new Rectangle(BORDA_CAMPO, BORDA_CAMPO, LARGURA_MESA
 				- DOBRO_BORDA_CAMPO, (ALTURA_MESA / 2) - BORDA_CAMPO);
+		campoCimaSemLinhas = new Rectangle(campoCima.x + LINHA, campoCima.y
+				+ LINHA, campoCima.width - (2 * LINHA), campoCima.height);
 		campoBaixo = new Rectangle(BORDA_CAMPO, (ALTURA_MESA / 2), LARGURA_MESA
 				- DOBRO_BORDA_CAMPO, (ALTURA_MESA / 2) - BORDA_CAMPO);
+		campoBaixoSemLinhas = new Rectangle(campoBaixo.x + LINHA, campoBaixo.y,
+				campoBaixo.width - (2 * LINHA), campoBaixo.height - LINHA);
 		grandeAreaCima = new Rectangle(ALTURA_GDE_AREA, BORDA_CAMPO,
 				LARGURA_GDE_AREA, ALTURA_GDE_AREA);
 		grandeAreaBaixo = new Rectangle(ALTURA_GDE_AREA, ALTURA_MESA
@@ -156,7 +165,8 @@ public class MesaPanel extends JPanel {
 				.inte(hasteTopoGolCima.getY()), Util.inte(hasteTopoGolCima
 				.getWidth()), Util.inte(hasteEsquerdaGolCima.getHeight()
 				- (LINHA)));
-
+		linhaGolCima = new Rectangle(areaGolCima.x, areaGolCima.y
+				+ areaGolCima.height, areaGolCima.width, LINHA);
 		hasteDireitaGolBaixo = new Rectangle(Util.inte(hasteDireitaGolCima
 				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA)
 				+ pequenaAreaBaixo.getHeight()), 10, Util.inte(pequenaAreaBaixo
@@ -178,6 +188,8 @@ public class MesaPanel extends JPanel {
 				- hasteEsquerdaGolBaixo.getHeight() + (LINHA)), Util
 				.inte(hasteTopoGolCima.getWidth()), Util
 				.inte(hasteEsquerdaGolBaixo.getHeight() - (LINHA)));
+		linhaGolBaixo = new Rectangle(areaGolBaixo.x, areaGolBaixo.y - LINHA,
+				areaGolBaixo.width, LINHA);
 		this.controleJogo = controleJogo;
 		this.botoes = controleJogo.getBotoes();
 
@@ -210,6 +222,14 @@ public class MesaPanel extends JPanel {
 
 	public Rectangle getAreaGolBaixo() {
 		return areaGolBaixo;
+	}
+
+	public Rectangle getLinhaGolCima() {
+		return linhaGolCima;
+	}
+
+	public Rectangle getLinhaGolBaixo() {
+		return linhaGolBaixo;
 	}
 
 	public Rectangle getAreaEscateioBaixo() {
@@ -279,11 +299,11 @@ public class MesaPanel extends JPanel {
 			if (controleJogo.ptDstBola != null)
 				g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom), Util
 						.inte(controleJogo.ptDstBola.y * zoom), 5, 5);
-			if (controleJogo.gol != null)
-				g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
-						* zoom), Util.inte(controleJogo.getBola().getCentro().y
-						* zoom), Util.inte(controleJogo.gol.x * zoom), Util
-						.inte(controleJogo.gol.y * zoom));
+			// if (controleJogo.gol != null)
+			// g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
+			// * zoom), Util.inte(controleJogo.getBola().getCentro().y
+			// * zoom), Util.inte(controleJogo.gol.x * zoom), Util
+			// .inte(controleJogo.gol.y * zoom));
 			// g2d.drawLine(x1, y1, x2, y2);
 		}
 	}
@@ -831,7 +851,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaFiguras(Graphics2D g) {
-		// g.setColor(Color.BLACK);
+		g.setColor(Color.cyan);
 
 		// campoCima.setBounds((int) (BORDA_CAMPO * ZOOM),
 		// (int) (BORDA_CAMPO * ZOOM),
@@ -873,6 +893,9 @@ public class MesaPanel extends JPanel {
 		// g.setColor(Color.cyan);
 		// g.fill(areaGolBaixo);
 		// g.fill(areaGolCima);
+//		g.fill(areaEscateioBaixo);
+//		g.fill(areaEscateioCima);
+		// g.fill(campoBaixoSemLinhas);
 
 	}
 
@@ -924,6 +947,14 @@ public class MesaPanel extends JPanel {
 
 	public Rectangle getCampoBaixo() {
 		return campoBaixo;
+	}
+
+	public Rectangle getCampoCimaSemLinhas() {
+		return campoCimaSemLinhas;
+	}
+
+	public Rectangle getCampoBaixoSemLinhas() {
+		return campoBaixoSemLinhas;
 	}
 
 	public Rectangle getGrandeAreaCima() {
