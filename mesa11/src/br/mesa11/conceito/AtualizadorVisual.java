@@ -36,10 +36,14 @@ public class AtualizadorVisual extends Thread {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
-							mesaPanel.repaint();
-							controleJogo.getScrollPane().getViewport()
-									.setViewPosition(
-											controleJogo.getNovoPontoTela());
+							if (!controleJogo.isProcessando()) {
+								mesaPanel.repaint();
+								controleJogo
+										.getScrollPane()
+										.getViewport()
+										.setViewPosition(
+												controleJogo.getNovoPontoTela());
+							}
 						}
 					});
 					controleJogo.setVelhoPontoTela(controleJogo
@@ -55,7 +59,9 @@ public class AtualizadorVisual extends Thread {
 						SwingUtilities.invokeLater(new Runnable() {
 							@Override
 							public void run() {
-								mesaPanel.repaint();
+								if (!controleJogo.isProcessando()) {
+									mesaPanel.repaint();
+								}
 							}
 						});
 					}
