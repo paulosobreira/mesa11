@@ -41,6 +41,8 @@ import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
+import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
+
 import br.applet.Mesa11Applet;
 import br.hibernate.Bola;
 import br.hibernate.Botao;
@@ -2363,13 +2365,9 @@ public class ControleJogo {
 		}
 
 		List botoesTimeVez = timeJogadaVez.getBotoes();
+
 		Set descartados = new HashSet();
 		Botao btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
-
-		if (btnPrximo == null) {
-			Logger.logar("msmSemValidarCaminho");
-			// btnPrximo = obterBtnProximo(botoesTimeVez, descartados, true);
-		}
 
 		/**
 		 * Jogada Botão mais proximo chutar gol
@@ -2628,13 +2626,13 @@ public class ControleJogo {
 							.getCampo())) {
 						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
 								.getCentro(), 90);
-						if (ang < 90) {
+						if (ang < 120) {
 							continue;
 						}
 					} else {
 						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
 								.getCentro(), 270);
-						if (ang < 90) {
+						if (ang < 120) {
 							continue;
 						}
 					}
@@ -2643,9 +2641,7 @@ public class ControleJogo {
 				btnPrximo = b;
 			}
 		}
-		if (btnPrximo != null
-				&& ConstantesMesa11.CAMPO_BAIXO.equals(btnPrximo.getTime()
-						.getCampo()))
+		if (btnPrximo != null)
 			Logger.logar("obterBtnProximoLivre " + ang);
 		return btnPrximo;
 	}
@@ -2680,12 +2676,19 @@ public class ControleJogo {
 	}
 
 	private Point obterTrajetoriaCPUGol(Botao btnPrximo) {
-
+		int jogadasRestantes = numeroJogadas
+				- obterNumJogadas(btnPrximo.getTime());
+		int dstChutar = MesaPanel.ALTURA_GDE_AREA;
+		if (jogadasRestantes > 1) {
+			Logger.logar("obterTrajetoriaCPUGol jogadas restantes "
+					+ jogadasRestantes);
+			dstChutar *= .7;
+		}
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
 				if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-						.getPenaltyBaixo().getLocation()) > MesaPanel.ALTURA_GDE_AREA) {
+						.getPenaltyBaixo().getLocation()) > dstChutar) {
 					return null;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
@@ -2697,7 +2700,7 @@ public class ControleJogo {
 												.getHeight())));
 			} else {
 				if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-						.getPenaltyCima().getLocation()) > MesaPanel.ALTURA_GDE_AREA) {
+						.getPenaltyCima().getLocation()) > dstChutar) {
 					return null;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
@@ -2711,6 +2714,7 @@ public class ControleJogo {
 			}
 			if (validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUGol");
+
 				return gol;
 			}
 		}
@@ -2722,6 +2726,16 @@ public class ControleJogo {
 	}
 
 	private boolean validaCaimho(Botao ori, Point gol) {
+		Botao bolaEmCimaBotao = null;
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Botao b = (Botao) botoes.get(iterator.next());
+			if (!(b instanceof Goleiro)) {
+				if (b.getShape(1).contains(bola.getShape(1).getBounds())) {
+					bolaEmCimaBotao = b;
+				}
+			}
+
+		}
 		List linha = GeoUtil.drawBresenhamLine(ori.getCentro(), gol);
 		boolean caminhoGol = true;
 		Botao btTest = new Botao();
@@ -2730,6 +2744,12 @@ public class ControleJogo {
 					.hasNext();) {
 				Long id = (Long) iterator.next();
 				Botao botaoAnalisado = (Botao) botoes.get(id);
+				if (bolaEmCimaBotao != null
+						&& bolaEmCimaBotao.getShape(1).intersects(
+								botaoAnalisado.getShape(1).getBounds())) {
+					continue;
+				}
+
 				Point pt = (Point) linha.get(j);
 				if (ori.getId() != 0) {
 					btTest.setCentroTodos(pt);
