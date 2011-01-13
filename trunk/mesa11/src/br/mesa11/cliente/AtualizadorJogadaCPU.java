@@ -1,5 +1,6 @@
 package br.mesa11.cliente;
 
+import br.hibernate.Time;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -22,9 +23,13 @@ public class AtualizadorJogadaCPU extends Thread {
 				}
 				if (!controleJogo.isAnimando()) {
 					try {
-						controleJogo.setProcessando(true);
-						ultJogada = System.currentTimeMillis();
-						controleJogo.jogadaCPU();
+						Time timeJogadaVez = controleJogo.timeJogadaVez();
+						if (timeJogadaVez != null
+								&& timeJogadaVez.isControladoCPU()) {
+							controleJogo.setProcessando(true);
+							ultJogada = System.currentTimeMillis();
+							controleJogo.jogadaCPU();
+						}
 					} finally {
 						controleJogo.setProcessando(false);
 					}
