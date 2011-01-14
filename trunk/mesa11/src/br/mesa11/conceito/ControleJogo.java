@@ -2757,7 +2757,7 @@ public class ControleJogo {
 												.getHeight())));
 			}
 			if (validaCaimhoGol(gol)) {
-				Logger.logar("obterTrajetoriaCPUGol");
+				Logger.logar("obterTrajetoriaCPUGol i=" + i);
 				return gol;
 			}
 		}
@@ -2806,7 +2806,6 @@ public class ControleJogo {
 									btTest.getShape(1).getBounds())) {
 						return false;
 					}
-
 				} else {
 					btTest = new Bola(0);
 					btTest.setCentroTodos(pt);
@@ -2814,15 +2813,14 @@ public class ControleJogo {
 				Rectangle bounds = btTest.getShape(1).getBounds();
 				if (botaoAnalisado.getId() != 0
 						&& !ori.equals(botaoAnalisado)
-						&& botaoAnalisado.getShape(1).intersects(bounds)
-						&& mesaPanel.getHasteDireitaGolBaixo().intersects(
-								bounds)
-						&& mesaPanel.getHasteDireitaGolCima()
-								.intersects(bounds)
-						&& mesaPanel.getHasteEsquerdaGolBaixo().intersects(
-								bounds)
-						&& mesaPanel.getHasteEsquerdaGolCima().intersects(
-								bounds)) {
+						&& (botaoAnalisado.getShape(1).intersects(bounds)
+								|| mesaPanel.getHasteDireitaGolBaixo()
+										.intersects(bounds)
+								|| mesaPanel.getHasteDireitaGolCima()
+										.intersects(bounds)
+								|| mesaPanel.getHasteEsquerdaGolBaixo()
+										.intersects(bounds) || mesaPanel
+								.getHasteEsquerdaGolCima().intersects(bounds))) {
 					return false;
 				}
 			}
