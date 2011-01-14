@@ -17,6 +17,7 @@ import java.awt.event.WindowListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D.Double;
 import java.awt.image.BufferedImage;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -2307,18 +2308,11 @@ public class ControleJogo {
 			}
 		}
 
-		Point metaCimaDireita = mesaPanel.getPequenaAreaCima().getLocation();
-		metaCimaDireita.y += mesaPanel.getPequenaAreaCima().getHeight()
-				- bola.getDiamentro();
-		Point metaCimaEsquerda = new Point(metaCimaDireita.x, metaCimaDireita.y);
-		metaCimaDireita.x += mesaPanel.getPequenaAreaCima().getWidth()
-				- bola.getDiamentro();
+		Point metaCimaDireita = obterMetaDireitaCima();
+		Point metaCimaEsquerda = obterMetaEsquerdaCima();
+		Point metaBaixoEsquerda = obterMetaEsquerdaBaixo();
+		Point metaBaixoDireita = obterMetaDireitaBaixo();
 
-		Point metaBaixoDireita = mesaPanel.getPequenaAreaBaixo().getLocation();
-		Point metaBaixoEsquerda = new Point(metaBaixoDireita.x,
-				metaBaixoDireita.y);
-		metaBaixoDireita.x += mesaPanel.getPequenaAreaBaixo().getWidth()
-				- bola.getDiamentro();
 		boolean meta = false;
 		if (GeoUtil.distaciaEntrePontos(bola.getCentro(), metaCimaDireita) < bola
 				.getDiamentro()
@@ -2407,7 +2401,7 @@ public class ControleJogo {
 			}
 			gol = caluclarPontGol(btnPrximo);
 			if (gol == null) {
-				if (contGol < 20) {
+				if (contGol < 10) {
 					continue;
 				} else if (naoDescartaBtn) {
 					gol = bola.getCentro();
@@ -2504,6 +2498,28 @@ public class ControleJogo {
 		Point ptDstBtn = GeoUtil.calculaPonto(angBtnJogada, Util.inte(forca),
 				btnPrximo.getCentro());
 		efetuaJogada(btnPrximo.getCentro(), ptDstBtn);
+	}
+
+	private Point obterMetaDireitaBaixo() {
+		Point metaBaixoEsquerda = obterMetaEsquerdaBaixo();
+		metaBaixoEsquerda.x += mesaPanel.getPequenaAreaBaixo().getWidth()
+				- bola.getDiamentro();
+		return new Point(metaBaixoEsquerda.x, metaBaixoEsquerda.y);
+	}
+
+	private Point obterMetaEsquerdaBaixo() {
+		return mesaPanel.getPequenaAreaBaixo().getLocation();
+	}
+
+	private Point obterMetaEsquerdaCima() {
+		Point metaCimaDireita = obterMetaDireitaCima();
+		metaCimaDireita.y += mesaPanel.getPequenaAreaCima().getHeight()
+				- bola.getDiamentro();
+		return new Point(metaCimaDireita.x, metaCimaDireita.y);
+	}
+
+	private Point obterMetaDireitaCima() {
+		return mesaPanel.getPequenaAreaCima().getLocation();
 	}
 
 	private Botao obterBtnJogadaCPU(List botoesTimeVez, Set descartados) {
@@ -2711,11 +2727,18 @@ public class ControleJogo {
 					+ jogadasRestantes);
 			dstChutar *= .7;
 		}
+		Point centroGolBaixo = new Point(Util.inte(mesaPanel.getAreaGolBaixo()
+				.getCenterX()), Util.inte(mesaPanel.getAreaGolBaixo()
+				.getCenterY()));
+		Point centroGolCima = new Point(Util.inte(mesaPanel.getAreaGolCima()
+				.getCenterX()), Util.inte(mesaPanel.getAreaGolCima()
+				.getCenterY()));
+
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
-				if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-						.getPenaltyBaixo().getLocation()) > dstChutar) {
+				if (GeoUtil.distaciaEntrePontos(bola.getCentro(),
+						centroGolBaixo) > dstChutar) {
 					return null;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
@@ -2726,8 +2749,8 @@ public class ControleJogo {
 										+ mesaPanel.getAreaGolBaixo()
 												.getHeight())));
 			} else {
-				if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-						.getPenaltyCima().getLocation()) > dstChutar) {
+				if (GeoUtil
+						.distaciaEntrePontos(bola.getCentro(), centroGolCima) > dstChutar) {
 					return null;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
@@ -2737,11 +2760,9 @@ public class ControleJogo {
 								mesaPanel.getAreaGolCima().y
 										+ mesaPanel.getAreaGolCima()
 												.getHeight())));
-
 			}
 			if (validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUGol");
-
 				return gol;
 			}
 		}
