@@ -2805,8 +2805,8 @@ public class ControleJogo {
 					}
 
 				} else {
-					if (mesaPanel.getAreaGolBaixo().contains(gol)
-							|| mesaPanel.getAreaGolCima().contains(gol))
+//					if (mesaPanel.getAreaGolBaixo().contains(gol)
+//							|| mesaPanel.getAreaGolCima().contains(gol))
 						btTest = new Bola(0);
 					btTest.setCentro(pt);
 				}
