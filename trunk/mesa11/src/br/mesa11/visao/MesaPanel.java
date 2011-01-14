@@ -33,10 +33,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-//	public final static Color green2 = new Color(0, 200, 0, 150);
-//	public final static Color green = new Color(0, 255, 0, 150);
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+//	public final static Color green2 = Color.white;
+//	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -299,12 +299,11 @@ public class MesaPanel extends JPanel {
 			if (controleJogo.ptDstBola != null)
 				g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom), Util
 						.inte(controleJogo.ptDstBola.y * zoom), 5, 5);
-			// if (controleJogo.gol != null)
-			// g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
-			// * zoom), Util.inte(controleJogo.getBola().getCentro().y
-			// * zoom), Util.inte(controleJogo.gol.x * zoom), Util
-			// .inte(controleJogo.gol.y * zoom));
-			// g2d.drawLine(x1, y1, x2, y2);
+			if (controleJogo.gol != null)
+				g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
+						* zoom), Util.inte(controleJogo.getBola().getCentro().y
+						* zoom), Util.inte(controleJogo.gol.x * zoom), Util
+						.inte(controleJogo.gol.y * zoom));
 		}
 	}
 
