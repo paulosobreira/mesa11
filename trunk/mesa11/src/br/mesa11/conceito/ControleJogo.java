@@ -2331,7 +2331,7 @@ public class ControleJogo {
 			gol = obterTrajetoriaCPUCampoOposto(goleiro);
 			int cont = 0;
 			while (gol == null) {
-				gol = obterTrajetoriaCPUCampoOposto(goleiro);
+				gol = obterTrajetoriaCPUCampoOposto(goleiro, false);
 				cont++;
 				if (cont > 50) {
 					break;
@@ -2390,11 +2390,12 @@ public class ControleJogo {
 				contBtn++;
 				btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
 				if (contBtn > 10) {
-					btnPrximo = obterBtnProximo(botoesTimeVez, descartados,
+					btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(),
 							true);
 					if (btnPrximo != null) {
 						naoDescartaBtn = true;
 					}
+					contBtn = 0;
 				}
 				Logger.logar("ReCALCULANDO while (btnPrximo == null) { "
 						+ btnPrximo);
@@ -2403,8 +2404,9 @@ public class ControleJogo {
 			if (gol == null) {
 				if (contGol < 10) {
 					continue;
-				} else if (naoDescartaBtn) {
+				} else if (naoDescartaBtn || contBtn > 10) {
 					gol = bola.getCentro();
+					contBtn = 0;
 					break;
 				} else {
 					contBtn++;
@@ -2413,7 +2415,6 @@ public class ControleJogo {
 					contGol = 0;
 					Logger.logar("ReCALCULANDO else if (!naoDescartaBtn) "
 							+ btnPrximo);
-
 				}
 			} else {
 				angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
@@ -2432,9 +2433,6 @@ public class ControleJogo {
 				descartados.add(btnPrximo);
 				btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
 				if (btnPrximo == null && !descartados.isEmpty()) {
-					if (gol == null) {
-						gol = bola.getCentro();
-					}
 					btnPrximo = (Botao) descartados.iterator().next();
 					Logger
 							.logar("ReCALCULANDO btnPrximo == null && !descartados.isEmpty() "
@@ -2443,9 +2441,6 @@ public class ControleJogo {
 				}
 				contBtn = 0;
 				if (descartados.size() > 10) {
-					if (gol == null) {
-						gol = bola.getCentro();
-					}
 					btnPrximo = (Botao) descartados.iterator().next();
 					Logger.logar("ReCALCULANDO descartados.size() > 10 "
 							+ btnPrximo);
@@ -2456,6 +2451,11 @@ public class ControleJogo {
 		}
 		if (gol == null) {
 			gol = bola.getCentro();
+			Logger.logar("BOLA CENTRO");
+		}
+		if (btnPrximo == null) {
+			btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
+			Logger.logar("BTN MAIS PERTO");
 		}
 		if (ptDstBola == null) {
 			angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
@@ -2550,6 +2550,10 @@ public class ControleJogo {
 	}
 
 	private Point obterTrajetoriaCPUCampoOposto(Botao btnPrximo) {
+		return obterTrajetoriaCPUCampoOposto(btnPrximo, true);
+	}
+
+	private Point obterTrajetoriaCPUCampoOposto(Botao btnPrximo, boolean valida) {
 		Point gol = null;
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
@@ -2568,7 +2572,7 @@ public class ControleJogo {
 								.getCampoCima().y
 								+ mesaPanel.getCampoCima().height));
 			}
-			if (validaCaimhoGol(gol)) {
+			if (valida || validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUCampoOposto");
 				return gol;
 			}
@@ -2663,23 +2667,15 @@ public class ControleJogo {
 					.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist
 					&& validaCaimho(b, bola.getCentro())) {
-				if (verificaDentroCampo(b)) {
-
-					if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime()
-							.getCampo())) {
-						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
-								.getCentro(), 90);
-						if (ang < 90) {
-							continue;
-						}
-					} else {
-						ang = GeoUtil.calculaAngulo(b.getCentro(), bola
-								.getCentro(), 270);
-						if (ang < 90) {
-							continue;
-						}
-					}
-				}
+				/*
+				 * Verificar Este codigo if (verificaDentroCampo(b)) {
+				 * 
+				 * if (ConstantesMesa11.CAMPO_CIMA.equals(b.getTime()
+				 * .getCampo())) { ang = GeoUtil.calculaAngulo(b.getCentro(),
+				 * bola .getCentro(), 90); if (ang < 90) { continue; } } else {
+				 * ang = GeoUtil.calculaAngulo(b.getCentro(), bola .getCentro(),
+				 * 270); if (ang < 90) { continue; } } }
+				 */
 				menorDist = distaciaEntrePontos;
 				btnPrximo = b;
 			}
@@ -2721,7 +2717,7 @@ public class ControleJogo {
 	private Point obterTrajetoriaCPUGol(Botao btnPrximo) {
 		int jogadasRestantes = numeroJogadas
 				- obterNumJogadas(btnPrximo.getTime());
-		int dstChutar = MesaPanel.ALTURA_GDE_AREA;
+		int dstChutar = MesaPanel.LARGURA_GDE_AREA;
 		if (jogadasRestantes > 1) {
 			Logger.logar("obterTrajetoriaCPUGol jogadas restantes "
 					+ jogadasRestantes);
