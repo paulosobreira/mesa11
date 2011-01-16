@@ -13,6 +13,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 
 public class MesaPanel extends JPanel {
@@ -35,8 +37,8 @@ public class MesaPanel extends JPanel {
 	public static final Long zero = new Long(0);
 	public final static Color green2 = new Color(0, 200, 0, 150);
 	public final static Color green = new Color(0, 255, 0, 150);
-//	public final static Color green2 = Color.white;
-//	public final static Color green = Color.white;
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -108,10 +110,14 @@ public class MesaPanel extends JPanel {
 	private Ellipse2D zoomedPenaltiCima;
 	private Ellipse2D zoomedPenaltiBaixo;
 	private Ellipse2D zoomedCentro;
-	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS / 2];
+	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS];
 	private Shape limitesViewPort;
 	private Point centroBolaOld;
 	private double oldZoom;
+	public final static BufferedImage grama1 = CarregadorRecursos
+			.carregaImg("grama1.jpg");
+	public final static BufferedImage grama2 = CarregadorRecursos
+			.carregaImg("grama2.jpg");
 
 	public MesaPanel(ControleJogo controleJogo) {
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
@@ -600,10 +606,15 @@ public class MesaPanel extends JPanel {
 				((BORDA_CAMPO + LINHA) * zoom), ((LARGURA_MESA
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom));
+
 		if (limitesViewPort.intersects(zoomedGrama))
 			g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
 		int contFaixas = 0;
+		AffineTransform affineTransform = AffineTransform.getScaleInstance(
+				zoom, zoom);
+		AffineTransformOp affineTransformOp = new AffineTransformOp(
+				affineTransform, AffineTransformOp.TYPE_BILINEAR);
 		for (int i = 0; i < FAIXAS; i++) {
 			if (i % 2 == 0) {
 				g.setColor(green2);
@@ -612,11 +623,36 @@ public class MesaPanel extends JPanel {
 						((alturaBordaAtual) * zoom), ((LARGURA_MESA
 								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 						((ALTURA_FAIXA) * zoom));
-				if (limitesViewPort.intersects(zoomedFaixasGrama[contFaixas]))
+
+				if (limitesViewPort.intersects(zoomedFaixasGrama[contFaixas])) {
 					g.fill(zoomedFaixasGrama[contFaixas]);
+					if (limitesViewPort
+							.intersects(zoomedFaixasGrama[contFaixas])) {
+						g
+								.drawImage(grama1, affineTransformOp, Util
+										.inte(zoomedFaixasGrama[contFaixas]
+												.getX()), Util
+										.inte(zoomedFaixasGrama[contFaixas]
+												.getY()));
+					}
+
+				}
 				contFaixas++;
 				alturaBordaAtual += (ALTURA_FAIXA - LINHA);
 				continue;
+			} else {
+				zoomedFaixasGrama[i] = new Rectangle2D.Double(
+						((BORDA_CAMPO + LINHA) * zoom),
+						((alturaBordaAtual) * zoom), ((LARGURA_MESA
+								- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
+						((ALTURA_FAIXA) * zoom));
+
+				if (limitesViewPort.intersects(zoomedFaixasGrama[i])) {
+					g.drawImage(grama2, affineTransformOp, Util
+							.inte(zoomedFaixasGrama[i].getX()), Util
+							.inte(zoomedFaixasGrama[i].getY()));
+				}
+
 			}
 			alturaBordaAtual += (ALTURA_FAIXA);
 		}
@@ -892,8 +928,8 @@ public class MesaPanel extends JPanel {
 		// g.setColor(Color.cyan);
 		// g.fill(areaGolBaixo);
 		// g.fill(areaGolCima);
-//		g.fill(areaEscateioBaixo);
-//		g.fill(areaEscateioCima);
+		// g.fill(areaEscateioBaixo);
+		// g.fill(areaEscateioCima);
 		// g.fill(campoBaixoSemLinhas);
 
 	}
@@ -990,6 +1026,12 @@ public class MesaPanel extends JPanel {
 				Logger.logar(i);
 			}
 		}
+		// BufferedImage bufferedImage = new BufferedWriter(out)
+		// for (int j = 0; j < 25; j++) {
+		// g.drawImage(grama2, affineTransformOp, Util
+		// .inte(zoomedFaixasGrama[i].getX() + j * grama2.getWidth()
+		// * zoom), Util.inte(zoomedFaixasGrama[i].getY()));
+		// }
 
 	}
 
