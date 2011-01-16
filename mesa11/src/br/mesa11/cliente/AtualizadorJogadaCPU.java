@@ -16,7 +16,9 @@ public class AtualizadorJogadaCPU extends Thread {
 
 	public void run() {
 		while (!controleJogo.isJogoTerminado()) {
+
 			try {
+				sleep(200);
 				if ((System.currentTimeMillis() - ultJogada) < 1000) {
 					sleep(Util.intervalo(1000, 2000));
 					continue;
