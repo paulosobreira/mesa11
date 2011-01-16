@@ -1,5 +1,6 @@
 package br.mesa11.visao;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -13,7 +14,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -607,8 +607,8 @@ public class MesaPanel extends JPanel {
 						- DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom));
 
-		if (limitesViewPort.intersects(zoomedGrama))
-			g.fill(zoomedGrama);
+		// if (limitesViewPort.intersects(zoomedGrama))
+		// g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
 		int contFaixas = 0;
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(
@@ -625,7 +625,7 @@ public class MesaPanel extends JPanel {
 						((ALTURA_FAIXA) * zoom));
 
 				if (limitesViewPort.intersects(zoomedFaixasGrama[contFaixas])) {
-					g.fill(zoomedFaixasGrama[contFaixas]);
+					// g.fill(zoomedFaixasGrama[contFaixas]);
 					if (limitesViewPort
 							.intersects(zoomedFaixasGrama[contFaixas])) {
 						g
@@ -664,14 +664,31 @@ public class MesaPanel extends JPanel {
 		y = BORDA_CAMPO;
 		zoomedMeiaLuaCimaBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		if (zoomedMeiaLuaCimaBorda.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedMeiaLuaCimaBorda);
+		// if (zoomedMeiaLuaCimaBorda.intersects((Rectangle) limitesViewPort))
+		// g.fill(zoomedMeiaLuaCimaBorda);
 		g.setColor(green);
 		zoomedMeiaLuaCimaGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		if (zoomedMeiaLuaCimaGrama.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedMeiaLuaCimaGrama);
+		if (zoomedMeiaLuaCimaGrama.intersects((Rectangle) limitesViewPort)) {
+			// g.fill(zoomedMeiaLuaCimaGrama);
+			BufferedImage bi = new BufferedImage(Util
+					.inte(zoomedMeiaLuaCimaBorda.getWidth()), Util
+					.inte(zoomedMeiaLuaCimaBorda.getHeight()),
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = (Graphics2D) bi.getGraphics();
+			graphics.fill(new Ellipse2D.Double((0 * zoom), (0 * zoom),
+					(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom)));
+			AlphaComposite composite = AlphaComposite.getInstance(
+					AlphaComposite.CLEAR, 1);
+			graphics.setComposite(composite);
+			graphics.fill(new Ellipse2D.Double(((LINHA) * zoom),
+					((LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
+					((RAIO_CENTRO - DOBRO_LINHA) * zoom)));
+			g.drawImage(bi, Util.inte(zoomedMeiaLuaCimaBorda.getX()), Util
+					.inte(zoomedMeiaLuaCimaBorda.getY()), null);
+
+		}
 		/**
 		 * Meia lua de Baixo
 		 */
@@ -680,14 +697,31 @@ public class MesaPanel extends JPanel {
 		y = ALTURA_MESA - BORDA_CAMPO - RAIO_CENTRO;
 		zoomedMeiaLuaBaixoBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		if (zoomedMeiaLuaBaixoBorda.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedMeiaLuaBaixoBorda);
+		// if (zoomedMeiaLuaBaixoBorda.intersects((Rectangle) limitesViewPort))
+		// g.fill(zoomedMeiaLuaBaixoBorda);
 		g.setColor(green);
 		zoomedMeiaLuaBaixoGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		if (zoomedMeiaLuaBaixoGrama.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedMeiaLuaBaixoGrama);
+		if (zoomedMeiaLuaBaixoGrama.intersects((Rectangle) limitesViewPort)) {
+			// g.fill(zoomedMeiaLuaBaixoGrama);
+			BufferedImage bi = new BufferedImage(Util
+					.inte(zoomedMeiaLuaBaixoBorda.getWidth()), Util
+					.inte(zoomedMeiaLuaBaixoBorda.getHeight()),
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = (Graphics2D) bi.getGraphics();
+			graphics.fill(new Ellipse2D.Double((0), (0), (RAIO_CENTRO * zoom),
+					(RAIO_CENTRO * zoom)));
+			AlphaComposite composite = AlphaComposite.getInstance(
+					AlphaComposite.CLEAR, 1);
+			graphics.setComposite(composite);
+			graphics.fill(new Ellipse2D.Double(((LINHA) * zoom),
+					((LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
+					((RAIO_CENTRO - DOBRO_LINHA) * zoom)));
+			g.drawImage(bi, Util.inte(zoomedMeiaLuaBaixoBorda.getX()), Util
+					.inte(zoomedMeiaLuaBaixoBorda.getY()), null);
+
+		}
 		/**
 		 * GdeArae Cima
 		 */
@@ -695,16 +729,33 @@ public class MesaPanel extends JPanel {
 		zoomedGdeAreaCimaBorda = new Rectangle2D.Double(
 				(ALTURA_GDE_AREA * zoom), (BORDA_CAMPO * zoom),
 				((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom));
-		if (limitesViewPort.intersects(zoomedGdeAreaCimaBorda))
-			g.fill(zoomedGdeAreaCimaBorda);
+//		if (limitesViewPort.intersects(zoomedGdeAreaCimaBorda))
+//			g.fill(zoomedGdeAreaCimaBorda);
 		g.setColor(green);
 		zoomedGdeAreaCimaGrama = new Rectangle2D.Double(
 				((ALTURA_GDE_AREA + LINHA) * zoom),
 				((BORDA_CAMPO + LINHA) * zoom),
 				((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
-		if (limitesViewPort.intersects(zoomedGdeAreaCimaGrama))
-			g.fill(zoomedGdeAreaCimaGrama);
+		if (limitesViewPort.intersects(zoomedGdeAreaCimaGrama)) {
+			//g.fill(zoomedGdeAreaCimaGrama);
+			BufferedImage bi = new BufferedImage(Util
+					.inte(zoomedGdeAreaCimaBorda.getWidth()), Util
+					.inte(zoomedGdeAreaCimaBorda.getHeight()),
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = (Graphics2D) bi.getGraphics();
+			graphics.fill(new Rectangle2D.Double(0, 0,
+					((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom)));
+			AlphaComposite composite = AlphaComposite.getInstance(
+					AlphaComposite.CLEAR, 1);
+			graphics.setComposite(composite);
+			graphics.fill(new Rectangle2D.Double(((LINHA) * zoom),
+					((LINHA) * zoom),
+					((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
+					((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom)));
+			g.drawImage(bi, Util.inte(zoomedGdeAreaCimaBorda.getX()), Util
+					.inte(zoomedGdeAreaCimaBorda.getY()), null);
+		}
 		/**
 		 * GdeArae Baixo
 		 */
@@ -763,16 +814,35 @@ public class MesaPanel extends JPanel {
 		g.setColor(Color.white);
 		x = calculaXcentro();
 		y = calculaYcentro();
+
 		zoomedcentroBorda = new Ellipse2D.Double((x * zoom), (y * zoom),
 				(RAIO_CENTRO * zoom), (RAIO_CENTRO * zoom));
-		if (zoomedcentroBorda.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedcentroBorda);
+		// if (zoomedcentroBorda.intersects((Rectangle) limitesViewPort))
+		// g.fill(zoomedcentroBorda);
+
 		g.setColor(green);
 		zoomedcentroGrama = new Ellipse2D.Double(((x + LINHA) * zoom),
 				((y + LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
-		if (zoomedcentroGrama.intersects((Rectangle) limitesViewPort))
-			g.fill(zoomedcentroGrama);
+		if (zoomedcentroGrama.intersects((Rectangle) limitesViewPort)) {
+			// g.fill(zoomedcentroGrama);
+			BufferedImage bi = new BufferedImage(Util.inte(zoomedcentroBorda
+					.getWidth()), Util.inte(zoomedcentroBorda.getHeight()),
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = (Graphics2D) bi.getGraphics();
+			graphics.fill(new Ellipse2D.Double((0), (0), (RAIO_CENTRO * zoom),
+					(RAIO_CENTRO * zoom)));
+			AlphaComposite composite = AlphaComposite.getInstance(
+					AlphaComposite.CLEAR, 1);
+			graphics.setComposite(composite);
+			graphics.fill(new Ellipse2D.Double(((LINHA) * zoom),
+					((LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
+					((RAIO_CENTRO - DOBRO_LINHA) * zoom)));
+			g.drawImage(bi, Util.inte(zoomedcentroBorda.getX()), Util
+					.inte(zoomedcentroBorda.getY()), null);
+
+		}
+
 		/**
 		 * meio de campo
 		 */
