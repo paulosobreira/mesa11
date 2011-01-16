@@ -67,7 +67,6 @@ public class AtualizadorVisual extends Thread {
 					}
 				} catch (InterruptedException e) {
 				}
-
 			} catch (Exception e) {
 				Logger.logarExept(e);
 				try {
@@ -82,8 +81,6 @@ public class AtualizadorVisual extends Thread {
 
 				}
 			}
-
 		}
-
 	}
 }
