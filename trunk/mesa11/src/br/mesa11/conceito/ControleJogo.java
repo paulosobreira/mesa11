@@ -110,6 +110,7 @@ public class ControleJogo {
 	public Point ptDstBola;
 	public Point golJogadaCpu;
 	private boolean processando;
+	private String codeBase;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -2795,7 +2796,7 @@ public class ControleJogo {
 		List linha = GeoUtil.drawBresenhamLine(ori.getCentro(), gol);
 		boolean caminhoGol = true;
 		Botao btTest = new Botao();
-		for (int j = 0; j < linha.size(); j += 2) {
+		for (int j = 0; j < linha.size(); j += 20) {
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
 				Long id = (Long) iterator.next();
@@ -2839,6 +2840,17 @@ public class ControleJogo {
 			}
 		}
 		return caminhoGol;
+	}
+
+	public String getCodeBase() {
+		if (mesa11Applet != null) {
+			return mesa11Applet.getCodeBase().toString();
+		}
+		return codeBase;
+	}
+
+	public void setCodeBase(String codeBase) {
+		this.codeBase = codeBase;
 	}
 
 }

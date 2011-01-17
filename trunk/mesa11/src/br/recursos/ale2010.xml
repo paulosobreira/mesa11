@@ -15,16 +15,13 @@
        <boolean>true</boolean> 
       </void> 
       <void property="id"> 
-       <long>45</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>holanda2.jpg</string> 
+       <long>155</long> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Neuer</string> 
       </void> 
       <void property="numero"> 
        <int>1</int> 
@@ -49,16 +46,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>46</long> 
+       <long>156</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda2.jpg</string> 
+       <string>ale2010-3.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>FriedRich</string> 
       </void> 
       <void property="numero"> 
        <int>2</int> 
@@ -80,16 +77,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>47</long> 
+       <long>157</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda3.jpg</string> 
+       <string>ale2010-6.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>3</int> 
@@ -111,16 +108,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>48</long> 
+       <long>158</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda4.jpg</string> 
+       <string>ale2010-7.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>4</int> 
@@ -142,16 +139,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>49</long> 
+       <long>159</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda5.jpg</string> 
+       <string>ale2010-8.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>5</int> 
@@ -173,16 +170,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>50</long> 
+       <long>160</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda6.jpg</string> 
+       <string>ale2010-16.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>6</int> 
@@ -204,16 +201,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>51</long> 
+       <long>161</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda7.jpg</string> 
+       <string>ale2010-17.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>7</int> 
@@ -235,16 +232,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>52</long> 
+       <long>162</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda8.jpg</string> 
+       <string>ale2010-10.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>8</int> 
@@ -266,16 +263,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>53</long> 
+       <long>163</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda9.jpg</string> 
+       <string>ale2010-19.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>9</int> 
@@ -297,16 +294,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>54</long> 
+       <long>164</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda10.jpg</string> 
+       <string>ale2010-13.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>10</int> 
@@ -328,16 +325,16 @@
        <int>500</int> 
       </void> 
       <void property="id"> 
-       <long>55</long> 
+       <long>165</long> 
       </void> 
       <void property="imagem"> 
-       <string>holanda11.jpg</string> 
+       <string>ale2010-11.jpg</string> 
       </void> 
       <void property="loginCriador"> 
        <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Holanda</string> 
+       <string>Alem 2010</string> 
       </void> 
       <void property="numero"> 
        <int>11</int> 
@@ -353,28 +350,25 @@
    </object> 
   </void> 
   <void property="cor1RGB"> 
-   <int>-26317</int> 
-  </void> 
-  <void property="cor4RGB"> 
-   <int>-16763905</int> 
-  </void> 
-  <void property="cor5RGB"> 
    <int>-1</int> 
   </void> 
+  <void property="cor3RGB"> 
+   <int>-256</int> 
+  </void> 
   <void property="cor6RGB"> 
-   <int>-26317</int> 
+   <int>-256</int> 
   </void> 
   <void property="id"> 
-   <long>5</long> 
+   <long>15</long> 
   </void> 
   <void property="loginCriador"> 
    <string>sobreira</string> 
   </void> 
   <void property="nome"> 
-   <string>Holanda</string> 
+   <string>Alemanha 2010</string> 
   </void> 
   <void property="nomeAbrev"> 
-   <string>Holanda</string> 
+   <string>Alem 2010</string> 
   </void> 
   <void property="nomeJogador"> 
    <string>sobreira</string> 

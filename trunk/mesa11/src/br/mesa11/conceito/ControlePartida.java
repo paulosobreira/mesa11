@@ -426,7 +426,7 @@ public class ControlePartida {
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
-				url = new URL(controleJogo.getMesa11Applet().getCodeBase()
+				url = new URL(controleJogo.getCodeBase()
 						+ "midia/" + botao.getImagem());
 				Logger.logar(url);
 				ImageIcon icon = new ImageIcon(url);

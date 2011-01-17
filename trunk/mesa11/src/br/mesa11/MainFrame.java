@@ -28,6 +28,7 @@ public class MainFrame {
 	private JFrame frame;
 	private ControleJogo controleJogo;
 	private JApplet mesa11Applet;
+	private String codeBase;
 
 	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
 		frame = new JFrame() {
@@ -186,6 +187,7 @@ public class MainFrame {
 				frame.setVisible(true);
 				controleJogo.centroCampo();
 				controleJogo.setZoom(0.3);
+				controleJogo.setCodeBase(codeBase);
 				controleJogo.iniciaJogoLivre();
 			}
 		});
@@ -361,6 +363,17 @@ public class MainFrame {
 
 	public static void main(String[] args) {
 		MainFrame frame = new MainFrame(null, null);
+		if (args != null && args.length > 0) {
+			frame.setCodeBase(args[0]);
+		}
+	}
+
+	public String getCodeBase() {
+		return codeBase;
+	}
+
+	public void setCodeBase(String codeBase) {
+		this.codeBase = codeBase;
 	}
 
 	public void setVisible(boolean b) {
