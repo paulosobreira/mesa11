@@ -14,11 +14,17 @@
       </shortcut>		
 	</information>
 
+	<security>
+		<all-permissions />
+	</security>	
+	
 	<resources>
 		<j2se version="1.6"   />
-		<jar href="mesa11.jar" />
+		<jar href="a-mesa11.jar" />
     </resources>
 
 	<application-desc
-		main-class="br.mesa11.MainFrame" />
+		main-class="br.mesa11.MainFrame" >
+		<argument>http://www.f1mane.com/mesa11/</argument>
+	</application-desc> 
 </jnlp>
