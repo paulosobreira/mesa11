@@ -2386,6 +2386,7 @@ public class ControleJogo {
 						+ bola.getRaio() - 1, bola.getCentro());
 			}
 		}
+		int contWhile = 0;
 		while (btnPrximo == null
 				|| GeoUtil
 						.distaciaEntrePontos(btnPrximo.getCentro(), ptDstBola) > GeoUtil
@@ -2395,6 +2396,10 @@ public class ControleJogo {
 						.getCentro()) > btnPrximo.getRaio()
 				&& !btnPrximo.getShape(1).intersects(
 						bola.getShape(1).getBounds())) {
+			contWhile++;
+			if (contWhile > 25) {
+				break;
+			}
 			Logger.logar("ReCALCULANDO caluclarPontGol Gol " + gol
 					+ " btnPrximo " + btnPrximo);
 			boolean naoDescartaBtn = false;
@@ -2572,6 +2577,7 @@ public class ControleJogo {
 	private Point obterTrajetoriaCPUCampoOposto(Botao btnPrximo,
 			boolean msmSemValidar) {
 		Point gol = null;
+		List canidatos = new ArrayList();
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
@@ -2593,20 +2599,35 @@ public class ControleJogo {
 			if (msmSemValidar || validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUCampoOposto valida "
 						+ msmSemValidar);
-				return gol;
+				canidatos.add(gol);
 			}
 		}
-		return null;
+
+		Point golRet = null;
+		double menorDist = java.lang.Double.MAX_VALUE;
+
+		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
+					.getCentro(), p);
+			if (distaciaEntrePontos < menorDist) {
+				golRet = p;
+				menorDist = distaciaEntrePontos;
+			}
+
+		}
+		return golRet;
 	}
 
 	private Point obterTrajetoriaCPUGdAreaOposta(Botao btnPrximo) {
 		Point gol = null;
+		List canidatos = new ArrayList();
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
 				if (mesaPanel.getCampoCima().intersects(
 						bola.getShape(1).getBounds())) {
-					return null;
+					continue;
 				}
 				gol = new Point(Util.intervalo(
 						mesaPanel.getGrandeAreaBaixo().x, mesaPanel
@@ -2618,7 +2639,7 @@ public class ControleJogo {
 			} else {
 				if (mesaPanel.getCampoBaixo().intersects(
 						bola.getShape(1).getBounds())) {
-					return null;
+					continue;
 				}
 				gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaCima().x,
 						mesaPanel.getGrandeAreaCima().x
@@ -2629,11 +2650,25 @@ public class ControleJogo {
 			}
 			if (validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUGdAreaOposta");
-				return gol;
+				canidatos.add(gol);
 			}
 		}
 
-		return null;
+		Point golRet = null;
+		double menorDist = java.lang.Double.MAX_VALUE;
+
+		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
+					.getCentro(), p);
+			if (distaciaEntrePontos < menorDist) {
+				golRet = p;
+				menorDist = distaciaEntrePontos;
+			}
+
+		}
+		return golRet;
+
 	}
 
 	private Botao obterBtnProximoAntesLinhaBola(List botoesTimeVez,
@@ -2742,13 +2777,13 @@ public class ControleJogo {
 		Point centroGolCima = new Point(Util.inte(mesaPanel.getAreaGolCima()
 				.getCenterX()), Util.inte(mesaPanel.getAreaGolCima()
 				.getCenterY()));
-
+		List canidatos = new ArrayList();
 		for (int i = 0; i < 50; i++) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime()
 					.getCampo())) {
 				if (GeoUtil.distaciaEntrePontos(bola.getCentro(),
 						centroGolBaixo) > dstChutar) {
-					return null;
+					continue;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
 						.getAreaGolBaixo().x, mesaPanel.getAreaGolBaixo().x
@@ -2760,7 +2795,7 @@ public class ControleJogo {
 			} else {
 				if (GeoUtil
 						.distaciaEntrePontos(bola.getCentro(), centroGolCima) > dstChutar) {
-					return null;
+					continue;
 				}
 				gol = new Point(Util.inte(Util.intervalo(mesaPanel
 						.getAreaGolCima().x, mesaPanel.getAreaGolCima().x
@@ -2772,10 +2807,23 @@ public class ControleJogo {
 			}
 			if (validaCaimhoGol(gol)) {
 				Logger.logar("obterTrajetoriaCPUGol i=" + i);
-				return gol;
+				canidatos.add(gol);
 			}
 		}
-		return null;
+
+		Point golRet = null;
+		double menorDist = java.lang.Double.MAX_VALUE;
+		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
+					.getCentro(), p);
+			if (distaciaEntrePontos < menorDist) {
+				golRet = p;
+				menorDist = distaciaEntrePontos;
+			}
+
+		}
+		return golRet;
 	}
 
 	private boolean validaCaimhoGol(Point gol) {
