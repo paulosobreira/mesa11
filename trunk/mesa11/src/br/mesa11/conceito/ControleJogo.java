@@ -1663,10 +1663,9 @@ public class ControleJogo {
 		double distDir, distEsq;
 		Point bolaEscanteio = ultMetaEscanteio.getBounds().getLocation();
 		if (!controlePartida.getTimeCima().equals(time)) {
-			escEsq = mesaPanel.getCampoCima().getLocation();
-			Point p = mesaPanel.getCampoCima().getLocation();
-			p.x += mesaPanel.getCampoCima().getWidth() - bola.getDiamentro();
-			escDir = p;
+			escEsq = obterEscanteioEsrquerdoCima();
+			escDir = obterEscanteioDireitoCima();
+
 			distDir = GeoUtil.distaciaEntrePontos(escDir, bolaEscanteio);
 			distEsq = GeoUtil.distaciaEntrePontos(escEsq, bolaEscanteio);
 			if (distDir < distEsq) {
@@ -1675,10 +1674,8 @@ public class ControleJogo {
 				escCimaEsc(time);
 			}
 		} else {
-			escEsq = mesaPanel.getCampoBaixo().getLocation();
-			Point p = mesaPanel.getCampoBaixo().getLocation();
-			p.x += mesaPanel.getCampoBaixo().getWidth() - bola.getDiamentro();
-			escDir = p;
+			escEsq = obterEscanteioEsrquerdoBaixo();
+			escDir = obterEscanteioDireitoBaixo();
 			distDir = GeoUtil.distaciaEntrePontos(escDir, bolaEscanteio);
 			distEsq = GeoUtil.distaciaEntrePontos(escEsq, bolaEscanteio);
 			if (distDir < distEsq) {
@@ -1690,6 +1687,26 @@ public class ControleJogo {
 		reversaoJogada();
 		Logger.logar("Escanteio " + time);
 
+	}
+
+	private Point obterEscanteioDireitoBaixo() {
+		Point p = obterEscanteioEsrquerdoBaixo();
+		p.x += mesaPanel.getCampoBaixo().getWidth() - bola.getDiamentro();
+		return p;
+	}
+
+	private Point obterEscanteioEsrquerdoBaixo() {
+		return mesaPanel.getCampoBaixo().getLocation();
+	}
+
+	private Point obterEscanteioDireitoCima() {
+		Point p = obterEscanteioEsrquerdoCima();
+		p.x += mesaPanel.getCampoCima().getWidth() - bola.getDiamentro();
+		return p;
+	}
+
+	private Point obterEscanteioEsrquerdoCima() {
+		return mesaPanel.getCampoCima().getLocation();
 	}
 
 	public void processarMeta(Time time) {
@@ -2560,7 +2577,12 @@ public class ControleJogo {
 	}
 
 	private Point caluclarPontGol(Botao btnPrximo) {
-		Point gol = obterTrajetoriaCPUGol(btnPrximo);
+		Point gol = null;
+		if (!bola.getCentro().equals(obterEscanteioDireitoBaixo())
+				&& !bola.getCentro().equals(obterEscanteioEsrquerdoBaixo())
+				&& !bola.getCentro().equals(obterEscanteioDireitoCima())
+				&& !bola.getCentro().equals(obterEscanteioEsrquerdoCima()))
+			gol = obterTrajetoriaCPUGol(btnPrximo);
 		if (gol == null) {
 			gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
 		}
