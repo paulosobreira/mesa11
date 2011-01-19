@@ -92,6 +92,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.CRIAR_JOGO_CPU.equals(mesa11TO.getComando())) {
+			return controleJogosServidor
+					.criarJogoCpu((DadosJogoSrvMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());

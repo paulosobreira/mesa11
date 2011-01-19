@@ -302,18 +302,22 @@ public class MesaPanel extends JPanel {
 		// }
 		// desennhaCirculo(g2d);
 		desenhaInfoJogo(g2d);
-		// if (controleJogo.ptDstBola != null && controleJogo.getBola() != null)
-		// {
-		// g2d.setColor(Color.BLACK);
-		// if (controleJogo.ptDstBola != null)
-		// g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom), Util
-		// .inte(controleJogo.ptDstBola.y * zoom), 5, 5);
-		// if (controleJogo.golJogadaCpu != null)
-		// g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
-		// * zoom), Util.inte(controleJogo.getBola().getCentro().y
-		// * zoom), Util.inte(controleJogo.golJogadaCpu.x * zoom),
-		// Util.inte(controleJogo.golJogadaCpu.y * zoom));
-		// }
+		if (Logger.debug) {
+			if (controleJogo.ptDstBola != null
+					&& controleJogo.getBola() != null) {
+				g2d.setColor(Color.BLACK);
+				if (controleJogo.ptDstBola != null)
+					g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom),
+							Util.inte(controleJogo.ptDstBola.y * zoom), 5, 5);
+				if (controleJogo.golJogadaCpu != null)
+					g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
+							* zoom), Util.inte(controleJogo.getBola()
+							.getCentro().y
+							* zoom), Util.inte(controleJogo.golJogadaCpu.x
+							* zoom), Util.inte(controleJogo.golJogadaCpu.y
+							* zoom));
+			}
+		}
 	}
 
 	private void desenhaInfoJogo(Graphics2D g2d) {

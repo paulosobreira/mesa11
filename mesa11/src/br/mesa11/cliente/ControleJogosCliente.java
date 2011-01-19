@@ -31,8 +31,11 @@ import br.tos.Mesa11TO;
 public class ControleJogosCliente {
 	private ChatWindow chatWindow;
 	private boolean segundoUniforme;
+	private boolean segundoUniformeCpu;
 	private ControleChatCliente controleChatCliente;
 	private JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
+			.msg("semTimes") });
+	private JComboBox jComboBoxTimesCpu = new JComboBox(new String[] { Lang
 			.msg("semTimes") });
 	private DadosMesa11 dadosMesa11;
 	private MonitorJogo monitorJogo;
@@ -159,7 +162,7 @@ public class ControleJogosCliente {
 		for (int i = 3; i < 21; i++) {
 			numJogadaCombo.addItem(new Integer(i));
 		}
-		numJogadaCombo.setSelectedIndex(1);
+		numJogadaCombo.setSelectedIndex(4);
 		opcoesJogoPanel.add(numJogadaCombo);
 
 		opcoesJogoPanel.add(new JLabel() {
@@ -613,6 +616,260 @@ public class ControleJogosCliente {
 			monitorJogo.interrupt();
 		}
 		monitorJogo = null;
+	}
+
+	public void criarJogoVsCPU() {
+		if (monitorJogo != null && monitorJogo.isAlive()) {
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("jaEstaEmUmJogo"));
+			return;
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
+		Object ret = enviarObjeto(mesa11to);
+		final JLabel uniforme = new JLabel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO + 10,
+						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
+			}
+		};
+		final JLabel uniformeCpu = new JLabel() {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(ConstantesMesa11.DIAMENTRO_BOTAO + 10,
+						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
+			}
+		};
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			String[] times = (String[]) mesa11to.getData();
+			jComboBoxTimes = new JComboBox(times);
+			jComboBoxTimesCpu = new JComboBox(times);
+			String nomeTime = times[0];
+			mesa11to = new Mesa11TO();
+			mesa11to.setData(nomeTime);
+			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+			ret = enviarObjeto(mesa11to);
+			mesa11to = (Mesa11TO) ret;
+			Time time = (Time) mesa11to.getData();
+			uniforme
+					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
+					1)));
+			segundoUniforme = false;
+			segundoUniformeCpu = false;
+		}
+
+		jComboBoxTimes.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String nomeTime = (String) jComboBoxTimes.getSelectedItem();
+					Mesa11TO mesa11to = new Mesa11TO();
+					mesa11to.setData(nomeTime);
+					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+					Object ret = enviarObjeto(mesa11to);
+					mesa11to = (Mesa11TO) ret;
+					Time time = (Time) mesa11to.getData();
+					uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+							time, 1)));
+					segundoUniforme = false;
+				}
+			}
+		});
+		jComboBoxTimesCpu.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				if (arg0.getStateChange() == ItemEvent.SELECTED) {
+					String nomeTime = (String) jComboBoxTimesCpu
+							.getSelectedItem();
+					Mesa11TO mesa11to = new Mesa11TO();
+					mesa11to.setData(nomeTime);
+					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+					Object ret = enviarObjeto(mesa11to);
+					mesa11to = (Mesa11TO) ret;
+					Time time = (Time) mesa11to.getData();
+					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
+							.desenhaUniforme(time, 1)));
+					segundoUniformeCpu = false;
+				}
+			}
+		});
+
+		uniforme.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				segundoUniforme = !segundoUniforme;
+				String nomeTime = (String) jComboBoxTimes.getSelectedItem();
+				Mesa11TO mesa11to = new Mesa11TO();
+				mesa11to.setData(nomeTime);
+				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+				Object ret = enviarObjeto(mesa11to);
+				mesa11to = (Mesa11TO) ret;
+				Time time = (Time) mesa11to.getData();
+				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
+						segundoUniforme ? 2 : 1)));
+			}
+		});
+		uniformeCpu.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				segundoUniformeCpu = !segundoUniformeCpu;
+				String nomeTime = (String) jComboBoxTimesCpu.getSelectedItem();
+				Mesa11TO mesa11to = new Mesa11TO();
+				mesa11to.setData(nomeTime);
+				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+				Object ret = enviarObjeto(mesa11to);
+				mesa11to = (Mesa11TO) ret;
+				Time time = (Time) mesa11to.getData();
+				uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						time, segundoUniformeCpu ? 2 : 1)));
+			}
+		});
+
+		JPanel uniformesPanel = new JPanel();
+		uniformesPanel.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("cliqueSegundoUniforme");
+			}
+		});
+
+		uniformesPanel.add(uniforme);
+		uniformesPanel.add(uniformeCpu);
+		JPanel panelComboTimes = new JPanel(new GridLayout(1, 2));
+		JPanel panelComboTimes1 = new JPanel();
+		panelComboTimes1.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("escolhaTime");
+			}
+		});
+		panelComboTimes1.add(jComboBoxTimes);
+		JPanel panelComboTimes2 = new JPanel();
+		panelComboTimes2.setBorder(new TitledBorder("") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("escolhaTimeCpu");
+			}
+		});
+
+		panelComboTimes2.add(jComboBoxTimesCpu);
+		panelComboTimes.add(panelComboTimes1);
+		panelComboTimes.add(panelComboTimes2);
+		JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
+		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);
+		escolhaTimesPanel.add(uniformesPanel, BorderLayout.CENTER);
+
+		JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroJogadas");
+			}
+		});
+		JComboBox numJogadaCombo = new JComboBox();
+		for (int i = 3; i < 21; i++) {
+			numJogadaCombo.addItem(new Integer(i));
+		}
+		numJogadaCombo.setSelectedIndex(4);
+		opcoesJogoPanel.add(numJogadaCombo);
+
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("tempoJogoMinutos");
+			}
+		});
+		JComboBox tempoJogoCombo = new JComboBox();
+		tempoJogoCombo.addItem(new Integer(8));
+		tempoJogoCombo.addItem(new Integer(10));
+		tempoJogoCombo.addItem(new Integer(16));
+		tempoJogoCombo.addItem(new Integer(20));
+		tempoJogoCombo.addItem(new Integer(40));
+		tempoJogoCombo.addItem(new Integer(60));
+		tempoJogoCombo.addItem(new Integer(90));
+		opcoesJogoPanel.add(tempoJogoCombo);
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("tempoJogadaSegundos");
+			}
+		});
+		JComboBox tempoJogadaCombo = new JComboBox();
+		tempoJogadaCombo.addItem(new Integer(20));
+		tempoJogadaCombo.addItem(new Integer(30));
+		tempoJogadaCombo.addItem(new Integer(40));
+		tempoJogadaCombo.addItem(new Integer(50));
+		tempoJogadaCombo.addItem(new Integer(60));
+		tempoJogadaCombo.addItem(new Integer(90));
+		tempoJogadaCombo.setSelectedIndex(1);
+		opcoesJogoPanel.add(tempoJogadaCombo);
+
+		JComboBox campoBolaCombo = new JComboBox();
+		campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.BOLA));
+		campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.CAMPO_CIMA));
+		campoBolaCombo.addItem(Lang.msg(ConstantesMesa11.CAMPO_BAIXO));
+		opcoesJogoPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("campoBola");
+			}
+		});
+		opcoesJogoPanel.add(campoBolaCombo);
+
+		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
+		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
+		iniciarJogoPanel.add(opcoesJogoPanel, BorderLayout.NORTH);
+
+		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
+				iniciarJogoPanel, Lang.msg("criarJogo"),
+				JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION) {
+			DadosJogoSrvMesa11 dadosJogoSrvMesa11 = new DadosJogoSrvMesa11();
+			String jogador = controleChatCliente.getSessaoCliente()
+					.getNomeJogador();
+			dadosJogoSrvMesa11.setNomeCriador(jogador);
+			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
+			String nomeTimeCpu = (String) jComboBoxTimesCpu.getSelectedItem();
+			dadosJogoSrvMesa11.setTimeCasa(nomeTime);
+			dadosJogoSrvMesa11.setTimeVisita(nomeTimeCpu);
+			dadosJogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
+			dadosJogoSrvMesa11.setSegundoUniformeTimeVisita(segundoUniformeCpu);
+			dadosJogoSrvMesa11.setTempoJogo((Integer) tempoJogoCombo
+					.getSelectedItem());
+			dadosJogoSrvMesa11.setNumeroJogadas((Integer) numJogadaCombo
+					.getSelectedItem());
+			dadosJogoSrvMesa11.setTempoJogoJogada((Integer) tempoJogadaCombo
+					.getSelectedItem());
+			dadosJogoSrvMesa11.setBolaCampoCasa(Lang
+					.key((String) campoBolaCombo.getSelectedItem()));
+			if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
+					.getBolaCampoCasa())) {
+				if (Math.random() > 0.5)
+					dadosJogoSrvMesa11
+							.setBolaCampoVisita(ConstantesMesa11.CAMPO_CIMA);
+				else
+					dadosJogoSrvMesa11
+							.setBolaCampoVisita(ConstantesMesa11.CAMPO_BAIXO);
+			} else {
+				dadosJogoSrvMesa11.setBolaCampoVisita(ConstantesMesa11.BOLA);
+			}
+			mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO_CPU);
+			mesa11to.setData(dadosJogoSrvMesa11);
+			ret = enviarObjeto(mesa11to);
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+				monitorJogo = new MonitorJogo(controleChatCliente, this,
+						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
+								.getTimeCasa());
+				monitorJogo.start();
+			}
+		}
+
 	}
 
 }
