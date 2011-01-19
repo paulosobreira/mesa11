@@ -123,9 +123,11 @@ public class JogoServidor {
 				+ dadosJogoSrvMesa11.isSaiuVisitante());
 		if (proxyComandos
 				.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())
-				|| proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-						.getNomeVisitante())
-				|| dadosJogoSrvMesa11.isSaiuVisitante()
+				|| (!dadosJogoSrvMesa11.isJogoVsCpu() && proxyComandos
+						.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeVisitante()))
+				|| (!dadosJogoSrvMesa11.isJogoVsCpu() && dadosJogoSrvMesa11
+						.isSaiuVisitante())
 				|| dadosJogoSrvMesa11.isSaiuCriador() || controleJogo == null) {
 			return;
 		}
@@ -139,6 +141,7 @@ public class JogoServidor {
 				.getNomeVisitante());
 		partidaMesa11.setNomeTimeCasa(dadosJogoSrvMesa11.getTimeCasa());
 		partidaMesa11.setNomeTimeVisita(dadosJogoSrvMesa11.getTimeVisita());
+		partidaMesa11.setVsCpu(dadosJogoSrvMesa11.isJogoVsCpu());
 		try {
 			proxyComandos.gravarDados(partidaMesa11);
 		} catch (Exception e) {

@@ -540,8 +540,11 @@ public class ControleJogosCliente {
 				+ dadosJogoSrvMesa11.getGolsCasa() + " -"
 				+ dadosJogoSrvMesa11.getNomeCriador()));
 		panelComboTimes.add(new JLabel(dadosJogoSrvMesa11.getTimeVisita()
-				+ " - " + +dadosJogoSrvMesa11.getGolsVisita() + " -"
-				+ dadosJogoSrvMesa11.getNomeVisitante()));
+				+ " - "
+				+ +dadosJogoSrvMesa11.getGolsVisita()
+				+ " -"
+				+ (dadosJogoSrvMesa11.isJogoVsCpu() ? "CPU"
+						: dadosJogoSrvMesa11.getNomeVisitante())));
 		JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
 		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);
 		escolhaTimesPanel.add(uniformesPanel, BorderLayout.CENTER);
