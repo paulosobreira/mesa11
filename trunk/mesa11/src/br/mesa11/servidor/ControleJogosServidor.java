@@ -12,6 +12,7 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
+import br.mesa11.cliente.AtualizadorJogadaCPU;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Logger;
@@ -94,6 +95,7 @@ public class ControleJogosServidor {
 				.isSegundoUniformeTimeCasa());
 		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
 				.getTimeVisita());
+
 		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
 				.isSegundoUniformeTimeVisita());
 		jogoSrvMesa11.setTimeCasa(timeCasa);
@@ -101,6 +103,14 @@ public class ControleJogosServidor {
 		jogoSrvMesa11.setControleJogo(controleJogo);
 		controleJogo.iniciaJogoOnline(jogoSrvMesa11.getDadosJogoSrvMesa11(),
 				timeCasa, timeVisita);
+		if (dadosJogoSrvMesa11.isJogoVsCpu()) {
+			timeVisita.setControladoCPU(true);
+			controleJogo
+					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
+			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
+					controleJogo);
+			atualizadorJogadaCPU.start();
+		}
 	}
 
 	public Object obterDadosJogo(String nomejogo) {
@@ -285,6 +295,34 @@ public class ControleJogosServidor {
 			return mesa11to;
 		} catch (Exception e) {
 			Logger.logarExept(e);
+		}
+		return null;
+	}
+
+	public Object criarJogoCpu(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
+		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
+		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
+		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
+				proxyComandos);
+		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
+				.get(dadosJogoSrvMesa11.getNomeJogo());
+		if (jogoSrvMesa11.getDadosJogoSrvMesa11() != null
+				&& !Util.isNullOrEmpty(jogoSrvMesa11.getDadosJogoSrvMesa11()
+						.getNomeVisitante())) {
+			return new MsgSrv(Lang.msg("jogoInciado"));
+		}
+		if (jogoSrvMesa11 != null) {
+			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
+			dadosMesa11.getJogosCriados().remove(
+					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			dadosMesa11.getJogosAndamento().add(
+					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(dadosJogoSrvMesa11);
+			dadosJogoSrvMesa11.setJogoVsCpu(true);
+			inciaJogoServidor(jogoSrvMesa11);
+			return mesa11to;
 		}
 		return null;
 	}

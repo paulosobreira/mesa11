@@ -209,7 +209,7 @@ public class Botao extends Mesa11Dados {
 	public List getTrajetoria() {
 		List reta = GeoUtil.drawBresenhamLine(getCentro(), getDestino());
 		if (reta.size() > 1500) {
-			Logger.logar("getTrajetoria()" + reta.size());
+//			Logger.logar("getTrajetoria()" + reta.size());
 			Point novoP = (Point) reta.get(1500);
 			reta = GeoUtil.drawBresenhamLine(getCentro(), novoP);
 			setDestino(novoP);

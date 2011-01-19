@@ -67,6 +67,14 @@ public class ChatWindow {
 			return Lang.msg("criarJogo");
 		}
 	};
+	private JButton criarJogoVsCPU = new JButton("Criar Jogo vs CPU") {
+
+		public String getText() {
+
+			return Lang.msg("criarJogoVsCPU");
+		}
+	};
+	
 	private JButton criarTime = new JButton("criarTime") {
 
 		public String getText() {
@@ -158,6 +166,13 @@ public class ChatWindow {
 
 			public void actionPerformed(ActionEvent e) {
 				controleChatCliente.criarJogo();
+			}
+
+		});
+		criarJogoVsCPU.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				controleChatCliente.criarJogoVsCPU();
 			}
 
 		});
@@ -278,6 +293,7 @@ public class ChatWindow {
 		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(criarJogo);
+		buttonsPanel.add(criarJogoVsCPU);
 		buttonsPanel.add(verDetalhes);
 		buttonsPanel.add(criarTime);
 		buttonsPanel.add(editarTime);

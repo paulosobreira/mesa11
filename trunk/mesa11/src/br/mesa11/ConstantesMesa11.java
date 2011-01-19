@@ -5,7 +5,7 @@ public class ConstantesMesa11 {
 	public static boolean debug = true;
 	public static boolean modoZip = true;
 
-	public static final String TITULO_VERSAO = "Mesa11 Ver 1.03";
+	public static final String TITULO_VERSAO = "Mesa11 Ver 1.04";
 
 	public static String CAMPO_CIMA = "CAMPO_CIMA";
 
@@ -107,4 +107,5 @@ public class ConstantesMesa11 {
 	public static final String ENVIAR_IMAGEM = "ENVIAR_IMAGEM";
 	public static final String OBTER_TODAS_IMAGENS = "OBTER_TODAS_IMAGENS";
 	public static final String NIVEL_MEDIO = "NIVEL_MEDIO";
+	public static final String CRIAR_JOGO_CPU = "CRIAR_JOGO_CPU";
 }

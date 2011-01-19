@@ -59,6 +59,8 @@ public class MonitorAtividade extends Thread {
 					}
 
 					if (jogoServidor.jogoIniciado()
+							&& !jogoServidor.getDadosJogoSrvMesa11()
+									.isJogoVsCpu()
 							&& proxyComandos
 									.verificaSemSessao(jogoServidor
 											.getDadosJogoSrvMesa11()

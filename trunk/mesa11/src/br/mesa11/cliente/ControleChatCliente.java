@@ -369,4 +369,13 @@ public class ControleChatCliente {
 			chatWindow.atualizaInfo();
 
 	}
+
+	public void criarJogoVsCPU() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
+		controleJogosCliente.criarJogoVsCPU();
+
+	}
 }

@@ -11,6 +11,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private boolean saiuCriador;
 	private String nomeVisitante;
 	private boolean saiuVisitante;
+	private boolean jogoVsCpu;
 	private String senhaJogo;
 	private String timeCasa;
 	private boolean SegundoUniformeTimeCasa;
@@ -32,6 +33,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoRestanteJogoFormatado;
 	private String tempoJogadaRestanteJogoFormatado;
 	private String dica;
+
+	public boolean isJogoVsCpu() {
+		return jogoVsCpu;
+	}
+
+	public void setJogoVsCpu(boolean jogoVsCpu) {
+		this.jogoVsCpu = jogoVsCpu;
+	}
 
 	public String getDica() {
 		return dica;
