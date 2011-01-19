@@ -422,12 +422,15 @@ public class ControlePartida {
 
 	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,
 			Time time) {
+		if (controleJogo != null && controleJogo.isJogoOnlineSrvidor()) {
+			return;
+		}
 		BufferedImage buff = null;
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
-				url = new URL(controleJogo.getCodeBase()
-						+ "midia/" + botao.getImagem());
+				url = new URL(controleJogo.getCodeBase() + "midia/"
+						+ botao.getImagem());
 				Logger.logar(url);
 				ImageIcon icon = new ImageIcon(url);
 				buff = ImageUtil.toBufferedImage(icon.getImage());
@@ -447,10 +450,10 @@ public class ControlePartida {
 				(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
-		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
-				.getHeight()));
+		Ellipse2D externo = new Ellipse2D.Double(1, 1, (buff.getWidth()-1), (buff
+				.getHeight()-1));
 		graphics2d.setClip(externo);
-		graphics2d.drawImage(buff, 1, 1, null);
+		graphics2d.drawImage(buff, 0, 0, null);
 		botoesImagens.put(botao.getId(), newBuffer);
 
 	}

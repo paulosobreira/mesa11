@@ -14,6 +14,7 @@ public class PartidaMesa11 extends Mesa11Dados {
 	private Date fim;
 	private int golsTimeCasa;
 	private int golsTimeVisita;
+	private boolean vsCpu;
 
 	public String getNomeJogadorCasa() {
 		return nomeJogadorCasa;
@@ -77,6 +78,14 @@ public class PartidaMesa11 extends Mesa11Dados {
 
 	public void setGolsTimeVisita(int golsTimeVisita) {
 		this.golsTimeVisita = golsTimeVisita;
+	}
+
+	public boolean isVsCpu() {
+		return vsCpu;
+	}
+
+	public void setVsCpu(boolean vsCpu) {
+		this.vsCpu = vsCpu;
 	}
 
 }
