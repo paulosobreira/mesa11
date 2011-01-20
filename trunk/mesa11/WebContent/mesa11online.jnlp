@@ -2,7 +2,7 @@
 <jnlp spec="1.0+"
 	codebase="http://www.f1mane.com/mesa11/" href="mesa11online.jnlp">
 	<information>
-		<title>Mesa11 Chat</title>
+		<title>Mesa11 Concentracao</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
 		<description>Mesa-11 (Futebol de Botao)</description>
@@ -25,7 +25,7 @@
 
 	  <applet-desc 
 	      documentBase="http://www.f1mane.com/mesa11" 
-	      name="Mesa11 Concetracao" 
+	      name="Mesa11 Concentracao" 
 	      main-class="br.applet.Mesa11Applet" 
 	      width="820" 
 	      height="380"> 
