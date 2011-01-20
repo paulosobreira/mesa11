@@ -2587,16 +2587,88 @@ public class ControleJogo {
 
 	private Point caluclarPontGol(Botao btnPrximo) {
 		Point gol = null;
-		if (!verificaBolaEscanteio()) {
-			gol = obterTrajetoriaCPUGol(btnPrximo);
+		boolean recuarGoleiro = false;
+		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
+			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
+					.getPenaltyCima().getLocation()) < GeoUtil
+					.distaciaEntrePontos(bola.getCentro(), mesaPanel
+							.getCentro().getLocation())) {
+				recuarGoleiro = true;
+				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
+			}
+		} else {
+			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
+					.getPenaltyBaixo().getLocation()) < GeoUtil
+					.distaciaEntrePontos(bola.getCentro(), mesaPanel
+							.getCentro().getLocation())) {
+				recuarGoleiro = true;
+				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
+			}
+
 		}
-		if (gol == null) {
-			gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
-		}
-		if (gol == null) {
-			gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
+		if (!recuarGoleiro) {
+			if (!verificaBolaEscanteio()) {
+				gol = obterTrajetoriaCPUGol(btnPrximo);
+			}
+			if (gol == null) {
+				gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
+			}
+			if (gol == null) {
+				gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
+			}
 		}
 		return gol;
+	}
+
+	private Point obterTrajetoriaCPUGdAreaPropria(Botao btnPrximo) {
+		Point gol = null;
+		List canidatos = new ArrayList();
+		for (int i = 0; i < 50; i++) {
+			if (ConstantesMesa11.CAMPO_BAIXO.equals(btnPrximo.getTime()
+					.getCampo())) {
+				if (mesaPanel.getCampoCima().intersects(
+						bola.getShape(1).getBounds())) {
+					continue;
+				}
+				gol = new Point(Util.intervalo(
+						mesaPanel.getGrandeAreaBaixo().x, mesaPanel
+								.getGrandeAreaBaixo().x
+								+ mesaPanel.getGrandeAreaBaixo().width), Util
+						.intervalo(mesaPanel.getGrandeAreaBaixo().y, mesaPanel
+								.getGrandeAreaBaixo().y
+								+ mesaPanel.getGrandeAreaBaixo().height));
+			} else {
+				if (mesaPanel.getCampoBaixo().intersects(
+						bola.getShape(1).getBounds())) {
+					continue;
+				}
+				gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaCima().x,
+						mesaPanel.getGrandeAreaCima().x
+								+ mesaPanel.getGrandeAreaCima().width), Util
+						.intervalo(mesaPanel.getGrandeAreaCima().y, mesaPanel
+								.getGrandeAreaCima().y
+								+ mesaPanel.getGrandeAreaCima().height));
+			}
+			if (validaCaimhoGol(gol)) {
+				canidatos.add(gol);
+			}
+		}
+
+		Point golRet = null;
+		double menorDist = java.lang.Double.MAX_VALUE;
+
+		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
+			Point p = (Point) iterator.next();
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
+					.getCentro(), p);
+			if (distaciaEntrePontos < menorDist) {
+				golRet = p;
+				menorDist = distaciaEntrePontos;
+			}
+
+		}
+		return golRet;
+
 	}
 
 	private boolean verificaBolaEscanteio() {
