@@ -12,8 +12,8 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
-import br.mesa11.cliente.AtualizadorJogadaCPU;
 import br.mesa11.conceito.Animacao;
+import br.mesa11.conceito.AtualizadorJogadaCPU;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -140,6 +140,7 @@ public class ControleJogosServidor {
 					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
 			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
 			dadosJogoSrvMesa11.setDica(controleJogo.getDica());
+			dadosJogoSrvMesa11.setProcessando(controleJogo.isProcessando());
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());
