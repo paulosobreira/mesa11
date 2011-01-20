@@ -49,7 +49,6 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
-import br.mesa11.cliente.AtualizadorJogadaCPU;
 import br.mesa11.servidor.JogoServidor;
 import br.mesa11.visao.BotaoTableModel;
 import br.mesa11.visao.EditorTime;
@@ -1212,6 +1211,9 @@ public class ControleJogo {
 	}
 
 	public boolean isProcessando() {
+		if (isJogoOnlineCliente()) {
+			return dadosJogoSrvMesa11.isProcessando();
+		}
 		return processando;
 	}
 

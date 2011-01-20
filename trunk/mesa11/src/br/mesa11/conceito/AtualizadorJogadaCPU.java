@@ -1,17 +1,20 @@
-package br.mesa11.cliente;
+package br.mesa11.conceito;
 
 import br.hibernate.Time;
-import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
 public class AtualizadorJogadaCPU extends Thread {
 	private ControleJogo controleJogo;
 	private long ultJogada;
+	private long intervaloEntreJogadas = 1000;
 
 	public AtualizadorJogadaCPU(ControleJogo controleJogo) {
 		super();
 		this.controleJogo = controleJogo;
+		if (controleJogo.isJogoOnlineSrvidor()) {
+			intervaloEntreJogadas = Util.intervalo(5000, 10000);
+		}
 	}
 
 	public void run() {
@@ -19,8 +22,7 @@ public class AtualizadorJogadaCPU extends Thread {
 
 			try {
 				sleep(200);
-				if ((System.currentTimeMillis() - ultJogada) < 1000) {
-					sleep(Util.intervalo(1000, 2000));
+				if ((System.currentTimeMillis() - ultJogada) < intervaloEntreJogadas) {
 					continue;
 				}
 				if (!controleJogo.isAnimando()) {
