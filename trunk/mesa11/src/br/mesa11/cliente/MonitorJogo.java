@@ -69,7 +69,6 @@ public class MonitorJogo extends Thread {
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()
 					&& !controleJogo.isEsperandoJogadaOnline()
-					&& !controleJogo.isProcessando()
 					&& controleJogo.verificaPosicaoDiffBotoes()) {
 				controleJogo.atualizaBotoesClienteOnline(
 						this.timeStampAnimacao, true);
