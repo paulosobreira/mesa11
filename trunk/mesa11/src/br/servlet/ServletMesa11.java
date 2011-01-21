@@ -69,7 +69,7 @@ public class ServletMesa11 extends HttpServlet {
 			Logger.logarExept(e);
 			email = null;
 		}
-		if (ConstantesMesa11.debug) {
+		if (Logger.debug) {
 			email = null;
 		}
 	}
@@ -102,9 +102,8 @@ public class ServletMesa11 extends HttpServlet {
 				Object escrever = proxyComandos.processarObjeto(object);
 
 				if (ConstantesMesa11.modoZip) {
-					dumaparDadosZip(ZipUtil.compactarObjeto(
-							ConstantesMesa11.debug, escrever, res
-									.getOutputStream()));
+					dumaparDadosZip(ZipUtil.compactarObjeto(Logger.debug,
+							escrever, res.getOutputStream()));
 				} else {
 					ByteArrayOutputStream bos = new ByteArrayOutputStream();
 					dumaparDados(escrever);
@@ -126,7 +125,7 @@ public class ServletMesa11 extends HttpServlet {
 
 	private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
 			throws IOException {
-		if (ConstantesMesa11.debug) {
+		if (Logger.debug) {
 			// String basePath = getServletContext().getRealPath("")
 			// + File.separator + "WEB-INF" + File.separator + "dump"
 			// + File.separator;
@@ -140,7 +139,7 @@ public class ServletMesa11 extends HttpServlet {
 	}
 
 	private void dumaparDados(Object escrever) throws IOException {
-		if (ConstantesMesa11.debug && (escrever != null)) {
+		if (false && (escrever != null)) {
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(
 					arrayOutputStream);
