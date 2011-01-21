@@ -188,6 +188,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
+		jogoSrvMesa11.getControleJogo().setTempoUltimaJogadaSrvCliente(
+				tempoUltimaJogada);
 		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
 				.getAnimacaoCliente();
 		boolean pulaPosicaoBotoes = false;

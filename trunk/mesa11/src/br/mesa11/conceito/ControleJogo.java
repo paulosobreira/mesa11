@@ -101,6 +101,7 @@ public class ControleJogo {
 	private String dica;
 	private boolean jogoTerminado;
 	private long tempoTerminado;
+	private long tempoUltimaJogadaSrvCliente;
 	private boolean jogoIniciado;
 	private long tempoIniciado;
 	private String nomeJogadorOnline;
@@ -2315,6 +2316,13 @@ public class ControleJogo {
 	}
 
 	public void jogadaCPU() {
+		if (isJogoOnlineSrvidor()
+				&& getAnimacaoCliente() != null
+				&& tempoUltimaJogadaSrvCliente < getAnimacaoCliente()
+						.getTimeStamp()) {
+			return;
+		}
+
 		if (isAnimando()) {
 			return;
 		}
@@ -2435,7 +2443,7 @@ public class ControleJogo {
 			}
 			gol = caluclarPontGol(btnPrximo);
 			contGol++;
-			if (contGol > 50) {
+			if (contGol > 20) {
 				break;
 			}
 			if (gol == null) {
@@ -2460,7 +2468,7 @@ public class ControleJogo {
 						.getRaio()
 						+ bola.getRaio() - 1, bola.getCentro());
 			}
-			if (contBtn > 10) {
+			if (contBtn > 5) {
 				Logger.logar("ReCALCULANDO novo Botao");
 				if (naoDescartaBtn) {
 					if (gol == null) {
@@ -3008,6 +3016,14 @@ public class ControleJogo {
 
 	public void setCodeBase(String codeBase) {
 		this.codeBase = codeBase;
+	}
+
+	public long getTempoUltimaJogadaSrvCliente() {
+		return tempoUltimaJogadaSrvCliente;
+	}
+
+	public void setTempoUltimaJogadaSrvCliente(long tempoUltimaJogadaSrvCliente) {
+		this.tempoUltimaJogadaSrvCliente = tempoUltimaJogadaSrvCliente;
 	}
 
 }
