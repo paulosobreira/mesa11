@@ -21,7 +21,11 @@ public class AtualizadorJogadaCPU extends Thread {
 		while (!controleJogo.isJogoTerminado()) {
 
 			try {
-				sleep(200);
+				if (controleJogo.isJogoOnlineSrvidor()) {
+					sleep(Util.intervalo(1000, 2000));
+				} else {
+					sleep(200);
+				}
 				if ((System.currentTimeMillis() - ultJogada) < intervaloEntreJogadas) {
 					continue;
 				}
