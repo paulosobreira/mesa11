@@ -2148,7 +2148,7 @@ public class ControleJogo {
 			public void run() {
 				while (isAnimando()) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(400);
 					} catch (InterruptedException e) {
 						Logger.logarExept(e);
 					}
