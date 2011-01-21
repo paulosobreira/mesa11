@@ -61,7 +61,7 @@ public class Mesa11Applet extends JApplet {
 		super.init();
 		try {
 			looks = UIManager.getInstalledLookAndFeels();
-			if (!ConstantesMesa11.debug) {
+			if (false) {
 				UIManager
 						.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 				SwingUtilities.updateComponentTreeUI(this);
