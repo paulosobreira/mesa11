@@ -426,6 +426,7 @@ public class ControlePartida {
 			return;
 		}
 		BufferedImage buff = null;
+		boolean imgCust = false;
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
@@ -438,6 +439,8 @@ public class ControlePartida {
 					Logger.logar("Status " + icon.getImageLoadStatus()
 							+ " Nao Carregado " + url);
 					buff = null;
+				} else {
+					imgCust = true;
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
@@ -446,12 +449,26 @@ public class ControlePartida {
 		if (buff == null)
 			buff = BotaoUtils.desenhaUniforme(time,
 					time.isSegundoUniforme() ? 2 : 1, botao);
-		BufferedImage newBuffer = new BufferedImage((buff.getWidth() + 1),
-				(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newBuffer = null;
+		if (imgCust) {
+			newBuffer = new BufferedImage((buff.getWidth() + 1), (buff
+					.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+		} else {
+			newBuffer = new BufferedImage((buff.getWidth()),
+					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
+		}
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
-		Ellipse2D externo = new Ellipse2D.Double(1, 1, (buff.getWidth()-1), (buff
-				.getHeight()-1));
+
+		Ellipse2D externo = null;
+		if (imgCust) {
+			externo = new Ellipse2D.Double(1, 1, (buff.getWidth() - 1), (buff
+					.getHeight() - 1));
+		} else {
+			externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
+					.getHeight()));
+		}
+
 		graphics2d.setClip(externo);
 		graphics2d.drawImage(buff, 0, 0, null);
 		botoesImagens.put(botao.getId(), newBuffer);
