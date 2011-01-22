@@ -51,6 +51,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Integer getPrecisao() {
+		if (precisao == null) {
+			return new Integer(500);
+		}
 		return precisao;
 	}
 
@@ -59,6 +62,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Integer getForca() {
+		if (forca == null) {
+			return new Integer(500);
+		}
 		return forca;
 	}
 
@@ -67,6 +73,9 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public Integer getDefesa() {
+		if (defesa == null) {
+			return new Integer(500);
+		}
 		return defesa;
 	}
 
@@ -209,7 +218,7 @@ public class Botao extends Mesa11Dados {
 	public List getTrajetoria() {
 		List reta = GeoUtil.drawBresenhamLine(getCentro(), getDestino());
 		if (reta.size() > 1500) {
-//			Logger.logar("getTrajetoria()" + reta.size());
+			// Logger.logar("getTrajetoria()" + reta.size());
 			Point novoP = (Point) reta.get(1500);
 			reta = GeoUtil.drawBresenhamLine(getCentro(), novoP);
 			setDestino(novoP);

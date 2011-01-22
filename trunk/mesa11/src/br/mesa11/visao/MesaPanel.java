@@ -3,6 +3,7 @@ package br.mesa11.visao;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -351,7 +352,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + controleJogo.verGols(timeMandante), newx + 12,
+			g2d.drawString("" + controleJogo.verGols(timeMandante), newx + 10,
 					y);
 
 			Color cV1 = new Color(timeVisita.getCor1());
@@ -375,7 +376,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + controleJogo.verGols(timeVisita), newx + 48, y);
+			g2d.drawString("" + controleJogo.verGols(timeVisita), newx + 51, y);
 		}
 		Time time = controleJogo.timeJogadaVez();
 		if (time != null) {
@@ -413,14 +414,108 @@ public class MesaPanel extends JPanel {
 				} else {
 					g2d.setColor(Color.WHITE);
 				}
-				g2d
-						.drawString(time.getNomeAbrev()
-								+ " "
-								+ controleJogo
-										.tempoJogadaRestanteJogoFormatado(), x,
-								y);
+				g2d.drawString("" + time.getNomeAbrev(), x, y);
 			}
 		}
+		if (controleJogo.isJogoIniciado()
+				&& !(controleJogo.isEsperandoJogadaOnline() || controleJogo
+						.isAnimando())) {
+			y += 50;
+			g2d.setColor(lightWhite);
+			g2d.fillRoundRect(x - 10, y - 40, 100, 45, 10, 10);
+			g2d.setColor(Color.BLACK);
+			Font fontOri = g2d.getFont();
+			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
+			g2d
+					.drawString(" "
+							+ controleJogo.tempoJogadaRestanteJogoFormatado(),
+							x - 5, y);
+
+			g2d.setFont(fontOri);
+		}
+		y += 25;
+		if (controleJogo.getPontoPasando() != null) {
+			Botao botao = controleJogo.obterBotao(controleJogo
+					.getPontoPasando());
+			if (botao != null) {
+				Color cV1 = new Color(botao.getTime().getCor1());
+				Color cV2 = new Color(botao.getTime().getCor2());
+				Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString("" + botao.getNome(), x, y);
+				y += 22;
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString(Lang.msg("forca"), x, y);
+				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString("" + botao.getForca(), x + 68, y);
+				y += 22;
+				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString(Lang.msg("precisao"), x, y);
+				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString("" + botao.getPrecisao(), x + 68, y);
+				y += 22;
+				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString(Lang.msg("defesa"), x, y);
+				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+				g2d.setColor(corFundo);
+				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+				if (valor > 250) {
+					g2d.setColor(Color.BLACK);
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
+				g2d.drawString("" + botao.getDefesa(), x + 68, y);
+			}
+		}
+
 		x = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width / 2);
 		y = limitesViewPort.getBounds().y

@@ -499,7 +499,8 @@ public class ControleJogo {
 							eventoAtual.setUltimoContato(botaoAnalisado);
 							continue;
 						}
-						if ((botao instanceof Bola) && Math.random() > .8) {
+						if ((botao instanceof Bola)
+								&& Math.random() > botaoAnalisado.getDefesa() / 1000.0) {
 							Logger.logar("Passou pelo jogador");
 							bolaIngnora.add(botaoAnalisado);
 							continue;
@@ -533,6 +534,10 @@ public class ControleJogo {
 								detAtingido *= 0.3;
 							}
 
+						}
+						if (Math.random() > botao.getPrecisao() / 1000.0) {
+							int variancia = 5 * (10 - botao.getPrecisao() / 100);
+							angulo += Util.intervalo(-(variancia), variancia);
 						}
 						destino = GeoUtil.calculaPonto(angulo, Util
 								.inte(detAtingido), botaoAnalisado.getCentro());
@@ -647,12 +652,12 @@ public class ControleJogo {
 					return false;
 				}
 				if (goleiro.getShape(1).intersects(r)) {
-					// if (Math.random() > .7) {
-					// bolaIngnora.add(goleiro);
-					// Logger.logar("frango");
-					// return false;
-					// }
-					// Logger.logar("Goleiro Defendeu");
+					if (Math.random() > goleiro.getDefesa() / 1000.0) {
+						bolaIngnora.add(goleiro);
+						Logger.logar("frango");
+						return false;
+					}
+					Logger.logar("Goleiro Defendeu");
 					return true;
 				}
 			}
@@ -1151,9 +1156,6 @@ public class ControleJogo {
 	}
 
 	public boolean verificaTemBotao(Point p, Botao... exceto) {
-		Botao analizar = new Botao();
-		analizar.setCentroTodos(p);
-		Rectangle2D rectangle2d = analizar.getShape(1).getBounds2D();
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao b = (Botao) botoes.get(id);
@@ -1168,7 +1170,7 @@ public class ControleJogo {
 			if (expt) {
 				continue;
 			}
-			if (b.getShape(1).intersects(rectangle2d)) {
+			if (GeoUtil.distaciaEntrePontos(p, b.getCentro()) < ConstantesMesa11.RAIO_BOTAO) {
 				return true;
 			}
 		}
@@ -2042,9 +2044,15 @@ public class ControleJogo {
 					angulo = GeoUtil.calculaAngulo(botao.getCentro(), getBola()
 							.getCentro(), 90);
 				}
+				int forca = 5;
+				if (Math.random() > botao.getForca() / 1000.0) {
+					int variancia = 10 - botao.getPrecisao() / 100;
+					forca += Util.intervalo(0, variancia);
+					Logger.logar("Forca " + forca);
+				}
 
 				Point destino = GeoUtil.calculaPonto(angulo, Util
-						.inte(distaciaEntrePontos * 10), botao.getCentro());
+						.inte(distaciaEntrePontos * forca), botao.getCentro());
 				botao.setDestino(destino);
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);
@@ -2385,14 +2393,16 @@ public class ControleJogo {
 			efetuaJogada(bola.getCentro(), ptDstBola);
 			golJogadaCpu = gol;
 			return;
-		} else {
+		}
+		Goleiro goleiro = timeJogadaVez.obterGoleiro();
+		if (!goleiro.getCentro().equals(mesaPanel.golCima())
+				|| !goleiro.getCentro().equals(mesaPanel.golBaixo())) {
 			if (ConstantesMesa11.CAMPO_CIMA.equals(timeJogadaVez.getCampo())) {
 				controlePartida.centralizaGoleiroCima();
 			} else {
 				controlePartida.centralizaGoleiroBaixo();
 			}
 		}
-
 		List botoesTimeVez = timeJogadaVez.getBotoes();
 
 		Set descartados = new HashSet();
@@ -2415,52 +2425,26 @@ public class ControleJogo {
 						+ bola.getRaio() - 1, bola.getCentro());
 			}
 		}
+		if (btnPrximo == null) {
+			btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
+		}
 		while (btnPrximo == null
-				|| GeoUtil
-						.distaciaEntrePontos(btnPrximo.getCentro(), ptDstBola) > GeoUtil
-						.distaciaEntrePontos(btnPrximo.getCentro(), bola
-								.getCentro())
+				|| (btnPrximo != null && GeoUtil.distaciaEntrePontos(btnPrximo
+						.getCentro(), ptDstBola) > GeoUtil.distaciaEntrePontos(
+						btnPrximo.getCentro(), bola.getCentro()))
 				&& GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
 						.getCentro()) > btnPrximo.getRaio()
 				&& !btnPrximo.getShape(1).intersects(
 						bola.getShape(1).getBounds())) {
 			Logger.logar("Recalculando caluclarPontGol Gol " + gol
 					+ " btnPrximo " + btnPrximo);
-			boolean naoDescartaBtn = false;
-			while (btnPrximo == null) {
-				contBtn++;
-				btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
-				contBtn++;
-				if (contBtn > 10) {
-					btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(),
-							true);
-					if (btnPrximo != null) {
-						naoDescartaBtn = true;
-					}
-					contBtn = 0;
-				}
-				Logger.logar("Recalculando obterBtnJogadaCPU " + btnPrximo);
-			}
 			gol = caluclarPontGol(btnPrximo);
 			contGol++;
-			if (contGol > 20) {
-				break;
-			}
 			if (gol == null) {
 				if (contGol < 10) {
 					continue;
-				} else if (naoDescartaBtn || contBtn > 10) {
-					gol = bola.getCentro();
-					Logger.logar("BOLA CENTRO 1");
-					contBtn = 0;
-					break;
 				} else {
-					descartados.add(btnPrximo);
-					btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
-					contBtn++;
-					contGol = 0;
-					Logger.logar("ReCALCULANDO else if (!naoDescartaBtn) "
-							+ btnPrximo);
+					gol = bola.getCentro();
 				}
 			} else {
 				angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
@@ -2468,18 +2452,17 @@ public class ControleJogo {
 						.getRaio()
 						+ bola.getRaio() - 1, bola.getCentro());
 			}
-			if (contBtn > 5) {
-				Logger.logar("ReCALCULANDO novo Botao");
-				if (naoDescartaBtn) {
-					if (gol == null) {
-						gol = bola.getCentro();
-						Logger.logar("BOLA CENTRO 2");
-					}
-					break;
-				}
+			if (contGol > 20) {
 				descartados.add(btnPrximo);
 				btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
 				contBtn++;
+				contGol = 0;
+				if (descartados.size() > 5) {
+					btnPrximo = obterBtnJogadaCPU(botoesTimeVez, new HashSet());
+					Logger.logar("ReCALCULANDO descartados.size() > 5 "
+							+ btnPrximo);
+					break;
+				}
 				if (btnPrximo == null && !descartados.isEmpty()) {
 					btnPrximo = (Botao) descartados.iterator().next();
 					Logger
@@ -2487,24 +2470,25 @@ public class ControleJogo {
 									+ btnPrximo);
 					break;
 				}
-				contBtn = 0;
-				if (descartados.size() > 10) {
-					btnPrximo = (Botao) descartados.iterator().next();
-					Logger.logar("ReCALCULANDO descartados.size() > 10 "
-							+ btnPrximo);
-					break;
-				}
+
 			}
 
+		}
+		boolean recuarGoleiro = false;
+		if (btnPrximo == null) {
+			btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
+			Logger.logar("BTN MAIS proximo");
+		}
+		if (bola.getCentro().equals(gol)) {
+			recuarGoleiro = true;
+			gol = recuarGoleiro(btnPrximo);
+			Logger.logar("RECUAR GOLEIRO");
 		}
 		if (gol == null) {
 			gol = bola.getCentro();
 			Logger.logar("BOLA CENTRO 3");
 		}
-		if (btnPrximo == null) {
-			btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
-			Logger.logar("BTN MAIS proximo");
-		}
+
 		if (ptDstBola == null) {
 			angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
 			ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo.getRaio()
@@ -2527,8 +2511,9 @@ public class ControleJogo {
 		if (bola.getCentro().equals(gol)) {
 			nabola = true;
 		}
-
-		if (verificaBolaCentro()) {
+		if (recuarGoleiro) {
+			forca *= 1.5;
+		} else if (verificaBolaCentro()) {
 			forca = Util.intervalo(30, 40);
 		} else if (verificaBolaEscanteio()) {
 			forca *= 15;
@@ -2549,6 +2534,27 @@ public class ControleJogo {
 				btnPrximo.getCentro());
 		golJogadaCpu = gol;
 		efetuaJogada(btnPrximo.getCentro(), ptDstBtn);
+	}
+
+	private Point recuarGoleiro(Botao btnPrximo) {
+		Point gol = null;
+		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
+			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
+					.getPenaltyCima().getLocation()) < GeoUtil
+					.distaciaEntrePontos(bola.getCentro(), mesaPanel
+							.getCentro().getLocation())) {
+				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
+			}
+		} else {
+			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
+					.getPenaltyBaixo().getLocation()) < GeoUtil
+					.distaciaEntrePontos(bola.getCentro(), mesaPanel
+							.getCentro().getLocation())) {
+				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
+			}
+
+		}
+		return gol;
 	}
 
 	private boolean verificaBolaCentro() {
@@ -2595,35 +2601,14 @@ public class ControleJogo {
 
 	private Point caluclarPontGol(Botao btnPrximo) {
 		Point gol = null;
-		boolean recuarGoleiro = false;
-		if (ConstantesMesa11.CAMPO_CIMA.equals(btnPrximo.getTime().getCampo())) {
-			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-					.getPenaltyCima().getLocation()) < GeoUtil
-					.distaciaEntrePontos(bola.getCentro(), mesaPanel
-							.getCentro().getLocation())) {
-				recuarGoleiro = true;
-				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
-			}
-		} else {
-			if (GeoUtil.distaciaEntrePontos(bola.getCentro(), mesaPanel
-					.getPenaltyBaixo().getLocation()) < GeoUtil
-					.distaciaEntrePontos(bola.getCentro(), mesaPanel
-							.getCentro().getLocation())) {
-				recuarGoleiro = true;
-				gol = obterTrajetoriaCPUGdAreaPropria(btnPrximo);
-			}
-
+		if (!verificaBolaEscanteio()) {
+			gol = obterTrajetoriaCPUGol(btnPrximo);
 		}
-		if (!recuarGoleiro) {
-			if (!verificaBolaEscanteio()) {
-				gol = obterTrajetoriaCPUGol(btnPrximo);
-			}
-			if (gol == null) {
-				gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
-			}
-			if (gol == null) {
-				gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
-			}
+		if (gol == null) {
+			gol = obterTrajetoriaCPUGdAreaOposta(btnPrximo);
+		}
+		if (gol == null) {
+			gol = obterTrajetoriaCPUCampoOposto(btnPrximo);
 		}
 		return gol;
 	}
@@ -3024,6 +3009,17 @@ public class ControleJogo {
 
 	public void setTempoUltimaJogadaSrvCliente(long tempoUltimaJogadaSrvCliente) {
 		this.tempoUltimaJogadaSrvCliente = tempoUltimaJogadaSrvCliente;
+	}
+
+	public Botao obterBotao(Point p) {
+		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao b = (Botao) botoes.get(id);
+			if (GeoUtil.distaciaEntrePontos(p, b.getCentro()) < ConstantesMesa11.RAIO_BOTAO) {
+				return b;
+			}
+		}
+		return null;
 	}
 
 }

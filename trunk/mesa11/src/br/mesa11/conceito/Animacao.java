@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.util.List;
 
 import br.hibernate.Botao;
+import br.nnpe.Util;
 
 public class Animacao implements Serializable {
 
 	private Long objetoAnimacao;
 	private int index;
 	private long timeStamp;
+
+	public static void main(String[] args) {
+		int variancia = 10 - 687 / 100;
+		System.out.println(Util.intervalo(-(variancia), variancia));
+	}
 
 	private List pontosAnimacao;
 
