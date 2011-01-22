@@ -723,7 +723,7 @@ public class ControlePartida {
 			Long id = new Long(i + 20);
 			Botao botao = (Botao) timeCima.getBotoes().get(i);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botao.setCentro(mesaPanel.golCima());
+				botao.setCentroTodos(mesaPanel.golCima());
 				botao.setAngulo(0);
 				break;
 			}

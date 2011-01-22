@@ -1,6 +1,3 @@
-/**
- * 
- */
 package br.mesa11.visao;
 
 import java.awt.BorderLayout;
@@ -125,7 +122,7 @@ public class EditorTime extends JPanel {
 				return Lang.msg("nomeTime");
 			}
 		});
-		textFieldNomeTime = new JTextField(time.getNomeAbrev());
+		textFieldNomeTime = new JTextField(time.getNome());
 		panelTime.add(textFieldNomeTime);
 		textFieldNomeTime.addFocusListener(new FocusListener() {
 			@Override
