@@ -417,9 +417,9 @@ public class MesaPanel extends JPanel {
 				g2d.drawString("" + time.getNomeAbrev(), x, y);
 			}
 		}
-		if (controleJogo.isJogoIniciado()
-				&& !(controleJogo.isEsperandoJogadaOnline() || controleJogo
-						.isAnimando())) {
+		if (controleJogo.isJogoOnlineCliente()
+				|| (controleJogo.isJogoIniciado() && !(controleJogo
+						.isAnimando()))) {
 			y += 50;
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 40, 100, 45, 10, 10);
@@ -434,7 +434,8 @@ public class MesaPanel extends JPanel {
 			g2d.setFont(fontOri);
 		}
 		y += 25;
-		if (controleJogo.getPontoPasando() != null) {
+		if (controleJogo.getPontoPasando() != null
+				&& !(controleJogo.isAnimando())) {
 			Botao botao = controleJogo.obterBotao(controleJogo
 					.getPontoPasando());
 			if (botao != null) {
@@ -474,7 +475,7 @@ public class MesaPanel extends JPanel {
 				y += 22;
 				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
 				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 				if (valor > 250) {
 					g2d.setColor(Color.BLACK);
@@ -495,7 +496,7 @@ public class MesaPanel extends JPanel {
 				y += 22;
 				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
 				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 				if (valor > 250) {
 					g2d.setColor(Color.BLACK);

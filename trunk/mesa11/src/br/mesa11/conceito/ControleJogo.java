@@ -2044,7 +2044,7 @@ public class ControleJogo {
 					angulo = GeoUtil.calculaAngulo(botao.getCentro(), getBola()
 							.getCentro(), 90);
 				}
-				int forca = 5;
+				int forca = 6;
 				if (Math.random() > botao.getForca() / 1000.0) {
 					int variancia = 10 - botao.getPrecisao() / 100;
 					forca += Util.intervalo(0, variancia);
@@ -2425,13 +2425,18 @@ public class ControleJogo {
 						+ bola.getRaio() - 1, bola.getCentro());
 			}
 		}
-		if (btnPrximo == null) {
-			btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
+		while (btnPrximo == null) {
+			btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
+			contBtn++;
+			if (contBtn > 5) {
+				btnPrximo = obterBtnProximo(botoesTimeVez, new HashSet(), true);
+				contBtn = 0;
+				break;
+			}
 		}
-		while (btnPrximo == null
-				|| (btnPrximo != null && GeoUtil.distaciaEntrePontos(btnPrximo
-						.getCentro(), ptDstBola) > GeoUtil.distaciaEntrePontos(
-						btnPrximo.getCentro(), bola.getCentro()))
+		while ((btnPrximo != null && GeoUtil.distaciaEntrePontos(btnPrximo
+				.getCentro(), ptDstBola) > GeoUtil.distaciaEntrePontos(
+				btnPrximo.getCentro(), bola.getCentro()))
 				&& GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
 						.getCentro()) > btnPrximo.getRaio()
 				&& !btnPrximo.getShape(1).intersects(
