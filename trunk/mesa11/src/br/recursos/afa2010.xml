@@ -6,10 +6,10 @@
     <void method="add"> 
      <object class="br.hibernate.Goleiro"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>836</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="goleiro"> 
        <boolean>true</boolean> 
@@ -27,7 +27,7 @@
        <int>1</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -40,10 +40,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>79</long> 
@@ -55,13 +55,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Demichelis</string> 
       </void> 
       <void property="numero"> 
        <int>2</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -71,10 +71,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>80</long> 
@@ -86,13 +86,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Burdisso</string> 
       </void> 
       <void property="numero"> 
        <int>3</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -102,10 +102,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>81</long> 
@@ -117,13 +117,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Heinze</string> 
       </void> 
       <void property="numero"> 
        <int>4</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -133,10 +133,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>82</long> 
@@ -148,13 +148,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>DiMaria</string> 
       </void> 
       <void property="numero"> 
        <int>5</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -164,10 +164,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>83</long> 
@@ -179,13 +179,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Veron</string> 
       </void> 
       <void property="numero"> 
        <int>6</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -195,10 +195,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>84</long> 
@@ -210,13 +210,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Otamendi</string> 
       </void> 
       <void property="numero"> 
        <int>7</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -226,10 +226,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>85</long> 
@@ -241,13 +241,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Mascherano</string> 
       </void> 
       <void property="numero"> 
        <int>8</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -257,10 +257,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="id"> 
        <long>86</long> 
@@ -272,13 +272,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Higuain</string> 
       </void> 
       <void property="numero"> 
        <int>9</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -288,10 +288,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>949</int> 
       </void> 
       <void property="id"> 
        <long>87</long> 
@@ -303,13 +303,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Messi</string> 
       </void> 
       <void property="numero"> 
        <int>10</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>943</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -319,10 +319,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>500</int> 
+       <int>700</int> 
       </void> 
       <void property="forca"> 
-       <int>500</int> 
+       <int>944</int> 
       </void> 
       <void property="id"> 
        <long>88</long> 
@@ -334,13 +334,13 @@
        <string>Mark</string> 
       </void> 
       <void property="nome"> 
-       <string>Argentina</string> 
+       <string>Teves</string> 
       </void> 
       <void property="numero"> 
        <int>11</int> 
       </void> 
       <void property="precisao"> 
-       <int>500</int> 
+       <int>942</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -377,16 +377,16 @@
    <string>Mark</string> 
   </void> 
   <void property="nome"> 
-   <string>Argentina</string> 
+   <string>Argentina 2010</string> 
   </void> 
   <void property="nomeAbrev"> 
-   <string>Argentina</string> 
+   <string>Afa 2010</string> 
   </void> 
   <void property="nomeJogador"> 
    <string>Mark</string> 
   </void> 
   <void property="qtdePontos"> 
-   <int>0</int> 
+   <int>2886</int> 
   </void> 
   <void property="tipoUniforme1"> 
    <int>1</int> 

@@ -6,7 +6,7 @@
     <void method="add"> 
      <object class="br.hibernate.Goleiro"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>912</int> 
       </void> 
       <void property="forca"> 
        <int>700</int> 
@@ -15,13 +15,13 @@
        <boolean>true</boolean> 
       </void> 
       <void property="id"> 
-       <long>56</long> 
+       <long>34</long> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Casilas</string> 
       </void> 
       <void property="numero"> 
        <int>1</int> 
@@ -46,47 +46,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>57</long> 
+       <long>35</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-3.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
-      </void> 
-      <void property="numero"> 
-       <int>2</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>58</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>flamengo.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>Mark</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Pique</string> 
       </void> 
       <void property="numero"> 
        <int>3</int> 
@@ -108,47 +77,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>59</long> 
+       <long>36</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-5.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
-      </void> 
-      <void property="numero"> 
-       <int>4</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>60</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>flamengo.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>Mark</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Puyol</string> 
       </void> 
       <void property="numero"> 
        <int>5</int> 
@@ -170,16 +108,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>61</long> 
+       <long>37</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-6.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Inesta</string> 
       </void> 
       <void property="numero"> 
        <int>6</int> 
@@ -201,16 +139,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>62</long> 
+       <long>38</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-7.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Villa</string> 
       </void> 
       <void property="numero"> 
        <int>7</int> 
@@ -232,16 +170,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>63</long> 
+       <long>39</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-8.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Xavi</string> 
       </void> 
       <void property="numero"> 
        <int>8</int> 
@@ -263,16 +201,47 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>64</long> 
+       <long>40</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-10.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Fabregas</string> 
+      </void> 
+      <void property="numero"> 
+       <int>7</int> 
+      </void> 
+      <void property="precisao"> 
+       <int>700</int> 
+      </void> 
+      <void property="time"> 
+       <object idref="Time0"/> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="br.hibernate.Botao"> 
+      <void property="defesa"> 
+       <int>700</int> 
+      </void> 
+      <void property="forca"> 
+       <int>700</int> 
+      </void> 
+      <void property="id"> 
+       <long>41</long> 
+      </void> 
+      <void property="imagem"> 
+       <string>esp2010-9.jpg</string> 
+      </void> 
+      <void property="loginCriador"> 
+       <string>sobreira</string> 
+      </void> 
+      <void property="nome"> 
+       <string>Torres</string> 
       </void> 
       <void property="numero"> 
        <int>9</int> 
@@ -294,19 +263,50 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>65</long> 
+       <long>42</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-14.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Mengo</string> 
+       <string>Alonso</string> 
       </void> 
       <void property="numero"> 
-       <int>10</int> 
+       <int>14</int> 
+      </void> 
+      <void property="precisao"> 
+       <int>830</int> 
+      </void> 
+      <void property="time"> 
+       <object idref="Time0"/> 
+      </void> 
+     </object> 
+    </void> 
+    <void method="add"> 
+     <object class="br.hibernate.Botao"> 
+      <void property="defesa"> 
+       <int>700</int> 
+      </void> 
+      <void property="forca"> 
+       <int>700</int> 
+      </void> 
+      <void property="id"> 
+       <long>43</long> 
+      </void> 
+      <void property="imagem"> 
+       <string>esp2010-15.jpg</string> 
+      </void> 
+      <void property="loginCriador"> 
+       <string>sobreira</string> 
+      </void> 
+      <void property="nome"> 
+       <string>Ramos</string> 
+      </void> 
+      <void property="numero"> 
+       <int>15</int> 
       </void> 
       <void property="precisao"> 
        <int>700</int> 
@@ -325,16 +325,16 @@
        <int>700</int> 
       </void> 
       <void property="id"> 
-       <long>66</long> 
+       <long>44</long> 
       </void> 
       <void property="imagem"> 
-       <string>flamengo.jpg</string> 
+       <string>esp2010-11.jpg</string> 
       </void> 
       <void property="loginCriador"> 
-       <string>Mark</string> 
+       <string>sobreira</string> 
       </void> 
       <void property="nome"> 
-       <string>Flamengo</string> 
+       <string>Capdevila</string> 
       </void> 
       <void property="numero"> 
        <int>11</int> 
@@ -353,16 +353,19 @@
    <int>-65536</int> 
   </void> 
   <void property="cor2RGB"> 
-   <int>-16777216</int> 
+   <int>-16763956</int> 
   </void> 
   <void property="cor3RGB"> 
-   <int>-1</int> 
+   <int>-256</int> 
   </void> 
   <void property="cor4RGB"> 
-   <int>-1</int> 
+   <int>-16777063</int> 
+  </void> 
+  <void property="cor5RGB"> 
+   <int>-3407872</int> 
   </void> 
   <void property="cor6RGB"> 
-   <int>-65536</int> 
+   <int>-256</int> 
   </void> 
   <void property="corMeiaNumero1"> 
    <boolean>true</boolean> 
@@ -371,27 +374,24 @@
    <boolean>true</boolean> 
   </void> 
   <void property="id"> 
-   <long>6</long> 
+   <long>4</long> 
   </void> 
   <void property="loginCriador"> 
-   <string>Mark</string> 
+   <string>sobreira</string> 
   </void> 
   <void property="nome"> 
-   <string>Flamengo</string> 
+   <string>Espanha 2010</string> 
   </void> 
   <void property="nomeAbrev"> 
-   <string>Mengo</string> 
+   <string>Esp 2010</string> 
   </void> 
   <void property="nomeJogador"> 
-   <string>Mark</string> 
+   <string>sobreira</string> 
   </void> 
   <void property="qtdePontos"> 
-   <int>5000</int> 
+   <int>4658</int> 
   </void> 
   <void property="tipoUniforme1"> 
-   <int>2</int> 
-  </void> 
-  <void property="tipoUniforme2"> 
    <int>5</int> 
   </void> 
  </object> 

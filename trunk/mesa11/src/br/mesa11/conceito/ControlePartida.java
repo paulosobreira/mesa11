@@ -422,9 +422,12 @@ public class ControlePartida {
 
 	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,
 			Time time) {
+		
 		if (controleJogo != null && controleJogo.isJogoOnlineSrvidor()) {
 			return;
 		}
+		controleJogo.incrementaBarraCarregando();
+		
 		BufferedImage buff = null;
 		boolean imgCust = false;
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
@@ -888,6 +891,7 @@ public class ControlePartida {
 					.getDadosJogoSrvMesa11().getTempoJogoJogada(),
 					campoTimeComBola);
 		}
+		controleJogo.escondePorgressBar();
 	}
 
 	public void verificaFimJogo() {
