@@ -1,6 +1,7 @@
 package br.mesa11.conceito;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -34,11 +35,15 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
@@ -111,6 +116,8 @@ public class ControleJogo {
 	public Point golJogadaCpu;
 	private boolean processando;
 	private String codeBase;
+	private JProgressBar progressBar;
+	private JFrame progressBarFrame;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -118,6 +125,8 @@ public class ControleJogo {
 		this.timeClienteOnline = timeClienteOnline;
 		this.dadosJogoSrvMesa11 = dadosJogoSrvMesa11;
 		this.frame = new JFrame();
+		criarProgressBar();
+		Logger.logar("criarProgressBar()");
 		mesaPanel = new MesaPanel(this);
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
@@ -310,9 +319,17 @@ public class ControleJogo {
 		controleDicas = new ControleDicas(this);
 		controlePartida.iniciaJogoLivre();
 		setJogoIniciado(true);
+
 		AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
 				this);
 		atualizadorJogadaCPU.start();
+	}
+
+	private void mostraProgressBar() {
+		if (progressBarFrame != null && !progressBarFrame.isVisible()) {
+			progressBarFrame.setVisible(true);
+			return;
+		}
 	}
 
 	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
@@ -1768,6 +1785,22 @@ public class ControleJogo {
 
 	}
 
+	private void criarProgressBar() {
+		progressBarFrame = new JFrame();
+		progressBar = new JProgressBar(JProgressBar.HORIZONTAL, 0, 20);
+		JPanel jPanel = new JPanel(new BorderLayout()) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(500, 100);
+			}
+		};
+		jPanel.add(progressBar);
+		progressBarFrame.getContentPane().add(jPanel);
+		progressBarFrame.setTitle(Lang.msg("carregando"));
+		progressBarFrame.setSize(500, 100);
+		progressBarFrame.setLocation(this.frame.getLocation());
+	}
+
 	public Time obterTimeMandante() {
 		if (controlePartida == null) {
 			return null;
@@ -2502,8 +2535,19 @@ public class ControleJogo {
 
 		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
 				.getCentro(), 90);
+		double div = 10.0;
+		double sumFor = 0;
+		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			sumFor += botao.getForca();
+		}
+		div = (sumFor / botoesTimeVez.size()) / 110.0;
+		if (div == 0) {
+			div = 10.0;
+		}
 		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
-				.getCentro()) / 10.0;
+				.getCentro())
+				/ div;
 		int jogadasRestantes = numeroJogadas
 				- obterNumJogadas(btnPrximo.getTime());
 
@@ -3025,6 +3069,23 @@ public class ControleJogo {
 			}
 		}
 		return null;
+	}
+
+	public void incrementaBarraCarregando() {
+		mostraProgressBar();
+		if (progressBar == null) {
+			return;
+		}
+		int value = progressBar.getValue();
+		value++;
+		progressBar.setValue(value);
+		progressBar.repaint();
+	}
+
+	public void escondePorgressBar() {
+		if (progressBarFrame != null) {
+			progressBarFrame.setVisible(false);
+		}
 	}
 
 }

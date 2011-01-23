@@ -20,6 +20,7 @@ public class Logger {
 	public static boolean novaSession = false;
 
 	public static void topExecpts(Exception e) {
+		novaSession = true;
 		if (debug) {
 			logarExept(e);
 		}
@@ -75,6 +76,7 @@ public class Logger {
 	public static void logarExept(Throwable e) {
 		if (debug) {
 			e.printStackTrace();
+			novaSession = true;
 		} else if (e instanceof Exception) {
 			topExecpts((Exception) e);
 		}

@@ -114,15 +114,17 @@ public class MesaPanel extends JPanel {
 	private Rectangle2D[] zoomedFaixasGrama = new Rectangle2D[FAIXAS];
 	private Shape limitesViewPort;
 	private double oldZoom;
-	public final static BufferedImage grama1 = CarregadorRecursos
-			.carregaImg("grama1.jpg");
-	public final static BufferedImage grama2 = CarregadorRecursos
-			.carregaImg("grama2.jpg");
+	public static BufferedImage grama1;
+	public static BufferedImage grama2;
 
 	public static BufferedImage grama1Zoomed;
 	public static BufferedImage grama2Zoomed;
 
 	public MesaPanel(ControleJogo controleJogo) {
+		if (!controleJogo.isJogoOnlineSrvidor()) {
+			grama1 = CarregadorRecursos.carregaImg("grama1.jpg");
+			grama2 = CarregadorRecursos.carregaImg("grama2.jpg");
+		}
 		setSize(LARGURA_MESA * 2, ALTURA_MESA * 2);
 		areaEscateioCima = new Rectangle((BORDA_CAMPO + LINHA), 0,
 				(LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA), BORDA_CAMPO

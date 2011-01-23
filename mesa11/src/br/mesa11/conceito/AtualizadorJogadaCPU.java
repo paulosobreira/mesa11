@@ -13,7 +13,7 @@ public class AtualizadorJogadaCPU extends Thread {
 		super();
 		this.controleJogo = controleJogo;
 		if (controleJogo.isJogoOnlineSrvidor()) {
-			intervaloEntreJogadas = Util.intervalo(5000, 10000);
+			intervaloEntreJogadas = Util.intervalo(1000, 2000);
 		}
 	}
 
@@ -22,7 +22,7 @@ public class AtualizadorJogadaCPU extends Thread {
 
 			try {
 				if (controleJogo.isJogoOnlineSrvidor()) {
-					sleep(Util.intervalo(1000, 2000));
+					sleep(Util.intervalo(500, 1000));
 				} else {
 					sleep(200);
 				}
