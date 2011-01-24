@@ -17,11 +17,12 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Botao;
-import br.hibernate.HibernateUtil;
 import br.hibernate.Mesa11Dados;
 import br.hibernate.Time;
+import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Dia;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
@@ -36,6 +37,26 @@ public class ControlePersistencia {
 	private String webInfDir;
 
 	private String webDir;
+
+	private static Session session;
+
+	public static Session getSession() {
+		if (session != null && Logger.novaSession) {
+			session.close();
+		}
+		if (session == null || Logger.novaSession) {
+			session = HibernateUtil.getSessionFactory().openSession();
+			try {
+				List jogador = session.createCriteria(Usuario.class).add(
+						Restrictions.eq("id", 0)).list();
+			} catch (Exception e) {
+				Logger.novaSession = true;
+			}
+			session = HibernateUtil.getSessionFactory().openSession();
+			Logger.novaSession = false;
+		}
+		return session;
+	}
 
 	public ControlePersistencia(String webDir, String webInfDir) {
 		super();
@@ -61,8 +82,8 @@ public class ControlePersistencia {
 			if (file != null) {
 				file.delete();
 			}
-			Connection connection = HibernateUtil.getSessionFactory()
-					.openSession().connection();
+			Connection connection = ControlePersistencia.getSession()
+					.connection();
 			String sql = "BACKUP DATABASE TO '" + webInfDir
 					+ "hipersonic.tar.gz' BLOCKING";
 
@@ -170,7 +191,7 @@ public class ControlePersistencia {
 				return new MsgSrv("nomeBotaoMuitoGrande");
 			}
 		}
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			if (time.getId() == null) {
@@ -192,7 +213,7 @@ public class ControlePersistencia {
 	}
 
 	public Object obterTimesJogador(String nomeJogador) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		List times = session.createCriteria(Time.class).add(
 				Restrictions.eq("nomeJogador", nomeJogador)).list();
 		String[] retorno = new String[times.size()];
@@ -208,7 +229,7 @@ public class ControlePersistencia {
 	}
 
 	public Time obterTime(String nome) {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		Time time = (Time) session.createCriteria(Time.class).add(
 				Restrictions.eq("nome", nome)).uniqueResult();
 		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
@@ -216,7 +237,7 @@ public class ControlePersistencia {
 	}
 
 	public Object obterTodosTimes() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		String hql = "select obj.nome from Time obj";
 		Query qry = session.createQuery(hql);
 		List times = qry.list();
@@ -233,7 +254,7 @@ public class ControlePersistencia {
 	}
 
 	public void gravarDados(Mesa11Dados... mesa11Dados) throws Exception {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			for (int i = 0; i < mesa11Dados.length; i++) {

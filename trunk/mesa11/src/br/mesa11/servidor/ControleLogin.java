@@ -16,9 +16,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
-import br.hibernate.HibernateUtil;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
@@ -63,7 +63,7 @@ public class ControleLogin {
 			return new MsgSrv(Lang.msg("capchaInvalido"));
 		}
 
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		List usuarios = session.createCriteria(Usuario.class).add(
 				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
@@ -144,7 +144,7 @@ public class ControleLogin {
 
 	public Object logar(ClienteMesa11 clienteMesa11) {
 		Usuario usuario = new Usuario();
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		List usuarios = session.createCriteria(Usuario.class).add(
 				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
@@ -182,7 +182,7 @@ public class ControleLogin {
 			return new MsgSrv(Lang.msg("capchaInvalido"));
 		}
 		Usuario usuario = new Usuario();
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = ControlePersistencia.getSession();
 		List usuarios = session.createCriteria(Usuario.class).add(
 				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();

@@ -30,10 +30,10 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
-import br.hibernate.HibernateUtil;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
 import br.nnpe.Email;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.nnpe.ZipUtil;

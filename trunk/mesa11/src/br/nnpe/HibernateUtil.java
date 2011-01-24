@@ -1,9 +1,7 @@
-package br.hibernate;
+package br.nnpe;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
-
-import br.nnpe.Logger;
 
 /**
  * @author Paulo Sobreira [sowbreira@gmail.com]
