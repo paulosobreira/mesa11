@@ -18,6 +18,7 @@ import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Botao;
 import br.hibernate.Mesa11Dados;
+import br.hibernate.PartidaMesa11;
 import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
@@ -268,4 +269,20 @@ public class ControlePersistencia {
 
 	}
 
+	public List obterPartidasTimeCasa(String timeCasa) {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(PartidaMesa11.class).add(
+				Restrictions.eq("nomeTimeCasa", timeCasa)).list();
+	}
+
+	public List obterPartidasTimeVisita(String timeVisita) {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(PartidaMesa11.class).add(
+				Restrictions.eq("nomeTimeVisita", timeVisita)).list();
+	}
+
+	public List obterTimes() {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(Time.class).list();
+	}
 }
