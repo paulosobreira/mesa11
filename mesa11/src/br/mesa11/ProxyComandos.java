@@ -92,7 +92,8 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.CRIAR_JOGO_CPU.equals(mesa11TO.getComando())) {
+		} else if (ConstantesMesa11.CRIAR_JOGO_CPU
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogoCpu((DadosJogoSrvMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
@@ -103,6 +104,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_TODAS_IMAGENS.equals(mesa11TO
 				.getComando())) {
 			return controleJogosServidor.obterTodasImagens();
+		} else if (ConstantesMesa11.VER_CLASSIFICACAO.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor.obterClassificacao();
 		}
 
 		return null;
