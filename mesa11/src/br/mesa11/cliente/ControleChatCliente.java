@@ -1,6 +1,8 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -294,8 +296,18 @@ public class ControleChatCliente {
 			logar();
 			return;
 		}
-		// TODO Auto-generated method stub
-
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.VER_CLASSIFICACAO);
+		Object ret = enviarObjeto(mesa11to);
+		if (!(ret instanceof Mesa11TO)) {
+			return;
+		}
+		mesa11to = (Mesa11TO) ret;
+		Map data = (Map) mesa11to.getData();
+		List dadosTimes = (List) data
+				.get(ConstantesMesa11.VER_CLASSIFICACAO_TIMES);
+		List dadosJogadores = (List) data
+				.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
 	}
 
 	public int getLatenciaMinima() {
