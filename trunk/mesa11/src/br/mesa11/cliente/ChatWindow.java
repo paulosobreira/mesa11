@@ -74,7 +74,7 @@ public class ChatWindow {
 			return Lang.msg("criarJogoVsCPU");
 		}
 	};
-	
+
 	private JButton criarTime = new JButton("criarTime") {
 
 		public String getText() {
@@ -106,11 +106,19 @@ public class ChatWindow {
 		}
 	};
 
-	private JButton conta = new JButton("Conta") {
+	private JButton classificacao = new JButton("classificacao") {
 
 		public String getText() {
 
-			return Lang.msg("conta");
+			return Lang.msg("classificacao");
+		}
+	};
+
+	private JButton campeonato = new JButton("campeonato") {
+
+		public String getText() {
+
+			return Lang.msg("campeonato");
 		}
 	};
 
@@ -190,6 +198,14 @@ public class ChatWindow {
 			}
 
 		});
+		classificacao.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				controleChatCliente.verClassificacao();
+
+			}
+
+		});
+		
 		criarTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controleChatCliente.criarTime();
@@ -312,8 +328,9 @@ public class ChatWindow {
 				}
 			}
 		});
-		conta.setEnabled(false);
-		buttonsPanel.add(conta);
+		buttonsPanel.add(classificacao);
+		campeonato.setEnabled(false);
+		buttonsPanel.add(campeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
