@@ -107,4 +107,8 @@ public class ConstantesMesa11 {
 	public static final String OBTER_TODAS_IMAGENS = "OBTER_TODAS_IMAGENS";
 	public static final String NIVEL_MEDIO = "NIVEL_MEDIO";
 	public static final String CRIAR_JOGO_CPU = "CRIAR_JOGO_CPU";
+	public static final String VER_CLASSIFICACAO = "VER_CLASSIFICACAO";
+	public static final Object VER_CLASSIFICACAO_TIMES = "VER_CLASSIFICACAO_TIMES";
+	public static final Object VER_CLASSIFICACAO_JOGADORES = "VER_CLASSIFICACAO_JOGADORES";
+
 }
