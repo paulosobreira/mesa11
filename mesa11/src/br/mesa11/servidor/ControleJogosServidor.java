@@ -2,6 +2,8 @@ package br.mesa11.servidor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
+import br.hibernate.PartidaMesa11;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
@@ -20,6 +23,7 @@ import br.nnpe.Util;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 import br.tos.BotaoPosSrvMesa11;
+import br.tos.ClassificacaoTime;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
@@ -328,5 +332,100 @@ public class ControleJogosServidor {
 			return mesa11to;
 		}
 		return null;
+	}
+
+	public Object obterClassificacao() {
+		List times = controlePersistencia.obterTimes();
+		Map mapaCassificTime = new HashMap();
+		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+			Time time = (Time) iterator.next();
+			ClassificacaoTime classificacaoTime = (ClassificacaoTime) mapaCassificTime
+					.get(time.getNome());
+			if (classificacaoTime == null) {
+				classificacaoTime = new ClassificacaoTime();
+				classificacaoTime.setTime(time.getNome());
+				mapaCassificTime.put(time.getNome(), classificacaoTime);
+			}
+			List partidasCasa = controlePersistencia.obterPartidasTimeCasa(time
+					.getNome());
+			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
+					.hasNext();) {
+				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoTime.setVitorias(classificacaoTime
+							.getVitorias() + 1);
+				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoTime
+							.setEmpates(classificacaoTime.getEmpates() + 1);
+				} else {
+					classificacaoTime.setDerrotas(classificacaoTime
+							.getDerrotas() + 1);
+				}
+				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
+				classificacaoTime.setGolsContra(classificacaoTime
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
+			}
+
+		}
+
+		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+			Time time = (Time) iterator.next();
+			ClassificacaoTime classificacaoTime = (ClassificacaoTime) mapaCassificTime
+					.get(time.getNome());
+			if (classificacaoTime == null) {
+				classificacaoTime = new ClassificacaoTime();
+				classificacaoTime.setTime(time.getNome());
+				mapaCassificTime.put(time.getNome(), classificacaoTime);
+			}
+			List partidasCasa = controlePersistencia
+					.obterPartidasTimeVisita(time.getNome());
+			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
+					.hasNext();) {
+				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoTime.setVitorias(classificacaoTime
+							.getVitorias() + 1);
+				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoTime
+							.setEmpates(classificacaoTime.getEmpates() + 1);
+				} else {
+					classificacaoTime.setDerrotas(classificacaoTime
+							.getDerrotas() + 1);
+				}
+				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
+				classificacaoTime.setGolsContra(classificacaoTime
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
+			}
+
+		}
+		List dadosTimes = new ArrayList();
+		for (Iterator iterator = mapaCassificTime.keySet().iterator(); iterator
+				.hasNext();) {
+			String timeKey = (String) iterator.next();
+			dadosTimes.add(mapaCassificTime.get(timeKey));
+		}
+		Collections.sort(dadosTimes, new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				ClassificacaoTime c1 = (ClassificacaoTime) o1;
+				ClassificacaoTime c2 = (ClassificacaoTime) o2;
+				String val1 = "" + c1.getVitorias() + c1.getEmpates()
+						+ c1.getSaldoGols() + c1.getGolsFavor();
+				String val2 = "" + c2.getVitorias() + c2.getEmpates()
+						+ c2.getSaldoGols() + c2.getGolsFavor();
+				return val2.compareTo(val1);
+			}
+		});
+		Map returnMap = new HashMap();
+		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_TIMES, dadosTimes);
+		return returnMap;
 	}
 }
