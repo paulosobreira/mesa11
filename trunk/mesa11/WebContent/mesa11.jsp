@@ -38,6 +38,21 @@ A:hover {text-decoration: underline overline; color: black;}
 	text-decoration: none;
 }
 
+#pop{
+     display:none;
+     position:absolute;
+	 top:30%;
+	 left:30%;
+	 margin-left:-150px;
+	 margin-top:-100px;
+	 padding-left: 20px;
+	 padding-right: 20px;
+	 padding:10px;
+	 width:500px;
+	 height:400px;
+	 border:1px solid #B8CFE5;
+	 Opacity : 0.8;
+    }
 
 img {
 	border-style: none;
@@ -176,11 +191,39 @@ img {
 			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
 				href="http://www.java.com/" style="text-align: right;"
 				target="_BLANK">Instale o Java</a>		
-			<a id="link" style="position: absolute; left: 220px; top: 50px;font-size: 16px;"
+			<a id="link" style="position: absolute; left: 150px; top: 50px;font-size: 16px;"
+				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
+				Como Jogar</a>				
+			<a id="link" style="position: absolute; left: 300px; top: 50px;font-size: 16px;"
 				href="mailto:sowbreira@gmail.com" style="text-align: right;"
-				target="_BLANK">Sugestões, Bugs ,Colaborar ...</a>
+				target="_BLANK">Sugestões,Colaborar ...</a>
 			<br>					
 		</div>
+		<div id="pop" style="background-color: #F0F0F0;">
+	    	Mesa 11 Futebol de botão
+	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
+			<p style="color: #0084B4;">
+				Dentro do jogo:	
+			</p>
+			<UL>
+			   <LI >Use o mouse para palhetar os botões</LI>
+			   <LI >Use a rolagem do mouse para ajustar o zoom </LI>
+			   <LI >Use as setas para posicionar a tela </LI>
+			   <LI >O goleiro pode ser movido na grande area </LI>
+			   <LI >Para jogar com Goleiro palhete a bola </LI>
+			</UL>
+			<p style="color: #0084B4;">
+				No jogo online:	
+			</p>
+			<UL>
+			   <LI >Jogadores podem criar e editar times</LI>
+			   <LI >Pode-se enviar imagens jpg para usar nos escudos</LI>
+			   <LI >O jogador pode evoluir os botões com pontos ganhos com vitorias </LI>
+			   <LI >Pode-se ver ranking de times e jogadores</LI>			   
+			   <LI >Sera possivel criar campeonatos </LI>
+			   <LI >Jogue contra um amigo ou contra a CPU </LI>
+			</UL>				
+		</div>		
 		<div id="shots" class="highslide-gallery">
 			<a href="m11-1.jpg" onclick="return hs.expand(this)"> <img src="m11-1.jpg" width="130" height="120" /></a>
 			<a href="m11-2.jpg" onclick="return hs.expand(this)"> <img src="m11-2.jpg" width="130" height="120" /></a>
