@@ -285,4 +285,21 @@ public class ControlePersistencia {
 		Session session = ControlePersistencia.getSession();
 		return session.createCriteria(Time.class).list();
 	}
+
+	public List obterJogadores() {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(Usuario.class).list();
+	}
+
+	public List obterPartidasJogadorCasa(String login) {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(PartidaMesa11.class).add(
+				Restrictions.eq("nomeJogadorCasa", login)).list();
+	}
+
+	public List obterPartidasJogadorVisita(String login) {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(PartidaMesa11.class).add(
+				Restrictions.eq("nomeJogadorVisita", login)).list();
+	}
 }

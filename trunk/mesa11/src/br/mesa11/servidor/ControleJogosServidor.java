@@ -13,6 +13,7 @@ import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.PartidaMesa11;
 import br.hibernate.Time;
+import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.Animacao;
@@ -24,6 +25,7 @@ import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 import br.tos.BotaoPosSrvMesa11;
 import br.tos.ClassificacaoTime;
+import br.tos.ClassificacaoUsuario;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
@@ -426,6 +428,103 @@ public class ControleJogosServidor {
 		});
 		Map returnMap = new HashMap();
 		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_TIMES, dadosTimes);
+
+		List jogadores = controlePersistencia.obterJogadores();
+		Map mapaCassificJogador = new HashMap();
+		for (Iterator iterator = jogadores.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			ClassificacaoUsuario classificacaoUsuario = (ClassificacaoUsuario) mapaCassificJogador
+					.get(usuario.getLogin());
+			if (classificacaoUsuario == null) {
+				classificacaoUsuario = new ClassificacaoUsuario();
+				classificacaoUsuario.setTime(usuario.getLogin());
+				mapaCassificJogador.put(usuario.getLogin(),
+						classificacaoUsuario);
+			}
+			List partidasCasa = controlePersistencia
+					.obterPartidasJogadorCasa(usuario.getLogin());
+			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
+					.hasNext();) {
+				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoUsuario.setVitorias(classificacaoUsuario
+							.getVitorias() + 1);
+				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoUsuario.setEmpates(classificacaoUsuario
+							.getEmpates() + 1);
+				} else {
+					classificacaoUsuario.setDerrotas(classificacaoUsuario
+							.getDerrotas() + 1);
+				}
+				classificacaoUsuario.setGolsFavor(classificacaoUsuario
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
+				classificacaoUsuario.setGolsContra(classificacaoUsuario
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
+			}
+
+		}
+
+		for (Iterator iterator = jogadores.iterator(); iterator.hasNext();) {
+			Usuario usuario = (Usuario) iterator.next();
+			ClassificacaoUsuario classificacaoUsuario = (ClassificacaoUsuario) mapaCassificJogador
+					.get(usuario.getLogin());
+			if (classificacaoUsuario == null) {
+				classificacaoUsuario = new ClassificacaoUsuario();
+				classificacaoUsuario.setTime(usuario.getLogin());
+				mapaCassificJogador.put(usuario.getLogin(),
+						classificacaoUsuario);
+			}
+			List partidasCasa = controlePersistencia
+					.obterPartidasJogadorVisita(usuario.getLogin());
+			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
+					.hasNext();) {
+				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoUsuario.setVitorias(classificacaoUsuario
+							.getVitorias() + 1);
+				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
+						.getGolsTimeVisita()) {
+					classificacaoUsuario.setEmpates(classificacaoUsuario
+							.getEmpates() + 1);
+				} else {
+					classificacaoUsuario.setDerrotas(classificacaoUsuario
+							.getDerrotas() + 1);
+				}
+				classificacaoUsuario.setGolsFavor(classificacaoUsuario
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
+				classificacaoUsuario.setGolsContra(classificacaoUsuario
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
+			}
+
+		}
+		List dadosJogadores = new ArrayList();
+		for (Iterator iterator = mapaCassificJogador.keySet().iterator(); iterator
+				.hasNext();) {
+			String loginKey = (String) iterator.next();
+			dadosJogadores.add(mapaCassificJogador.get(loginKey));
+		}
+		Collections.sort(dadosJogadores, new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				ClassificacaoUsuario c1 = (ClassificacaoUsuario) o1;
+				ClassificacaoUsuario c2 = (ClassificacaoUsuario) o2;
+				String val1 = "" + c1.getVitorias() + c1.getEmpates()
+						+ c1.getSaldoGols() + c1.getGolsFavor();
+				String val2 = "" + c2.getVitorias() + c2.getEmpates()
+						+ c2.getSaldoGols() + c2.getGolsFavor();
+				return val2.compareTo(val1);
+			}
+		});
+		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES,
+				dadosJogadores);
+
 		return returnMap;
 	}
 }
