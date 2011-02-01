@@ -22,4 +22,11 @@ public class ClassificacaoUsuario extends ClassificacaoTime {
 		this.ultimoLogon = ultimoLogon;
 	}
 
+	@Override
+	public String toString() {
+
+		return login + " V " + getVitorias() + " E " + getEmpates() + " SG "
+				+ getSaldoGols() + " G " + getGolsFavor();
+	}
+
 }

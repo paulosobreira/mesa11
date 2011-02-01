@@ -2,6 +2,7 @@ package br.mesa11.servidor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -337,19 +338,19 @@ public class ControleJogosServidor {
 	}
 
 	public Object obterClassificacao() {
-		List times = controlePersistencia.obterTimes();
+		Collection times = controlePersistencia.obterTimesPartidas();
 		Map mapaCassificTime = new HashMap();
 		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
-			Time time = (Time) iterator.next();
+			String time = (String) iterator.next();
 			ClassificacaoTime classificacaoTime = (ClassificacaoTime) mapaCassificTime
-					.get(time.getNome());
+					.get(time);
 			if (classificacaoTime == null) {
 				classificacaoTime = new ClassificacaoTime();
-				classificacaoTime.setTime(time.getNome());
-				mapaCassificTime.put(time.getNome(), classificacaoTime);
+				classificacaoTime.setTime(time);
+				mapaCassificTime.put(time, classificacaoTime);
 			}
-			List partidasCasa = controlePersistencia.obterPartidasTimeCasa(time
-					.getNome());
+			List partidasCasa = controlePersistencia
+					.obterPartidasTimeCasa(time);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -375,16 +376,16 @@ public class ControleJogosServidor {
 		}
 
 		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
-			Time time = (Time) iterator.next();
+			String time = (String) iterator.next();
 			ClassificacaoTime classificacaoTime = (ClassificacaoTime) mapaCassificTime
-					.get(time.getNome());
+					.get(time);
 			if (classificacaoTime == null) {
 				classificacaoTime = new ClassificacaoTime();
-				classificacaoTime.setTime(time.getNome());
-				mapaCassificTime.put(time.getNome(), classificacaoTime);
+				classificacaoTime.setTime(time);
+				mapaCassificTime.put(time, classificacaoTime);
 			}
 			List partidasCasa = controlePersistencia
-					.obterPartidasTimeVisita(time.getNome());
+					.obterPartidasTimeVisita(time);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -429,20 +430,19 @@ public class ControleJogosServidor {
 		Map returnMap = new HashMap();
 		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_TIMES, dadosTimes);
 
-		List jogadores = controlePersistencia.obterJogadores();
+		Collection jogadores = controlePersistencia.obterJogadoresPartidas();
 		Map mapaCassificJogador = new HashMap();
 		for (Iterator iterator = jogadores.iterator(); iterator.hasNext();) {
-			Usuario usuario = (Usuario) iterator.next();
+			String usuario = (String) iterator.next();
 			ClassificacaoUsuario classificacaoUsuario = (ClassificacaoUsuario) mapaCassificJogador
-					.get(usuario.getLogin());
+					.get(usuario);
 			if (classificacaoUsuario == null) {
 				classificacaoUsuario = new ClassificacaoUsuario();
-				classificacaoUsuario.setTime(usuario.getLogin());
-				mapaCassificJogador.put(usuario.getLogin(),
-						classificacaoUsuario);
+				classificacaoUsuario.setLogin(usuario);
+				mapaCassificJogador.put(usuario, classificacaoUsuario);
 			}
 			List partidasCasa = controlePersistencia
-					.obterPartidasJogadorCasa(usuario.getLogin());
+					.obterPartidasJogadorCasa(usuario);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -469,17 +469,16 @@ public class ControleJogosServidor {
 		}
 
 		for (Iterator iterator = jogadores.iterator(); iterator.hasNext();) {
-			Usuario usuario = (Usuario) iterator.next();
+			String usuario = (String) iterator.next();
 			ClassificacaoUsuario classificacaoUsuario = (ClassificacaoUsuario) mapaCassificJogador
-					.get(usuario.getLogin());
+					.get(usuario);
 			if (classificacaoUsuario == null) {
 				classificacaoUsuario = new ClassificacaoUsuario();
-				classificacaoUsuario.setTime(usuario.getLogin());
-				mapaCassificJogador.put(usuario.getLogin(),
-						classificacaoUsuario);
+				classificacaoUsuario.setLogin(usuario);
+				mapaCassificJogador.put(usuario, classificacaoUsuario);
 			}
 			List partidasCasa = controlePersistencia
-					.obterPartidasJogadorVisita(usuario.getLogin());
+					.obterPartidasJogadorVisita(usuario);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -524,7 +523,8 @@ public class ControleJogosServidor {
 		});
 		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES,
 				dadosJogadores);
-
-		return returnMap;
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(returnMap);
+		return mesa11to;
 	}
 }

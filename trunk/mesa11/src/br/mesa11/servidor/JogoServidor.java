@@ -142,6 +142,9 @@ public class JogoServidor {
 		partidaMesa11.setNomeTimeCasa(dadosJogoSrvMesa11.getTimeCasa());
 		partidaMesa11.setNomeTimeVisita(dadosJogoSrvMesa11.getTimeVisita());
 		partidaMesa11.setVsCpu(dadosJogoSrvMesa11.isJogoVsCpu());
+		if (dadosJogoSrvMesa11.isJogoVsCpu()) {
+			partidaMesa11.setNomeJogadorVisita("CPU");
+		}
 		try {
 			proxyComandos.gravarDados(partidaMesa11);
 		} catch (Exception e) {
