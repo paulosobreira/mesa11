@@ -60,7 +60,7 @@ public class MesaPanel extends JPanel {
 	public static final int ALTURA_FAIXA = (ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA)
 			/ FAIXAS;
 
-	public double zoom = 1;
+	public double zoom = 0.7;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -441,6 +441,9 @@ public class MesaPanel extends JPanel {
 			Botao botao = controleJogo.obterBotao(controleJogo
 					.getPontoPasando());
 			if (botao != null) {
+				if (botao.getId() == 0) {
+					return;
+				}
 				Color cV1 = new Color(botao.getTime().getCor1());
 				Color cV2 = new Color(botao.getTime().getCor2());
 				Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
