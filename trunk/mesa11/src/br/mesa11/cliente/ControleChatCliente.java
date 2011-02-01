@@ -1,13 +1,19 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import br.applet.Mesa11Applet;
 import br.hibernate.Botao;
@@ -19,6 +25,8 @@ import br.mesa11.visao.EditorTime;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.tos.ClassificacaoTime;
+import br.tos.ClassificacaoUsuario;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 import br.tos.ErroServ;
@@ -308,6 +316,184 @@ public class ControleChatCliente {
 				.get(ConstantesMesa11.VER_CLASSIFICACAO_TIMES);
 		List dadosJogadores = (List) data
 				.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
+		JPanel classificacaoPanel = gerarPanelClassificacao(dadosTimes,
+				dadosJogadores);
+		JOptionPane.showMessageDialog(this.mesa11Applet, classificacaoPanel,
+				Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	private JPanel gerarPanelClassificacao(final List dadosTimes,
+			final List dadosJogadores) {
+		final JTable timesTable = new JTable();
+
+		final TableModel timesTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				ClassificacaoTime value = (ClassificacaoTime) dadosTimes
+						.get(rowIndex);
+
+				switch (columnIndex) {
+				case 0:
+					return value.getTime();
+				case 1:
+					return value.getVitorias();
+				case 2:
+					return value.getEmpates();
+				case 3:
+					return value.getDerrotas();
+				case 4:
+					return value.getSaldoGols();
+				case 5:
+					return value.getGolsFavor();
+				case 6:
+					return value.getGolsContra();
+				default:
+					return "";
+				}
+			}
+
+			@Override
+			public int getRowCount() {
+				if (dadosTimes == null) {
+					return 0;
+				}
+				return dadosTimes.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 7;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+
+				switch (columnIndex) {
+				case 0:
+					return Lang.msg("time");
+				case 1:
+					return Lang.msg("vitorias");
+				case 2:
+					return Lang.msg("empates");
+				case 3:
+					return Lang.msg("derrotas");
+				case 4:
+					return Lang.msg("saldogols");
+				case 5:
+					return Lang.msg("golsfavor");
+				case 6:
+					return Lang.msg("golscontra");
+				default:
+					return "";
+				}
+
+			}
+		};
+
+		timesTable.setModel(timesTableModel);
+		JScrollPane timesJs = new JScrollPane(timesTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(620, 150);
+			}
+		};
+		final JTable jogadoresTable = new JTable();
+
+		final TableModel jogadoresTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				ClassificacaoUsuario value = (ClassificacaoUsuario) dadosJogadores
+						.get(rowIndex);
+				switch (columnIndex) {
+				case 0:
+					return value.getLogin();
+				case 1:
+					return value.getVitorias();
+				case 2:
+					return value.getEmpates();
+				case 3:
+					return value.getDerrotas();
+				case 4:
+					return value.getSaldoGols();
+				case 5:
+					return value.getGolsFavor();
+				case 6:
+					return value.getGolsContra();
+				default:
+					return "";
+				}
+			}
+
+			@Override
+			public int getRowCount() {
+				if (dadosJogadores == null) {
+					return 0;
+				}
+				return dadosJogadores.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 7;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+
+				switch (columnIndex) {
+				case 0:
+					return Lang.msg("jogador");
+				case 1:
+					return Lang.msg("vitorias");
+				case 2:
+					return Lang.msg("empates");
+				case 3:
+					return Lang.msg("derrotas");
+				case 4:
+					return Lang.msg("saldogols");
+				case 5:
+					return Lang.msg("golsfavor");
+				case 6:
+					return Lang.msg("golscontra");
+				default:
+					return "";
+				}
+
+			}
+		};
+
+		jogadoresTable.setModel(jogadoresTableModel);
+		JScrollPane jogadoresJs = new JScrollPane(jogadoresTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(620, 150);
+			}
+		};
+
+		JPanel jPanelTimes = new JPanel();
+		jPanelTimes.setBorder(new TitledBorder("rankingTimes") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("rankingTimes");
+			}
+		});
+		jPanelTimes.add(timesJs);
+
+		JPanel jPanelJogs = new JPanel();
+		jPanelJogs.setBorder(new TitledBorder("rankingJogadores") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("rankingJogadores");
+			}
+		});
+		jPanelJogs.add(jogadoresJs);
+
+		JPanel jPanel = new JPanel(new GridLayout(2, 1));
+		jPanel.add(jPanelTimes);
+		jPanel.add(jPanelJogs);
+		return jPanel;
 	}
 
 	public int getLatenciaMinima() {
