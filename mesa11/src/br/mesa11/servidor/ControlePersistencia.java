@@ -6,8 +6,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Connection;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -301,5 +305,27 @@ public class ControlePersistencia {
 		Session session = ControlePersistencia.getSession();
 		return session.createCriteria(PartidaMesa11.class).add(
 				Restrictions.eq("nomeJogadorVisita", login)).list();
+	}
+
+	public Collection obterTimesPartidas() {
+		Set partidas = new HashSet();
+		List list = session.createCriteria(PartidaMesa11.class).list();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
+			partidas.add(partidaMesa11.getNomeTimeCasa());
+			partidas.add(partidaMesa11.getNomeTimeVisita());
+		}
+		return partidas;
+	}
+
+	public Collection obterJogadoresPartidas() {
+		Set jogadores = new HashSet();
+		List list = session.createCriteria(PartidaMesa11.class).list();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
+			jogadores.add(partidaMesa11.getNomeJogadorCasa());
+			jogadores.add(partidaMesa11.getNomeJogadorVisita());
+		}
+		return jogadores;
 	}
 }
