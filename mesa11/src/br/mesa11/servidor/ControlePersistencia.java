@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -46,19 +45,14 @@ public class ControlePersistencia {
 	private static Session session;
 
 	public static Session getSession() {
-		if (session != null && Logger.novaSession) {
-			session.close();
-		}
-		if (session == null || Logger.novaSession) {
+		if (session == null)
 			session = HibernateUtil.getSessionFactory().openSession();
-			try {
-				List jogador = session.createCriteria(Usuario.class).add(
-						Restrictions.eq("id", 0)).list();
-			} catch (Exception e) {
-				Logger.novaSession = true;
-			}
+		try {
+			List jogador = session.createCriteria(Usuario.class).add(
+					Restrictions.eq("id", 0)).list();
+		} catch (Exception e) {
+			Logger.novaSession = true;
 			session = HibernateUtil.getSessionFactory().openSession();
-			Logger.novaSession = false;
 		}
 		return session;
 	}
