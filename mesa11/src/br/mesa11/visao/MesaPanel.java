@@ -37,10 +37,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	public final static Color green2 = new Color(0, 200, 0, 150);
-	public final static Color green = new Color(0, 255, 0, 150);
-	// public final static Color green2 = Color.white;
-	// public final static Color green = Color.white;
+	// public final static Color green2 = new Color(0, 200, 0, 150);
+	// public final static Color green = new Color(0, 255, 0, 150);
+	public final static Color green2 = Color.white;
+	public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -289,6 +289,7 @@ public class MesaPanel extends JPanel {
 			desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
 		}
 		simulaRota(g2d);
+		desenhaSombraGoleiro(g2d);
 		// Graphics2D g2d = (Graphics2D) g;
 		// if (limitesViewPort != null && controleJogo.getBola() != null) {
 		// Rectangle rectangle = (Rectangle) limitesViewPort;
@@ -321,6 +322,51 @@ public class MesaPanel extends JPanel {
 							* zoom));
 			}
 		}
+	}
+
+	private void desenhaSombraGoleiro(Graphics2D g2d) {
+		if (controleJogo.getPontoClicado() != null
+				&& controleJogo.getPontoPasando() != null && botoes != null) {
+			g2d.setColor(Color.LIGHT_GRAY);
+			Point p0 = (Point) controleJogo.getPontoClicado();
+			Point pAtual = (Point) controleJogo.getPontoPasando();
+			for (Iterator iterator = botoes.keySet().iterator(); iterator
+					.hasNext();) {
+				Long id = (Long) iterator.next();
+				Botao botao = (Botao) botoes.get(id);
+				if (botao == null || botao.getCentro() == null
+						|| !(botao instanceof Goleiro)) {
+					continue;
+				}
+				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
+						.getCentro());
+				if (raioPonto.size() <= (botao.getRaio() / 2)) {
+					Goleiro g = new Goleiro();
+					g.setCentroTodos(pAtual);
+					g.setRotacao(((Goleiro) botao).getRotacao());
+					if ((getGrandeAreaCima()
+							.contains(g.getShape(1).getBounds())
+							|| getGrandeAreaBaixo().contains(
+									g.getShape(1).getBounds())
+							|| getAreaGolCima().intersects(
+									g.getShape(1).getBounds()) || getAreaGolBaixo()
+							.intersects(g.getShape(1).getBounds()))
+							&& !g.getShape(1).intersects(
+									controleJogo.getBola().getShape(1)
+											.getBounds2D())) {
+						g2d.setColor(lightWhite);
+					} else {
+						g2d.setColor(red);
+					}
+
+					
+					g2d.fill(g.getShape(zoom));
+					break;
+				}
+			}
+
+		}
+
 	}
 
 	private void desenhaInfoJogo(Graphics2D g2d) {
@@ -736,12 +782,13 @@ public class MesaPanel extends JPanel {
 					// g.fill(zoomedFaixasGrama[contFaixas]);
 					if (limitesViewPort
 							.intersects(zoomedFaixasGrama[contFaixas])) {
-						g
-								.drawImage(grama1Zoomed, Util
-										.inte(zoomedFaixasGrama[contFaixas]
-												.getX()), Util
-										.inte(zoomedFaixasGrama[contFaixas]
-												.getY()), null);
+						if (!Logger.debug) {
+							g.drawImage(grama1Zoomed,
+									Util.inte(zoomedFaixasGrama[contFaixas]
+											.getX()), Util
+											.inte(zoomedFaixasGrama[contFaixas]
+													.getY()), null);
+						}
 					}
 
 				}
@@ -756,9 +803,11 @@ public class MesaPanel extends JPanel {
 						((ALTURA_FAIXA) * zoom));
 
 				if (limitesViewPort.intersects(zoomedFaixasGrama[i])) {
-					g.drawImage(grama2Zoomed, Util.inte(zoomedFaixasGrama[i]
-							.getX()), Util.inte(zoomedFaixasGrama[i].getY()),
-							null);
+					if (!Logger.debug) {
+						g.drawImage(grama2Zoomed, Util
+								.inte(zoomedFaixasGrama[i].getX()), Util
+								.inte(zoomedFaixasGrama[i].getY()), null);
+					}
 				}
 
 			}
