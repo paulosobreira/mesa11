@@ -29,7 +29,7 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 		}
 		Rectangle rectangle = (Rectangle) controleJogo.limitesViewPort();
 		if (rectangle != null
-				&& mesaPanel.LARGURA_MESA * mesaPanel.zoom * 1.1 < rectangle.width) {
+				&& mesaPanel.LARGURA_MESA * mesaPanel.zoom * 1.05 < rectangle.width) {
 			mesaPanel.zoom += .025;
 		}
 		lastScrool = System.currentTimeMillis();
