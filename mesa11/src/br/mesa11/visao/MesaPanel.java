@@ -359,7 +359,31 @@ public class MesaPanel extends JPanel {
 						g2d.setColor(red);
 					}
 
+					g2d.fill(g.getShape(zoom));
+					break;
+				} else if ((raioPonto.size() > (botao.getRaio() / 2))
+						&& (raioPonto.size() <= botao.getRaio())) {
+					Goleiro g = new Goleiro();
+					g.setCentroTodos(botao.getCentro());
 					
+					g.setRotacao(GeoUtil.calculaAngulo(g
+							.getCentro(), pAtual, 0));
+					
+					if ((getGrandeAreaCima()
+							.contains(g.getShape(1).getBounds())
+							|| getGrandeAreaBaixo().contains(
+									g.getShape(1).getBounds())
+							|| getAreaGolCima().intersects(
+									g.getShape(1).getBounds()) || getAreaGolBaixo()
+							.intersects(g.getShape(1).getBounds()))
+							&& !g.getShape(1).intersects(
+									controleJogo.getBola().getShape(1)
+											.getBounds2D())) {
+						g2d.setColor(lightWhite);
+					} else {
+						g2d.setColor(red);
+					}
+
 					g2d.fill(g.getShape(zoom));
 					break;
 				}

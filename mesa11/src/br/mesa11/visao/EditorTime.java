@@ -553,8 +553,24 @@ public class EditorTime extends JPanel {
 				EditorTime.this.controleJogo.gerarXmlTime(time);
 			}
 		});
+		JButton randomizarAtributos = new JButton() {
+			public String getText() {
+				return Lang.msg("randomizarAtributos");
+			};
+		};
+		randomizarAtributos.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				EditorTime.this.controleJogo.randomizarAtributos(time);
+				tabelaBotoes.updateUI();
+			}
+		});
+
 		JPanel painelSul = new JPanel(new BorderLayout());
-		painelSul.add(gerarXmlTime, BorderLayout.SOUTH);
+		JPanel panel = new JPanel(new GridLayout(1, 2));
+		panel.add(gerarXmlTime);
+		panel.add(randomizarAtributos);
+		painelSul.add(panel, BorderLayout.SOUTH);
 		if (!controleJogo.isJogoOnlineCliente()) {
 			painelSul.add(panelBotoes, BorderLayout.CENTER);
 		}
