@@ -3088,4 +3088,15 @@ public class ControleJogo {
 		}
 	}
 
+	public void randomizarAtributos(Time time) {
+		List botoesList = time.getBotoes();
+		for (Iterator iterator = botoesList.iterator(); iterator.hasNext();) {
+			Botao b = (Botao) iterator.next();
+			b.setDefesa(new Integer(Util.intervalo(500, 999)));
+			b.setPrecisao(new Integer(Util.intervalo(500, 999)));
+			b.setForca(new Integer(Util.intervalo(500, 999)));
+		}
+
+	}
+
 }

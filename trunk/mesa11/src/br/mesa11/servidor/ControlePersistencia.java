@@ -235,6 +235,7 @@ public class ControlePersistencia {
 		Time time = (Time) session.createCriteria(Time.class).add(
 				Restrictions.eq("nome", nome)).uniqueResult();
 		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
+		session.evict(time);
 		return time;
 	}
 
