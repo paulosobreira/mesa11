@@ -329,6 +329,10 @@ public class MesaPanel extends JPanel {
 				&& controleJogo.getPontoPasando() != null && botoes != null) {
 			g2d.setColor(Color.LIGHT_GRAY);
 			Point p0 = (Point) controleJogo.getPontoClicado();
+			if (controleJogo.getBola().getShape(1).getBounds2D().contains(p0)) {
+				return;
+			}
+
 			Point pAtual = (Point) controleJogo.getPontoPasando();
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
@@ -365,10 +369,10 @@ public class MesaPanel extends JPanel {
 						&& (raioPonto.size() <= botao.getRaio())) {
 					Goleiro g = new Goleiro();
 					g.setCentroTodos(botao.getCentro());
-					
-					g.setRotacao(GeoUtil.calculaAngulo(g
-							.getCentro(), pAtual, 0));
-					
+
+					g.setRotacao(GeoUtil
+							.calculaAngulo(g.getCentro(), pAtual, 0));
+
 					if ((getGrandeAreaCima()
 							.contains(g.getShape(1).getBounds())
 							|| getGrandeAreaBaixo().contains(
