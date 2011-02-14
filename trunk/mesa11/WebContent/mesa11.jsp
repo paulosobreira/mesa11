@@ -248,10 +248,10 @@ img {
 			<a id="link" 
 				href="http://www.f1mane.com" style="text-align: center;"
 				target="_BLANK">  F1-mane </a><br>
-			<a href="http://www.f1mane.com/f1mane/fm1.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm1.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/f1mane/fm2.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm2.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/f1mane/fm3.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm3.jpg" width="130" height="120" /></a>
-			<a href="http://www.f1mane.com/f1mane/fm4.jpg" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm4.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/f1mane/fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm1.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/f1mane/fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm2.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/f1mane/fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm3.jpg" width="130" height="120" /></a>
+			<a href="http://www.f1mane.com/f1mane/fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="http://www.f1mane.com/f1mane/fm4.jpg" width="130" height="120" /></a>
 		</div>		
 	</div>
 	</td>
