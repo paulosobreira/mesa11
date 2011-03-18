@@ -1427,7 +1427,8 @@ public class ControleJogo {
 		if (isJogoOnlineCliente()) {
 			return;
 		}
-		setDica("reversao");
+		if (dica == null)
+			setDica("reversao");
 		controlePartida.reversaoJogada();
 	}
 
