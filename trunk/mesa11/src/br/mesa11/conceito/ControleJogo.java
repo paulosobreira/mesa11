@@ -1701,6 +1701,7 @@ public class ControleJogo {
 		}
 		reversaoJogada();
 		Logger.logar("Escanteio " + time);
+		setDica("escanteio");
 
 	}
 
@@ -1743,18 +1744,20 @@ public class ControleJogo {
 			metaBaixo(time);
 		}
 		reversaoJogada();
+		setDica("meta");
 	}
 
 	public void processarGolContra(Time time) {
 		controlePartida.processarGolContra(time);
 		Logger.logar("GolContra " + time);
-
+		setDica("golContra");
 	}
 
 	public void processarGol(Time time) {
 		controlePartida.processarGol(time);
 		reversaoJogada();
 		Logger.logar("Gol " + time);
+		setDica("gol");
 
 	}
 
@@ -2139,6 +2142,9 @@ public class ControleJogo {
 	}
 
 	private void efetuaJogadaCliente() {
+		if (dadosJogoSrvMesa11 != null && dadosJogoSrvMesa11.isWo()) {
+			return;
+		}
 		Mesa11TO mesa11to = new Mesa11TO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
 				dadosJogoSrvMesa11);
@@ -2309,13 +2315,6 @@ public class ControleJogo {
 			tempoIniciado = System.currentTimeMillis();
 		}
 		this.jogoIniciado = jogoIniciado;
-	}
-
-	public void mudarDica() {
-		if (controleDicas != null) {
-			controleDicas.mudarDica();
-		}
-
 	}
 
 	public void fimJogoServidor() {

@@ -20,6 +20,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private boolean jogoTerminado;
 	private boolean jogoIniciado;
 	private boolean processando;
+	private boolean wo;
 	private String bolaCampoCasa;
 	private String bolaCampoVisita;
 	private int tempoJogo;
@@ -45,6 +46,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public boolean isProcessando() {
 		return processando;
+	}
+
+	public boolean isWo() {
+		return wo;
+	}
+
+	public void setWo(boolean wo) {
+		this.wo = wo;
 	}
 
 	public void setProcessando(boolean processando) {

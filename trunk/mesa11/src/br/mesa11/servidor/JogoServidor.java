@@ -70,8 +70,8 @@ public class JogoServidor {
 			dadosJogoSrvMesa11.setSaiuVisitante(true);
 		}
 		if (controleJogo != null) {
-			controleJogo.setJogoTerminado(true);
 			controleJogo.setDica("WO");
+			dadosJogoSrvMesa11.setWo(true);
 		}
 		saiuJogoNaoIniciado = true;
 	}
