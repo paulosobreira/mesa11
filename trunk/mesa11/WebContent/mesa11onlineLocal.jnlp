@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://www.f1mane.com/mesa11/" href="mesa11online.jnlp">
+	codebase="http://localhost:8080/mesa11/" href="mesa11onlineLocal.jnlp">
 	<information>
 		<title>Mesa11 Concentracao</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -8,7 +8,11 @@
 		<description>Mesa-11 (Futebol de Botao)</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
- 	</information>
+      <shortcut online="true">
+         <desktop/>
+         <menu submenu="Mesa11"/>
+      </shortcut>			
+	</information>
 
 	<security>
 		<all-permissions />
@@ -20,8 +24,8 @@
     </resources>
 
 	  <applet-desc 
-	      documentBase="http://www.f1mane.com/mesa11" 
-	      name="Mesa11 Concentracao" 
+	      documentBase="http://localhost:8080/mesa11" 
+	      name="Mesa11 Chat" 
 	      main-class="br.applet.Mesa11Applet" 
 	      width="820" 
 	      height="380"> 
