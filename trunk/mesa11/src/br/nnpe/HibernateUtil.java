@@ -48,7 +48,7 @@ public class HibernateUtil {
 	public static Session currentSession() {
 		Session s = (Session) sessionThreadLocal.get();
 		if (s == null) {
-			s = sessionFactory.openSession();
+			s = getSessionFactory().openSession();
 			sessionThreadLocal.set(s);
 		}
 		return s;
