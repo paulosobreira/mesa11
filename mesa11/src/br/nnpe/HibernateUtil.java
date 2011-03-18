@@ -1,5 +1,6 @@
 package br.nnpe;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AnnotationConfiguration;
 
@@ -40,5 +41,23 @@ public class HibernateUtil {
 			}
 		}
 		return sessionFactory;
+	}
+
+	public static final ThreadLocal sessionThreadLocal = new ThreadLocal();
+
+	public static Session currentSession() {
+		Session s = (Session) sessionThreadLocal.get();
+		if (s == null) {
+			s = sessionFactory.openSession();
+			sessionThreadLocal.set(s);
+		}
+		return s;
+	}
+
+	public static void closeSession() {
+		Session s = (Session) sessionThreadLocal.get();
+		if (s != null && s.isOpen())
+			s.close();
+		sessionThreadLocal.set(null);
 	}
 }

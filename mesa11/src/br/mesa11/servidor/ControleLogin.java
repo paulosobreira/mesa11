@@ -145,17 +145,22 @@ public class ControleLogin {
 	public Object logar(ClienteMesa11 clienteMesa11) {
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();
-		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
-				.list();
-		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
-		if (usuario == null) {
-			return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
+		try {
+			List usuarios = session.createCriteria(Usuario.class).add(
+					Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+					.list();
+			usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
+			if (usuario == null) {
+				return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
+			}
+			if (!usuario.getSenha().equals(clienteMesa11.getSenhaJogador())) {
+				return new MsgSrv(Lang.msg("senhaIncorreta"));
+			}
+			return criarSessao(usuario);
+		} finally {
+			HibernateUtil.closeSession();
 		}
-		if (!usuario.getSenha().equals(clienteMesa11.getSenhaJogador())) {
-			return new MsgSrv(Lang.msg("senhaIncorreta"));
-		}
-		return criarSessao(usuario);
+
 	}
 
 	public Object novoCapcha() {

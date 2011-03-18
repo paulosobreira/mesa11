@@ -7,6 +7,7 @@ import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
 import br.mesa11.servidor.ControlePersistencia;
 import br.mesa11.servidor.MonitorAtividade;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.tos.ClienteMesa11;
 import br.tos.DadosJogoSrvMesa11;
@@ -106,7 +107,12 @@ public class ProxyComandos {
 			return controleJogosServidor.obterTodasImagens();
 		} else if (ConstantesMesa11.VER_CLASSIFICACAO.equals(mesa11TO
 				.getComando())) {
-			return controleJogosServidor.obterClassificacao();
+			try {
+				return controleJogosServidor.obterClassificacao();
+			} finally {
+				HibernateUtil.closeSession();
+			}
+
 		}
 
 		return null;

@@ -42,20 +42,15 @@ public class ControlePersistencia {
 
 	private String webDir;
 
-	private static Session session;
-
 	public static Session getSession() {
-		if (session == null)
-			session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateUtil.currentSession();
 		try {
 			List jogador = session.createCriteria(Usuario.class).add(
 					Restrictions.eq("id", new Long(0))).list();
 		} catch (Exception e) {
-			if (session != null) {
-				session.close();
-			}
+			HibernateUtil.closeSession();
 			Logger.novaSession = true;
-			session = HibernateUtil.getSessionFactory().openSession();
+			session = HibernateUtil.currentSession();
 		}
 		return session;
 	}
@@ -216,27 +211,37 @@ public class ControlePersistencia {
 
 	public Object obterTimesJogador(String nomeJogador) {
 		Session session = ControlePersistencia.getSession();
-		List times = session.createCriteria(Time.class).add(
-				Restrictions.eq("nomeJogador", nomeJogador)).list();
-		String[] retorno = new String[times.size()];
-		int i = 0;
-		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
-			Time time = (Time) iterator.next();
-			retorno[i] = time.getNome();
-			i++;
+		try {
+			List times = session.createCriteria(Time.class).add(
+					Restrictions.eq("nomeJogador", nomeJogador)).list();
+			String[] retorno = new String[times.size()];
+			int i = 0;
+			for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+				Time time = (Time) iterator.next();
+				retorno[i] = time.getNome();
+				i++;
+			}
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(retorno);
+			return mesa11to;
+		} finally {
+			HibernateUtil.closeSession();
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
-		mesa11to.setData(retorno);
-		return mesa11to;
+
 	}
 
 	public Time obterTime(String nome) {
 		Session session = ControlePersistencia.getSession();
-		Time time = (Time) session.createCriteria(Time.class).add(
-				Restrictions.eq("nome", nome)).uniqueResult();
-		time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
-		session.evict(time);
-		return time;
+		try {
+			Time time = (Time) session.createCriteria(Time.class).add(
+					Restrictions.eq("nome", nome)).uniqueResult();
+			time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
+			session.evict(time);
+			return time;
+		} finally {
+			HibernateUtil.closeSession();
+		}
+
 	}
 
 	public Object obterTodosTimes() {
@@ -297,17 +302,19 @@ public class ControlePersistencia {
 		Session session = ControlePersistencia.getSession();
 		return session.createCriteria(PartidaMesa11.class).add(
 				Restrictions.eq("nomeJogadorCasa", login)).list();
+
 	}
 
 	public List obterPartidasJogadorVisita(String login) {
 		Session session = ControlePersistencia.getSession();
 		return session.createCriteria(PartidaMesa11.class).add(
 				Restrictions.eq("nomeJogadorVisita", login)).list();
+
 	}
 
 	public Collection obterTimesPartidas() {
 		Set partidas = new HashSet();
-		List list = session.createCriteria(PartidaMesa11.class).list();
+		List list = getSession().createCriteria(PartidaMesa11.class).list();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
 			partidas.add(partidaMesa11.getNomeTimeCasa());
@@ -318,7 +325,7 @@ public class ControlePersistencia {
 
 	public Collection obterJogadoresPartidas() {
 		Set jogadores = new HashSet();
-		List list = session.createCriteria(PartidaMesa11.class).list();
+		List list = getSession().createCriteria(PartidaMesa11.class).list();
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
 			jogadores.add(partidaMesa11.getNomeJogadorCasa());
