@@ -42,7 +42,7 @@ public class ControleEvento implements Runnable {
 			} else {
 				controleJogo.zerarJogadas();
 				controleJogo.reversaoJogada();
-				controleJogo.setDica("reversao");
+				
 			}
 		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(evento
 				.getEventoCod())
