@@ -3,9 +3,15 @@ package br.mesa11.cliente;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jnlp.FileContents;
+import javax.jnlp.PersistenceService;
+import javax.jnlp.ServiceManager;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -86,6 +92,27 @@ public class ControleChatCliente {
 	public void logar() {
 		formLogin = new FormLogin(mesa11Applet);
 		formLogin.setToolTipText(Lang.msg("formularioLogin"));
+		try {
+			PersistenceService persistenceService = (PersistenceService) ServiceManager
+					.lookup("javax.jnlp.PersistenceService");
+			FileContents fileContents = persistenceService.get(mesa11Applet
+					.getCodeBase());
+			if (fileContents == null) {
+				Logger.logar(" fileContents == null  ");
+			}
+			ObjectInputStream ois = new ObjectInputStream(fileContents
+					.getInputStream());
+			Map map = (Map) ois.readObject();
+			String login = (String) map.get("login");
+			String pass = (String) map.get("pass");
+			if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
+				formLogin.getNome().setText(login);
+				formLogin.getSenha().setText(pass);
+				formLogin.getLembrar().setSelected(true);
+			}
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				formLogin, Lang.msg("formularioLogin"),
 				JOptionPane.OK_CANCEL_OPTION);
@@ -93,6 +120,39 @@ public class ControleChatCliente {
 		if (JOptionPane.OK_OPTION == result) {
 			registrarUsuario();
 			atualizaVisao();
+			if (formLogin.getLembrar().isSelected()) {
+				try {
+					PersistenceService persistenceService = (PersistenceService) ServiceManager
+							.lookup("javax.jnlp.PersistenceService");
+					FileContents fileContents = null;
+					try {
+						fileContents = persistenceService.get(mesa11Applet
+								.getCodeBase());
+					} catch (Exception e) {
+						persistenceService.create(mesa11Applet.getCodeBase(),
+								1024);
+						fileContents = persistenceService.get(mesa11Applet
+								.getCodeBase());
+					}
+
+					if (fileContents == null) {
+						Logger.logar(" fileContents == null  ");
+
+					}
+
+					Map map = new HashMap();
+					map.put("login", formLogin.getNome().getText());
+					map.put("pass", String.valueOf((formLogin.getSenha()
+							.getPassword())));
+					ObjectOutputStream stream = new ObjectOutputStream(
+							fileContents.getOutputStream(true));
+					stream.writeObject(map);
+					stream.flush();
+
+				} catch (Exception e) {
+					Logger.logarExept(e);
+				}
+			}
 		}
 
 	}
