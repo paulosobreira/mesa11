@@ -48,6 +48,7 @@ public class ControlePersistencia {
 			List jogador = session.createCriteria(Usuario.class).add(
 					Restrictions.eq("id", new Long(0))).list();
 		} catch (Exception e) {
+			Logger.logarExept(e);
 			HibernateUtil.closeSession();
 			Logger.novaSession = true;
 			session = HibernateUtil.currentSession();
