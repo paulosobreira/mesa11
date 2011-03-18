@@ -59,13 +59,24 @@ public class FormLogin extends JPanel {
 		}
 	};
 
+	public JCheckBox getLembrar() {
+		return lembrar;
+	}
+
+	public void setLembrar(JCheckBox lembrar) {
+		this.lembrar = lembrar;
+	}
+
 	public FormLogin(Mesa11Applet mesa11Applet) {
 		this.mesa11Applet = mesa11Applet;
 
 		setLayout(new BorderLayout());
 		JTabbedPane jTabbedPane = new JTabbedPane();
 		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
-		panelAba1.add(gerarLogin(), BorderLayout.CENTER);
+		JPanel sulaba1 = new JPanel(new BorderLayout());
+		sulaba1.add(gerarLogin(), BorderLayout.CENTER);
+		sulaba1.add(gerarLembrar(), BorderLayout.SOUTH);
+		panelAba1.add(sulaba1, BorderLayout.CENTER);
 		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
 		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
 		JPanel panelAba2 = new JPanel(new BorderLayout());
@@ -77,6 +88,22 @@ public class FormLogin extends JPanel {
 		}
 		setSize(300, 300);
 		setVisible(true);
+	}
+
+	private JCheckBox lembrar = new JCheckBox();
+
+	private Component gerarLembrar() {
+		lembrar = new JCheckBox();
+		JPanel langPanel = new JPanel();
+		langPanel.add(lembrar);
+		langPanel.add(new JLabel() {
+			@Override
+			public String getText() {
+				// TODO Auto-generated method stub
+				return Lang.msg("lembrar");
+			}
+		});
+		return langPanel;
 	}
 
 	private JPanel gerarIdiomas() {
