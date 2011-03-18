@@ -422,12 +422,12 @@ public class ControlePartida {
 
 	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,
 			Time time) {
-		
+
 		if (controleJogo != null && controleJogo.isJogoOnlineSrvidor()) {
 			return;
 		}
 		controleJogo.incrementaBarraCarregando();
-		
+
 		BufferedImage buff = null;
 		boolean imgCust = false;
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
@@ -563,8 +563,8 @@ public class ControlePartida {
 	public void verificaFalhaPorTempo() {
 		if (tempoJogadaFimMilis < System.currentTimeMillis()) {
 			Logger.logar("verificaFalhaPorTempo");
-			controleJogo.mudarDica();
 			reversaoJogada();
+			controleJogo.setDica("reversao");
 		}
 	}
 
@@ -603,10 +603,11 @@ public class ControlePartida {
 			virouTimes = true;
 
 			Logger.logar("Intervalo");
+			controleJogo.setDica("intervalo");
 			if (controleJogo.isJogoOnlineSrvidor()) {
 				while (controleJogo.isAnimando()) {
 					try {
-						Thread.sleep(100);
+						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						Logger.logarExept(e);
 					}

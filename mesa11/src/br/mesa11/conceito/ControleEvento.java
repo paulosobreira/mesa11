@@ -42,6 +42,7 @@ public class ControleEvento implements Runnable {
 			} else {
 				controleJogo.zerarJogadas();
 				controleJogo.reversaoJogada();
+				controleJogo.setDica("reversao");
 			}
 		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(evento
 				.getEventoCod())
@@ -51,22 +52,26 @@ public class ControleEvento implements Runnable {
 			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
 		} else if (ConstantesMesa11.LATERAL.equals(evento.getEventoCod())) {
 			controleJogo.porcessaLateral();
+			controleJogo.setDica("lateral");
 		} else if (!evento.isNaBola()) {
 			controleJogo.reversaoJogada();
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
 				.equals(evento.getEventoCod())) {
 			Logger.logar("GOLEIRO_DEFESA ultimo contato "
 					+ evento.getUltimoContato());
+			controleJogo.setDica("defesaGoleiro");
 			if (evento.getUltimoContato() != null
 					&& !(evento.getUltimoContato() instanceof Goleiro)
 					&& evento.getUltimoContato().getTime() != null
 					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
 							.getUltimoContato().getTime())) {
 				controleJogo.reversaoJogada();
+				controleJogo.setDica("reversao");
 			}
 			if (evento.getUltimoContato().getTime().obterGoleiro().equals(
 					evento.getUltimoContato())) {
 				controleJogo.reversaoJogada();
+				controleJogo.setDica("reversao");
 			}
 		} else if (ConstantesMesa11.META_ESCANTEIO
 				.equals(evento.getEventoCod())) {
