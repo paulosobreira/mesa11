@@ -37,10 +37,10 @@ import br.recursos.Lang;
 public class MesaPanel extends JPanel {
 
 	public static final Long zero = new Long(0);
-	// public final static Color green2 = new Color(0, 200, 0, 150);
-	// public final static Color green = new Color(0, 255, 0, 150);
-	public final static Color green2 = Color.white;
-	public final static Color green = Color.white;
+	public final static Color green2 = new Color(0, 200, 0, 150);
+	public final static Color green = new Color(0, 255, 0, 150);
+	// public final static Color green2 = Color.white;
+	// public final static Color green = Color.white;
 	public final static Color lightWhite = new Color(255, 255, 255, 200);
 	public final static Color red = new Color(250, 0, 0, 150);
 	public static final String MUTEX = "MUTEX";
@@ -809,13 +809,11 @@ public class MesaPanel extends JPanel {
 					// g.fill(zoomedFaixasGrama[contFaixas]);
 					if (limitesViewPort
 							.intersects(zoomedFaixasGrama[contFaixas])) {
-						if (!Logger.debug) {
-							g.drawImage(grama1Zoomed,
-									Util.inte(zoomedFaixasGrama[contFaixas]
-											.getX()), Util
-											.inte(zoomedFaixasGrama[contFaixas]
-													.getY()), null);
-						}
+						g.drawImage(
+								grama1Zoomed,
+								Util.inte(zoomedFaixasGrama[contFaixas].getX()),
+								Util.inte(zoomedFaixasGrama[contFaixas].getY()),
+								null);
 					}
 
 				}
@@ -830,11 +828,9 @@ public class MesaPanel extends JPanel {
 						((ALTURA_FAIXA) * zoom));
 
 				if (limitesViewPort.intersects(zoomedFaixasGrama[i])) {
-					if (!Logger.debug) {
-						g.drawImage(grama2Zoomed,
-								Util.inte(zoomedFaixasGrama[i].getX()),
-								Util.inte(zoomedFaixasGrama[i].getY()), null);
-					}
+					g.drawImage(grama2Zoomed,
+							Util.inte(zoomedFaixasGrama[i].getX()),
+							Util.inte(zoomedFaixasGrama[i].getY()), null);
 				}
 
 			}
