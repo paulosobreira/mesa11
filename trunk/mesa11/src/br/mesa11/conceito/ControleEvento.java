@@ -50,11 +50,13 @@ public class ControleEvento implements Runnable {
 				.equals(evento.getUltimoContato().getTime()))) {
 			controleJogo.zerarJogadas();
 			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
+			
 		} else if (ConstantesMesa11.LATERAL.equals(evento.getEventoCod())) {
 			controleJogo.porcessaLateral();
 			controleJogo.setDica("lateral");
 		} else if (!evento.isNaBola()) {
 			controleJogo.reversaoJogada();
+			controleJogo.setDica("reversao");
 		} else if (ConstantesMesa11.GOLEIRO_DEFESA
 				.equals(evento.getEventoCod())) {
 			Logger.logar("GOLEIRO_DEFESA ultimo contato "

@@ -1451,6 +1451,7 @@ public class ControleJogo {
 				levouFalta.setCentroTodos(new Point(penalBaixo.x, penalBaixo.y
 						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
+				setDica("penalti");
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);
@@ -1460,6 +1461,7 @@ public class ControleJogo {
 							levouFalta.getDiamentro(), ponto);
 					levouFalta.setCentroTodos(p);
 					bola.setCentroTodos(ponto);
+					setDica("falta");
 				}
 			}
 		} else {
@@ -1474,6 +1476,7 @@ public class ControleJogo {
 				levouFalta.setCentroTodos(new Point(penalCima.x, penalCima.y
 						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
+				setDica("penalti");
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);
@@ -2221,7 +2224,9 @@ public class ControleJogo {
 						|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
 						|| "golContra".equals(dadosJogoSrvMesa11.getDica())
 						|| "meta".equals(dadosJogoSrvMesa11.getDica())
-						|| "escanteio".equals(dadosJogoSrvMesa11.getDica())) {
+						|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
+						|| "penalti".equals(dadosJogoSrvMesa11.getDica())
+						|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
 					atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
 				} else {
 					atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
@@ -2493,8 +2498,8 @@ public class ControleJogo {
 				break;
 			}
 		}
-		while ((btnPrximo != null && GeoUtil.distaciaEntrePontos(
-				btnPrximo.getCentro(), ptDstBola) > GeoUtil
+		while ((btnPrximo != null && ptDstBola != null && GeoUtil
+				.distaciaEntrePontos(btnPrximo.getCentro(), ptDstBola) > GeoUtil
 				.distaciaEntrePontos(btnPrximo.getCentro(), bola.getCentro()))
 				&& GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(),
 						bola.getCentro()) > btnPrximo.getRaio()
@@ -2582,11 +2587,21 @@ public class ControleJogo {
 			chutarGol = true;
 		}
 		boolean nabola = false;
+		Point penalBaixo = mesaPanel.getPenaltyBaixo().getLocation();
+		penalBaixo = new Point(penalBaixo.x + getBola().getRaio(), penalBaixo.y
+				+ getBola().getRaio());
+		Point penalCima = mesaPanel.getPenaltyCima().getLocation();
+		penalCima = new Point(penalCima.x + getBola().getRaio(), penalCima.y
+				+ getBola().getRaio());
+
 		if (bola.getCentro().equals(gol)) {
 			nabola = true;
 		}
 		if (recuarGoleiro) {
 			forca *= 1.5;
+		} else if (penalBaixo.equals(bola.getCentro())
+				|| penalCima.equals(bola.getCentro())) {
+			forca *= 10;
 		} else if (verificaBolaCentro()) {
 			forca = Util.intervalo(30, 40);
 		} else if (verificaBolaEscanteio()) {
