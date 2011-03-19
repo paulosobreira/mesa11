@@ -70,6 +70,7 @@ public class MonitorJogo extends Thread {
 					&& controleJogo != null && !controleJogo.isAnimando()
 					&& !controleJogo.isEsperandoJogadaOnline()
 					&& controleJogo.verificaPosicaoDiffBotoes()) {
+				Logger.logar("atualizaBotoesClienteOnline(");
 				controleJogo.atualizaBotoesClienteOnline(
 						this.timeStampAnimacao, true);
 			}
