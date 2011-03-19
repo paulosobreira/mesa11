@@ -2217,8 +2217,16 @@ public class ControleJogo {
 						Logger.logarExept(e);
 					}
 				}
-				atualizaBotoesClienteOnline(animacao.getTimeStamp(),
-						animacao.getObjetoAnimacao() != null);
+				if ("gol".equals(dadosJogoSrvMesa11.getDica())
+						|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
+						|| "golContra".equals(dadosJogoSrvMesa11.getDica())
+						|| "meta".equals(dadosJogoSrvMesa11.getDica())
+						|| "escanteio".equals(dadosJogoSrvMesa11.getDica())) {
+					atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
+				} else {
+					atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
+				}
+
 				esperandoJogadaOnline = false;
 			}
 		});
