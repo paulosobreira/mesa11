@@ -22,6 +22,7 @@ public class MonitorJogo extends Thread {
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
 	private boolean jogoTerminado;
+	private int erroComunic = 0;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -44,7 +45,13 @@ public class MonitorJogo extends Thread {
 			if (controleJogo != null) {
 				atualizaDadosJogoSrvMesa11();
 				jogoTerminado = controleJogo.isJogoTerminado();
+				if (erroComunic > 20) {
+					jogoTerminado = true;
+				}
 			}
+		}
+		if (jogoTerminado) {
+			controleJogo.setDica("fimJogo");
 		}
 	}
 
@@ -85,13 +92,14 @@ public class MonitorJogo extends Thread {
 			}
 
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
+			if (erroComunic >= 0) {
+				erroComunic--;
+			}
 		} else {
-			jogoTerminado = true;
+			erroComunic++;
 		}
 		if (dadosJogoSrvMesa11 == null) {
 			return;
-		} else {
-			jogoTerminado = true;
 		}
 		dormir(tempoDormir);
 		mesa11to = new Mesa11TO();
@@ -106,8 +114,11 @@ public class MonitorJogo extends Thread {
 				timeStampAnimacao = animacao.getTimeStamp();
 				controleJogo.executaAnimacao(animacao);
 			}
+			if (erroComunic >= 0) {
+				erroComunic--;
+			}
 		} else {
-			jogoTerminado = true;
+			erroComunic++;
 		}
 	}
 
