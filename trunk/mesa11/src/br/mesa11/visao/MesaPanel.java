@@ -610,16 +610,27 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(lightWhite);
 			corTexto = Color.BLACK;
 		}
+		Font fontOri = g2d.getFont();
+		if (!dica.startsWith("dica"))
+			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
+
 		String msg = Lang.msg(dica);
 		int largura = 0;
 		for (int i = 0; i < msg.length(); i++) {
 			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
 		}
 		x -= largura / 2;
-		g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 10, 10);
+
+		if (!dica.startsWith("dica")) {
+			g2d.fillRoundRect(x - 10, y - 40, largura + 20, 45, 10, 10);
+		} else {
+			g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 10, 10);
+		}
+
 		g2d.setColor(corTexto);
 		g2d.drawString("" + msg, x, y);
 
+		g2d.setFont(fontOri);
 	}
 
 	private void desennhaCirculo(Graphics g2d) {

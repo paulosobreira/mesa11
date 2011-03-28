@@ -1486,6 +1486,7 @@ public class ControleJogo {
 							levouFalta.getDiamentro(), ponto);
 					levouFalta.setCentroTodos(p);
 					bola.setCentroTodos(ponto);
+					setDica("falta");
 				}
 			}
 		}
