@@ -611,7 +611,7 @@ public class MesaPanel extends JPanel {
 			corTexto = Color.BLACK;
 		}
 		Font fontOri = g2d.getFont();
-		if (!dica.startsWith("dica"))
+		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica"))
 			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
 
 		String msg = Lang.msg(dica);
@@ -621,7 +621,7 @@ public class MesaPanel extends JPanel {
 		}
 		x -= largura / 2;
 
-		if (!dica.startsWith("dica")) {
+		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica")) {
 			g2d.fillRoundRect(x - 10, y - 40, largura + 20, 45, 10, 10);
 		} else {
 			g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 10, 10);
