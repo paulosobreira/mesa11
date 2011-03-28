@@ -65,6 +65,15 @@ public class MonitorJogo extends Thread {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
+			if ("gol".equals(dadosJogoSrvMesa11.getDica())
+					|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
+					|| "golContra".equals(dadosJogoSrvMesa11.getDica())
+					|| "meta".equals(dadosJogoSrvMesa11.getDica())
+					|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
+					|| "penalti".equals(dadosJogoSrvMesa11.getDica())
+					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+				controleJogo.centralizaBola();
+			}
 			if (timeVez != null
 					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
 					&& controleJogo != null && !controleJogo.isAnimando()
