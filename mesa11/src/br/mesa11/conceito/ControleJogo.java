@@ -290,7 +290,7 @@ public class ControleJogo {
 						.getViewport().getWidth())
 						|| p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 								.getViewport().getHeight()))) {
-					mesaPanel.zoom += .025;
+					mesaPanel.zoom += .050;
 					return;
 				}
 				novoPontoTela = p;
