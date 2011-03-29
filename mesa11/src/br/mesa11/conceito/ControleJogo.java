@@ -117,6 +117,7 @@ public class ControleJogo {
 	private String codeBase;
 	private JProgressBar progressBar;
 	private JFrame progressBarFrame;
+	private Point posicaoBolaJogada;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -668,6 +669,14 @@ public class ControleJogo {
 					return false;
 				}
 				if (goleiro.getShape(1).intersects(r)) {
+					if (posicaoBolaJogada != null
+							&& (mesaPanel.getPequenaAreaBaixo().contains(
+									posicaoBolaJogada) || mesaPanel
+									.getPequenaAreaCima().contains(
+											posicaoBolaJogada))) {
+						return true;
+					}
+
 					if (Math.random() > goleiro.getDefesa() / 1000.0) {
 						bolaIngnora.add(goleiro);
 						Logger.logar("frango");
@@ -1969,6 +1978,9 @@ public class ControleJogo {
 		if (isJogoOnlineSrvidor()) {
 			mudarDica();
 		}
+		if (bola != null) {
+			posicaoBolaJogada = bola.getCentro();
+		}
 		Evento evento = new Evento();
 		animacaoCliente = null;
 		animacaoJogada = null;
@@ -1977,72 +1989,72 @@ public class ControleJogo {
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
+			if (!veririficaVez(botao)) {
+				continue;
+			}
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p1)) {
-					if (veririficaVez(goleiro)) {
-						boolean returnGoleiro = false;
-						double rotacao = goleiro.getRotacao();
-						Point centroGoleiro = goleiro.getCentro();
-						double retaGoleiro = GeoUtil.distaciaEntrePontos(
-								goleiro.getCentro(), p1);
+					boolean returnGoleiro = false;
+					double rotacao = goleiro.getRotacao();
+					Point centroGoleiro = goleiro.getCentro();
+					double retaGoleiro = GeoUtil.distaciaEntrePontos(goleiro
+							.getCentro(), p1);
 
-						if (retaGoleiro > (goleiro.getRaio() / 2)) {
-							goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
-									.getCentro(), p2, 0));
-							if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
-									.getGrandeAreaCima().contains(
-											goleiro.getShape(1).getBounds()) || mesaPanel
-									.getAreaGolCima().intersects(
-											goleiro.getShape(1).getBounds()))
+					if (retaGoleiro > (goleiro.getRaio() / 2)) {
+						goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
+								.getCentro(), p2, 0));
+						if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
+								.getGrandeAreaCima().contains(
+										goleiro.getShape(1).getBounds()) || mesaPanel
+								.getAreaGolCima().intersects(
+										goleiro.getShape(1).getBounds()))
 
-							) || (goleiro.getTime().equals(getTimeBaixo()) && (mesaPanel
-									.getGrandeAreaBaixo().contains(
-											goleiro.getShape(1).getBounds()) || mesaPanel
-									.getAreaGolBaixo().intersects(
-											goleiro.getShape(1).getBounds()))))
-									&& !goleiro.getShape(1).intersects(
-											bola.getShape(1).getBounds2D())) {
-								evento.setPonto(p2);
-								evento
-										.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+						) || (goleiro.getTime().equals(getTimeBaixo()) && (mesaPanel
+								.getGrandeAreaBaixo().contains(
+										goleiro.getShape(1).getBounds()) || mesaPanel
+								.getAreaGolBaixo().intersects(
+										goleiro.getShape(1).getBounds()))))
+								&& !goleiro.getShape(1).intersects(
+										bola.getShape(1).getBounds2D())) {
+							evento.setPonto(p2);
+							evento
+									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
 
-								returnGoleiro = true;
-							} else {
-								goleiro.setRotacao(rotacao);
-							}
+							returnGoleiro = true;
 						} else {
+							goleiro.setRotacao(rotacao);
+						}
+					} else {
+						goleiro.setCentroTodos(p2);
+						if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
+								.getGrandeAreaCima().contains(
+										goleiro.getShape(1).getBounds()) || mesaPanel
+								.getAreaGolCima().intersects(
+										goleiro.getShape(1).getBounds()))) || (goleiro
+								.getTime().equals(getTimeBaixo()) && (mesaPanel
+								.getGrandeAreaBaixo().contains(
+										goleiro.getShape(1).getBounds()) || mesaPanel
+								.getAreaGolBaixo().intersects(
+										goleiro.getShape(1).getBounds()))))
+								&& !goleiro.getShape(1).intersects(
+										bola.getShape(1).getBounds2D())) {
 							goleiro.setCentroTodos(p2);
-							if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
-									.getGrandeAreaCima().contains(
-											goleiro.getShape(1).getBounds()) || mesaPanel
-									.getAreaGolCima().intersects(
-											goleiro.getShape(1).getBounds()))) || (goleiro
-									.getTime().equals(getTimeBaixo()) && (mesaPanel
-									.getGrandeAreaBaixo().contains(
-											goleiro.getShape(1).getBounds()) || mesaPanel
-									.getAreaGolBaixo().intersects(
-											goleiro.getShape(1).getBounds()))))
-									&& !goleiro.getShape(1).intersects(
-											bola.getShape(1).getBounds2D())) {
-								goleiro.setCentroTodos(p2);
-								evento.setPonto(p2);
-								evento
-										.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
-								returnGoleiro = true;
-							} else {
-								goleiro.setCentroTodos(centroGoleiro);
-							}
+							evento.setPonto(p2);
+							evento.setEventoCod(ConstantesMesa11.GOLEIRO_MOVEU);
+							returnGoleiro = true;
+						} else {
+							goleiro.setCentroTodos(centroGoleiro);
 						}
-						setPontoClicado(null);
-						if (isJogoOnlineSrvidor() && returnGoleiro) {
-							animacaoCliente = new Animacao();
-							animacaoCliente.setTimeStamp(System
-									.currentTimeMillis());
-						}
-
-						return returnGoleiro;
 					}
+					setPontoClicado(null);
+					if (isJogoOnlineSrvidor() && returnGoleiro) {
+						animacaoCliente = new Animacao();
+						animacaoCliente
+								.setTimeStamp(System.currentTimeMillis());
+					}
+
+					return returnGoleiro;
 				}
 			}
 			if (botao.getCentro() == null) {
