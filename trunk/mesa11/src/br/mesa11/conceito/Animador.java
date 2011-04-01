@@ -38,13 +38,22 @@ public class Animador implements Runnable {
 		Botao botao = (Botao) controleJogo.getBotoes().get(
 				anim.getObjetoAnimacao());
 		List elements = anim.getPontosAnimacao();
+		double div = elements.size();
+		double porcentOld = 0;
+		boolean pula = false;
 		for (int i = 0; i < elements.size(); i++) {
+			double index = (i / div);
+			double porcent = index * 100.0;
 			Object object = (Object) elements.get(i);
 			if (object instanceof Point) {
 				Point point = (Point) object;
-				if (i % 2 == 0) {
+				if (pula) {
+					pula = !pula;
 					continue;
+				} else {
+					pula = !pula;
 				}
+
 				if (controleJogo.verificaForaDosLimites(point)) {
 					return;
 				}
@@ -72,17 +81,19 @@ public class Animador implements Runnable {
 								}
 							}
 						}
-						if (i % 3 == 0) {
+						if (porcent - porcentOld > 1 - index) {
+							porcentOld = porcent;
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
 							if (!controleJogo.isJogoOnlineSrvidor())
-								Thread.sleep(10);
+								Thread.sleep(5);
 						}
 
 					} else {
-						if (i % 3 == 0) {
+						if (porcent - porcentOld > 1 - index) {
+							porcentOld = porcent;
 							if (!controleJogo.isJogoOnlineSrvidor())
-								Thread.sleep(15);
+								Thread.sleep(10);
 						}
 					}
 				} catch (InterruptedException e) {
@@ -100,6 +111,7 @@ public class Animador implements Runnable {
 					thread.start();
 				}
 			}
+
 		}
 	}
 
