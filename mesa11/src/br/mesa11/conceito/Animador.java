@@ -5,10 +5,8 @@ import java.util.List;
 
 import br.hibernate.Bola;
 import br.hibernate.Botao;
-import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
-import br.tos.Mesa11TO;
-import br.tos.PosicaoBtnsSrvMesa11;
+import br.nnpe.Util;
 
 public class Animador implements Runnable {
 
@@ -40,6 +38,7 @@ public class Animador implements Runnable {
 		List elements = anim.getPontosAnimacao();
 		double div = elements.size();
 		double porcentOld = 0;
+		int porcentOldDiv10 = 0;
 		boolean pula = false;
 		for (int i = 0; i < elements.size(); i++) {
 			double index = (i / div);
@@ -85,15 +84,33 @@ public class Animador implements Runnable {
 							porcentOld = porcent;
 							controleJogo
 									.centralizaBotao(controleJogo.getBola());
-							if (!controleJogo.isJogoOnlineSrvidor())
+							if (!controleJogo.isJogoOnlineSrvidor()) {
+								int porcentDiv10 = Util.inte(porcent / 10);
+								int sleep = 5 + porcentDiv10 - porcentOldDiv10;
+								if (sleep > 15) {
+									sleep = 15;
+								}
+								Thread.sleep(sleep);
+								porcentOldDiv10 = porcentDiv10;
+							} else {
 								Thread.sleep(5);
+							}
 						}
 
 					} else {
 						if (porcent - porcentOld > 1 - index) {
 							porcentOld = porcent;
-							if (!controleJogo.isJogoOnlineSrvidor())
-								Thread.sleep(10);
+							if (!controleJogo.isJogoOnlineSrvidor()) {
+								int porcentDiv10 = Util.inte(porcent / 10);
+								int sleep = 7 + porcentDiv10 - porcentOldDiv10;
+								if (sleep > 17) {
+									sleep = 17;
+								}
+								Thread.sleep(sleep);
+								porcentOldDiv10 = porcentDiv10;
+							} else {
+								Thread.sleep(7);
+							}
 						}
 					}
 				} catch (InterruptedException e) {

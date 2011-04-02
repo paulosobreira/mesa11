@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class ClassificacaoTime implements Serializable {
 	private String time;
+	private int jogos;
 	private int vitorias;
 	private int empates;
 	private int derrotas;
@@ -16,6 +17,20 @@ public class ClassificacaoTime implements Serializable {
 		return time + " V " + getVitorias() + " E " + getEmpates() + " SG "
 				+ getSaldoGols() + " G " + getGolsFavor();
 	}
+	
+	
+
+	public int getJogos() {
+		return jogos;
+	}
+
+
+
+	public void setJogos(int jogos) {
+		this.jogos = jogos;
+	}
+
+
 
 	public String getTime() {
 		return time;

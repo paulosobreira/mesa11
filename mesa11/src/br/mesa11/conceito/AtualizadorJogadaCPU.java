@@ -49,19 +49,19 @@ public class AtualizadorJogadaCPU extends Thread {
 							ultJogada = System.currentTimeMillis();
 							if ((jogadaCpu != null && jogadaCpu.isAlive())) {
 								jogadaCpu.interrupt();
+							} else {
+								jogadaCpu = new Thread(new Runnable() {
+									@Override
+									public void run() {
+										iniJogada = System.currentTimeMillis();
+										controleJogo.jogadaCPU();
+										Logger.logar("Tempo Jogada Cpu "
+												+ (System.currentTimeMillis() - iniJogada));
+									}
+								});
+								jogadaCpu.setPriority(MIN_PRIORITY);
+								jogadaCpu.start();
 							}
-
-							jogadaCpu = new Thread(new Runnable() {
-								@Override
-								public void run() {
-									iniJogada = System.currentTimeMillis();
-									controleJogo.jogadaCPU();
-									Logger.logar("Tempo Jogada Cpu "
-											+ (System.currentTimeMillis() - iniJogada));
-								}
-							});
-							jogadaCpu.setPriority(MIN_PRIORITY);
-							jogadaCpu.start();
 						}
 					} finally {
 						controleJogo.setProcessando(false);

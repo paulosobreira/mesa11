@@ -4,7 +4,7 @@ public class ConstantesMesa11 {
 
 	public static boolean modoZip = true;
 
-	public static final String TITULO_VERSAO = "Mesa11 Ver 1.10";
+	public static final String TITULO_VERSAO = "Mesa11 Ver 1.11";
 
 	public static String CAMPO_CIMA = "CAMPO_CIMA";
 

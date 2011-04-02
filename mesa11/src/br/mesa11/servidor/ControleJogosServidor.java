@@ -161,8 +161,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome().equals(
-				jogadaMesa11.getTimeClienteOnline())
+		if (controleJogo.timeJogadaVez().getNome()
+				.equals(jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
@@ -354,6 +354,7 @@ public class ControleJogosServidor {
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				classificacaoTime.setJogos(classificacaoTime.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoTime.setVitorias(classificacaoTime
@@ -369,8 +370,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -389,6 +389,7 @@ public class ControleJogosServidor {
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				classificacaoTime.setJogos(classificacaoTime.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoTime.setVitorias(classificacaoTime
@@ -404,8 +405,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -421,9 +421,9 @@ public class ControleJogosServidor {
 				ClassificacaoTime c1 = (ClassificacaoTime) o1;
 				ClassificacaoTime c2 = (ClassificacaoTime) o2;
 				String val1 = "" + c1.getVitorias() + c1.getEmpates()
-						+ c1.getSaldoGols() + c1.getGolsFavor();
+						+ c1.getSaldoGols() + c1.getGolsFavor() + c1.getJogos();
 				String val2 = "" + c2.getVitorias() + c2.getEmpates()
-						+ c2.getSaldoGols() + c2.getGolsFavor();
+						+ c2.getSaldoGols() + c2.getGolsFavor() + c2.getJogos();
 				return val2.compareTo(val1);
 			}
 		});
@@ -446,6 +446,8 @@ public class ControleJogosServidor {
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				classificacaoUsuario
+						.setJogos(classificacaoUsuario.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoUsuario.setVitorias(classificacaoUsuario
@@ -459,11 +461,9 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -482,6 +482,8 @@ public class ControleJogosServidor {
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
+				classificacaoUsuario
+						.setJogos(classificacaoUsuario.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoUsuario.setVitorias(classificacaoUsuario
@@ -495,11 +497,9 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -515,9 +515,9 @@ public class ControleJogosServidor {
 				ClassificacaoUsuario c1 = (ClassificacaoUsuario) o1;
 				ClassificacaoUsuario c2 = (ClassificacaoUsuario) o2;
 				String val1 = "" + c1.getVitorias() + c1.getEmpates()
-						+ c1.getSaldoGols() + c1.getGolsFavor();
+						+ c1.getSaldoGols() + c1.getGolsFavor() + c1.getJogos();
 				String val2 = "" + c2.getVitorias() + c2.getEmpates()
-						+ c2.getSaldoGols() + c2.getGolsFavor();
+						+ c2.getSaldoGols() + c2.getGolsFavor() + c2.getJogos();
 				return val2.compareTo(val1);
 			}
 		});
