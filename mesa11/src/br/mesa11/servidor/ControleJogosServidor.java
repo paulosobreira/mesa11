@@ -370,7 +370,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -405,7 +405,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -463,7 +463,7 @@ public class ControleJogosServidor {
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
 						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -499,7 +499,7 @@ public class ControleJogosServidor {
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
 						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
