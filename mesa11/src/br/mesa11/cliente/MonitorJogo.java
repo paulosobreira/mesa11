@@ -37,7 +37,7 @@ public class MonitorJogo extends Thread {
 
 	@Override
 	public void run() {
-		while (controleChatCliente.isComunicacaoServer() && !jogoTerminado) {
+		while (!jogoTerminado) {
 			dormir(tempoDormir);
 			if (timesSelecionados() && controleJogo == null) {
 				iniciaJogo();
@@ -48,6 +48,11 @@ public class MonitorJogo extends Thread {
 				if (erroComunic > 20) {
 					jogoTerminado = true;
 				}
+			}
+			if(controleChatCliente.getLatenciaReal()>1000){
+				controleJogo.setProblemasRede(true);
+			}else{
+				controleJogo.setProblemasRede(false);
 			}
 		}
 		if (jogoTerminado) {
