@@ -134,9 +134,7 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		this.nomeJogadorOnline = nomeJogadorOnline;
-		frame
-				.setTitle(ConstantesMesa11.TITULO_VERSAO + " "
-						+ timeClienteOnline);
+		frame.setTitle(ConstantesMesa11.TITULO_VERSAO + " " + timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		if (isJogoOnlineCliente()) {
 			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -146,8 +144,8 @@ public class ControleJogo {
 		frame.addWindowListener(new WindowAdapter() {
 
 			public void windowClosing(WindowEvent e) {
-				int ret = JOptionPane.showConfirmDialog(frame, Lang
-						.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
+				int ret = JOptionPane.showConfirmDialog(frame,
+						Lang.msg("sairJogo"), Lang.msg("confirmaSairJogo"),
 						JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
@@ -196,9 +194,8 @@ public class ControleJogo {
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				int ret = JOptionPane.showConfirmDialog(
-						ControleJogo.this.frame, Lang.msg("sairJogo"), Lang
-								.msg("confirmaSairJogo"),
-						JOptionPane.YES_NO_OPTION);
+						ControleJogo.this.frame, Lang.msg("sairJogo"),
+						Lang.msg("confirmaSairJogo"), JOptionPane.YES_NO_OPTION);
 				if (ret == JOptionPane.NO_OPTION) {
 					return;
 				}
@@ -213,12 +210,12 @@ public class ControleJogo {
 		});
 		bola = new Bola(0);
 		BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
-		BufferedImage newBuffer = new BufferedImage((buff.getWidth()), (buff
-				.getHeight()), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage newBuffer = new BufferedImage((buff.getWidth()),
+				(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
-		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
-				.getHeight()));
+		Ellipse2D externo = new Ellipse2D.Double(0, 0, (buff.getWidth()),
+				(buff.getHeight()));
 		graphics2d.setClip(externo);
 		graphics2d.drawImage(buff, 1, 1, null);
 		botoesImagens.put(bola.getId(), newBuffer);
@@ -362,9 +359,9 @@ public class ControleJogo {
 			return;
 		}
 		Point p = new Point((int) (bola.getCentro().x * mesaPanel.zoom)
-				- (scrollPane.getViewport().getWidth() / 2), (int) (bola
-				.getCentro().y * mesaPanel.zoom)
-				- (scrollPane.getViewport().getHeight() / 2));
+				- (scrollPane.getViewport().getWidth() / 2),
+				(int) (bola.getCentro().y * mesaPanel.zoom)
+						- (scrollPane.getViewport().getHeight() / 2));
 		if (p.x < 0) {
 			p.x = 1;
 		}
@@ -445,19 +442,19 @@ public class ControleJogo {
 				 */
 				if (botao instanceof Bola) {
 					Rectangle rectangle = new Rectangle(point.x
-							- bola.getRaio(), point.y - bola.getRaio(), bola
-							.getDiamentro(), bola.getDiamentro());
+							- bola.getRaio(), point.y - bola.getRaio(),
+							bola.getDiamentro(), bola.getDiamentro());
 					boolean defesaGoleiro = defesaGoleiro(rectangle,
 							bolaIngnora);
 					if (!bolaBateu
 							&& (mesaPanel.verificaIntersectsGol(rectangle) || defesaGoleiro)) {
 						bolaBateu = true;
-						double angulo = GeoUtil.calculaAngulo(point, botao
-								.getDestino(), 0);
+						double angulo = GeoUtil.calculaAngulo(point,
+								botao.getDestino(), 0);
 						double rebatimentoBola = trajetoriaBotao.size();
 						if (defesaGoleiro) {
-							angulo = GeoUtil.calculaAngulo(botao
-									.getCentroInicio(), point, 90);
+							angulo = GeoUtil.calculaAngulo(
+									botao.getCentroInicio(), point, 90);
 							angulo = 180 - angulo;
 							if (!verificaDentroCampo(botao))
 								rebatimentoBola *= .3;
@@ -472,10 +469,9 @@ public class ControleJogo {
 						while (i < trajetoriaBotao.size()) {
 							trajetoriaBotao.remove(trajetoriaBotao.size() - 1);
 						}
-						Point destino = GeoUtil
-								.calculaPonto(angulo, Util
-										.inte(rebatimentoBola * 0.3), botao
-										.getCentro());
+						Point destino = GeoUtil.calculaPonto(angulo,
+								Util.inte(rebatimentoBola * 0.3),
+								botao.getCentro());
 						botao.setDestino(destino);
 						List novaTrajetoria = GeoUtil.drawBresenhamLine(point,
 								destino);
@@ -505,8 +501,8 @@ public class ControleJogo {
 						continue;
 					}
 
-					if ((GeoUtil.distaciaEntrePontos(point, botaoAnalisado
-							.getCentro()) - (botao.getRaio())) <= (botaoAnalisado
+					if ((GeoUtil.distaciaEntrePontos(point,
+							botaoAnalisado.getCentro()) - (botao.getRaio())) <= (botaoAnalisado
 							.getRaio())) {
 						if (((botao instanceof Bola && bolaIngnora
 								.contains(botaoAnalisado)) || (botaoAnalisado instanceof Bola && bolaIngnora
@@ -544,9 +540,7 @@ public class ControleJogo {
 										.setEventoCod(ConstantesMesa11.CONTATO_BOTAO_BOLA);
 								detAtingido *= 0.05;
 							} else {
-								Logger
-										.logar("botaoAnalisado "
-												+ botaoAnalisado);
+								Logger.logar("botaoAnalisado " + botaoAnalisado);
 								detAtingido *= 0.3;
 							}
 
@@ -555,8 +549,9 @@ public class ControleJogo {
 							int variancia = 5 * (10 - botao.getPrecisao() / 100);
 							angulo += Util.intervalo(-(variancia), variancia);
 						}
-						destino = GeoUtil.calculaPonto(angulo, Util
-								.inte(detAtingido), botaoAnalisado.getCentro());
+						destino = GeoUtil.calculaPonto(angulo,
+								Util.inte(detAtingido),
+								botaoAnalisado.getCentro());
 						botaoAnalisado.setDestino(destino);
 						animacao = new Animacao();
 						if (botaoAnalisado.getCentroInicio() == null)
@@ -573,8 +568,9 @@ public class ControleJogo {
 						 */
 						int dest = 0;
 						if ((botao instanceof Bola)) {
-							angulo = GeoUtil.calculaAngulo(botaoAnalisado
-									.getCentro(), bola.getCentro(), 90);
+							angulo = GeoUtil.calculaAngulo(
+									botaoAnalisado.getCentro(),
+									bola.getCentro(), 90);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
 							// Logger
 							// .logar("Rebatimento de bola em botão (Botao Bola) dest="
@@ -587,8 +583,8 @@ public class ControleJogo {
 							// .logar("Rebatimento de bola em botão (BotaoAnalizado Bola) dest="
 							// + dest);
 						} else {
-							angulo = GeoUtil.calculaAngulo(botaoAnalisado
-									.getCentro(), point, 90);
+							angulo = GeoUtil.calculaAngulo(
+									botaoAnalisado.getCentro(), point, 90);
 							dest = Util.inte(trajetoriaBotao.size() * .1);
 							// Logger.logar("Botão Com Botão");
 							if (!eventoAtual.isNaBola()) {
@@ -599,8 +595,8 @@ public class ControleJogo {
 							}
 						}
 
-						destino = GeoUtil.calculaPonto(angulo, dest, botao
-								.getCentro());
+						destino = GeoUtil.calculaPonto(angulo, dest,
+								botao.getCentro());
 						botao.setDestino(destino);
 						novaTrajetoria = GeoUtil.drawBresenhamLine(point,
 								destino);
@@ -792,12 +788,15 @@ public class ControleJogo {
 					.getPequenaAreaCima().getBounds().getCenterX(), mesaPanel
 					.getPequenaAreaCima().getBounds().getCenterY());
 			while (mesaPanel.getPequenaAreaCima().contains(posicao)) {
-				posicao = new Point2D.Double(Util.intervalo(mesaPanel
-						.getGrandeAreaCima().x
-						+ (mesaPanel.getGrandeAreaCima().getWidth() / 2),
-						mesaPanel.getGrandeAreaCima().x
-								+ mesaPanel.getGrandeAreaCima().getWidth()),
-						Util.intervalo(mesaPanel.getGrandeAreaCima().y,
+				posicao = new Point2D.Double(
+						Util.intervalo(
+								mesaPanel.getGrandeAreaCima().x
+										+ (mesaPanel.getGrandeAreaCima()
+												.getWidth() / 2),
+								mesaPanel.getGrandeAreaCima().x
+										+ mesaPanel.getGrandeAreaCima()
+												.getWidth()), Util.intervalo(
+								mesaPanel.getGrandeAreaCima().y,
 								mesaPanel.getGrandeAreaCima().y
 										+ mesaPanel.getGrandeAreaCima()
 												.getHeight()));
@@ -827,12 +826,15 @@ public class ControleJogo {
 					.getPequenaAreaCima().getBounds().getCenterX(), mesaPanel
 					.getPequenaAreaCima().getBounds().getCenterY());
 			while (mesaPanel.getPequenaAreaCima().contains(posicao)) {
-				posicao = new Point2D.Double(Util.intervalo(mesaPanel
-						.getGrandeAreaCima().x, mesaPanel.getGrandeAreaCima().x
-						+ (mesaPanel.getGrandeAreaCima().getWidth() / 2)), Util
-						.intervalo(mesaPanel.getGrandeAreaCima().y, mesaPanel
-								.getGrandeAreaCima().y
-								+ mesaPanel.getGrandeAreaCima().getHeight()));
+				posicao = new Point2D.Double(
+						Util.intervalo(mesaPanel.getGrandeAreaCima().x,
+								mesaPanel.getGrandeAreaCima().x
+										+ (mesaPanel.getGrandeAreaCima()
+												.getWidth() / 2)),
+						Util.intervalo(mesaPanel.getGrandeAreaCima().y,
+								mesaPanel.getGrandeAreaCima().y
+										+ mesaPanel.getGrandeAreaCima()
+												.getHeight()));
 			}
 			marcador.setCentroTodos(new Point2D.Double(posicao.x, posicao.y));
 
@@ -860,12 +862,15 @@ public class ControleJogo {
 					.getPequenaAreaBaixo().getBounds().getCenterX(), mesaPanel
 					.getPequenaAreaBaixo().getBounds().getCenterY());
 			while (mesaPanel.getPequenaAreaBaixo().contains(posicao)) {
-				posicao = new Point2D.Double(Util.intervalo(mesaPanel
-						.getGrandeAreaBaixo().x
-						+ (mesaPanel.getGrandeAreaBaixo().getWidth() / 2),
-						mesaPanel.getGrandeAreaBaixo().x
-								+ mesaPanel.getGrandeAreaBaixo().getWidth()),
-						Util.intervalo(mesaPanel.getGrandeAreaBaixo().y,
+				posicao = new Point2D.Double(
+						Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().x
+										+ (mesaPanel.getGrandeAreaBaixo()
+												.getWidth() / 2),
+								mesaPanel.getGrandeAreaBaixo().x
+										+ mesaPanel.getGrandeAreaBaixo()
+												.getWidth()), Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().y,
 								mesaPanel.getGrandeAreaBaixo().y
 										+ mesaPanel.getGrandeAreaBaixo()
 												.getHeight()));
@@ -895,14 +900,15 @@ public class ControleJogo {
 					.getPequenaAreaBaixo().getBounds().getCenterX(), mesaPanel
 					.getPequenaAreaBaixo().getBounds().getCenterY());
 			while (mesaPanel.getPequenaAreaBaixo().contains(posicao)) {
-				posicao = new Point2D.Double(Util
-						.intervalo(mesaPanel.getGrandeAreaBaixo().x,
+				posicao = new Point2D.Double(
+						Util.intervalo(mesaPanel.getGrandeAreaBaixo().x,
 								mesaPanel.getGrandeAreaBaixo().x
 										+ (mesaPanel.getGrandeAreaBaixo()
-												.getWidth() / 2)), Util
-						.intervalo(mesaPanel.getGrandeAreaBaixo().y, mesaPanel
-								.getGrandeAreaBaixo().y
-								+ mesaPanel.getGrandeAreaBaixo().getHeight()));
+												.getWidth() / 2)),
+						Util.intervalo(mesaPanel.getGrandeAreaBaixo().y,
+								mesaPanel.getGrandeAreaBaixo().y
+										+ mesaPanel.getGrandeAreaBaixo()
+												.getHeight()));
 			}
 			marcador.setCentroTodos(new Point2D.Double(posicao.x, posicao.y));
 		}
@@ -1025,8 +1031,10 @@ public class ControleJogo {
 
 		JMenuItem chutarBola = new JMenuItem() {
 			public String getText() {
-				return Lang.msg("chutarBola", new String[] { (chutaBola ? Lang
-						.msg("sim") : Lang.msg("nao")) });
+				return Lang.msg(
+						"chutarBola",
+						new String[] { (chutaBola ? Lang.msg("sim") : Lang
+								.msg("nao")) });
 			}
 		};
 		popup.add(chutarBola);
@@ -1106,8 +1114,8 @@ public class ControleJogo {
 			if (b instanceof Bola || b instanceof Goleiro) {
 				continue;
 			}
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p, b
-					.getCentro());
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p,
+					b.getCentro());
 			if (distaciaEntrePontos < perimetro) {
 				boolean botaoPosicionado = false;
 				int cont = 0;
@@ -1118,8 +1126,8 @@ public class ControleJogo {
 						botaoPosicionado = true;
 						Logger.logar("Nao posicionou botao " + b);
 					}
-					point = (Point) circulo.get(Util.intervalo(0, circulo
-							.size() - 1));
+					point = (Point) circulo.get(Util.intervalo(0,
+							circulo.size() - 1));
 					if (!mesaPanel.getCampoBaixo().contains(point)
 							&& !mesaPanel.getCampoCima().contains(point)) {
 						continue;
@@ -1142,12 +1150,12 @@ public class ControleJogo {
 		while (!botaoPosicionado) {
 			if (ConstantesMesa11.CAMPO_CIMA == b.getTime().getCampo()) {
 
-				int valx = Util.intervalo(mesaPanel.getCampoCima().x, mesaPanel
-						.getCampoCima().x
-						+ mesaPanel.getCampoCima().width);
-				int valy = Util.intervalo(mesaPanel.getCampoCima().y, mesaPanel
-						.getCampoCima().y
-						+ mesaPanel.getCampoCima().height);
+				int valx = Util.intervalo(mesaPanel.getCampoCima().x,
+						mesaPanel.getCampoCima().x
+								+ mesaPanel.getCampoCima().width);
+				int valy = Util.intervalo(mesaPanel.getCampoCima().y,
+						mesaPanel.getCampoCima().y
+								+ mesaPanel.getCampoCima().height);
 				Point point = new Point(valx, valy);
 				if (verificaTemBotao(point)) {
 					continue;
@@ -1455,10 +1463,10 @@ public class ControleJogo {
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);
-					double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
-							.golBaixo(), ponto, 90);
-					Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-							.getDiamentro(), ponto);
+					double calculaAngulo = GeoUtil.calculaAngulo(
+							mesaPanel.golBaixo(), ponto, 90);
+					Point p = GeoUtil.calculaPonto(calculaAngulo,
+							levouFalta.getDiamentro(), ponto);
 					levouFalta.setCentroTodos(p);
 					bola.setCentroTodos(ponto);
 					setDica("falta");
@@ -1480,10 +1488,10 @@ public class ControleJogo {
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);
-					double calculaAngulo = GeoUtil.calculaAngulo(mesaPanel
-							.golCima(), ponto, 90);
-					Point p = GeoUtil.calculaPonto(calculaAngulo, levouFalta
-							.getDiamentro(), ponto);
+					double calculaAngulo = GeoUtil.calculaAngulo(
+							mesaPanel.golCima(), ponto, 90);
+					Point p = GeoUtil.calculaPonto(calculaAngulo,
+							levouFalta.getDiamentro(), ponto);
 					levouFalta.setCentroTodos(p);
 					bola.setCentroTodos(ponto);
 					setDica("falta");
@@ -1512,8 +1520,8 @@ public class ControleJogo {
 		for (Iterator iterator = btnsLateral.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			if (!(botao instanceof Goleiro)) {
-				double reta = GeoUtil.distaciaEntrePontos(ultLateral, botao
-						.getCentro());
+				double reta = GeoUtil.distaciaEntrePontos(ultLateral,
+						botao.getCentro());
 				if (reta < tamretaMin) {
 					tamretaMin = (int) reta;
 					botaoLateral = botao;
@@ -1611,8 +1619,8 @@ public class ControleJogo {
 			JTextArea xmlArea = new JTextArea(30, 50);
 			JScrollPane xmlPane = new JScrollPane(xmlArea);
 			xmlPane.setBorder(new TitledBorder(Lang.msg("xmlTimeSalvoInfo")));
-			JOptionPane.showMessageDialog(frame, xmlPane, Lang
-					.msg("xmlTimeSalvo"), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(frame, xmlPane,
+					Lang.msg("xmlTimeSalvo"), JOptionPane.INFORMATION_MESSAGE);
 
 			if (Util.isNullOrEmpty(xmlArea.getText())) {
 				return;
@@ -1629,8 +1637,8 @@ public class ControleJogo {
 			int size = ((trace.length > 10) ? 10 : trace.length);
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(frame, retorno.toString(), Lang
-					.msg("erro"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, retorno.toString(),
+					Lang.msg("erro"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
@@ -1997,12 +2005,12 @@ public class ControleJogo {
 					boolean returnGoleiro = false;
 					double rotacao = goleiro.getRotacao();
 					Point centroGoleiro = goleiro.getCentro();
-					double retaGoleiro = GeoUtil.distaciaEntrePontos(goleiro
-							.getCentro(), p1);
+					double retaGoleiro = GeoUtil.distaciaEntrePontos(
+							goleiro.getCentro(), p1);
 
 					if (retaGoleiro > (goleiro.getRaio() / 2)) {
-						goleiro.setRotacao(GeoUtil.calculaAngulo(goleiro
-								.getCentro(), p2, 0));
+						goleiro.setRotacao(GeoUtil.calculaAngulo(
+								goleiro.getCentro(), p2, 0));
 						if (((goleiro.getTime().equals(getTimeCima()) && (mesaPanel
 								.getGrandeAreaCima().contains(
 										goleiro.getShape(1).getBounds()) || mesaPanel
@@ -2017,8 +2025,7 @@ public class ControleJogo {
 								&& !goleiro.getShape(1).intersects(
 										bola.getShape(1).getBounds2D())) {
 							evento.setPonto(p2);
-							evento
-									.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
+							evento.setEventoCod(ConstantesMesa11.GOLEIRO_ROTACAO);
 
 							returnGoleiro = true;
 						} else {
@@ -2059,8 +2066,8 @@ public class ControleJogo {
 			if (botao.getCentro() == null) {
 				continue;
 			}
-			double raioPonto = GeoUtil.distaciaEntrePontos(p1, botao
-					.getCentro());
+			double raioPonto = GeoUtil.distaciaEntrePontos(p1,
+					botao.getCentro());
 			if (raioPonto <= botao.getRaio()) {
 				if (!veririficaVez(botao)) {
 					setPontoClicado(null);
@@ -2070,8 +2077,8 @@ public class ControleJogo {
 					boolean areaGoleiroCima = false;
 					Goleiro goleiroCima = obterGoleiroCima();
 					double distaciaEntrePontosCima = GeoUtil
-							.distaciaEntrePontos(botao.getCentro(), goleiroCima
-									.getCentro());
+							.distaciaEntrePontos(botao.getCentro(),
+									goleiroCima.getCentro());
 					if (distaciaEntrePontosCima < goleiroCima.getDiamentro()
 							&& verificaDentroCampo(bola)) {
 						areaGoleiroCima = true;
@@ -2112,8 +2119,9 @@ public class ControleJogo {
 					Logger.logar("Forca " + forca);
 				}
 
-				Point destino = GeoUtil.calculaPonto(angulo, Util
-						.inte(distaciaEntrePontos * forca), botao.getCentro());
+				Point destino = GeoUtil.calculaPonto(angulo,
+						Util.inte(distaciaEntrePontos * forca),
+						botao.getCentro());
 				botao.setDestino(destino);
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);
@@ -2454,11 +2462,11 @@ public class ControleJogo {
 			}
 			double angBtnJogada = GeoUtil.calculaAngulo(bola.getCentro(), gol,
 					270);
-			goleiro.setCentroTodos(GeoUtil.calculaPonto(angBtnJogada, Util
-					.intervalo(goleiro.getRaio() / 2, goleiro.getRaio()), bola
-					.getCentro()));
-			ptDstBola = GeoUtil.calculaPonto(angBtnJogada, 1000, bola
-					.getCentro());
+			goleiro.setCentroTodos(GeoUtil.calculaPonto(angBtnJogada,
+					Util.intervalo(goleiro.getRaio() / 2, goleiro.getRaio()),
+					bola.getCentro()));
+			ptDstBola = GeoUtil.calculaPonto(angBtnJogada, 1000,
+					bola.getCentro());
 			efetuaJogada(bola.getCentro(), ptDstBola);
 			golJogadaCpu = gol;
 			return;
@@ -2489,12 +2497,13 @@ public class ControleJogo {
 			gol = caluclarPontGol(btnPrximo);
 			if (gol != null) {
 				angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
-				ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo
-						.getRaio()
-						+ bola.getRaio() - 1, bola.getCentro());
+				ptDstBola = GeoUtil.calculaPonto(angBolaGol,
+						btnPrximo.getRaio() + bola.getRaio() - 1,
+						bola.getCentro());
 			}
 		}
 		while (btnPrximo == null) {
+			Logger.logar("while (btnPrximo == null) ");
 			btnPrximo = obterBtnJogadaCPU(botoesTimeVez, descartados);
 			contBtn++;
 			if (contBtn > 5) {
@@ -2506,8 +2515,8 @@ public class ControleJogo {
 		while ((btnPrximo != null && ptDstBola != null && GeoUtil
 				.distaciaEntrePontos(btnPrximo.getCentro(), ptDstBola) > GeoUtil
 				.distaciaEntrePontos(btnPrximo.getCentro(), bola.getCentro()))
-				&& GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
-						.getCentro()) > btnPrximo.getRaio()
+				&& GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(),
+						bola.getCentro()) > btnPrximo.getRaio()
 				&& !btnPrximo.getShape(1).intersects(
 						bola.getShape(1).getBounds())) {
 			Logger.logar("Recalculando caluclarPontGol Gol " + gol
@@ -2522,9 +2531,9 @@ public class ControleJogo {
 				}
 			} else {
 				angBolaGol = GeoUtil.calculaAngulo(bola.getCentro(), gol, 270);
-				ptDstBola = GeoUtil.calculaPonto(angBolaGol, btnPrximo
-						.getRaio()
-						+ bola.getRaio() - 1, bola.getCentro());
+				ptDstBola = GeoUtil.calculaPonto(angBolaGol,
+						btnPrximo.getRaio() + bola.getRaio() - 1,
+						bola.getCentro());
 			}
 			if (contGol > 20) {
 				descartados.add(btnPrximo);
@@ -2539,9 +2548,8 @@ public class ControleJogo {
 				}
 				if (btnPrximo == null && !descartados.isEmpty()) {
 					btnPrximo = (Botao) descartados.iterator().next();
-					Logger
-							.logar("ReCALCULANDO btnPrximo == null && !descartados.isEmpty() "
-									+ btnPrximo);
+					Logger.logar("ReCALCULANDO btnPrximo == null && !descartados.isEmpty() "
+							+ btnPrximo);
 					break;
 				}
 
@@ -2569,8 +2577,8 @@ public class ControleJogo {
 					+ bola.getRaio() - 1, bola.getCentro());
 		}
 
-		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola, btnPrximo
-				.getCentro(), 90);
+		double angBtnJogada = GeoUtil.calculaAngulo(ptDstBola,
+				btnPrximo.getCentro(), 90);
 		double div = 10.0;
 		double sumFor = 0;
 		for (Iterator iterator = botoesTimeVez.iterator(); iterator.hasNext();) {
@@ -2581,8 +2589,8 @@ public class ControleJogo {
 		if (div == 0) {
 			div = 10.0;
 		}
-		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(), bola
-				.getCentro())
+		double forca = GeoUtil.distaciaEntrePontos(btnPrximo.getCentro(),
+				bola.getCentro())
 				/ div;
 		int jogadasRestantes = numeroJogadas
 				- obterNumJogadas(btnPrximo.getTime());
@@ -2718,24 +2726,28 @@ public class ControleJogo {
 						bola.getShape(1).getBounds())) {
 					continue;
 				}
-				gol = new Point(Util.intervalo(
-						mesaPanel.getGrandeAreaBaixo().x, mesaPanel
-								.getGrandeAreaBaixo().x
-								+ mesaPanel.getGrandeAreaBaixo().width), Util
-						.intervalo(mesaPanel.getGrandeAreaBaixo().y, mesaPanel
-								.getGrandeAreaBaixo().y
-								+ mesaPanel.getGrandeAreaBaixo().height));
+				gol = new Point(
+						Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().x,
+								mesaPanel.getGrandeAreaBaixo().x
+										+ mesaPanel.getGrandeAreaBaixo().width),
+						Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().y,
+								mesaPanel.getGrandeAreaBaixo().y
+										+ mesaPanel.getGrandeAreaBaixo().height));
 			} else {
 				if (mesaPanel.getCampoBaixo().intersects(
 						bola.getShape(1).getBounds())) {
 					continue;
 				}
-				gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaCima().x,
+				gol = new Point(Util.intervalo(
+						mesaPanel.getGrandeAreaCima().x,
 						mesaPanel.getGrandeAreaCima().x
-								+ mesaPanel.getGrandeAreaCima().width), Util
-						.intervalo(mesaPanel.getGrandeAreaCima().y, mesaPanel
-								.getGrandeAreaCima().y
-								+ mesaPanel.getGrandeAreaCima().height));
+								+ mesaPanel.getGrandeAreaCima().width),
+						Util.intervalo(
+								mesaPanel.getGrandeAreaCima().y,
+								mesaPanel.getGrandeAreaCima().y
+										+ mesaPanel.getGrandeAreaCima().height));
 			}
 			if (validaCaimhoGol(gol)) {
 				canidatos.add(gol);
@@ -2747,8 +2759,8 @@ public class ControleJogo {
 
 		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), p);
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), p);
 			if (distaciaEntrePontos < menorDist) {
 				golRet = p;
 				menorDist = distaciaEntrePontos;
@@ -2779,16 +2791,18 @@ public class ControleJogo {
 					.getCampo())) {
 				gol = new Point(Util.intervalo(mesaPanel.getCampoBaixo().x,
 						mesaPanel.getCampoBaixo().x
-								+ mesaPanel.getCampoBaixo().width), Util
-						.intervalo(mesaPanel.getCampoBaixo().y, mesaPanel
-								.getCampoBaixo().y
-								+ mesaPanel.getCampoBaixo().height / 2));
+								+ mesaPanel.getCampoBaixo().width),
+						Util.intervalo(
+								mesaPanel.getCampoBaixo().y,
+								mesaPanel.getCampoBaixo().y
+										+ mesaPanel.getCampoBaixo().height / 2));
 			} else {
 				gol = new Point(Util.intervalo(mesaPanel.getCampoCima().x,
 						mesaPanel.getCampoCima().x
-								+ mesaPanel.getCampoCima().width), Util
-						.intervalo(mesaPanel.getCampoCima().y
-								+ mesaPanel.getCampoCima().height / 2,
+								+ mesaPanel.getCampoCima().width),
+						Util.intervalo(
+								mesaPanel.getCampoCima().y
+										+ mesaPanel.getCampoCima().height / 2,
 								mesaPanel.getCampoCima().y
 										+ mesaPanel.getCampoCima().height));
 			}
@@ -2804,8 +2818,8 @@ public class ControleJogo {
 
 		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), p);
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), p);
 			if (distaciaEntrePontos < menorDist) {
 				golRet = p;
 				menorDist = distaciaEntrePontos;
@@ -2825,24 +2839,28 @@ public class ControleJogo {
 						bola.getShape(1).getBounds())) {
 					continue;
 				}
-				gol = new Point(Util.intervalo(
-						mesaPanel.getGrandeAreaBaixo().x, mesaPanel
-								.getGrandeAreaBaixo().x
-								+ mesaPanel.getGrandeAreaBaixo().width), Util
-						.intervalo(mesaPanel.getGrandeAreaBaixo().y, mesaPanel
-								.getGrandeAreaBaixo().y
-								+ mesaPanel.getGrandeAreaBaixo().height));
+				gol = new Point(
+						Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().x,
+								mesaPanel.getGrandeAreaBaixo().x
+										+ mesaPanel.getGrandeAreaBaixo().width),
+						Util.intervalo(
+								mesaPanel.getGrandeAreaBaixo().y,
+								mesaPanel.getGrandeAreaBaixo().y
+										+ mesaPanel.getGrandeAreaBaixo().height));
 			} else {
 				if (mesaPanel.getCampoBaixo().intersects(
 						bola.getShape(1).getBounds())) {
 					continue;
 				}
-				gol = new Point(Util.intervalo(mesaPanel.getGrandeAreaCima().x,
+				gol = new Point(Util.intervalo(
+						mesaPanel.getGrandeAreaCima().x,
 						mesaPanel.getGrandeAreaCima().x
-								+ mesaPanel.getGrandeAreaCima().width), Util
-						.intervalo(mesaPanel.getGrandeAreaCima().y, mesaPanel
-								.getGrandeAreaCima().y
-								+ mesaPanel.getGrandeAreaCima().height));
+								+ mesaPanel.getGrandeAreaCima().width),
+						Util.intervalo(
+								mesaPanel.getGrandeAreaCima().y,
+								mesaPanel.getGrandeAreaCima().y
+										+ mesaPanel.getGrandeAreaCima().height));
 			}
 			if (validaCaimhoGol(gol)) {
 				// Logger.logar("obterTrajetoriaCPUGdAreaOposta");
@@ -2855,8 +2873,8 @@ public class ControleJogo {
 
 		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), p);
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), p);
 			if (distaciaEntrePontos < menorDist) {
 				golRet = p;
 				menorDist = distaciaEntrePontos;
@@ -2885,12 +2903,12 @@ public class ControleJogo {
 			} else {
 				gol = mesaPanel.getPenaltyCima().getLocation();
 			}
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), b.getCentro());
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist
 					&& ((GeoUtil.distaciaEntrePontos(b.getCentro(), gol) - b
-							.getRaio()) < GeoUtil.distaciaEntrePontos(bola
-							.getCentro(), gol))) {
+							.getRaio()) < GeoUtil.distaciaEntrePontos(
+							bola.getCentro(), gol))) {
 				if (!validaCaimho(b, bola.getCentro())) {
 					continue;
 				}
@@ -2917,8 +2935,8 @@ public class ControleJogo {
 			if (b.getShape(1).intersects(bola.getShape(1).getBounds())) {
 				return b;
 			}
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), b.getCentro());
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist
 					&& validaCaimho(b, bola.getCentro())) {
 				menorDist = distaciaEntrePontos;
@@ -2944,11 +2962,11 @@ public class ControleJogo {
 					&& b.getShape(1).intersects(bola.getShape(1).getBounds())) {
 				return b;
 			}
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), b.getCentro());
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), b.getCentro());
 			if (distaciaEntrePontos < menorDist
-					&& (mesmoSemValidarCaminho || validaCaimho(b, bola
-							.getCentro()))) {
+					&& (mesmoSemValidarCaminho || validaCaimho(b,
+							bola.getCentro()))) {
 				menorDist = distaciaEntrePontos;
 				btnPrximo = b;
 			}
@@ -2981,10 +2999,11 @@ public class ControleJogo {
 						centroGolBaixo) > dstChutar) {
 					continue;
 				}
-				gol = new Point(Util.inte(Util.intervalo(mesaPanel
-						.getAreaGolBaixo().x, mesaPanel.getAreaGolBaixo().x
-						+ mesaPanel.getAreaGolBaixo().getWidth())), Util
-						.inte(Util.intervalo(mesaPanel.getAreaGolBaixo().y,
+				gol = new Point(Util.inte(Util.intervalo(
+						mesaPanel.getAreaGolBaixo().x,
+						mesaPanel.getAreaGolBaixo().x
+								+ mesaPanel.getAreaGolBaixo().getWidth())),
+						Util.inte(Util.intervalo(mesaPanel.getAreaGolBaixo().y,
 								mesaPanel.getAreaGolBaixo().y
 										+ mesaPanel.getAreaGolBaixo()
 												.getHeight())));
@@ -2993,10 +3012,11 @@ public class ControleJogo {
 						.distaciaEntrePontos(bola.getCentro(), centroGolCima) > dstChutar) {
 					continue;
 				}
-				gol = new Point(Util.inte(Util.intervalo(mesaPanel
-						.getAreaGolCima().x, mesaPanel.getAreaGolCima().x
-						+ mesaPanel.getAreaGolCima().getWidth())), Util
-						.inte(Util.intervalo(mesaPanel.getAreaGolCima().y,
+				gol = new Point(Util.inte(Util.intervalo(
+						mesaPanel.getAreaGolCima().x,
+						mesaPanel.getAreaGolCima().x
+								+ mesaPanel.getAreaGolCima().getWidth())),
+						Util.inte(Util.intervalo(mesaPanel.getAreaGolCima().y,
 								mesaPanel.getAreaGolCima().y
 										+ mesaPanel.getAreaGolCima()
 												.getHeight())));
@@ -3011,8 +3031,8 @@ public class ControleJogo {
 		double menorDist = java.lang.Double.MAX_VALUE;
 		for (Iterator iterator = canidatos.iterator(); iterator.hasNext();) {
 			Point p = (Point) iterator.next();
-			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(bola
-					.getCentro(), p);
+			double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(
+					bola.getCentro(), p);
 			if (distaciaEntrePontos < menorDist) {
 				golRet = p;
 				menorDist = distaciaEntrePontos;
@@ -3145,4 +3165,10 @@ public class ControleJogo {
 
 	}
 
+	public void setProblemasRede(boolean b) {
+		if (mesaPanel != null) {
+			mesaPanel.setProblemasRede(b);
+		}
+
+	}
 }

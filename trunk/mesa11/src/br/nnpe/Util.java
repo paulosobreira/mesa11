@@ -1,5 +1,6 @@
 package br.nnpe;
 
+import java.awt.Graphics2D;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -390,8 +391,8 @@ public class Util {
 			}
 
 			// Digito verificador do CPF que está sendo validado.
-			String nDigVerific = strCpf.substring(strCpf.length() - 2, strCpf
-					.length());
+			String nDigVerific = strCpf.substring(strCpf.length() - 2,
+					strCpf.length());
 
 			// Concatenando o primeiro resto com o segundo.
 			nDigResult = String.valueOf(digito1) + String.valueOf(digito2);
@@ -857,5 +858,13 @@ public class Util {
 			ret.add(object);
 		}
 		return ret;
+	}
+
+	public static int larguraTexto(String msg, Graphics2D g2d) {
+		int largura = 0;
+		for (int i = 0; i < msg.length(); i++) {
+			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+		}
+		return largura;
 	}
 }
