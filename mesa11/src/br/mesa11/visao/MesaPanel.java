@@ -1,6 +1,7 @@
 package br.mesa11.visao;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -10,6 +11,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -57,6 +59,8 @@ public class MesaPanel extends JPanel {
 	public static final int FAIXAS = 14;
 	public static final int ALTURA_FAIXA = (ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA)
 			/ FAIXAS;
+	public static final BasicStroke rota = new BasicStroke(2.5f,
+			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
 	public double zoom = 0.7;
 	private Rectangle campoCima;
@@ -263,15 +267,11 @@ public class MesaPanel extends JPanel {
 						.getBounds().getHeight());
 		if (limitesViewPort == null) {
 			limitesViewPort = new Rectangle(0, 0, LARGURA_MESA, ALTURA_MESA);
-		} else {
-			// Rectangle rectangle = (Rectangle) limitesViewPort;
-			// rectangle.width -= 100;
-			// rectangle.height -= 100;
-			// rectangle.x += 50;
-			// rectangle.y += 50;
 		}
+
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
+
 		desenhaCampo(g2d);
 		desengaGol(g2d);
 		desenhaFiguras(g2d);
@@ -328,7 +328,9 @@ public class MesaPanel extends JPanel {
 							Util.inte(controleJogo.golJogadaCpu.x * zoom),
 							Util.inte(controleJogo.golJogadaCpu.y * zoom));
 			}
+			g2d.draw(controleJogo.miniViewPort());
 		}
+
 	}
 
 	private void desenhaProblemaRede(Graphics2D g2d) {
@@ -686,11 +688,23 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void simulaRota(Graphics2D g2d) {
+		Stroke stroke = g2d.getStroke();
+		g2d.setStroke(rota);
 		if (controleJogo.getPontoClicado() != null
 				&& controleJogo.getPontoPasando() != null && botoes != null) {
 			g2d.setColor(Color.LIGHT_GRAY);
 			Point p0 = (Point) controleJogo.getPontoClicado();
 			Point pAtual = (Point) controleJogo.getPontoPasando();
+			int distaciaEntrePontos = (int) GeoUtil.distaciaEntrePontos(p0,
+					pAtual);
+			if (distaciaEntrePontos <= 255) {
+				g2d.setColor(new Color(distaciaEntrePontos, 255, 0, 100));
+			} else if (distaciaEntrePontos > 255 && distaciaEntrePontos <= 510) {
+				g2d.setColor(new Color(255, 255 - distaciaEntrePontos / 2, 0,
+						100));
+			} else {
+				g2d.setColor(new Color(255, 0, 0, 100));
+			}
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
 					.hasNext();) {
 				Long id = (Long) iterator.next();
@@ -721,7 +735,7 @@ public class MesaPanel extends JPanel {
 			}
 
 		}
-
+		g2d.setStroke(stroke);
 	}
 
 	private void desenhaGoleiro(Goleiro goleiro, Graphics g) {

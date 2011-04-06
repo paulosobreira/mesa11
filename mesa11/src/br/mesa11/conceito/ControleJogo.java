@@ -393,6 +393,14 @@ public class ControleJogo {
 		return rectangle;
 	}
 
+	public Shape miniViewPort() {
+		Rectangle limitesViewPort = (Rectangle) limitesViewPort();
+		Rectangle rectangle = new Rectangle(limitesViewPort.x + 90,
+				limitesViewPort.y + 90, limitesViewPort.width - 220,
+				limitesViewPort.height - 220);
+		return rectangle;
+	}
+
 	public JogoServidor getJogoServidor() {
 		return jogoServidor;
 	}
@@ -698,6 +706,47 @@ public class ControleJogo {
 		Point p = des;
 		if (!reta.isEmpty()) {
 			int cont = reta.size() / 10;
+			for (int i = cont; i < reta.size(); i += cont) {
+				p = (Point) reta.get(i);
+				if (rectangle.contains(p)) {
+					p.x -= ((rectangle.width - 50) / 2);
+					p.y -= ((rectangle.height - 50) / 2);
+					break;
+				}
+			}
+		}
+		if (p.x < 0) {
+			p.x = 1;
+		}
+		if (p.y < 0) {
+			p.y = 1;
+		}
+		int largMax = (int) ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
+				.getViewport().getWidth());
+		if (p.x > largMax) {
+			p.x = largMax - 1;
+		}
+		int altMax = (int) ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
+				.getViewport().getHeight()));
+		if (p.y > altMax) {
+			p.y = altMax - 1;
+		}
+		novoPontoTela = p;
+	}
+
+	public void centralizaPonto(Point po) {
+		Rectangle rectangle = (Rectangle) limitesViewPort();
+		if (rectangle == null)
+			return;
+
+		Point ori = new Point((int) rectangle.getCenterX() - 25,
+				(int) rectangle.getCenterY() - 25);
+		Point des = new Point((int) (po.x * mesaPanel.zoom),
+				(int) (po.y * mesaPanel.zoom));
+		List reta = GeoUtil.drawBresenhamLine(ori, des);
+		Point p = des;
+		if (!reta.isEmpty()) {
+			int cont = reta.size() / 20;
 			for (int i = cont; i < reta.size(); i += cont) {
 				p = (Point) reta.get(i);
 				if (rectangle.contains(p)) {

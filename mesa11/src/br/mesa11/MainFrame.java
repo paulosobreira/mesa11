@@ -45,7 +45,7 @@ public class MainFrame {
 
 		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
-		frame.setSize(800, 600);
+		frame.setSize(700, 800);
 		frame.setVisible(true);
 
 	}
@@ -160,8 +160,8 @@ public class MainFrame {
 				String msg = Lang.msg("feitoPor")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg, Lang
-						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, msg,
+						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -183,7 +183,7 @@ public class MainFrame {
 				}
 				controleJogo = new ControleJogo(frame);
 				controleJogo.inicializaVideo();
-				frame.setSize(800, 600);
+				frame.setSize(700, 800);
 				frame.setVisible(true);
 				controleJogo.centroCampo();
 				controleJogo.setZoom(0.3);
