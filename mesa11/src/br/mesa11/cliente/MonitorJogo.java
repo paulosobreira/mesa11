@@ -48,10 +48,13 @@ public class MonitorJogo extends Thread {
 				if (erroComunic > 20) {
 					jogoTerminado = true;
 				}
+				if (jogoTerminado) {
+					controleJogo.setDica("fimJogo");
+				}
 			}
-			if(controleChatCliente.getLatenciaReal()>1000){
+			if (controleChatCliente.getLatenciaReal() > 1000) {
 				controleJogo.setProblemasRede(true);
-			}else{
+			} else {
 				controleJogo.setProblemasRede(false);
 			}
 		}
