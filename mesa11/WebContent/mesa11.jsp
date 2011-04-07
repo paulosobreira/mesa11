@@ -227,10 +227,12 @@ img {
 		<div id="shots" class="highslide-gallery">
 			<a href="m11-1.jpg" onclick="return hs.expand(this)"> <img src="m11-1.jpg" width="130" height="120" /></a>
 			<a href="m11-2.jpg" onclick="return hs.expand(this)"> <img src="m11-2.jpg" width="130" height="120" /></a>
-			<a href="m11-3.jpg" onclick="return hs.expand(this)"> <img src="m11-3.jpg" width="130" height="120" /></a><br>
-			<a href="m11-4.jpg" onclick="return hs.expand(this)"> <img src="m11-4.jpg" width="130" height="120" /></a>
+			<a href="m11-3.jpg" onclick="return hs.expand(this)"> <img src="m11-3.jpg" width="130" height="120" /></a>
+			<a href="m11-4.jpg" onclick="return hs.expand(this)"> <img src="m11-4.jpg" width="130" height="120" /></a><br>
 			<a href="m11-5.jpg" onclick="return hs.expand(this)"> <img src="m11-5.jpg" width="130" height="120" /></a>
-			<a href="m11-6.jpg" onclick="return hs.expand(this)"> <img src="m11-6.jpg" width="130" height="120" /></a><br>
+			<a href="m11-6.jpg" onclick="return hs.expand(this)"> <img src="m11-6.jpg" width="130" height="120" /></a>
+			<a href="m11-8.jpg" onclick="return hs.expand(this)"> <img src="m11-8.jpg" width="130" height="120" /></a>
+			<a href="m11-10.jpg" onclick="return hs.expand(this)"> <img src="m11-10.jpg" width="130" height="120" /></a><br>
 		</div>
 		<div style="text-align: center;">
 			<a id="link"  href="mesa11online.jnlp" style="text-align: left;">
