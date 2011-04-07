@@ -1853,7 +1853,7 @@ public class ControleJogo {
 		pararVideo();
 		atualizadorTela = new AtualizadorVisual(this);
 		atualizadorTela.start();
-		frame.setSize(800, 600);
+		frame.setSize(750, 800);
 		frame.setVisible(true);
 
 	}

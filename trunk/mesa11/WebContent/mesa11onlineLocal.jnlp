@@ -8,10 +8,6 @@
 		<description>Mesa-11 (Futebol de Botao)</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
-      <shortcut online="true">
-         <desktop/>
-         <menu submenu="Mesa11"/>
-      </shortcut>			
 	</information>
 
 	<security>
