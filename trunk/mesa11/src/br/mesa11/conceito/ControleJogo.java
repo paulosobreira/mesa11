@@ -739,19 +739,19 @@ public class ControleJogo {
 		if (rectangle == null)
 			return;
 
-		Point ori = new Point((int) rectangle.getCenterX() - 25,
-				(int) rectangle.getCenterY() - 25);
+		Point ori = new Point((int) rectangle.getCenterX(),
+				(int) rectangle.getCenterY());
 		Point des = new Point((int) (po.x * mesaPanel.zoom),
 				(int) (po.y * mesaPanel.zoom));
 		List reta = GeoUtil.drawBresenhamLine(ori, des);
 		Point p = des;
 		if (!reta.isEmpty()) {
-			int cont = reta.size() / 20;
+			int cont = reta.size() / 50;
 			for (int i = cont; i < reta.size(); i += cont) {
 				p = (Point) reta.get(i);
 				if (rectangle.contains(p)) {
-					p.x -= ((rectangle.width - 50) / 2);
-					p.y -= ((rectangle.height - 50) / 2);
+					p.x -= ((rectangle.width) / 2);
+					p.y -= ((rectangle.height) / 2);
 					break;
 				}
 			}
@@ -2275,26 +2275,37 @@ public class ControleJogo {
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (isAnimando()) {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						Logger.logarExept(e);
+				try {
+					int cont = 0;
+					while (isAnimando()) {
+						try {
+							Thread.sleep(500);
+							cont++;
+							if (cont > 50) {
+								dica = "problemaJogada";
+								return;
+							}
+						} catch (InterruptedException e) {
+							Logger.logarExept(e);
+						}
 					}
-				}
-				if ("gol".equals(dadosJogoSrvMesa11.getDica())
-						|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
-						|| "golContra".equals(dadosJogoSrvMesa11.getDica())
-						|| "meta".equals(dadosJogoSrvMesa11.getDica())
-						|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
-						|| "penalti".equals(dadosJogoSrvMesa11.getDica())
-						|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-					atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
-				} else {
-					atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
+					if ("gol".equals(dadosJogoSrvMesa11.getDica())
+							|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
+							|| "golContra".equals(dadosJogoSrvMesa11.getDica())
+							|| "meta".equals(dadosJogoSrvMesa11.getDica())
+							|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
+							|| "penalti".equals(dadosJogoSrvMesa11.getDica())
+							|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
+								true);
+					} else {
+						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
+								false);
+					}
+				} finally {
+					esperandoJogadaOnline = false;
 				}
 
-				esperandoJogadaOnline = false;
 			}
 		});
 		threadAtualizaBotoesClienteOnline.start();
