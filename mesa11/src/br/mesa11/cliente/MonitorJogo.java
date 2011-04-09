@@ -52,7 +52,7 @@ public class MonitorJogo extends Thread {
 					controleJogo.setDica("fimJogo");
 				}
 			}
-			if (controleChatCliente.getLatenciaReal() > 1000) {
+			if (controleChatCliente.getLatenciaReal() > 500) {
 				controleJogo.setProblemasRede(true);
 			} else {
 				controleJogo.setProblemasRede(false);
@@ -153,7 +153,7 @@ public class MonitorJogo extends Thread {
 		controleJogo.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa, timeVisita);
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
-		controleJogo.setZoom(0.5);
+		controleJogo.setZoom(0.3);
 		tempoDormir = 500;
 
 	}
