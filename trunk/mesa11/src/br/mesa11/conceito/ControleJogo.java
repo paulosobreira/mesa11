@@ -2282,7 +2282,8 @@ public class ControleJogo {
 							Thread.sleep(500);
 							cont++;
 							if (cont > 50) {
-								dica = "problemaJogada";
+								Logger.logar("threadAtualizaBotoesClienteOnline cont  "
+										+ cont);
 								return;
 							}
 						} catch (InterruptedException e) {
