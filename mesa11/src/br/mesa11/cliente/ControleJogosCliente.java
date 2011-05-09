@@ -17,10 +17,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import sun.nio.cs.ext.TIS_620;
+
 import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
@@ -654,9 +657,17 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-			uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
-					1)));
+			if (Util.isNullOrEmpty(time.getImagem())) {
+				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
+						1)));
+				uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
+						1)));
+			} else {
+				ImageIcon icon = ImageUtil.carregarImagem(this.mesa11Applet
+						.getCodeBase() + "midia/" + time.getImagem());
+				uniforme.setIcon(icon);
+				uniformeCpu.setIcon(icon);
+			}
 			segundoUniforme = false;
 			segundoUniformeCpu = false;
 		}
@@ -672,8 +683,14 @@ public class ControleJogosCliente {
 					Object ret = enviarObjeto(mesa11to);
 					mesa11to = (Mesa11TO) ret;
 					Time time = (Time) mesa11to.getData();
-					uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-							time, 1)));
+					if (Util.isNullOrEmpty(time.getImagem())) {
+						uniforme.setIcon(new ImageIcon(BotaoUtils
+								.desenhaUniforme(time, 1)));
+					} else {
+						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
+								.getCodeBase() + "midia/" + time.getImagem());
+						uniforme.setIcon(icon);
+					}
 					segundoUniforme = false;
 				}
 			}
@@ -690,8 +707,14 @@ public class ControleJogosCliente {
 					Object ret = enviarObjeto(mesa11to);
 					mesa11to = (Mesa11TO) ret;
 					Time time = (Time) mesa11to.getData();
-					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
-							.desenhaUniforme(time, 1)));
+					if (Util.isNullOrEmpty(time.getImagem())) {
+						uniformeCpu.setIcon(new ImageIcon(BotaoUtils
+								.desenhaUniforme(time, 1)));
+					} else {
+						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
+								.getCodeBase() + "midia/" + time.getImagem());
+						uniformeCpu.setIcon(icon);
+					}
 					segundoUniformeCpu = false;
 				}
 			}
@@ -708,8 +731,10 @@ public class ControleJogosCliente {
 				Object ret = enviarObjeto(mesa11to);
 				mesa11to = (Mesa11TO) ret;
 				Time time = (Time) mesa11to.getData();
-				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
-						segundoUniforme ? 2 : 1)));
+				if (Util.isNullOrEmpty(time.getImagem())) {
+					uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+							time, segundoUniforme ? 2 : 1)));
+				}
 			}
 		});
 		uniformeCpu.addMouseListener(new MouseAdapter() {
@@ -723,8 +748,10 @@ public class ControleJogosCliente {
 				Object ret = enviarObjeto(mesa11to);
 				mesa11to = (Mesa11TO) ret;
 				Time time = (Time) mesa11to.getData();
-				uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						time, segundoUniformeCpu ? 2 : 1)));
+				if (Util.isNullOrEmpty(time.getImagem())) {
+					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
+							.desenhaUniforme(time, segundoUniformeCpu ? 2 : 1)));
+				}
 			}
 		});
 
