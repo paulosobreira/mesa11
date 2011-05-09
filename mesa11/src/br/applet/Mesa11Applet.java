@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,13 +48,19 @@ public class Mesa11Applet extends JApplet {
 	private Sequencer sequencer;
 
 	private LookAndFeelInfo[] looks;
+	DecimalFormat decimalFormat = new DecimalFormat("#,#");
+	private String versao;
 
+	/**
+	 * @param args
+	 */
 	public static void main(String[] args) {
-		LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
-		for (int i = 0; i < looks.length; i++) {
-			Logger.logar(looks[i].getClassName());
-
-		}
+		// LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
+		// for (int i = 0; i < looks.length; i++) {
+		// Logger.logar(looks[i].getClassName());
+		// }
+		DecimalFormat decimalFormat = new DecimalFormat("#,#");
+		System.out.println(decimalFormat.format(233));
 	}
 
 	@Override
@@ -84,6 +91,7 @@ public class Mesa11Applet extends JApplet {
 			properties.load(this.getClass().getResourceAsStream(
 					"client.properties"));
 			this.urlSufix = properties.getProperty("servidor");
+			this.versao = properties.getProperty("versao");
 			controleChatCliente = new ControleChatCliente(this);
 			Thread thread = new Thread(new Runnable() {
 
@@ -241,6 +249,10 @@ public class Mesa11Applet extends JApplet {
 
 	public void setComunicacaoServer(boolean comunicacaoServer) {
 		this.comunicacaoServer = comunicacaoServer;
+	}
+
+	public String getVersao() {
+		return " " + decimalFormat.format(new Integer(versao));
 	}
 
 }

@@ -205,7 +205,7 @@ public class ChatWindow {
 			}
 
 		});
-		
+
 		criarTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				controleChatCliente.criarTime();
@@ -234,8 +234,8 @@ public class ChatWindow {
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
-						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg,
+						Lang.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
@@ -247,7 +247,7 @@ public class ChatWindow {
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		JPanel chatPanel = new JPanel();
 		chatPanel.setBorder(new TitledBorder("Chat Room "
-				+ ConstantesMesa11.TITULO_VERSAO));
+				+ ConstantesMesa11.TITULO + controleChatCliente.getVersao()));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
