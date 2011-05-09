@@ -19,7 +19,7 @@ public class Time extends Mesa11Dados {
 
 	private String campo;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "time", targetEntity = Botao.class)
-	private List botoes = new ArrayList();
+	private List<Botao> botoes = new ArrayList<Botao>();
 	@Column(nullable = false, unique = true)
 	private String nomeAbrev;
 	@Column(nullable = false, unique = true)
@@ -32,6 +32,15 @@ public class Time extends Mesa11Dados {
 	private boolean agol;
 	private boolean controladoCPU;
 	private boolean segundoUniforme;
+	private String imagem;
+	public String getImagem() {
+		return imagem;
+	}
+
+	public void setImagem(String imagem) {
+		this.imagem = imagem;
+	}
+
 	private int cor1RGB;
 	private int cor2RGB;
 	private int cor3RGB;
@@ -169,11 +178,11 @@ public class Time extends Mesa11Dados {
 		this.campo = campo;
 	}
 
-	public List getBotoes() {
+	public List<Botao> getBotoes() {
 		return botoes;
 	}
 
-	public void setBotoes(List botoes) {
+	public void setBotoes(List<Botao> botoes) {
 		this.botoes = botoes;
 	}
 
