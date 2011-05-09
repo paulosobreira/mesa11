@@ -134,7 +134,8 @@ public class ControleJogo {
 		adicinaListentesEventosMouse();
 		adicinaListentesEventosTeclado();
 		this.nomeJogadorOnline = nomeJogadorOnline;
-		frame.setTitle(ConstantesMesa11.TITULO_VERSAO + " " + timeClienteOnline);
+		frame.setTitle(ConstantesMesa11.TITULO + getVersao() + " "
+				+ timeClienteOnline);
 		frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
 		if (isJogoOnlineCliente()) {
 			frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -158,6 +159,10 @@ public class ControleJogo {
 			}
 
 		});
+	}
+
+	private String getVersao() {
+		return mesa11Applet.getVersao();
 	}
 
 	public long getTempoTerminado() {
@@ -2343,8 +2348,10 @@ public class ControleJogo {
 			}
 		}
 		esperandoJogadaOnline = false;
-		if (centralizaBola)
+		if (centralizaBola) {
+			Logger.logar("atualizaBotoesClienteOnline -> centralizaBola");
 			centralizaBola();
+		}
 	}
 
 	public int getNumeroJogadas() {

@@ -124,6 +124,8 @@ public class MesaPanel extends JPanel {
 
 	private boolean problemasRede;
 	private boolean desenhaProblemaRede;
+	private int contProblemaRede;
+	private int desenhaGol;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		if (!controleJogo.isJogoOnlineSrvidor()) {
@@ -312,6 +314,7 @@ public class MesaPanel extends JPanel {
 		// desennhaCirculo(g2d);
 		desenhaInfoJogo(g2d);
 		desenhaProblemaRede(g2d);
+		desenhaGol(g2d);
 		if (Logger.debug) {
 			if (controleJogo.ptDstBola != null
 					&& controleJogo.getBola() != null) {
@@ -341,13 +344,15 @@ public class MesaPanel extends JPanel {
 		int largura = Util.larguraTexto(Lang.msg("problemaRede"), g2d);
 		int newx = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width / 2) - largura / 3;
-		if (desenhaProblemaRede) {
+		if (desenhaProblemaRede && contProblemaRede > 0) {
 			g2d.setColor(Color.yellow);
 			g2d.fillRoundRect(newx, y, largura + 10, 20, 15, 15);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(Lang.msg("problemaRede"), newx + 5, y + 15);
+			contProblemaRede = 10;
 		}
 		desenhaProblemaRede = !desenhaProblemaRede;
+		contProblemaRede--;
 
 	}
 
@@ -636,6 +641,9 @@ public class MesaPanel extends JPanel {
 		String dica = controleJogo.getDica();
 		if (Util.isNullOrEmpty(dica)) {
 			controleJogo.mudarDica();
+			dica = controleJogo.getDica();
+		}
+		if ("gol".equals(dica) || "golContra".equals(dica)) {
 			dica = controleJogo.getDica();
 		}
 		Color corTexto = null;
@@ -1433,4 +1441,34 @@ public class MesaPanel extends JPanel {
 	public Rectangle getHasteEsquerdaGolBaixo() {
 		return hasteEsquerdaGolBaixo;
 	}
+
+	public void setDesenhaGol() {
+		if (desenhaGol > 0) {
+			return;
+		}
+		desenhaGol = 50;
+
+	}
+
+	private void desenhaGol(Graphics2D g2d) {
+		if (desenhaGol < 0) {
+			return;
+		}
+		int y = limitesViewPort.getBounds().y
+				+ (limitesViewPort.getBounds().height / 2) - 130;
+		int largura = Util.larguraTexto(Lang.msg("problemaRede"), g2d);
+		int newx = limitesViewPort.getBounds().x
+				+ (limitesViewPort.getBounds().width / 2) - largura / 3;
+		if (desenhaGol % 2 == 0) {
+			g2d.setColor(Color.WHITE);
+			g2d.fillRoundRect(newx, y, largura + 10, 50, 15, 15);
+			g2d.setColor(Color.BLACK);
+			Font fontOri = g2d.getFont();
+			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
+			g2d.drawString(Lang.msg("gol"), newx + 15, y + 40);
+			g2d.setFont(fontOri);
+		}
+		desenhaGol--;
+	}
+
 }

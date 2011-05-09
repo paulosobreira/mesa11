@@ -645,4 +645,8 @@ public class ControleChatCliente {
 		controleJogosCliente.criarJogoVsCPU();
 
 	}
+
+	public String getVersao() {
+		return mesa11Applet.getVersao();
+	}
 }

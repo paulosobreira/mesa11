@@ -23,6 +23,7 @@ public class MonitorJogo extends Thread {
 	private long timeStampAnimacao;
 	private boolean jogoTerminado;
 	private int erroComunic = 0;
+	private Thread threadGol;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -87,6 +88,26 @@ public class MonitorJogo extends Thread {
 					|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
 					|| "penalti".equals(dadosJogoSrvMesa11.getDica())
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+				if ("gol".equals(dadosJogoSrvMesa11.getDica())
+						|| "golContra".equals(dadosJogoSrvMesa11.getDica())) {
+					Logger.logar("controleJogo.getMesaPanel().setDesenhaGol();");
+					threadGol = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Thread.sleep(1500);
+							} catch (InterruptedException e) {
+								Logger.logarExept(e);
+							}
+							controleJogo.getMesaPanel().setDesenhaGol();
+						}
+					});
+					if (threadGol != null && !threadGol.isAlive()) {
+						dadosJogoSrvMesa11.setDica(null);
+						threadGol.start();
+					}
+
+				}
 				controleJogo.centralizaBola();
 			}
 			if (timeVez != null

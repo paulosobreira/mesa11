@@ -33,10 +33,10 @@ public class ControleJogosCliente {
 	private boolean segundoUniforme;
 	private boolean segundoUniformeCpu;
 	private ControleChatCliente controleChatCliente;
-	private JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
-			.msg("semTimes") });
-	private JComboBox jComboBoxTimesCpu = new JComboBox(new String[] { Lang
-			.msg("semTimes") });
+	private JComboBox jComboBoxTimes = new JComboBox(
+			new String[] { Lang.msg("semTimes") });
+	private JComboBox jComboBoxTimesCpu = new JComboBox(
+			new String[] { Lang.msg("semTimes") });
 	private DadosMesa11 dadosMesa11;
 	private MonitorJogo monitorJogo;
 	private Mesa11Applet mesa11Applet;
@@ -67,8 +67,8 @@ public class ControleJogosCliente {
 
 	public void criarJogo() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -92,8 +92,7 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme
-					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		JPanel panelComboTimes = new JPanel();
@@ -249,8 +248,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
-								.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet,
+						dadosJogoSrvMesa11.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -258,8 +257,8 @@ public class ControleJogosCliente {
 
 	public void entrarJogo(String jogoSelecionado) {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -315,8 +314,7 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme
-					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		jComboBoxTimes.addItemListener(new ItemListener() {
@@ -517,8 +515,8 @@ public class ControleJogosCliente {
 			mesa11to = (Mesa11TO) ret;
 			Time timeVisita = (Time) mesa11to.getData();
 			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-					timeVisita, dadosJogoSrvMesa11
-							.isSegundoUniformeTimeVisita() ? 2 : 1)));
+					timeVisita,
+					dadosJogoSrvMesa11.isSegundoUniformeTimeVisita() ? 2 : 1)));
 		}
 		JPanel uniformesPanel = new JPanel();
 		uniformesPanel.setBorder(new TitledBorder("") {
@@ -623,8 +621,8 @@ public class ControleJogosCliente {
 
 	public void criarJogoVsCPU() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -656,8 +654,7 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme
-					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
 					1)));
 			segundoUniforme = false;
@@ -836,6 +833,11 @@ public class ControleJogosCliente {
 			dadosJogoSrvMesa11.setNomeCriador(jogador);
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
 			String nomeTimeCpu = (String) jComboBoxTimesCpu.getSelectedItem();
+			if (nomeTime.equals(nomeTimeCpu)) {
+				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+						Lang.msg("timesIguais"));
+				return;
+			}
 			dadosJogoSrvMesa11.setTimeCasa(nomeTime);
 			dadosJogoSrvMesa11.setTimeVisita(nomeTimeCpu);
 			dadosJogoSrvMesa11.setSegundoUniformeTimeCasa(segundoUniforme);
@@ -867,12 +869,16 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
-								.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet,
+						dadosJogoSrvMesa11.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
 
+	}
+
+	public String getVersao() {
+		return mesa11Applet.getVersao();
 	}
 
 }
