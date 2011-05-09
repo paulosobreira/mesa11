@@ -21,7 +21,13 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="copiaRecursos,compilarClasses,criarJar,atualizaLib,sign_jar,criarWar">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJar,atualizaLib,sign_jar,criarWar">
+	</target>
+
+	<target name="atualizaVersao">
+		<propertyfile file="src/br/applet/client.properties">
+			<entry operation="+" key="versao" type="int" value="1" />
+		</propertyfile>
 	</target>
 
 	<target name="compilarClasses">
@@ -49,7 +55,7 @@
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
-				<exclude name="log4j.properties" />				
+				<exclude name="log4j.properties" />
 			</fileset>
 		</jar>
 	</target>
