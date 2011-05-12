@@ -26,8 +26,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
-				(int) (e.getPoint().y / mesaPanel.zoom));
+		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
+				.getPoint().y / mesaPanel.zoom));
 		if (controleJogo.getBotaoSelecionado() != null
 				&& controleJogo.isCarregaBotao()) {
 			controleJogo.getBotaoSelecionado().setCentro(p);
@@ -43,8 +43,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p)) {
 					Logger.logar("Passando por Goleiro " + botao);
-					double retaGoleiro = GeoUtil.distaciaEntrePontos(
-							goleiro.getCentro(), p);
+					double retaGoleiro = GeoUtil.distaciaEntrePontos(goleiro
+							.getCentro(), p);
 					if (retaGoleiro > (goleiro.getRaio() / 2)) {
 						Logger.logar("Goleiro Rotacao " + botao);
 					} else {
@@ -61,12 +61,6 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 			}
 		}
 		controleJogo.setPontoPasando(p);
-		Botao botao = controleJogo.obterBotao(controleJogo.getPontoPasando());
-		if (!controleJogo.isAnimando() && e.getButton() == MouseEvent.NOBUTTON
-				&& botao == null
-				&& !controleJogo.miniViewPort().contains(e.getPoint())) {
-			controleJogo.centralizaPonto(p);
-		}
 	}
 
 	@Override
@@ -74,8 +68,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 		if (controleJogo.isJogoTerminado()) {
 			return;
 		}
-		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
-				(int) (e.getPoint().y / mesaPanel.zoom));
+		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
+				.getPoint().y / mesaPanel.zoom));
 		controleJogo.setPontoPasando(p);
 	}
 
