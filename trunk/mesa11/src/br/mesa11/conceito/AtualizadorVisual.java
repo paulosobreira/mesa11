@@ -1,7 +1,10 @@
 package br.mesa11.conceito;
 
+import java.awt.event.MouseEvent;
+
 import javax.swing.SwingUtilities;
 
+import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -53,6 +56,8 @@ public class AtualizadorVisual extends Thread {
 					if (controleJogo.isAnimando()
 							|| controleJogo.isProcessando()) {
 						Thread.sleep(contAnimando);
+						controleJogo.setPontoPasando(controleJogo.getBola()
+								.getCentro());
 					} else
 						Thread.sleep(cont);
 					if (!scrooll) {
@@ -67,6 +72,18 @@ public class AtualizadorVisual extends Thread {
 					}
 				} catch (InterruptedException e) {
 				}
+				if (controleJogo.isJogoIniciado()) {
+					Botao botao = controleJogo.obterBotao(controleJogo
+							.getPontoPasando());
+					if (!controleJogo.isAnimando()
+							&& botao == null
+							&& !controleJogo.miniViewPort().contains(
+									controleJogo.getPontoPasandoZoom())) {
+						controleJogo.centralizaPonto(controleJogo
+								.getPontoPasando());
+					}
+				}
+
 			} catch (Exception e) {
 				Logger.logarExept(e);
 				try {
