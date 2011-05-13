@@ -1,5 +1,6 @@
 package br.mesa11.conceito;
 
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 
 import javax.swing.SwingUtilities;
@@ -77,6 +78,8 @@ public class AtualizadorVisual extends Thread {
 							.getPontoPasando());
 					if (!controleJogo.isAnimando()
 							&& botao == null
+							&& mesaPanel.zoom == mesaPanel.mouseZoom
+							&& (System.currentTimeMillis() - mesaPanel.lastZoomChange) > 5000
 							&& !controleJogo.miniViewPort().contains(
 									controleJogo.getPontoPasandoZoom())) {
 						controleJogo.centralizaPonto(controleJogo
