@@ -266,13 +266,13 @@ public class MesaPanel extends JPanel {
 		if (Math.abs(mouseZoom - zoom) < 0.01) {
 			zoom = mouseZoom;
 		}
-		if (mouseZoom > zoom) {
-			zoom += 0.01;
+		if (mouseZoom > zoom && !controleJogo.isAnimando()) {
+			zoom += 0.005;
 			lastZoomChange = System.currentTimeMillis();
 			controleJogo.centralizaBola();
 		}
-		if (mouseZoom < zoom) {
-			zoom -= 0.01;
+		if (mouseZoom < zoom && !controleJogo.isAnimando()) {
+			zoom -= 0.005;
 			lastZoomChange = System.currentTimeMillis();
 			controleJogo.centralizaBola();
 		}
