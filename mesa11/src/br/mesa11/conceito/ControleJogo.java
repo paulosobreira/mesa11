@@ -294,7 +294,7 @@ public class ControleJogo {
 						.getViewport().getWidth())
 						|| p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
 								.getViewport().getHeight()))) {
-					mesaPanel.zoom += .01;
+					mesaPanel.mouseZoom += .01;
 				}
 				novoPontoTela = p;
 				super.keyPressed(e);
@@ -1388,7 +1388,7 @@ public class ControleJogo {
 	}
 
 	public void setZoom(double d) {
-		mesaPanel.zoom = d;
+		mesaPanel.mouseZoom = d;
 		centralizaBola();
 
 	}
