@@ -73,18 +73,16 @@ public class AtualizadorVisual extends Thread {
 					}
 				} catch (InterruptedException e) {
 				}
-				if (controleJogo.isJogoIniciado()) {
-					Botao botao = controleJogo.obterBotao(controleJogo
-							.getPontoPasando());
-					if (!controleJogo.isAnimando()
-							&& botao == null
-							&& mesaPanel.zoom == mesaPanel.mouseZoom
-							&& (System.currentTimeMillis() - mesaPanel.lastZoomChange) > 5000
-							&& !controleJogo.miniViewPort().contains(
-									controleJogo.getPontoPasandoZoom())) {
-						controleJogo.centralizaPonto(controleJogo
-								.getPontoPasando());
-					}
+				Botao botao = controleJogo.obterBotao(controleJogo
+						.getPontoPasando());
+				if (!controleJogo.isAnimando()
+						&& botao == null
+						&& mesaPanel.zoom == mesaPanel.mouseZoom
+						&& (System.currentTimeMillis() - mesaPanel.lastZoomChange) > 5000
+						&& !controleJogo.miniViewPort().contains(
+								controleJogo.getPontoPasandoZoom())) {
+					controleJogo
+							.centralizaPonto(controleJogo.getPontoPasando());
 				}
 
 			} catch (Exception e) {
