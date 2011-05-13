@@ -62,8 +62,8 @@ public class MesaPanel extends JPanel {
 	public static final BasicStroke rota = new BasicStroke(2.5f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-	public double zoom = 1;
-	public double mouseZoom = 0.7;
+	public double zoom = 0.5;
+	public double mouseZoom = 0.5;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
