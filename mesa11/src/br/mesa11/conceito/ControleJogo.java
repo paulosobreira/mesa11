@@ -287,15 +287,6 @@ public class ControleJogo {
 				} else if (keycode == KeyEvent.VK_DOWN) {
 					p.y += 10;
 				}
-				if (p.x < 0 || p.y < 0) {
-					return;
-				}
-				if (p.x > ((mesaPanel.getWidth() * mesaPanel.zoom) - scrollPane
-						.getViewport().getWidth())
-						|| p.y > ((mesaPanel.getHeight() * mesaPanel.zoom) - (scrollPane
-								.getViewport().getHeight()))) {
-					mesaPanel.mouseZoom += .01;
-				}
 				novoPontoTela = p;
 				super.keyPressed(e);
 			}
