@@ -1464,7 +1464,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	public void setDesenhaGol() {
-		if (desenhaGol > 0) {
+		if (desenhaGol > 0 || controleJogo.verificaBolaCentro()) {
 			return;
 		}
 		desenhaGol = 50;
