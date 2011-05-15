@@ -2713,7 +2713,7 @@ public class ControleJogo {
 		return gol;
 	}
 
-	private boolean verificaBolaCentro() {
+	public boolean verificaBolaCentro() {
 		return bola.getCentro().equals(mesaPanel.getCentro().getLocation());
 	}
 
