@@ -25,7 +25,7 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 		}
 
 		double newzoom = mesaPanel.mouseZoom;
-		newzoom += e.getWheelRotation() / 50.0;
+		newzoom += e.getWheelRotation() / 150.0;
 
 		if (newzoom >= 1) {
 			mesaPanel.mouseZoom = 1;
