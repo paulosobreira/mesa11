@@ -100,8 +100,8 @@ public class ControleChatCliente {
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
-			ObjectInputStream ois = new ObjectInputStream(
-					fileContents.getInputStream());
+			ObjectInputStream ois = new ObjectInputStream(fileContents
+					.getInputStream());
 			Map map = (Map) ois.readObject();
 			String login = (String) map.get("login");
 			String pass = (String) map.get("pass");
@@ -196,8 +196,8 @@ public class ControleChatCliente {
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), e
+					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 		clienteMesa11.setEmailJogador(formLogin.getEmail().getText());
 		clienteMesa11.setRecuperar(formLogin.getRecuperar().isSelected());
@@ -255,9 +255,8 @@ public class ControleChatCliente {
 			return;
 		}
 		if (ret == null) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-					Lang.msg("problemasRede"), "Erro",
-					JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("problemasRede"), "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		mesa11to = (Mesa11TO) ret;
@@ -283,8 +282,8 @@ public class ControleChatCliente {
 			return;
 		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("entrarJogo") + jogoSelecionado,
-				Lang.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("entrarJogo") + jogoSelecionado, Lang
+						.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.entrarJogo(jogoSelecionado);
 		}
@@ -301,8 +300,8 @@ public class ControleChatCliente {
 			return;
 		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("verDetalhesJogo") + " " + jogoSelecionado,
-				Lang.msg("verDetalhesJogo"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("verDetalhesJogo") + " " + jogoSelecionado, Lang
+						.msg("verDetalhesJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.verDetalhesJogo(jogoSelecionado);
 		}
@@ -578,8 +577,8 @@ public class ControleChatCliente {
 		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
-		JComboBox jComboBoxTimes = new JComboBox(
-				new String[] { Lang.msg("semTimes") });
+		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
+				.msg("semTimes") });
 		boolean semTimes = true;
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
@@ -609,9 +608,9 @@ public class ControleChatCliente {
 				ControleJogo controleJogo = new ControleJogo(mesa11Applet,
 						null, null, null);
 				EditorTime editorTime = new EditorTime(time, controleJogo);
-				int retOpt = JOptionPane.showConfirmDialog(
-						chatWindow.getMainPanel(), editorTime,
-						Lang.msg("editarTime"), JOptionPane.YES_NO_OPTION);
+				int retOpt = JOptionPane.showConfirmDialog(chatWindow
+						.getMainPanel(), editorTime, Lang.msg("editarTime"),
+						JOptionPane.YES_NO_OPTION);
 				if (retOpt == JOptionPane.YES_OPTION) {
 					controleJogo.salvarTime(time);
 				}
@@ -648,5 +647,13 @@ public class ControleChatCliente {
 
 	public String getVersao() {
 		return mesa11Applet.getVersao();
+	}
+
+	public void criarCampeonato() {
+		if (sessaoCliente == null) {
+			logar();
+			return;
+		}
+		controleJogosCliente.criarCampeonato();
 	}
 }

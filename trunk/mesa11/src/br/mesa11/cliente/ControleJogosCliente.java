@@ -3,17 +3,24 @@ package br.mesa11.cliente;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
@@ -36,10 +43,10 @@ public class ControleJogosCliente {
 	private boolean segundoUniforme;
 	private boolean segundoUniformeCpu;
 	private ControleChatCliente controleChatCliente;
-	private JComboBox jComboBoxTimes = new JComboBox(
-			new String[] { Lang.msg("semTimes") });
-	private JComboBox jComboBoxTimesCpu = new JComboBox(
-			new String[] { Lang.msg("semTimes") });
+	private JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
+			.msg("semTimes") });
+	private JComboBox jComboBoxTimesCpu = new JComboBox(new String[] { Lang
+			.msg("semTimes") });
 	private DadosMesa11 dadosMesa11;
 	private MonitorJogo monitorJogo;
 	private Mesa11Applet mesa11Applet;
@@ -70,8 +77,8 @@ public class ControleJogosCliente {
 
 	public void criarJogo() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-					Lang.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -95,7 +102,8 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme
+					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		JPanel panelComboTimes = new JPanel();
@@ -251,8 +259,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet,
-						dadosJogoSrvMesa11.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
+								.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -260,8 +268,8 @@ public class ControleJogosCliente {
 
 	public void entrarJogo(String jogoSelecionado) {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-					Lang.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -317,7 +325,8 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme
+					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		jComboBoxTimes.addItemListener(new ItemListener() {
@@ -518,8 +527,8 @@ public class ControleJogosCliente {
 			mesa11to = (Mesa11TO) ret;
 			Time timeVisita = (Time) mesa11to.getData();
 			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-					timeVisita,
-					dadosJogoSrvMesa11.isSegundoUniformeTimeVisita() ? 2 : 1)));
+					timeVisita, dadosJogoSrvMesa11
+							.isSegundoUniformeTimeVisita() ? 2 : 1)));
 		}
 		JPanel uniformesPanel = new JPanel();
 		uniformesPanel.setBorder(new TitledBorder("") {
@@ -624,8 +633,8 @@ public class ControleJogosCliente {
 
 	public void criarJogoVsCPU() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-					Lang.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+					.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -660,11 +669,12 @@ public class ControleJogosCliente {
 			if (Util.isNullOrEmpty(time.getImagem())) {
 				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
 						1)));
-				uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
-						1)));
+				uniformeCpu.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+						time, 1)));
 			} else {
 				ImageIcon icon = ImageUtil.carregarImagem(this.mesa11Applet
-						.getCodeBase() + "midia/" + time.getImagem());
+						.getCodeBase()
+						+ "midia/" + time.getImagem());
 				uniforme.setIcon(icon);
 				uniformeCpu.setIcon(icon);
 			}
@@ -688,7 +698,8 @@ public class ControleJogosCliente {
 								.desenhaUniforme(time, 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
-								.getCodeBase() + "midia/" + time.getImagem());
+								.getCodeBase()
+								+ "midia/" + time.getImagem());
 						uniforme.setIcon(icon);
 					}
 					segundoUniforme = false;
@@ -712,7 +723,8 @@ public class ControleJogosCliente {
 								.desenhaUniforme(time, 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
-								.getCodeBase() + "midia/" + time.getImagem());
+								.getCodeBase()
+								+ "midia/" + time.getImagem());
 						uniformeCpu.setIcon(icon);
 					}
 					segundoUniformeCpu = false;
@@ -749,8 +761,9 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				Time time = (Time) mesa11to.getData();
 				if (Util.isNullOrEmpty(time.getImagem())) {
-					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
-							.desenhaUniforme(time, segundoUniformeCpu ? 2 : 1)));
+					uniformeCpu
+							.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
+									time, segundoUniformeCpu ? 2 : 1)));
 				}
 			}
 		});
@@ -861,8 +874,8 @@ public class ControleJogosCliente {
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
 			String nomeTimeCpu = (String) jComboBoxTimesCpu.getSelectedItem();
 			if (nomeTime.equals(nomeTimeCpu)) {
-				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
-						Lang.msg("timesIguais"));
+				JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
+						.msg("timesIguais"));
 				return;
 			}
 			dadosJogoSrvMesa11.setTimeCasa(nomeTime);
@@ -896,8 +909,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet,
-						dadosJogoSrvMesa11.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
+								.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -906,6 +919,164 @@ public class ControleJogosCliente {
 
 	public String getVersao() {
 		return mesa11Applet.getVersao();
+	}
+
+	public void criarCampeonato() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
+		Object ret = enviarObjeto(mesa11to);
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			String[] times = (String[]) mesa11to.getData();
+			final DefaultListModel defaultListModelTimes = new DefaultListModel();
+			final DefaultListModel defaultListModelTimesSelecionados = new DefaultListModel();
+			for (int i = 0; i < times.length; i++) {
+				defaultListModelTimes.addElement(times[i]);
+			}
+			final JList listTimes = new JList(defaultListModelTimes);
+			final JList listTimesSelecionados = new JList(
+					defaultListModelTimesSelecionados);
+			JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
+			JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
+			JButton esq = new JButton("<");
+			esq.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (listTimesSelecionados.getSelectedIndex() == -1)
+						return;
+					defaultListModelTimes
+							.addElement(defaultListModelTimesSelecionados
+									.remove(listTimesSelecionados
+											.getSelectedIndex()));
+				}
+			});
+			JButton dir = new JButton(">");
+			dir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (listTimes.getSelectedIndex() == -1)
+						return;
+					defaultListModelTimesSelecionados
+							.addElement(defaultListModelTimes.remove(listTimes
+									.getSelectedIndex()));
+				}
+
+			});
+
+			JButton esqAll = new JButton("<<");
+			esqAll.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int size = defaultListModelTimesSelecionados.size();
+					for (int i = 0; i < size; i++) {
+						defaultListModelTimes
+								.addElement(defaultListModelTimesSelecionados
+										.remove(0));
+					}
+				}
+
+			});
+			JButton dirAll = new JButton(">>");
+			dirAll.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					int size = defaultListModelTimes.size();
+					for (int i = 0; i < size; i++) {
+						defaultListModelTimesSelecionados
+								.addElement(defaultListModelTimes.remove(0));
+					}
+				}
+			});
+			buttonsPanel.add(dir);
+			buttonsPanel.add(esq);
+			buttonsPanel.add(dirAll);
+			buttonsPanel.add(esqAll);
+
+			JButton cima = new JButton("Cima") {
+				@Override
+				public String getText() {
+					return Lang.msg("Cima");
+				}
+			};
+			cima.setEnabled(false);
+			JButton baixo = new JButton("Baixo") {
+				@Override
+				public String getText() {
+					return Lang.msg("Baixo");
+				}
+			};
+			baixo.setEnabled(false);
+			buttonsPanel.add(cima);
+			buttonsPanel.add(baixo);
+
+			escolhaTimesPanel.add(buttonsPanel, BorderLayout.CENTER);
+			escolhaTimesPanel.add(new JScrollPane(listTimes) {
+				@Override
+				public Dimension getPreferredSize() {
+					return new Dimension(150, 300);
+				}
+			}, BorderLayout.WEST);
+			escolhaTimesPanel.add(new JScrollPane(listTimesSelecionados) {
+				@Override
+				public Dimension getPreferredSize() {
+					return new Dimension(150, 300);
+				}
+			}, BorderLayout.EAST);
+			JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+			opcoesJogoPanel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("nomeCampeonato");
+				}
+			});
+			JTextField nomeCampeonato = new JTextField();
+			opcoesJogoPanel.add(nomeCampeonato);
+			opcoesJogoPanel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("numeroJogadas");
+				}
+			});
+			JComboBox numJogadaCombo = new JComboBox();
+			for (int i = 3; i < 21; i++) {
+				numJogadaCombo.addItem(new Integer(i));
+			}
+			numJogadaCombo.setSelectedIndex(4);
+			opcoesJogoPanel.add(numJogadaCombo);
+
+			opcoesJogoPanel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("tempoJogoMinutos");
+				}
+			});
+			JComboBox tempoJogoCombo = new JComboBox();
+			tempoJogoCombo.addItem(new Integer(8));
+			tempoJogoCombo.addItem(new Integer(10));
+			tempoJogoCombo.addItem(new Integer(16));
+			tempoJogoCombo.addItem(new Integer(20));
+			tempoJogoCombo.addItem(new Integer(40));
+			tempoJogoCombo.addItem(new Integer(60));
+			tempoJogoCombo.addItem(new Integer(90));
+			opcoesJogoPanel.add(tempoJogoCombo);
+			opcoesJogoPanel.add(new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("tempoJogadaSegundos");
+				}
+			});
+			JComboBox tempoJogadaCombo = new JComboBox();
+			tempoJogadaCombo.addItem(new Integer(20));
+			tempoJogadaCombo.addItem(new Integer(30));
+			tempoJogadaCombo.addItem(new Integer(40));
+			tempoJogadaCombo.addItem(new Integer(50));
+			tempoJogadaCombo.addItem(new Integer(60));
+			tempoJogadaCombo.addItem(new Integer(90));
+			tempoJogadaCombo.setSelectedIndex(1);
+			opcoesJogoPanel.add(tempoJogadaCombo);
+
+			JPanel panel = new JPanel(new BorderLayout());
+			panel.add(escolhaTimesPanel, BorderLayout.CENTER);
+			panel.add(opcoesJogoPanel, BorderLayout.NORTH);
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), panel);
+		}
+
 	}
 
 }

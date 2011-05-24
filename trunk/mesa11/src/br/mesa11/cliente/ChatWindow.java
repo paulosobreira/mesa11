@@ -114,7 +114,7 @@ public class ChatWindow {
 		}
 	};
 
-	private JButton campeonato = new JButton("campeonato") {
+	private JButton criarCampeonato = new JButton("campeonato") {
 
 		public String getText() {
 
@@ -177,6 +177,15 @@ public class ChatWindow {
 			}
 
 		});
+
+		criarCampeonato.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				controleChatCliente.criarCampeonato();
+			}
+
+		});
+
 		criarJogoVsCPU.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -234,8 +243,8 @@ public class ChatWindow {
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg,
-						Lang.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
+						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
@@ -329,8 +338,8 @@ public class ChatWindow {
 			}
 		});
 		buttonsPanel.add(classificacao);
-		campeonato.setEnabled(false);
-		buttonsPanel.add(campeonato);
+		// campeonato.setEnabled(false);
+		buttonsPanel.add(criarCampeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
