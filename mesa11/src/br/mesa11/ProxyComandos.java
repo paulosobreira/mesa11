@@ -90,6 +90,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
 				.getComando())) {
 			return controlePersistencia.obterTodosTimes();
+		} else if (ConstantesMesa11.OBTER_TODOS_JOGADORES.equals(mesa11TO
+				.getComando())) {
+			return controlePersistencia.obterTodosJogadores();
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());

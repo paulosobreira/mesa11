@@ -30,6 +30,7 @@ import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
+import br.mesa11.visao.AutoCompleteComboBox;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -43,10 +44,10 @@ public class ControleJogosCliente {
 	private boolean segundoUniforme;
 	private boolean segundoUniformeCpu;
 	private ControleChatCliente controleChatCliente;
-	private JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
-			.msg("semTimes") });
-	private JComboBox jComboBoxTimesCpu = new JComboBox(new String[] { Lang
-			.msg("semTimes") });
+	private JComboBox jComboBoxTimes = new JComboBox(
+			new String[] { Lang.msg("semTimes") });
+	private JComboBox jComboBoxTimesCpu = new JComboBox(
+			new String[] { Lang.msg("semTimes") });
 	private DadosMesa11 dadosMesa11;
 	private MonitorJogo monitorJogo;
 	private Mesa11Applet mesa11Applet;
@@ -77,8 +78,8 @@ public class ControleJogosCliente {
 
 	public void criarJogo() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -102,8 +103,7 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme
-					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		JPanel panelComboTimes = new JPanel();
@@ -259,8 +259,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
-								.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet,
+						dadosJogoSrvMesa11.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -268,8 +268,8 @@ public class ControleJogosCliente {
 
 	public void entrarJogo(String jogoSelecionado) {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -325,8 +325,7 @@ public class ControleJogosCliente {
 			ret = enviarObjeto(mesa11to);
 			mesa11to = (Mesa11TO) ret;
 			Time time = (Time) mesa11to.getData();
-			uniforme
-					.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
 			segundoUniforme = false;
 		}
 		jComboBoxTimes.addItemListener(new ItemListener() {
@@ -527,8 +526,8 @@ public class ControleJogosCliente {
 			mesa11to = (Mesa11TO) ret;
 			Time timeVisita = (Time) mesa11to.getData();
 			uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-					timeVisita, dadosJogoSrvMesa11
-							.isSegundoUniformeTimeVisita() ? 2 : 1)));
+					timeVisita,
+					dadosJogoSrvMesa11.isSegundoUniformeTimeVisita() ? 2 : 1)));
 		}
 		JPanel uniformesPanel = new JPanel();
 		uniformesPanel.setBorder(new TitledBorder("") {
@@ -633,8 +632,8 @@ public class ControleJogosCliente {
 
 	public void criarJogoVsCPU() {
 		if (monitorJogo != null && monitorJogo.isAlive()) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("jaEstaEmUmJogo"));
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -673,8 +672,7 @@ public class ControleJogosCliente {
 						time, 1)));
 			} else {
 				ImageIcon icon = ImageUtil.carregarImagem(this.mesa11Applet
-						.getCodeBase()
-						+ "midia/" + time.getImagem());
+						.getCodeBase() + "midia/" + time.getImagem());
 				uniforme.setIcon(icon);
 				uniformeCpu.setIcon(icon);
 			}
@@ -698,8 +696,7 @@ public class ControleJogosCliente {
 								.desenhaUniforme(time, 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
-								.getCodeBase()
-								+ "midia/" + time.getImagem());
+								.getCodeBase() + "midia/" + time.getImagem());
 						uniforme.setIcon(icon);
 					}
 					segundoUniforme = false;
@@ -723,8 +720,7 @@ public class ControleJogosCliente {
 								.desenhaUniforme(time, 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(mesa11Applet
-								.getCodeBase()
-								+ "midia/" + time.getImagem());
+								.getCodeBase() + "midia/" + time.getImagem());
 						uniformeCpu.setIcon(icon);
 					}
 					segundoUniformeCpu = false;
@@ -761,9 +757,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				Time time = (Time) mesa11to.getData();
 				if (Util.isNullOrEmpty(time.getImagem())) {
-					uniformeCpu
-							.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-									time, segundoUniformeCpu ? 2 : 1)));
+					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
+							.desenhaUniforme(time, segundoUniformeCpu ? 2 : 1)));
 				}
 			}
 		});
@@ -874,8 +869,8 @@ public class ControleJogosCliente {
 			String nomeTime = (String) jComboBoxTimes.getSelectedItem();
 			String nomeTimeCpu = (String) jComboBoxTimesCpu.getSelectedItem();
 			if (nomeTime.equals(nomeTimeCpu)) {
-				JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-						.msg("timesIguais"));
+				JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+						Lang.msg("timesIguais"));
 				return;
 			}
 			dadosJogoSrvMesa11.setTimeCasa(nomeTime);
@@ -909,8 +904,8 @@ public class ControleJogosCliente {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet, dadosJogoSrvMesa11
-								.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet,
+						dadosJogoSrvMesa11.getTimeCasa());
 				monitorJogo.start();
 			}
 		}
@@ -1018,7 +1013,7 @@ public class ControleJogosCliente {
 					return new Dimension(150, 300);
 				}
 			}, BorderLayout.EAST);
-			JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+			JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2));
 			opcoesJogoPanel.add(new JLabel() {
 				@Override
 				public String getText() {
@@ -1071,12 +1066,65 @@ public class ControleJogosCliente {
 			tempoJogadaCombo.setSelectedIndex(1);
 			opcoesJogoPanel.add(tempoJogadaCombo);
 
+			JPanel jogadoresPanel = new JPanel(new BorderLayout());
+			jogadoresPanel.setBorder(new TitledBorder("Jogadores"));
+			mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_JOGADORES);
+			ret = enviarObjeto(mesa11to);
+			String[] jogadores = new String[] { "" };
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				jogadores = (String[]) mesa11to.getData();
+
+			}
+			final AutoCompleteComboBox autoCompleteComboBox = new AutoCompleteComboBox(
+					jogadores, true);
+			jogadoresPanel.add(autoCompleteComboBox, BorderLayout.NORTH);
+
+			final DefaultListModel defaultListModelJogadores = new DefaultListModel();
+			final JList listaJogadores = new JList(defaultListModelJogadores) {
+				@Override
+				public Dimension getPreferredSize() {
+					return new Dimension(150, 300);
+				}
+			};
+			JButton add = new JButton("adicionar");
+			add.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (autoCompleteComboBox.getSelectedIndex() == -1)
+						return;
+					defaultListModelJogadores.addElement(autoCompleteComboBox
+							.getSelectedItem());
+				}
+
+			});
+
+			JButton rem = new JButton("remover");
+			rem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					if (listaJogadores.getSelectedIndex() == -1)
+						return;
+					defaultListModelJogadores.remove(listaJogadores
+							.getSelectedIndex());
+				}
+
+			});
+			JPanel botoesJogadores = new JPanel(new GridLayout(1, 2));
+			botoesJogadores.add(add);
+			botoesJogadores.add(rem);
+			jogadoresPanel.add(botoesJogadores, BorderLayout.CENTER);
+			jogadoresPanel.add(listaJogadores, BorderLayout.SOUTH);
+
+			JPanel jogadoresEGeralPanel = new JPanel(new BorderLayout());
+			jogadoresEGeralPanel.add(jogadoresPanel, BorderLayout.CENTER);
+			jogadoresEGeralPanel.add(opcoesJogoPanel, BorderLayout.SOUTH);
+
 			JPanel panel = new JPanel(new BorderLayout());
-			panel.add(escolhaTimesPanel, BorderLayout.CENTER);
-			panel.add(opcoesJogoPanel, BorderLayout.NORTH);
+			panel.add(escolhaTimesPanel, BorderLayout.EAST);
+			panel.add(jogadoresEGeralPanel, BorderLayout.CENTER);
 			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), panel);
+
 		}
 
 	}
-
 }

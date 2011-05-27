@@ -110,5 +110,6 @@ public class ConstantesMesa11 {
 	public static final String VER_CLASSIFICACAO = "VER_CLASSIFICACAO";
 	public static final Object VER_CLASSIFICACAO_TIMES = "VER_CLASSIFICACAO_TIMES";
 	public static final Object VER_CLASSIFICACAO_JOGADORES = "VER_CLASSIFICACAO_JOGADORES";
+	public static final String OBTER_TODOS_JOGADORES = "OBTER_TODOS_JOGADORES";
 
 }
