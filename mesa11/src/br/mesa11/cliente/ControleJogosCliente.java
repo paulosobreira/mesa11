@@ -9,7 +9,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultListModel;
@@ -24,13 +25,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import sun.nio.cs.ext.TIS_620;
-
 import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.mesa11.BotaoUtils;
 import br.mesa11.ConstantesMesa11;
-import br.mesa11.visao.AutoCompleteComboBox;
+import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -932,6 +931,12 @@ public class ControleJogosCliente {
 			final JList listTimesSelecionados = new JList(
 					defaultListModelTimesSelecionados);
 			JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
+			escolhaTimesPanel.setBorder(new TitledBorder("times") {
+				@Override
+				public String getTitle() {
+					return Lang.msg("times");
+				}
+			});
 			JPanel buttonsPanel = new JPanel(new GridLayout(6, 1));
 			JButton esq = new JButton("<");
 			esq.addActionListener(new ActionListener() {
@@ -1014,6 +1019,12 @@ public class ControleJogosCliente {
 				}
 			}, BorderLayout.EAST);
 			JPanel opcoesJogoPanel = new JPanel(new GridLayout(4, 2));
+			opcoesJogoPanel.setBorder(new TitledBorder("campeonato") {
+				@Override
+				public String getTitle() {
+					return Lang.msg("campeonato");
+				}
+			});
 			opcoesJogoPanel.add(new JLabel() {
 				@Override
 				public String getText() {
@@ -1067,7 +1078,12 @@ public class ControleJogosCliente {
 			opcoesJogoPanel.add(tempoJogadaCombo);
 
 			JPanel jogadoresPanel = new JPanel(new BorderLayout());
-			jogadoresPanel.setBorder(new TitledBorder("Jogadores"));
+			jogadoresPanel.setBorder(new TitledBorder("jogadores") {
+				@Override
+				public String getTitle() {
+					return Lang.msg("jogadores");
+				}
+			});
 			mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_JOGADORES);
 			ret = enviarObjeto(mesa11to);
@@ -1077,29 +1093,43 @@ public class ControleJogosCliente {
 				jogadores = (String[]) mesa11to.getData();
 
 			}
-			final AutoCompleteComboBox autoCompleteComboBox = new AutoCompleteComboBox(
-					jogadores, true);
-			jogadoresPanel.add(autoCompleteComboBox, BorderLayout.NORTH);
+			List lista = new ArrayList();
+			for (int i = 0; i < jogadores.length; i++) {
+				lista.add(jogadores[i]);
+			}
+			final Java2sAutoComboBox java2sAutoComboBox = new Java2sAutoComboBox(
+					lista);
+			jogadoresPanel.add(java2sAutoComboBox, BorderLayout.NORTH);
 
 			final DefaultListModel defaultListModelJogadores = new DefaultListModel();
 			final JList listaJogadores = new JList(defaultListModelJogadores) {
 				@Override
 				public Dimension getPreferredSize() {
-					return new Dimension(150, 300);
+					return new Dimension(150, 120);
 				}
 			};
-			JButton add = new JButton("adicionar");
+			JButton add = new JButton("adicionar") {
+				@Override
+				public String getText() {
+					return Lang.msg("adicionar");
+				}
+			};
 			add.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					if (autoCompleteComboBox.getSelectedIndex() == -1)
+					if (java2sAutoComboBox.getSelectedIndex() == -1)
 						return;
-					defaultListModelJogadores.addElement(autoCompleteComboBox
+					defaultListModelJogadores.addElement(java2sAutoComboBox
 							.getSelectedItem());
 				}
 
 			});
 
-			JButton rem = new JButton("remover");
+			JButton rem = new JButton("remover") {
+				@Override
+				public String getText() {
+					return Lang.msg("remover");
+				}
+			};
 			rem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					if (listaJogadores.getSelectedIndex() == -1)
@@ -1116,8 +1146,8 @@ public class ControleJogosCliente {
 			jogadoresPanel.add(listaJogadores, BorderLayout.SOUTH);
 
 			JPanel jogadoresEGeralPanel = new JPanel(new BorderLayout());
-			jogadoresEGeralPanel.add(jogadoresPanel, BorderLayout.CENTER);
-			jogadoresEGeralPanel.add(opcoesJogoPanel, BorderLayout.SOUTH);
+			jogadoresEGeralPanel.add(jogadoresPanel, BorderLayout.SOUTH);
+			jogadoresEGeralPanel.add(opcoesJogoPanel, BorderLayout.CENTER);
 
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(escolhaTimesPanel, BorderLayout.EAST);
