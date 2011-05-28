@@ -656,4 +656,9 @@ public class ControleChatCliente {
 		}
 		controleJogosCliente.criarCampeonato();
 	}
+
+	public void verCampeonato() {
+		// TODO Auto-generated method stub
+		
+	}
 }

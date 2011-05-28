@@ -46,11 +46,11 @@ public class ChatWindow {
 	private JTextField textoEnviar = new JTextField();
 	private HashMap mapaJogosCriados = new HashMap();
 	private HashMap mapaJogosAndamento = new HashMap();
-	private JButton enviarTexto = new JButton("Enviar Texto") {
+	private JButton verCampeonato = new JButton("verCampeonato") {
 
 		public String getText() {
 
-			return Lang.msg("enviarTexto");
+			return Lang.msg("verCampeonato");
 		}
 	};
 	private JButton entrarJogo = new JButton("Entrar Jogo") {
@@ -168,7 +168,6 @@ public class ChatWindow {
 			}
 
 		};
-		enviarTexto.addActionListener(actionListener);
 		textoEnviar.addActionListener(actionListener);
 		criarJogo.addActionListener(new ActionListener() {
 
@@ -186,6 +185,14 @@ public class ChatWindow {
 
 		});
 
+		verCampeonato.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				controleChatCliente.verCampeonato();
+			}
+
+		});
+		
 		criarJogoVsCPU.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -315,7 +322,6 @@ public class ChatWindow {
 		jogsAndamentoPanel.add(jogsAndamento);
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setLayout(new GridLayout(3, 4));
-		buttonsPanel.add(enviarTexto);
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(criarJogo);
 		buttonsPanel.add(criarJogoVsCPU);
@@ -340,6 +346,7 @@ public class ChatWindow {
 		buttonsPanel.add(classificacao);
 		// campeonato.setEnabled(false);
 		buttonsPanel.add(criarCampeonato);
+		buttonsPanel.add(verCampeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
