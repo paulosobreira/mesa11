@@ -29,6 +29,7 @@ import br.hibernate.Goleiro;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.ControleJogo;
+import br.mesa11.conceito.GolJogador;
 import br.nnpe.GeoUtil;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
@@ -327,6 +328,7 @@ public class MesaPanel extends JPanel {
 		//
 		// }
 		// desennhaCirculo(g2d);
+		desenhaGolsJogo(g2d);
 		desenhaInfoJogo(g2d);
 		desenhaProblemaRede(g2d);
 		desenhaGol(g2d);
@@ -455,6 +457,71 @@ public class MesaPanel extends JPanel {
 
 		}
 
+	}
+
+	private void desenhaGolsJogo(Graphics2D g2d) {
+		List<GolJogador> golsTempo = controleJogo.getGolsTempo();
+		if (golsTempo == null || golsTempo.isEmpty())
+			return;
+		g2d.setColor(Color.BLACK);
+		int x = limitesViewPort.getBounds().x + 15;
+		int y = limitesViewPort.getBounds().y + 20;
+
+		g2d.setColor(lightWhite);
+		String msg = Lang.msg("gols");
+		int largura = 0;
+		for (int i = 0; i < msg.length(); i++) {
+			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+		}
+		// x -= largura / 2;
+		g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(msg, x - 5, y);
+		for (Iterator iterator = golsTempo.iterator(); iterator.hasNext();) {
+			GolJogador golJogador = (GolJogador) iterator.next();
+			y += 25;
+			Botao b = controleJogo.obterBotao(golJogador.getIdJogador());
+			Time time = b.getTime();
+			Color c1 = new Color(time.getCor1());
+			Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
+			g2d.setColor(corFundo);
+			msg = b.getNome();
+			largura = 0;
+			for (int i = 0; i < msg.length(); i++) {
+				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			}
+			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+			int valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(msg, x - 5, y);
+
+			Color c2 = new Color(time.getCor2());
+			corFundo = ImageUtil.gerarCorTransparente(c2, 200);
+			g2d.setColor(corFundo);
+			msg = golJogador.getTempoGol();
+			int newX = x + largura + 15;
+			largura = 0;
+			for (int i = 0; i < msg.length(); i++) {
+				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			}
+			g2d.fillRoundRect(newX - 10, y - 15, largura + 10, 20, 10, 10);
+			valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(msg, newX - 5, y);
+
+			if (golJogador.isContra()) {
+				g2d.setColor(Color.YELLOW);
+				g2d.drawString("C", newX + largura + 5, y);
+			}
+		}
 	}
 
 	private void desenhaInfoJogo(Graphics2D g2d) {
@@ -1343,6 +1410,8 @@ public class MesaPanel extends JPanel {
 		// g.fill(areaEscateioBaixo);
 		// g.fill(areaEscateioCima);
 		// g.fill(campoBaixoSemLinhas);
+		g.fill(linhaGolBaixo);
+		g.fill(linhaGolCima);
 
 	}
 

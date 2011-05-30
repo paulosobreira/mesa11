@@ -118,18 +118,18 @@ public class ControleEvento implements Runnable {
 			if (timeCima.equals(time)) {
 				if (controleJogo.getMesaPanel().getAreaGolCima()
 						.intersects(controleJogo.getUltGol().getBounds())) {
-					controleJogo.processarGolContra(timeCima);
+					controleJogo.processarGolContra(evento.getUltimoContato());
 				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
 						.intersects(controleJogo.getUltGol().getBounds())) {
-					controleJogo.processarGol(timeCima);
+					controleJogo.processarGol(evento.getUltimoContato());
 				}
 			} else {
 				if (controleJogo.getMesaPanel().getAreaGolCima()
 						.intersects(controleJogo.getUltGol().getBounds())) {
-					controleJogo.processarGol(timeBaixo);
+					controleJogo.processarGol(evento.getUltimoContato());
 				} else if (controleJogo.getMesaPanel().getAreaGolBaixo()
 						.intersects(controleJogo.getUltGol().getBounds())) {
-					controleJogo.processarGolContra(timeBaixo);
+					controleJogo.processarGolContra(evento.getUltimoContato());
 				}
 			}
 		}

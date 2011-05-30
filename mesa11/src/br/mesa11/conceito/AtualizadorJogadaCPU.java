@@ -54,6 +54,7 @@ public class AtualizadorJogadaCPU extends Thread {
 									@Override
 									public void run() {
 										iniJogada = System.currentTimeMillis();
+										Logger.logar("Inicia Jogada CPU");
 										controleJogo.jogadaCPU();
 										Logger.logar("Tempo Jogada Cpu "
 												+ (System.currentTimeMillis() - iniJogada));

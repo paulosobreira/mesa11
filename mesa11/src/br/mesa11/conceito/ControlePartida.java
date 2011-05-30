@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -76,6 +77,7 @@ public class ControlePartida {
 	private boolean segundoUniformeCima;
 	private boolean segundoUniformeBaixo;
 	private Thread timerJogo;
+	private List<GolJogador> golJogadors = new LinkedList<GolJogador>();
 
 	public ControlePartida(ControleJogo controleJogo) {
 		super();
@@ -318,12 +320,12 @@ public class ControlePartida {
 			timesCima.addItem(iterator.next());
 		}
 		while (timesCima.getSelectedItem().equals(timesBaixo.getSelectedItem())) {
-			timesBaixo.setSelectedIndex(Util.intervalo(0, timesBaixo
-					.getItemCount() - 1));
+			timesBaixo.setSelectedIndex(Util.intervalo(0,
+					timesBaixo.getItemCount() - 1));
 			Logger.logar("Selecionado Outro Time Baixo");
 		}
-		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
-				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
+		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel,
+				Lang.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
 			return;
@@ -335,8 +337,8 @@ public class ControlePartida {
 			return;
 		}
 
-		XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-				.recursoComoStream(xmlCima));
+		XMLDecoder xmlDecoder = new XMLDecoder(
+				CarregadorRecursos.recursoComoStream(xmlCima));
 		timeCima = (Time) xmlDecoder.readObject();
 		timeCima.setControladoCPU(timeCimaCPU.isSelected());
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
@@ -355,8 +357,8 @@ public class ControlePartida {
 			} else {
 				if (botao instanceof Goleiro || botao.isGoleiro()) {
 					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniformeGoleiro(timeCima, timeCima
-									.isSegundoUniforme() ? 2 : 1,
+							.desenhaUniformeGoleiro(timeCima,
+									timeCima.isSegundoUniforme() ? 2 : 1,
 									(Goleiro) botao));
 					botao.setCentro(mesaPanel.golCima());
 				} else {
@@ -371,8 +373,8 @@ public class ControlePartida {
 
 		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
 		bateuCentroCima = bolaCima.isSelected();
-		xmlDecoder = new XMLDecoder(CarregadorRecursos
-				.recursoComoStream(xmlBaixo));
+		xmlDecoder = new XMLDecoder(
+				CarregadorRecursos.recursoComoStream(xmlBaixo));
 		timeBaixo = (Time) xmlDecoder.readObject();
 		timeBaixo.setControladoCPU(timeBaixoCPU.isSelected());
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
@@ -403,9 +405,9 @@ public class ControlePartida {
 			// + botao.isGoleiro() + " " + botao.getClass());
 		}
 		controleJogo.bolaCentro();
-		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
-				.isSelected() ? ConstantesMesa11.CAMPO_CIMA
-				: ConstantesMesa11.CAMPO_BAIXO);
+		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
+				bolaCima.isSelected() ? ConstantesMesa11.CAMPO_CIMA
+						: ConstantesMesa11.CAMPO_BAIXO);
 		if (timeCima.getId() == null) {
 			timeCima.setId(System.currentTimeMillis());
 		}
@@ -454,8 +456,8 @@ public class ControlePartida {
 					time.isSegundoUniforme() ? 2 : 1, botao);
 		BufferedImage newBuffer = null;
 		if (imgCust) {
-			newBuffer = new BufferedImage((buff.getWidth() + 1), (buff
-					.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+			newBuffer = new BufferedImage((buff.getWidth() + 1),
+					(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
 		} else {
 			newBuffer = new BufferedImage((buff.getWidth()),
 					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
@@ -465,11 +467,11 @@ public class ControlePartida {
 
 		Ellipse2D externo = null;
 		if (imgCust) {
-			externo = new Ellipse2D.Double(1, 1, (buff.getWidth() - 1), (buff
-					.getHeight() - 1));
+			externo = new Ellipse2D.Double(1, 1, (buff.getWidth() - 1),
+					(buff.getHeight() - 1));
 		} else {
-			externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
-					.getHeight()));
+			externo = new Ellipse2D.Double(0, 0, (buff.getWidth()),
+					(buff.getHeight()));
 		}
 
 		graphics2d.setClip(externo);
@@ -626,14 +628,14 @@ public class ControlePartida {
 		Time time = b.getTime();
 		if (b.getId() == 0) {
 			Goleiro goleiroCima = controleJogo.obterGoleiroCima();
-			double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(b
-					.getCentro(), goleiroCima.getCentro());
+			double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(
+					b.getCentro(), goleiroCima.getCentro());
 			if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
 				time = goleiroCima.getTime();
 			}
 			Goleiro goleiroBaixo = controleJogo.obterGoleiroBaixo();
-			double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(b
-					.getCentro(), goleiroBaixo.getCentro());
+			double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(
+					b.getCentro(), goleiroBaixo.getCentro());
 			if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
 				time = goleiroBaixo.getTime();
 			}
@@ -689,17 +691,17 @@ public class ControlePartida {
 
 	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
 		Goleiro goleiroTime = obterGoleiroTime(time);
-		double distGoleiroTime = GeoUtil.distaciaEntrePontos(goleiroTime
-				.getCentro(), bola.getCentro());
+		double distGoleiroTime = GeoUtil.distaciaEntrePontos(
+				goleiroTime.getCentro(), bola.getCentro());
 		double outraDistancia = 0;
 		if (timeCima.equals(time)) {
 			goleiroTime = obterGoleiroTime(timeBaixo);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		} else {
 			goleiroTime = obterGoleiroTime(timeCima);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		}
 		return distGoleiroTime < outraDistancia;
 	}
@@ -708,7 +710,8 @@ public class ControlePartida {
 		return time.obterGoleiro();
 	}
 
-	public void processarGol(Time time) {
+	public void processarGol(Botao botao) {
+		Time time = botao.getTime();
 		if (timeCima.equals(time)) {
 			controleFormacao.posicionaTimeCima(timeCima, false);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
@@ -720,10 +723,18 @@ public class ControlePartida {
 			Integer gols = (Integer) mapaGols.get(timeBaixo);
 			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
 		}
+		GolJogador golJogador = new GolJogador();
+		golJogador.setIdJogador(botao.getId());
+		golJogador.setTempoGol(tempoRestanteJogoFormatado());
+		golJogadors.add(golJogador);
 		centralizaGoleiroBaixo();
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
+	}
+
+	public List<GolJogador> getGolJogadors() {
+		return golJogadors;
 	}
 
 	public void centralizaGoleiroBaixo() {
@@ -752,7 +763,8 @@ public class ControlePartida {
 
 	}
 
-	public void processarGolContra(Time time) {
+	public void processarGolContra(Botao botao) {
+		Time time = botao.getTime();
 		if (timeCima.equals(time)) {
 			controleFormacao.posicionaTimeCima(timeCima, true);
 			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
@@ -764,7 +776,11 @@ public class ControlePartida {
 			Integer gols = (Integer) mapaGols.get(timeCima);
 			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
 		}
-		centralizaGoleiroBaixo();
+		GolJogador golJogador = new GolJogador();
+		golJogador.setIdJogador(botao.getId());
+		golJogador.setTempoGol(tempoRestanteJogoFormatado());
+		golJogador.setContra(true);
+		golJogadors.add(golJogador);
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
@@ -858,8 +874,9 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, timeCima
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeCima,
+								timeCima.isSegundoUniforme() ? 2 : 1,
+								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
 				carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
@@ -871,8 +888,9 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo, timeBaixo
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeBaixo,
+								timeBaixo.isSegundoUniforme() ? 2 : 1,
+								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
 				carregarBotaoImagemBotao(botoesImagens, botao, timeBaixo);
