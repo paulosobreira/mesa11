@@ -2,6 +2,8 @@ package br.tos;
 
 import java.io.Serializable;
 
+import br.mesa11.conceito.GolJogador;
+
 public class Mesa11TO implements Serializable {
 
 	private String comando;
@@ -10,10 +12,21 @@ public class Mesa11TO implements Serializable {
 
 	private Object Data;
 
+	private int tamListaGols;
+
+
 	private byte[] dataBytes;
 
 	public byte[] getDataBytes() {
 		return dataBytes;
+	}
+
+	public int getTamListaGols() {
+		return tamListaGols;
+	}
+
+	public void setTamListaGols(int tamListaGols) {
+		this.tamListaGols = tamListaGols;
 	}
 
 	public void setDataBytes(byte[] dataBytes) {

@@ -120,7 +120,9 @@ public class ControleJogosServidor {
 		}
 	}
 
-	public Object obterDadosJogo(String nomejogo) {
+	public Object obterDadosJogo(Mesa11TO mesa11to) {
+		String nomejogo = (String) mesa11to.getData();
+
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
 			return null;
@@ -148,8 +150,12 @@ public class ControleJogosServidor {
 			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
 			dadosJogoSrvMesa11.setDica(controleJogo.getDica());
 			dadosJogoSrvMesa11.setProcessando(controleJogo.isProcessando());
+			if (controleJogo.getGolsTempo().size() > mesa11to.getTamListaGols()) {
+				dadosJogoSrvMesa11.setGolJogador(controleJogo.getGolsTempo()
+						.get(mesa11to.getTamListaGols()));
+			}
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to = new Mesa11TO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());
 		return mesa11to;
 	}

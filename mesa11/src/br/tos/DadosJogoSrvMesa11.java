@@ -3,6 +3,7 @@ package br.tos;
 import java.io.Serializable;
 
 import br.mesa11.conceito.Animacao;
+import br.mesa11.conceito.GolJogador;
 
 public class DadosJogoSrvMesa11 implements Serializable {
 
@@ -35,9 +36,18 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoRestanteJogoFormatado;
 	private String tempoJogadaRestanteJogoFormatado;
 	private String dica;
+	private GolJogador golJogador;
 
 	public boolean isJogoVsCpu() {
 		return jogoVsCpu;
+	}
+
+	public GolJogador getGolJogador() {
+		return golJogador;
+	}
+
+	public void setGolJogador(GolJogador golJogador) {
+		this.golJogador = golJogador;
 	}
 
 	public void setJogoVsCpu(boolean jogoVsCpu) {
