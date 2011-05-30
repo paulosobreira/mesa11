@@ -76,10 +76,14 @@ public class MonitorJogo extends Thread {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+			if (dadosJogoSrvMesa11.getGolJogador() != null) {
+				controleJogo.getGolsTempo().add(dadosJogoSrvMesa11.getGolJogador());
+			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if ("gol".equals(dadosJogoSrvMesa11.getDica())
 					|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
