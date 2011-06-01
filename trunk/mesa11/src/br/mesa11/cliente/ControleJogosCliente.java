@@ -857,6 +857,14 @@ public class ControleJogosCliente {
 		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
 		iniciarJogoPanel.add(opcoesJogoPanel, BorderLayout.NORTH);
 
+		while (jComboBoxTimesCpu.getItemCount() > 1
+				&& jComboBoxTimes.getSelectedItem().equals(
+						jComboBoxTimesCpu.getSelectedItem())) {
+			jComboBoxTimesCpu.setSelectedIndex(Util.intervalo(0,
+					jComboBoxTimesCpu.getItemCount() - 1));
+			Logger.logar("Selecionado Outro Time Baixo");
+		}
+
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				iniciarJogoPanel, Lang.msg("criarJogo"),
 				JOptionPane.YES_NO_OPTION);

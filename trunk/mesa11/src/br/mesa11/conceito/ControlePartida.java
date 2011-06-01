@@ -319,7 +319,9 @@ public class ControlePartida {
 		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
 			timesCima.addItem(iterator.next());
 		}
-		while (timesCima.getSelectedItem().equals(timesBaixo.getSelectedItem())) {
+		while (timesBaixo.getItemCount() > 1
+				&& timesCima.getSelectedItem().equals(
+						timesBaixo.getSelectedItem())) {
 			timesBaixo.setSelectedIndex(Util.intervalo(0,
 					timesBaixo.getItemCount() - 1));
 			Logger.logar("Selecionado Outro Time Baixo");

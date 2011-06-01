@@ -10,6 +10,24 @@ public class GolJogador implements Serializable {
 
 	private boolean contra;
 
+	@Override
+	public boolean equals(Object obj) {
+		GolJogador golJogador = (GolJogador) obj;
+		if (idJogador == null && golJogador.getIdJogador() != null)
+			return false;
+		if (tempoGol == null && golJogador.getTempoGol() != null)
+			return false;
+		return idJogador.equals(golJogador.getIdJogador())
+				&& tempoGol.equals(golJogador.getTempoGol())
+				&& contra == golJogador.isContra();
+	}
+
+	@Override
+	public int hashCode() {
+		String toHash = " " + idJogador + tempoGol + contra;
+		return toHash.hashCode();
+	}
+
 	public boolean isContra() {
 		return contra;
 	}
