@@ -39,24 +39,37 @@ public class MonitorJogo extends Thread {
 	@Override
 	public void run() {
 		while (!jogoTerminado) {
-			dormir(tempoDormir);
-			if (timesSelecionados() && controleJogo == null) {
-				iniciaJogo();
-			}
-			if (controleJogo != null) {
-				atualizaDadosJogoSrvMesa11();
-				jogoTerminado = controleJogo.isJogoTerminado();
-				if (erroComunic > 20) {
-					jogoTerminado = true;
+			try {
+				dormir(tempoDormir);
+				if (timesSelecionados() && controleJogo == null) {
+					Logger.logar("Antes iniciaJogo();");
+					iniciaJogo();
+					Logger.logar("Depois iniciaJogo();");
 				}
-				if (jogoTerminado) {
-					controleJogo.setDica("fimJogo");
+				if (controleJogo != null) {
+					Logger.logar("Antes atualizaDadosJogoSrvMesa11();");
+					atualizaDadosJogoSrvMesa11();
+					Logger.logar("Depois atualizaDadosJogoSrvMesa11();");
+					jogoTerminado = controleJogo.isJogoTerminado();
+					Logger
+							.logar("jogoTerminado = controleJogo.isJogoTerminado();");
+					if (erroComunic > 20) {
+						jogoTerminado = true;
+					}
+					if (jogoTerminado) {
+						controleJogo.setDica("fimJogo");
+					}
 				}
-			}
-			if (controleChatCliente.getLatenciaReal() > 500) {
-				controleJogo.setProblemasRede(true);
-			} else {
-				controleJogo.setProblemasRede(false);
+				Logger.logar("controleChatCliente.getLatenciaReal() ");
+				if (controleChatCliente.getLatenciaReal() > 500
+						&& controleJogo != null) {
+					Logger.logar("controleJogo.setProblemasRede(true);");
+					controleJogo.setProblemasRede(true);
+				} else {
+					controleJogo.setProblemasRede(false);
+				}
+			} catch (Exception e) {
+				Logger.logarExept(e);
 			}
 		}
 		if (jogoTerminado) {
@@ -97,7 +110,8 @@ public class MonitorJogo extends Thread {
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
 				if ("gol".equals(dadosJogoSrvMesa11.getDica())
 						|| "golContra".equals(dadosJogoSrvMesa11.getDica())) {
-					Logger.logar("controleJogo.getMesaPanel().setDesenhaGol();");
+					Logger
+							.logar("controleJogo.getMesaPanel().setDesenhaGol();");
 					threadGol = new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -189,11 +203,16 @@ public class MonitorJogo extends Thread {
 	private boolean timesSelecionados() {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
+		Logger.logar("dadosJogoSrvMesa11.getNomeJogo()"
+				+ dadosJogoSrvMesa11.getNomeJogo());
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		Object ret = enviarObjeto(mesa11to);
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+			Logger
+					.logar("dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();"
+							+ dadosJogoSrvMesa11);
 			if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeCasa())
 					&& !Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
 				return true;
