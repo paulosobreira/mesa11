@@ -1126,8 +1126,10 @@ public class ControleJogosCliente {
 				public void actionPerformed(ActionEvent arg0) {
 					if (java2sAutoComboBox.getSelectedIndex() == -1)
 						return;
-					defaultListModelJogadores.addElement(java2sAutoComboBox
-							.getSelectedItem());
+					if (!defaultListModelJogadores.contains(java2sAutoComboBox
+							.getSelectedItem()))
+						defaultListModelJogadores.addElement(java2sAutoComboBox
+								.getSelectedItem());
 				}
 
 			});
