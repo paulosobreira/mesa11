@@ -2,7 +2,9 @@ package br.mesa11;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.swing.JApplet;
@@ -15,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 
+import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.conceito.ControleJogo;
@@ -29,12 +32,14 @@ public class MainFrame {
 	private ControleJogo controleJogo;
 	private JApplet mesa11Applet;
 	private String codeBase;
+	private Mesa11Applet ver = new Mesa11Applet();
 
 	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
+
 		frame = new JFrame() {
 			@Override
 			public String getTitle() {
-				return Lang.msg("titulo");
+				return Lang.msg("titulo") + " " + ver.getVersao();
 			}
 		};
 		if (mesa11Applet == null) {

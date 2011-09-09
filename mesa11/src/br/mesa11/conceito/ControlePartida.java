@@ -106,12 +106,12 @@ public class ControlePartida {
 		final JComboBox timesCima = new JComboBox();
 		final JComboBox timesBaixo = new JComboBox();
 
-		JCheckBox timeCimaCPU = new JCheckBox();
-		JCheckBox timeBaixoCPU = new JCheckBox();
+		final JCheckBox timeCimaCPU = new JCheckBox();
+		final JCheckBox timeBaixoCPU = new JCheckBox();
 
-		JRadioButton bolaCima = new JRadioButton();
+		final JRadioButton bolaCima = new JRadioButton();
 		bolaCima.setSelected(true);
-		JRadioButton bolaBaixo = new JRadioButton();
+		final JRadioButton bolaBaixo = new JRadioButton();
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(bolaCima);
 		buttonGroup.add(bolaBaixo);
@@ -260,7 +260,7 @@ public class ControlePartida {
 				return Lang.msg("numeroJogadas");
 			}
 		});
-		JComboBox numJogadaCombo = new JComboBox();
+		final JComboBox numJogadaCombo = new JComboBox();
 		for (int i = 3; i < 21; i++) {
 			numJogadaCombo.addItem(new Integer(i));
 		}
@@ -273,7 +273,7 @@ public class ControlePartida {
 				return Lang.msg("tempoJogoMinutos");
 			}
 		});
-		JComboBox tempoJogoCombo = new JComboBox();
+		final JComboBox tempoJogoCombo = new JComboBox();
 		tempoJogoCombo.addItem(new Integer(8));
 		tempoJogoCombo.addItem(new Integer(10));
 		tempoJogoCombo.addItem(new Integer(16));
@@ -289,7 +289,7 @@ public class ControlePartida {
 				return Lang.msg("tempoJogadaSegundos");
 			}
 		});
-		JComboBox tempoJogadaCombo = new JComboBox();
+		final JComboBox tempoJogadaCombo = new JComboBox();
 		tempoJogadaCombo.addItem(new Integer(20));
 		tempoJogadaCombo.addItem(new Integer(30));
 		tempoJogadaCombo.addItem(new Integer(40));
@@ -298,8 +298,8 @@ public class ControlePartida {
 		tempoJogoPanel.add(tempoJogadaCombo);
 
 		JFrame frame = controleJogo.getFrame();
-		Map botoesImagens = controleJogo.getBotoesImagens();
-		Map botoes = controleJogo.getBotoes();
+		final Map botoesImagens = controleJogo.getBotoesImagens();
+		final Map botoes = controleJogo.getBotoes();
 		mesaPanel = controleJogo.getMesaPanel();
 		JPanel iniciarJogoPanel = new JPanel(new BorderLayout());
 		iniciarJogoPanel.add(escolhaTimesPanel, BorderLayout.CENTER);
@@ -332,96 +332,114 @@ public class ControlePartida {
 		if (val != JOptionPane.YES_OPTION) {
 			return;
 		}
-		processaTempoJogo(tempoJogoCombo.getSelectedItem());
-		String xmlCima = obterKey((String) timesCima.getSelectedItem());
-		String xmlBaixo = obterKey((String) timesBaixo.getSelectedItem());
-		if (xmlCima.equals(xmlBaixo)) {
-			return;
-		}
+		Thread run = new Thread(new Runnable() {
 
-		XMLDecoder xmlDecoder = new XMLDecoder(
-				CarregadorRecursos.recursoComoStream(xmlCima));
-		timeCima = (Time) xmlDecoder.readObject();
-		timeCima.setControladoCPU(timeCimaCPU.isSelected());
-		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
-		timeCima.setSegundoUniforme(segundoUniformeCima);
-		for (int i = 0; i < 11; i++) {
-			Long id = new Long(i + 2);
-			Botao botao = (Botao) timeCima.getBotoes().get(i);
-			if (botao.getId() == null || MesaPanel.zero.equals(botao.getId())) {
-				botao.setId(id);
-			}
-			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima,
-								segundoUniformeCima ? 2 : 1, (Goleiro) botao));
-				botao.setCentro(mesaPanel.golCima());
-			} else {
-				if (botao instanceof Goleiro || botao.isGoleiro()) {
-					botoesImagens.put(botao.getId(), BotaoUtils
-							.desenhaUniformeGoleiro(timeCima,
-									timeCima.isSegundoUniforme() ? 2 : 1,
-									(Goleiro) botao));
-					botao.setCentro(mesaPanel.golCima());
-				} else {
-					carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
+			@Override
+			public void run() {
+				processaTempoJogo(tempoJogoCombo.getSelectedItem());
+				String xmlCima = obterKey((String) timesCima.getSelectedItem());
+				String xmlBaixo = obterKey((String) timesBaixo
+						.getSelectedItem());
+				if (xmlCima.equals(xmlBaixo)) {
+					return;
 				}
 
-			}
-			botoes.put(botao.getId(), botao);
+				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
+						.recursoComoStream(xmlCima));
+				timeCima = (Time) xmlDecoder.readObject();
+				timeCima.setControladoCPU(timeCimaCPU.isSelected());
+				timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
+				timeCima.setSegundoUniforme(segundoUniformeCima);
+				for (int i = 0; i < 11; i++) {
+					Long id = new Long(i + 2);
+					Botao botao = (Botao) timeCima.getBotoes().get(i);
+					if (botao.getId() == null
+							|| MesaPanel.zero.equals(botao.getId())) {
+						botao.setId(id);
+					}
+					if (botao instanceof Goleiro || botao.isGoleiro()) {
+						botoesImagens.put(botao.getId(), BotaoUtils
+								.desenhaUniformeGoleiro(timeCima,
+										segundoUniformeCima ? 2 : 1,
+										(Goleiro) botao));
+						botao.setCentro(mesaPanel.golCima());
+					} else {
+						if (botao instanceof Goleiro || botao.isGoleiro()) {
+							botoesImagens.put(botao.getId(), BotaoUtils
+									.desenhaUniformeGoleiro(timeCima, timeCima
+											.isSegundoUniforme() ? 2 : 1,
+											(Goleiro) botao));
+							botao.setCentro(mesaPanel.golCima());
+						} else {
+							carregarBotaoImagemBotao(botoesImagens, botao,
+									timeCima);
+						}
 
-		}
-		controleFormacao = new ControlePosicionamento(controleJogo);
+					}
+					botoes.put(botao.getId(), botao);
 
-		controleFormacao.posicionaTimeCima(timeCima, bolaCima.isSelected());
-		bateuCentroCima = bolaCima.isSelected();
-		xmlDecoder = new XMLDecoder(
-				CarregadorRecursos.recursoComoStream(xmlBaixo));
-		timeBaixo = (Time) xmlDecoder.readObject();
-		timeBaixo.setControladoCPU(timeBaixoCPU.isSelected());
-		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
-		timeBaixo.setSegundoUniforme(segundoUniformeBaixo);
-		for (int i = 0; i < 11; i++) {
-			Long id = new Long(i + 20);
-			Botao botao = (Botao) timeBaixo.getBotoes().get(i);
-			if (botao.getId() == null || MesaPanel.zero.equals(botao.getId())) {
-				botao.setId(id);
-			}
-			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo,
-								segundoUniformeBaixo ? 2 : 1, (Goleiro) botao));
-				botao.setCentro(mesaPanel.golBaixo());
-			} else {
-				carregarBotaoImagemBotao(botoesImagens, botao, timeBaixo);
-			}
-			botoes.put(botao.getId(), botao);
-		}
-		controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo.isSelected());
-		bateuCentroBaixo = bolaBaixo.isSelected();
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
-			Long id = (Long) iterator.next();
-			Botao botao = (Botao) botoes.get(id);
-			// Logger.logar(id + " " + botao.getPosition() + " "
-			// + botao.getNumero() + " " + botao.getNome() + " "
-			// + botao.isGoleiro() + " " + botao.getClass());
-		}
-		controleJogo.bolaCentro();
-		iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
-				bolaCima.isSelected() ? ConstantesMesa11.CAMPO_CIMA
+				}
+				controleFormacao = new ControlePosicionamento(controleJogo);
+
+				controleFormacao.posicionaTimeCima(timeCima,
+						bolaCima.isSelected());
+				bateuCentroCima = bolaCima.isSelected();
+				xmlDecoder = new XMLDecoder(CarregadorRecursos
+						.recursoComoStream(xmlBaixo));
+				timeBaixo = (Time) xmlDecoder.readObject();
+				timeBaixo.setControladoCPU(timeBaixoCPU.isSelected());
+				timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
+				timeBaixo.setSegundoUniforme(segundoUniformeBaixo);
+				for (int i = 0; i < 11; i++) {
+					Long id = new Long(i + 20);
+					Botao botao = (Botao) timeBaixo.getBotoes().get(i);
+					if (botao.getId() == null
+							|| MesaPanel.zero.equals(botao.getId())) {
+						botao.setId(id);
+					}
+					if (botao instanceof Goleiro || botao.isGoleiro()) {
+						botoesImagens.put(botao.getId(), BotaoUtils
+								.desenhaUniformeGoleiro(timeBaixo,
+										segundoUniformeBaixo ? 2 : 1,
+										(Goleiro) botao));
+						botao.setCentro(mesaPanel.golBaixo());
+					} else {
+						carregarBotaoImagemBotao(botoesImagens, botao,
+								timeBaixo);
+					}
+					botoes.put(botao.getId(), botao);
+				}
+				controleFormacao.posicionaTimeBaixo(timeBaixo,
+						bolaBaixo.isSelected());
+				bateuCentroBaixo = bolaBaixo.isSelected();
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					Botao botao = (Botao) botoes.get(id);
+					// Logger.logar(id + " " + botao.getPosition() + " "
+					// + botao.getNumero() + " " + botao.getNome() + " "
+					// + botao.isGoleiro() + " " + botao.getClass());
+				}
+				controleJogo.bolaCentro();
+				iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
+						.isSelected() ? ConstantesMesa11.CAMPO_CIMA
 						: ConstantesMesa11.CAMPO_BAIXO);
-		if (timeCima.getId() == null) {
-			timeCima.setId(System.currentTimeMillis());
-		}
-		if (timeBaixo.getId() == null) {
-			timeBaixo.setId(timeCima.getId() + 1);
-		}
-		controleJogo.setNumeroJogadas((Integer) numJogadaCombo
-				.getSelectedItem());
-		mapaGols.put(timeCima, new Integer(0));
-		mapaGols.put(timeBaixo, new Integer(0));
-		mapaJogadas.put(timeCima, new Integer(0));
-		mapaJogadas.put(timeBaixo, new Integer(0));
+				if (timeCima.getId() == null) {
+					timeCima.setId(System.currentTimeMillis());
+				}
+				if (timeBaixo.getId() == null) {
+					timeBaixo.setId(timeCima.getId() + 1);
+				}
+				controleJogo.setNumeroJogadas((Integer) numJogadaCombo
+						.getSelectedItem());
+				mapaGols.put(timeCima, new Integer(0));
+				mapaGols.put(timeBaixo, new Integer(0));
+				mapaJogadas.put(timeCima, new Integer(0));
+				mapaJogadas.put(timeBaixo, new Integer(0));
+				controleJogo.escondePorgressBar();
+			}
+		});
+		run.start();
 	}
 
 	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,
@@ -431,7 +449,6 @@ public class ControlePartida {
 			return;
 		}
 		controleJogo.incrementaBarraCarregando();
-
 		BufferedImage buff = null;
 		boolean imgCust = false;
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
@@ -451,6 +468,7 @@ public class ControlePartida {
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
+			} finally {
 			}
 		}
 		if (buff == null)

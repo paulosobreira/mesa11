@@ -1,6 +1,7 @@
 package br.applet;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.MalformedURLException;
@@ -252,6 +253,18 @@ public class Mesa11Applet extends JApplet {
 	}
 
 	public String getVersao() {
+		if (versao == null) {
+			properties = new Properties();
+
+			try {
+				properties.load(this.getClass().getResourceAsStream(
+						"client.properties"));
+			} catch (IOException e) {
+				Logger.logarExept(e);
+			}
+			this.urlSufix = properties.getProperty("servidor");
+			this.versao = properties.getProperty("versao");
+		}
 		return " " + decimalFormat.format(new Integer(versao));
 	}
 
