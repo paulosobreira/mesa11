@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_23" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_26" class="java.beans.XMLDecoder"> 
  <object id="Time0" class="br.hibernate.Time"> 
   <void property="botoes"> 
    <object class="java.util.LinkedList"> 
     <void method="add"> 
      <object class="br.hibernate.Goleiro"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>1715</int> 
+        <int>5076</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>836</int> 
+       <int>815</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>514</int> 
       </void> 
       <void property="goleiro"> 
        <boolean>true</boolean> 
@@ -27,7 +33,7 @@
        <int>1</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>623</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -39,11 +45,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>1715</int> 
+        <int>4070</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>1715</int> 
+        <int>4070</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>924</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>846</int> 
       </void> 
       <void property="id"> 
        <long>79</long> 
@@ -61,7 +79,7 @@
        <int>2</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>815</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -70,11 +88,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>527</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>527</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>997</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>557</int> 
       </void> 
       <void property="id"> 
        <long>80</long> 
@@ -92,7 +122,7 @@
        <int>3</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>870</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -101,11 +131,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>1121</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>1121</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>746</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>585</int> 
       </void> 
       <void property="id"> 
        <long>81</long> 
@@ -123,7 +165,7 @@
        <int>4</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>818</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -132,11 +174,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>2903</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>2903</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>895</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>738</int> 
       </void> 
       <void property="id"> 
        <long>82</long> 
@@ -154,7 +208,7 @@
        <int>5</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>603</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -163,11 +217,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>2309</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>2309</int> 
+        <int>3467</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>677</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>792</int> 
       </void> 
       <void property="id"> 
        <long>83</long> 
@@ -185,7 +251,7 @@
        <int>6</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>637</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -194,11 +260,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>1882</int> 
+        <int>3367</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>1882</int> 
+        <int>3367</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>942</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>579</int> 
       </void> 
       <void property="id"> 
        <long>84</long> 
@@ -216,7 +294,7 @@
        <int>7</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>501</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -225,11 +303,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>527</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>527</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>633</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>984</int> 
       </void> 
       <void property="id"> 
        <long>85</long> 
@@ -247,7 +337,7 @@
        <int>8</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>784</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -256,11 +346,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>1121</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>1121</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>936</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>566</int> 
       </void> 
       <void property="id"> 
        <long>86</long> 
@@ -278,7 +380,7 @@
        <int>9</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>548</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -287,11 +389,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>2903</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>2903</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>622</int> 
       </void> 
       <void property="forca"> 
-       <int>949</int> 
+       <int>579</int> 
       </void> 
       <void property="id"> 
        <long>87</long> 
@@ -309,7 +423,7 @@
        <int>10</int> 
       </void> 
       <void property="precisao"> 
-       <int>943</int> 
+       <int>994</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -318,11 +432,23 @@
     </void> 
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
+      <void property="centro"> 
+       <object class="java.awt.Point"> 
+        <int>2309</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
+      <void property="centroInicio"> 
+       <object class="java.awt.Point"> 
+        <int>2309</int> 
+        <int>2864</int> 
+       </object> 
+      </void> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>746</int> 
       </void> 
       <void property="forca"> 
-       <int>944</int> 
+       <int>784</int> 
       </void> 
       <void property="id"> 
        <long>88</long> 
@@ -340,7 +466,7 @@
        <int>11</int> 
       </void> 
       <void property="precisao"> 
-       <int>942</int> 
+       <int>673</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -348,6 +474,12 @@
      </object> 
     </void> 
    </object> 
+  </void> 
+  <void property="campo"> 
+   <string>CAMPO_BAIXO</string> 
+  </void> 
+  <void property="controladoCPU"> 
+   <boolean>true</boolean> 
   </void> 
   <void property="cor1RGB"> 
    <int>-6684673</int> 
@@ -372,6 +504,9 @@
   </void> 
   <void property="id"> 
    <long>8</long> 
+  </void> 
+  <void property="imagem"> 
+   <string>afa-2010-10.jpg</string> 
   </void> 
   <void property="loginCriador"> 
    <string>Mark</string> 
