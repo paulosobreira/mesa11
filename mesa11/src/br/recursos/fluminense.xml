@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_23" class="java.beans.XMLDecoder"> 
+<java version="1.6.0_26" class="java.beans.XMLDecoder"> 
  <object id="Time0" class="br.hibernate.Time"> 
   <void property="botoes"> 
    <object class="java.util.LinkedList"> 
     <void method="add"> 
      <object class="br.hibernate.Goleiro"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>564</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>690</int> 
       </void> 
       <void property="goleiro"> 
        <boolean>true</boolean> 
@@ -27,7 +27,7 @@
        <int>1</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>579</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -40,10 +40,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>592</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>690</int> 
       </void> 
       <void property="id"> 
        <long>68</long> 
@@ -61,7 +61,7 @@
        <int>2</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>890</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -71,10 +71,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>585</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>770</int> 
       </void> 
       <void property="id"> 
        <long>69</long> 
@@ -92,7 +92,7 @@
        <int>3</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>670</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -102,10 +102,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>749</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>518</int> 
       </void> 
       <void property="id"> 
        <long>70</long> 
@@ -123,7 +123,7 @@
        <int>4</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>764</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -133,10 +133,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>748</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>865</int> 
       </void> 
       <void property="id"> 
        <long>71</long> 
@@ -154,7 +154,7 @@
        <int>5</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>541</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -164,10 +164,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>926</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>829</int> 
       </void> 
       <void property="id"> 
        <long>72</long> 
@@ -185,7 +185,7 @@
        <int>6</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>768</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -195,10 +195,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>824</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>738</int> 
       </void> 
       <void property="id"> 
        <long>73</long> 
@@ -216,7 +216,7 @@
        <int>7</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>801</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -226,10 +226,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>944</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>655</int> 
       </void> 
       <void property="id"> 
        <long>74</long> 
@@ -247,7 +247,7 @@
        <int>8</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>977</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -257,10 +257,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>657</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>608</int> 
       </void> 
       <void property="id"> 
        <long>75</long> 
@@ -278,7 +278,7 @@
        <int>9</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>868</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -288,10 +288,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>680</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>873</int> 
       </void> 
       <void property="id"> 
        <long>76</long> 
@@ -309,7 +309,7 @@
        <int>10</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>865</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -319,10 +319,10 @@
     <void method="add"> 
      <object class="br.hibernate.Botao"> 
       <void property="defesa"> 
-       <int>700</int> 
+       <int>823</int> 
       </void> 
       <void property="forca"> 
-       <int>700</int> 
+       <int>935</int> 
       </void> 
       <void property="id"> 
        <long>77</long> 
@@ -340,7 +340,7 @@
        <int>11</int> 
       </void> 
       <void property="precisao"> 
-       <int>700</int> 
+       <int>596</int> 
       </void> 
       <void property="time"> 
        <object idref="Time0"/> 
@@ -372,6 +372,9 @@
   </void> 
   <void property="id"> 
    <long>7</long> 
+  </void> 
+  <void property="imagem"> 
+   <string>fluminense.jpg</string> 
   </void> 
   <void property="loginCriador"> 
    <string>Mark</string> 
