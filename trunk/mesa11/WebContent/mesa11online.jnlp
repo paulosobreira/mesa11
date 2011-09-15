@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://www.f1mane.com/mesa11/" href="mesa11online.jnlp">
+	codebase="http://localhost:8080/mesa11/" href="mesa11online.jnlp">
 	<information>
 		<title>Mesa11 Concentracao</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -20,7 +20,7 @@
     </resources>
 
 	  <applet-desc 
-	      documentBase="http://www.f1mane.com/mesa11" 
+	      documentBase="http://localhost:8080/mesa11" 
 	      name="Mesa11 Concentracao" 
 	      main-class="br.applet.Mesa11Applet" 
 	      width="820" 

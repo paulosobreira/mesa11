@@ -72,9 +72,7 @@ public class MonitorJogo extends Thread {
 				Logger.logarExept(e);
 			}
 		}
-		if (jogoTerminado) {
-			controleJogo.setDica("fimJogo");
-		}
+		controleJogo.setDica("fimJogo");
 	}
 
 	private void dormir(long i) {
@@ -233,4 +231,9 @@ public class MonitorJogo extends Thread {
 		this.jogoTerminado = jogoTerminado;
 	}
 
+	@Override
+	public void interrupt() {
+		controleJogo.setDica("fimJogo");
+		super.interrupt();
+	}
 }
