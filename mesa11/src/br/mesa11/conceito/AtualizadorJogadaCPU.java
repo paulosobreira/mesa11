@@ -75,6 +75,5 @@ public class AtualizadorJogadaCPU extends Thread {
 			}
 
 		}
-
 	}
 }

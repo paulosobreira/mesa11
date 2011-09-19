@@ -23,5 +23,6 @@ public class TimerJogo extends Thread {
 			controlePartida.verificaFimJogo();
 			controlePartida.verificaFalhaPorTempo();
 		}
+		controlePartida.verificaFimJogo();
 	}
 }

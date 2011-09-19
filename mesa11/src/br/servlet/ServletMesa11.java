@@ -69,8 +69,8 @@ public class ServletMesa11 extends HttpServlet {
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
 		try {
-			atualizarJnlp("mesa11.jnlp");
 			atualizarJnlp("mesa11online.jnlp");
+			atualizarJnlp("mesa11.jnlp");
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -106,7 +106,7 @@ public class ServletMesa11 extends HttpServlet {
 		String readLine = reader.readLine();
 		StringBuffer buffer = new StringBuffer();
 		while (readLine != null) {
-			if (readLine.contains("{host}")) {
+			if (readLine.contains(replaceHost)) {
 				buffer.append(readLine.replace(replaceHost, host));
 			} else {
 				buffer.append(readLine);
