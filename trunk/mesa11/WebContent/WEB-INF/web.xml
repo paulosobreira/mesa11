@@ -7,6 +7,7 @@
 	<servlet>
 		<servlet-name>mesa11</servlet-name>
 		<servlet-class>br.servlet.ServletMesa11</servlet-class>
+		<load-on-startup>1</load-on-startup>		
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>mesa11</servlet-name>
