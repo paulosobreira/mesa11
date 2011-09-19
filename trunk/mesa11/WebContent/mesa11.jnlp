@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://sowbreira.appspot.com/mesa11/" href="mesa11.jnlp">
+	codebase="http://{host}/mesa11/" href="mesa11.jnlp">
 	<information>
 		<title>Mesa11</title>
 		<vendor>Paulo Sobreira</vendor>
@@ -21,6 +21,6 @@
 
 	<application-desc
 		main-class="br.mesa11.MainFrame" >
-		<argument>http://sowbreira.appspot.com/mesa11/</argument>
+		<argument>http://{host}/mesa11/</argument>
 	</application-desc> 
 </jnlp>

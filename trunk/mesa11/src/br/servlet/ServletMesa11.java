@@ -1,14 +1,18 @@
 package br.servlet;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.Inet4Address;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -23,6 +27,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.ServerFactory;
+import org.apache.catalina.connector.Connector;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -46,7 +52,7 @@ import br.recursos.Lang;
 public class ServletMesa11 extends HttpServlet {
 
 	public static String webInfDir;
-
+	private static String replaceHost = "{host}";
 	public static String webDir;
 	private ProxyComandos proxyComandos;
 
@@ -63,6 +69,12 @@ public class ServletMesa11 extends HttpServlet {
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
 		try {
+			atualizarJnlp("mesa11.jnlp");
+			atualizarJnlp("mesa11online.jnlp");
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
+		try {
 			email = new Email(getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator);
 		} catch (Exception e) {
@@ -72,6 +84,40 @@ public class ServletMesa11 extends HttpServlet {
 		if (Logger.debug) {
 			email = null;
 		}
+	}
+
+	private void atualizarJnlp(String jnlp) throws IOException {
+		String file = webDir + File.separator + jnlp;
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String ip = Inet4Address.getLocalHost().getHostAddress();
+		int port = 80;
+		try {
+			Connector[] connectors = ServerFactory.getServer().findService(
+					"Catalina").findConnectors();
+			for (int i = 0; i < connectors.length; i++) {
+				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
+					port = connectors[i].getPort();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String host = ip + ":" + port;
+		String readLine = reader.readLine();
+		StringBuffer buffer = new StringBuffer();
+		while (readLine != null) {
+			if (readLine.contains("{host}")) {
+				buffer.append(readLine.replace(replaceHost, host));
+			} else {
+				buffer.append(readLine);
+			}
+			readLine = reader.readLine();
+		}
+		reader.close();
+		FileWriter fileWriter = new FileWriter(file);
+		fileWriter.write(buffer.toString());
+		fileWriter.close();
+
 	}
 
 	public void destroy() {
