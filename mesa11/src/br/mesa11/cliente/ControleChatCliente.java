@@ -48,6 +48,7 @@ public class ControleChatCliente {
 	private Thread threadAtualizadora;
 	private boolean comunicacaoServer = true;
 	private ControleJogosCliente controleJogosCliente;
+	private ControleCampeonato controleCampeonato;
 
 	public boolean isComunicacaoServer() {
 		return comunicacaoServer;
@@ -82,6 +83,7 @@ public class ControleChatCliente {
 		chatWindow = new ChatWindow(this);
 		controleJogosCliente = new ControleJogosCliente(chatWindow, this,
 				mesa11Applet);
+		controleCampeonato = new ControleCampeonato(controleJogosCliente, this);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
@@ -231,6 +233,10 @@ public class ControleChatCliente {
 	public void setChatWindow(ChatWindow chatWindow) {
 		this.chatWindow = chatWindow;
 
+	}
+
+	public ChatWindow getChatWindow() {
+		return chatWindow;
 	}
 
 	private boolean retornoNaoValido(Object ret) {
@@ -654,11 +660,11 @@ public class ControleChatCliente {
 			logar();
 			return;
 		}
-		controleJogosCliente.criarCampeonato();
+		controleCampeonato.criarCampeonato();
 	}
 
 	public void verCampeonato() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
