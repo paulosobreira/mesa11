@@ -17,14 +17,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.Java2sAutoComboBox;
-import br.nnpe.JOptionPaneWithEnterSupport;
+import br.nnpe.Util;
 import br.recursos.Lang;
 import br.tos.Mesa11TO;
+import br.tos.MsgSrv;
 
 public class ControleCampeonato {
 
@@ -284,8 +284,9 @@ public class ControleCampeonato {
 					Lang.msg("criarCampeonato"), JOptionPane.YES_NO_OPTION);
 			if (JOptionPane.YES_OPTION == showConfirmDialog) {
 				enviarDadosCriarCampeonato(nomeCampeonato, numJogadaCombo,
-						tempoJogoCombo, tempoJogadaCombo, listaJogadores,
-						listTimesSelecionados);
+						tempoJogoCombo, tempoJogadaCombo,
+						defaultListModelJogadores,
+						defaultListModelTimesSelecionados);
 			}
 
 		}
@@ -294,14 +295,19 @@ public class ControleCampeonato {
 
 	private void enviarDadosCriarCampeonato(JTextField nomeCampeonato,
 			JComboBox numJogadaCombo, JComboBox tempoJogoCombo,
-			JComboBox tempoJogadaCombo, JList listaJogadores,
-			JList listTimesSelecionados) {
-		// TODO Auto-generated method stub
-
-	}
-
-	private void enviarDadosCriarCampeonato() {
-		// TODO Auto-generated method stub
+			JComboBox tempoJogadaCombo,
+			DefaultListModel defaultListModelJogadores,
+			DefaultListModel defaultListModelTimesSelecionados) {
+		String erros = "";
+		if (Util.isNullOrEmpty(nomeCampeonato.getText()))
+			erros += Lang.msg("nomeCampeonatoNull") + "\n";
+		if (defaultListModelJogadores.isEmpty())
+			erros += Lang.msg("jogadoresEmpty") + "\n";
+		if (defaultListModelTimesSelecionados.size() < 3)
+			erros += Lang.msg("menos3Ttimes") + "\n";
+		JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
+				.getMainPanel(), erros, Lang.msg("erro"),
+				JOptionPane.ERROR_MESSAGE);
 
 	}
 
