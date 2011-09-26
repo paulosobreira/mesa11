@@ -1243,9 +1243,13 @@ public class ControleJogo {
 				continue;
 			}
 			if (b instanceof Goleiro) {
-				//TODO GOleiro maudito
+				// TODO GOleiro maudito
 				Goleiro goleiro = (Goleiro) b;
-				return goleiro.getShape(1).contains(p);
+				if (goleiro.getShape(1).contains(p)) {
+					System.out
+							.println("verificaTemBotao(Point p, Botao... exceto) Goleiro");
+				}
+				// return ;
 			}
 			if (GeoUtil.distaciaEntrePontos(p, b.getCentro()) < ConstantesMesa11.RAIO_BOTAO) {
 				return true;
@@ -2232,8 +2236,7 @@ public class ControleJogo {
 		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
 				|| jogadaMesa11.getPontoSolto() == null
-				|| (stampUltimaJogadaOnline + 500) > System.currentTimeMillis()
-				|| !verificaTemBotao(jogadaMesa11.getPontoClicado())) {
+				|| (stampUltimaJogadaOnline + 500) > System.currentTimeMillis()) {
 			setDica(ConstantesMesa11.JOGADA_INVALIDA);
 			setPontoClicado(null);
 			setPontoPasando(null);
