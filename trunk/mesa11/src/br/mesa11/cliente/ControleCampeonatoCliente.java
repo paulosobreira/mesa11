@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -19,6 +20,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import br.hibernate.CampeonatoMesa11;
+import br.hibernate.JogadoresCampeonatoMesa11;
+import br.hibernate.Time;
+import br.hibernate.TimesCampeonatoMesa11;
+import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.Util;
@@ -26,12 +32,12 @@ import br.recursos.Lang;
 import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
 
-public class ControleCampeonato {
+public class ControleCampeonatoCliente {
 
 	private ControleJogosCliente controleJogosCliente;
 	private ControleChatCliente controleChatCliente;
 
-	public ControleCampeonato(ControleJogosCliente controleJogosCliente,
+	public ControleCampeonatoCliente(ControleJogosCliente controleJogosCliente,
 			ControleChatCliente controleChatCliente) {
 		this.controleJogosCliente = controleJogosCliente;
 		this.controleChatCliente = controleChatCliente;
@@ -308,6 +314,47 @@ public class ControleCampeonato {
 		JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
 				.getMainPanel(), erros, Lang.msg("erro"),
 				JOptionPane.ERROR_MESSAGE);
+		CampeonatoMesa11 campeonatoMesa11 = new CampeonatoMesa11();
+		campeonatoMesa11.setDataCriacao(new Date());
+		campeonatoMesa11.setNome(nomeCampeonato.getText());
+		campeonatoMesa11.setNumeroJogadas((Integer) numJogadaCombo
+				.getSelectedItem());
+		campeonatoMesa11.setTempoJogada((Integer) tempoJogadaCombo
+				.getSelectedItem());
+		campeonatoMesa11.setTempoJogo((Integer) tempoJogoCombo
+				.getSelectedItem());
+		campeonatoMesa11.setLoginCriador(controleChatCliente.getSessaoCliente()
+				.getNomeJogador());
+		for (int i = 0; i < defaultListModelJogadores.getSize(); i++) {
+			String loginJOgador = (String) defaultListModelJogadores.get(i);
+			Usuario usuario = new Usuario();
+			usuario.setLogin(loginJOgador);
+			JogadoresCampeonatoMesa11 jogadoresCampeonatoMesa11 = new JogadoresCampeonatoMesa11();
+			jogadoresCampeonatoMesa11.setUsuario(usuario);
+			jogadoresCampeonatoMesa11.setDataCriacao(new Date());
+			jogadoresCampeonatoMesa11.setLoginCriador(controleChatCliente
+					.getSessaoCliente().getNomeJogador());
+			jogadoresCampeonatoMesa11.setCampeonatoMesa11(campeonatoMesa11);
+			campeonatoMesa11.getJogadoresCampeonatoMesa11().add(
+					jogadoresCampeonatoMesa11);
+		}
+		for (int i = 0; i < defaultListModelTimesSelecionados.getSize(); i++) {
+			String nomeTime = (String) defaultListModelTimesSelecionados.get(i);
+			Time time = new Time();
+			time.setNome(nomeTime);
+			TimesCampeonatoMesa11 timesCampeonatoMesa11 = new TimesCampeonatoMesa11();
+			timesCampeonatoMesa11.setTime(time);
+			timesCampeonatoMesa11.setDataCriacao(new Date());
+			timesCampeonatoMesa11.setLoginCriador(controleChatCliente
+					.getSessaoCliente().getNomeJogador());
+			timesCampeonatoMesa11.setCampeonatoMesa11(campeonatoMesa11);
+			campeonatoMesa11.getTimesCampeonatoMesa11().add(
+					timesCampeonatoMesa11);
+		}
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(campeonatoMesa11);
+		mesa11to.setComando(ConstantesMesa11.CRIAR_CAMPEONATO);
+		enviarObjeto(mesa11to);
 
 	}
 

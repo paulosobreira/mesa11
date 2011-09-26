@@ -1,7 +1,9 @@
 package br.mesa11;
 
+import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Mesa11Dados;
 import br.hibernate.Time;
+import br.mesa11.servidor.ControleCampeonatoServidor;
 import br.mesa11.servidor.ControleChatServidor;
 import br.mesa11.servidor.ControleJogosServidor;
 import br.mesa11.servidor.ControleLogin;
@@ -21,6 +23,7 @@ public class ProxyComandos {
 	private ControlePersistencia controlePersistencia;
 	private ControleChatServidor controleChatServidor;
 	private ControleJogosServidor controleJogosServidor;
+	private ControleCampeonatoServidor controleCampeonatoServidor;
 	private DadosMesa11 dadosMesa11;
 	private MonitorAtividade monitorAtividade;
 
@@ -31,6 +34,8 @@ public class ProxyComandos {
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
 		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
 				controlePersistencia, this);
+		controleCampeonatoServidor = new ControleCampeonatoServidor(
+				dadosMesa11, controlePersistencia, this);
 		monitorAtividade = new MonitorAtividade(this);
 		monitorAtividade.start();
 	}
@@ -95,6 +100,10 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.CRIAR_CAMPEONATO.equals(mesa11TO
+				.getComando())) {
+			return controleCampeonatoServidor
+					.criarCampeonato((CampeonatoMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.CRIAR_JOGO_CPU
 				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor

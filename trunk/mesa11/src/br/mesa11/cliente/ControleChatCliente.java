@@ -48,7 +48,7 @@ public class ControleChatCliente {
 	private Thread threadAtualizadora;
 	private boolean comunicacaoServer = true;
 	private ControleJogosCliente controleJogosCliente;
-	private ControleCampeonato controleCampeonato;
+	private ControleCampeonatoCliente controleCampeonato;
 
 	public boolean isComunicacaoServer() {
 		return comunicacaoServer;
@@ -83,7 +83,7 @@ public class ControleChatCliente {
 		chatWindow = new ChatWindow(this);
 		controleJogosCliente = new ControleJogosCliente(chatWindow, this,
 				mesa11Applet);
-		controleCampeonato = new ControleCampeonato(controleJogosCliente, this);
+		controleCampeonato = new ControleCampeonatoCliente(controleJogosCliente, this);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
