@@ -1,6 +1,7 @@
 package br.mesa11.conceito;
 
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Iterator;
@@ -15,7 +16,7 @@ import br.mesa11.visao.MesaPanel;
 import br.nnpe.GeoUtil;
 import br.nnpe.Util;
 
-public class MesaMouseListener implements MouseListener {
+public class MesaMouseListener extends MouseAdapter {
 
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
@@ -99,18 +100,6 @@ public class MesaMouseListener implements MouseListener {
 				break;
 			}
 		}
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
