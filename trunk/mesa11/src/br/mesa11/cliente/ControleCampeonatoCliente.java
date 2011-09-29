@@ -256,8 +256,6 @@ public class ControleCampeonatoCliente {
 
 			};
 			add.addActionListener(adicionar);
-			java2sAutoComboBox.addActionListener(adicionar);
-
 			JButton rem = new JButton("remover") {
 				@Override
 				public String getText() {
@@ -355,7 +353,6 @@ public class ControleCampeonatoCliente {
 		mesa11to.setData(campeonatoMesa11);
 		mesa11to.setComando(ConstantesMesa11.CRIAR_CAMPEONATO);
 		enviarObjeto(mesa11to);
-
 	}
 
 	private Object enviarObjeto(Mesa11TO mesa11to) {

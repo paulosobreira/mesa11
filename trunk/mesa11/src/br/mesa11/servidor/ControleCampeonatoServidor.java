@@ -9,7 +9,10 @@ import br.hibernate.Time;
 import br.hibernate.TimesCampeonatoMesa11;
 import br.hibernate.Usuario;
 import br.mesa11.ProxyComandos;
+import br.recursos.Lang;
 import br.tos.DadosMesa11;
+import br.tos.ErroServ;
+import br.tos.MsgSrv;
 
 public class ControleCampeonatoServidor {
 	private ProxyComandos proxyComandos;
@@ -47,7 +50,12 @@ public class ControleCampeonatoServidor {
 					.getTime().getNome());
 			timesCampeonatoMesa11.setTime(time);
 		}
-		return null;
+		try {
+			controlePersistencia.gravarDados(campeonatoMesa11);
+		} catch (Exception e) {
+			return new ErroServ(e);
+		}
+		return (new MsgSrv(Lang.msg("campeonatoCriado")));
 	}
 
 }
