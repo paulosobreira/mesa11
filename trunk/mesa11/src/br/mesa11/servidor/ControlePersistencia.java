@@ -354,4 +354,9 @@ public class ControlePersistencia {
 		mesa11to.setData(retorno);
 		return mesa11to;
 	}
+
+	public Usuario obterJogadorPorLogin(String login) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
