@@ -15,7 +15,7 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean debug = true;
+	public static boolean debug = false;
 
 	public static boolean novaSession = false;
 

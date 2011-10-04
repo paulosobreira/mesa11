@@ -10,7 +10,7 @@ public class TimesCampeonatoMesa11 extends Mesa11Dados {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Time time;
-
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private CampeonatoMesa11 campeonatoMesa11;
 

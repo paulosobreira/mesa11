@@ -1,6 +1,7 @@
 package br.hibernate;
 
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,11 +19,12 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 	private Integer tempoJogada;
 
 	private String nome;
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11", targetEntity = TimesCampeonatoMesa11.class)
-	private List<TimesCampeonatoMesa11> timesCampeonatoMesa11 = new ArrayList<TimesCampeonatoMesa11>();
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11", targetEntity = JogadoresCampeonatoMesa11.class)
-	private List<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11 = new ArrayList<JogadoresCampeonatoMesa11>();
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
+	private Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11 = new LinkedList<TimesCampeonatoMesa11>();
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
+	private Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11 = new LinkedList<JogadoresCampeonatoMesa11>();
 
 	public Integer getTempoJogo() {
 		return tempoJogo;
@@ -56,17 +58,27 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 		this.nome = nome;
 	}
 
-	public List<TimesCampeonatoMesa11> getTimesCampeonatoMesa11() {
+	public Collection<TimesCampeonatoMesa11> getTimesCampeonatoMesa11() {
 		return timesCampeonatoMesa11;
+	}
+
+	public void setTimesCampeonatoMesa11(
+			Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11) {
+		this.timesCampeonatoMesa11 = timesCampeonatoMesa11;
+	}
+
+	public Collection<JogadoresCampeonatoMesa11> getJogadoresCampeonatoMesa11() {
+		return jogadoresCampeonatoMesa11;
+	}
+
+	public void setJogadoresCampeonatoMesa11(
+			Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11) {
+		this.jogadoresCampeonatoMesa11 = jogadoresCampeonatoMesa11;
 	}
 
 	public void setTimesCampeonatoMesa11(
 			List<TimesCampeonatoMesa11> timesCampeonatoMesa11) {
 		this.timesCampeonatoMesa11 = timesCampeonatoMesa11;
-	}
-
-	public List<JogadoresCampeonatoMesa11> getJogadoresCampeonatoMesa11() {
-		return jogadoresCampeonatoMesa11;
 	}
 
 	public void setJogadoresCampeonatoMesa11(

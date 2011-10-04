@@ -309,9 +309,12 @@ public class ControleCampeonatoCliente {
 			erros += Lang.msg("jogadoresEmpty") + "\n";
 		if (defaultListModelTimesSelecionados.size() < 3)
 			erros += Lang.msg("menos3Ttimes") + "\n";
-		JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
-				.getMainPanel(), erros, Lang.msg("erro"),
-				JOptionPane.ERROR_MESSAGE);
+		if (!Util.isNullOrEmpty(erros)) {
+			JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
+					.getMainPanel(), erros, Lang.msg("erro"),
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		CampeonatoMesa11 campeonatoMesa11 = new CampeonatoMesa11();
 		campeonatoMesa11.setDataCriacao(new Date());
 		campeonatoMesa11.setNome(nomeCampeonato.getText());
