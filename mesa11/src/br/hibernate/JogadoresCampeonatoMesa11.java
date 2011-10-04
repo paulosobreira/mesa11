@@ -10,7 +10,7 @@ public class JogadoresCampeonatoMesa11 extends Mesa11Dados {
 	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Usuario usuario;
-
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private CampeonatoMesa11 campeonatoMesa11;
 

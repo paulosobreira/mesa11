@@ -1,5 +1,6 @@
 package br.mesa11.servidor;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ControleCampeonatoServidor {
 	}
 
 	public Object criarCampeonato(CampeonatoMesa11 campeonatoMesa11) {
-		List<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11List = campeonatoMesa11
+		Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11List = campeonatoMesa11
 				.getJogadoresCampeonatoMesa11();
 		for (Iterator iterator = jogadoresCampeonatoMesa11List.iterator(); iterator
 				.hasNext();) {
@@ -40,7 +41,7 @@ public class ControleCampeonatoServidor {
 							.getUsuario().getLogin());
 			jogadoresCampeonatoMesa11.setUsuario(usuario);
 		}
-		List<TimesCampeonatoMesa11> timesCampeonatoMesa11List = campeonatoMesa11
+		Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11List = campeonatoMesa11
 				.getTimesCampeonatoMesa11();
 		for (Iterator iterator = timesCampeonatoMesa11List.iterator(); iterator
 				.hasNext();) {
