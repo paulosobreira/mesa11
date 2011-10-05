@@ -1,5 +1,6 @@
 package br.mesa11.servidor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -10,9 +11,11 @@ import br.hibernate.Time;
 import br.hibernate.TimesCampeonatoMesa11;
 import br.hibernate.Usuario;
 import br.mesa11.ProxyComandos;
+import br.nnpe.HibernateUtil;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
 import br.tos.ErroServ;
+import br.tos.Mesa11TO;
 import br.tos.MsgSrv;
 
 public class ControleCampeonatoServidor {
@@ -57,6 +60,30 @@ public class ControleCampeonatoServidor {
 			return new ErroServ(e);
 		}
 		return (new MsgSrv(Lang.msg("campeonatoCriado")));
+	}
+
+	public Object listarCampeonatos() {
+		List<CampeonatoMesa11> campeonatos = controlePersistencia
+				.listarCampeonatos();
+		List retorno = new ArrayList();
+		for (Iterator iterator = campeonatos.iterator(); iterator.hasNext();) {
+			CampeonatoMesa11 campeonatoMesa11 = (CampeonatoMesa11) iterator
+					.next();
+			Object[] row = new Object[4];
+			row[0] = campeonatoMesa11.getNome();
+			row[1] = campeonatoMesa11.getLoginCriador();
+			row[2] = verificaCampeonatoConcluido(campeonatoMesa11);
+			row[3] = campeonatoMesa11.getDataCriacao();
+			retorno.add(row);
+		}
+		HibernateUtil.closeSession();
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setData(retorno);
+		return mesa11to;
+	}
+
+	private Object verificaCampeonatoConcluido(CampeonatoMesa11 campeonato) {
+		return false;
 	}
 
 }

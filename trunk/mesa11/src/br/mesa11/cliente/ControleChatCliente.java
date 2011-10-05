@@ -83,7 +83,8 @@ public class ControleChatCliente {
 		chatWindow = new ChatWindow(this);
 		controleJogosCliente = new ControleJogosCliente(chatWindow, this,
 				mesa11Applet);
-		controleCampeonato = new ControleCampeonatoCliente(controleJogosCliente, this);
+		controleCampeonato = new ControleCampeonatoCliente(
+				controleJogosCliente, this);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
@@ -664,7 +665,6 @@ public class ControleChatCliente {
 	}
 
 	public void verCampeonato() {
-		// TODO Auto-generated method stub
-
+		controleCampeonato.verCampeonatos();
 	}
 }

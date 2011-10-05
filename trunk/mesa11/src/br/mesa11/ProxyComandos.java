@@ -104,6 +104,9 @@ public class ProxyComandos {
 				.getComando())) {
 			return controleCampeonatoServidor
 					.criarCampeonato((CampeonatoMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.LISTAR_CAMPEONATOS.equals(mesa11TO
+				.getComando())) {
+			return controleCampeonatoServidor.listarCampeonatos();
 		} else if (ConstantesMesa11.CRIAR_JOGO_CPU
 				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
