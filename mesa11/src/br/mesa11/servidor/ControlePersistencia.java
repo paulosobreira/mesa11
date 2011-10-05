@@ -20,6 +20,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Botao;
+import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Mesa11Dados;
 import br.hibernate.PartidaMesa11;
 import br.hibernate.Time;
@@ -358,11 +359,18 @@ public class ControlePersistencia {
 	public Usuario obterJogadorPorLogin(String login) {
 		Session session = ControlePersistencia.getSession();
 		try {
-			Usuario usuario = (Usuario) session.createCriteria(Usuario.class).add(
-					Restrictions.eq("login", login)).uniqueResult();
+			Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
+					.add(Restrictions.eq("login", login)).uniqueResult();
 			return usuario;
 		} finally {
 			HibernateUtil.closeSession();
 		}
 	}
+
+	public List<CampeonatoMesa11> listarCampeonatos() {
+		Session session = ControlePersistencia.getSession();
+		return session.createCriteria(CampeonatoMesa11.class).list();
+
+	}
+
 }

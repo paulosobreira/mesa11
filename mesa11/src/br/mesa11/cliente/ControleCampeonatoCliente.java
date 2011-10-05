@@ -5,6 +5,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,8 +20,11 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 
 import br.hibernate.CampeonatoMesa11;
 import br.hibernate.JogadoresCampeonatoMesa11;
@@ -360,6 +366,109 @@ public class ControleCampeonatoCliente {
 
 	private Object enviarObjeto(Mesa11TO mesa11to) {
 		return controleChatCliente.enviarObjeto(mesa11to);
+	}
+
+	public void verCampeonatos() {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.LISTAR_CAMPEONATOS);
+		Object ret = enviarObjeto(mesa11to);
+		if (ret instanceof Mesa11TO) {
+			mesa11to = (Mesa11TO) ret;
+			List campeonatos = (List) mesa11to.getData();
+			JPanel campeonastosPanel = gerarPanelCampeonatos(campeonatos);
+			JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
+					.getMainPanel(), campeonastosPanel, Lang
+					.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
+		}
+
+	}
+
+	private JPanel gerarPanelCampeonatos(final List campeonatos) {
+		final JTable corridasTable = new JTable();
+
+		final TableModel corridasTableModel = new AbstractTableModel() {
+
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				Object[] value = (Object[]) campeonatos.get(rowIndex);
+
+				switch (columnIndex) {
+				case 0:
+					return value[0];
+				case 1:
+					return value[1];
+				case 2:
+					boolean val = (Boolean) value[2];
+					return val ? Lang.msg("sim") : Lang.msg("nao");
+				case 3:
+					return new SimpleDateFormat("dd/MM/yyyy").format(value[3]);
+				default:
+					return "";
+				}
+			}
+
+			@Override
+			public int getRowCount() {
+				if (campeonatos == null) {
+					return 0;
+				}
+				return campeonatos.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 4;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+
+				switch (columnIndex) {
+				case 0:
+					return Lang.msg("nomeCampeonato");
+				case 1:
+					return Lang.msg("donoCampeonato");
+				case 2:
+					return Lang.msg("campeonatoConcluido");
+				case 3:
+					return Lang.msg("criadoEm");
+
+				default:
+					return "";
+				}
+
+			}
+		};
+		corridasTable.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				// campeonatoSelecionado = (String)
+				// corridasTableModel.getValueAt(
+				// corridasTable.getSelectedRow(), 0);
+				// if (e.getClickCount() == 2) {
+				// carregaCampeonatoSelecionado(corridasTable);
+				// }
+			}
+
+		});
+
+		corridasTable.setModel(corridasTableModel);
+		JScrollPane jScrollPane = new JScrollPane(corridasTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(620, 150);
+			}
+		};
+		JPanel jPanel = new JPanel();
+		jPanel.setBorder(new TitledBorder("Campeonato") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("cliqueDuploCarregarCampeonato");
+			}
+		});
+		jPanel.add(jScrollPane);
+		return jPanel;
 	}
 
 }

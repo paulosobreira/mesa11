@@ -5,9 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 public class CampeonatoMesa11 extends Mesa11Dados {
@@ -18,6 +20,7 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 
 	private Integer tempoJogada;
 
+	@Column(unique = true, nullable = false)
 	private String nome;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
