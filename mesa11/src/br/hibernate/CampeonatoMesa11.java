@@ -76,14 +76,4 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 		this.jogadoresCampeonatoMesa11 = jogadoresCampeonatoMesa11;
 	}
 
-	public void setTimesCampeonatoMesa11(
-			List<TimesCampeonatoMesa11> timesCampeonatoMesa11) {
-		this.timesCampeonatoMesa11 = timesCampeonatoMesa11;
-	}
-
-	public void setJogadoresCampeonatoMesa11(
-			List<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11) {
-		this.jogadoresCampeonatoMesa11 = jogadoresCampeonatoMesa11;
-	}
-
 }
