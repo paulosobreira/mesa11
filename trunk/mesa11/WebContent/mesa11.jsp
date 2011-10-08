@@ -236,12 +236,12 @@ img {
 		<div style="text-align: center;">
 			<a id="link"  href="mesa11online.jnlp" style="text-align: left;">
 				Jogar Online  
-				<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				<img src="webstart.png" border="0">
 			</a>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<a id="link" href="mesa11.jnlp" style="text-align: left;">
 				Jogar Offline
-				<img src="http://java.sun.com/products/jfc/tsc/articles/swing2d/webstart.png" border="0">
+				<img src="webstart.png" border="0">
 			</a> 
 
 		</div><br>
