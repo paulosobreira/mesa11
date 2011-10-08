@@ -14,6 +14,15 @@ public class TimesCampeonatoMesa11 extends Mesa11Dados {
 	@JoinColumn(nullable = false)
 	private CampeonatoMesa11 campeonatoMesa11;
 
+	public TimesCampeonatoMesa11(int id, Time time) {
+		setId(id);
+		setTime(time);
+	}
+
+	public TimesCampeonatoMesa11() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public Time getTime() {
 		return time;
 	}
@@ -30,4 +39,11 @@ public class TimesCampeonatoMesa11 extends Mesa11Dados {
 		this.campeonatoMesa11 = campeonatoMesa11;
 	}
 
+	@Override
+	public String toString() {
+		if (getTime() != null) {
+			return time.getNome();
+		}
+		return super.toString();
+	}
 }
