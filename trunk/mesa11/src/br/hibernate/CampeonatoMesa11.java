@@ -29,6 +29,9 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
 	private Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11 = new LinkedList<JogadoresCampeonatoMesa11>();
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
+	private Collection<RodadaCampeonatoMesa11> rodadaCampeonatoMesa11 = new LinkedList<RodadaCampeonatoMesa11>();
+
 	public Integer getTempoJogo() {
 		return tempoJogo;
 	}
@@ -77,6 +80,15 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 	public void setJogadoresCampeonatoMesa11(
 			Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11) {
 		this.jogadoresCampeonatoMesa11 = jogadoresCampeonatoMesa11;
+	}
+
+	public Collection<RodadaCampeonatoMesa11> getRodadaCampeonatoMesa11() {
+		return rodadaCampeonatoMesa11;
+	}
+
+	public void setRodadaCampeonatoMesa11(
+			Collection<RodadaCampeonatoMesa11> rodadaCampeonatoMesa11) {
+		this.rodadaCampeonatoMesa11 = rodadaCampeonatoMesa11;
 	}
 
 }

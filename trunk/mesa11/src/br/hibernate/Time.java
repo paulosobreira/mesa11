@@ -33,6 +33,16 @@ public class Time extends Mesa11Dados {
 	private boolean controladoCPU;
 	private boolean segundoUniforme;
 	private String imagem;
+
+	public Time(int id, String nome) {
+		this.setId(id);
+		this.setNome(nome);
+	}
+
+	public Time() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getImagem() {
 		return imagem;
 	}
