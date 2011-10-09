@@ -482,7 +482,8 @@ public class ControleCampeonatoCliente {
 				Lang.msg("detelhesCampeonato"), JOptionPane.YES_NO_OPTION);
 		if (optRet == JOptionPane.YES_OPTION) {
 			Mesa11TO mesa11to = new Mesa11TO();
-			mesa11to.setComando(ConstantesMesa11.VER_CLASSIFICACAO);
+			mesa11to.setComando(ConstantesMesa11.VER_CAMPEONATO);
+			mesa11to.setData(campeonatoSelecionado);
 			Object ret = enviarObjeto(mesa11to);
 			if (!(ret instanceof Mesa11TO)) {
 				return;
@@ -495,6 +496,7 @@ public class ControleCampeonatoCliente {
 					.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
 			JPanel classificacaoPanel = controleChatCliente
 					.gerarPanelClassificacao(dadosTimes, dadosJogadores);
+
 			JOptionPane.showMessageDialog(comp, classificacaoPanel,
 					Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
 

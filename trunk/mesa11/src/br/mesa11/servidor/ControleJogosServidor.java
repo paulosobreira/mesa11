@@ -344,7 +344,11 @@ public class ControleJogosServidor {
 	}
 
 	public Object obterClassificacao() {
-		Collection times = controlePersistencia.obterTimesPartidas();
+		return obterClassificacao(null);
+	}
+
+	public Object obterClassificacao(String campeonato) {
+		Collection times = controlePersistencia.obterTimesPartidas(campeonato);
 		Map mapaCassificTime = new HashMap();
 		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
 			String time = (String) iterator.next();

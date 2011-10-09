@@ -10,11 +10,20 @@ public class PartidaMesa11 extends Mesa11Dados {
 	private String nomeTimeCasa;
 	private String nomeJogadorVisita;
 	private String nomeTimeVisita;
+	private String campeonato;
 	private Date inicio;
 	private Date fim;
 	private int golsTimeCasa;
 	private int golsTimeVisita;
 	private boolean vsCpu;
+
+	public String getCampeonato() {
+		return campeonato;
+	}
+
+	public void setCampeonato(String campeonato) {
+		this.campeonato = campeonato;
+	}
 
 	public String getNomeJogadorCasa() {
 		return nomeJogadorCasa;
