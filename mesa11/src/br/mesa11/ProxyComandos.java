@@ -35,7 +35,7 @@ public class ProxyComandos {
 		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
 				controlePersistencia, this);
 		controleCampeonatoServidor = new ControleCampeonatoServidor(
-				dadosMesa11, controlePersistencia, this);
+				dadosMesa11, controlePersistencia, this, controleJogosServidor);
 		monitorAtividade = new MonitorAtividade(this);
 		monitorAtividade.start();
 	}
@@ -123,6 +123,15 @@ public class ProxyComandos {
 				.getComando())) {
 			try {
 				return controleJogosServidor.obterClassificacao();
+			} finally {
+				HibernateUtil.closeSession();
+			}
+
+		} else if (ConstantesMesa11.VER_CAMPEONATO
+				.equals(mesa11TO.getComando())) {
+			try {
+				return controleCampeonatoServidor
+						.verCampeonato((String) mesa11TO.getData());
 			} finally {
 				HibernateUtil.closeSession();
 			}

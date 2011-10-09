@@ -28,14 +28,17 @@ public class ControleCampeonatoServidor {
 	private ProxyComandos proxyComandos;
 	private ControlePersistencia controlePersistencia;
 	private DadosMesa11 dadosMesa11;
+	private ControleJogosServidor controleJogosServidor;
 
 	public ControleCampeonatoServidor(DadosMesa11 dadosMesa11,
 			ControlePersistencia controlePersistencia,
-			ProxyComandos proxyComandos) {
+			ProxyComandos proxyComandos,
+			ControleJogosServidor controleJogosServidor) {
 		super();
 		this.dadosMesa11 = dadosMesa11;
 		this.controlePersistencia = controlePersistencia;
 		this.proxyComandos = proxyComandos;
+		this.controleJogosServidor = controleJogosServidor;
 	}
 
 	public ControleCampeonatoServidor() {
@@ -194,7 +197,7 @@ public class ControleCampeonatoServidor {
 				7, time7);
 		TimesCampeonatoMesa11 timesCampeonatoMesa11_8 = new TimesCampeonatoMesa11(
 				8, time8);
-		
+
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_1);
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_2);
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_3);
@@ -203,7 +206,7 @@ public class ControleCampeonatoServidor {
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_6);
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_7);
 		timesCampeonatoMesa11List.add(timesCampeonatoMesa11_8);
-		
+
 		System.out.println(timesCampeonatoMesa11List);
 		ControleCampeonatoServidor controleCampeonatoServidor = new ControleCampeonatoServidor();
 		CampeonatoMesa11 campeonatoMesa11 = new CampeonatoMesa11();
@@ -244,4 +247,8 @@ public class ControleCampeonatoServidor {
 		return false;
 	}
 
+	public Object verCampeonato(String campeonato) {
+		return controleJogosServidor.obterClassificacao(campeonato);
+
+	}
 }
