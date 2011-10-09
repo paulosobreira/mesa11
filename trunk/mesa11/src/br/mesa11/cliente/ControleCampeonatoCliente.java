@@ -1,6 +1,7 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -36,12 +38,12 @@ import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.Util;
 import br.recursos.Lang;
 import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
 
 public class ControleCampeonatoCliente {
 
 	private ControleJogosCliente controleJogosCliente;
 	private ControleChatCliente controleChatCliente;
+	protected String campeonatoSelecionado;
 
 	public ControleCampeonatoCliente(ControleJogosCliente controleJogosCliente,
 			ControleChatCliente controleChatCliente) {
@@ -380,7 +382,8 @@ public class ControleCampeonatoCliente {
 					.getMainPanel(), campeonastosPanel, Lang
 					.msg("listaCampeonatos"), JOptionPane.INFORMATION_MESSAGE);
 		}
-
+		carregaCampeonatoSelecionado(controleChatCliente.getChatWindow()
+				.getMainPanel());
 	}
 
 	private JPanel gerarPanelCampeonatos(final List campeonatos) {
@@ -443,12 +446,11 @@ public class ControleCampeonatoCliente {
 
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				// campeonatoSelecionado = (String)
-				// corridasTableModel.getValueAt(
-				// corridasTable.getSelectedRow(), 0);
-				// if (e.getClickCount() == 2) {
-				// carregaCampeonatoSelecionado(corridasTable);
-				// }
+				campeonatoSelecionado = (String) corridasTableModel.getValueAt(
+						corridasTable.getSelectedRow(), 0);
+				if (e.getClickCount() == 2) {
+					carregaCampeonatoSelecionado(corridasTable);
+				}
 			}
 
 		});
@@ -469,6 +471,34 @@ public class ControleCampeonatoCliente {
 		});
 		jPanel.add(jScrollPane);
 		return jPanel;
+	}
+
+	protected void carregaCampeonatoSelecionado(Component comp) {
+		if (Util.isNullOrEmpty(campeonatoSelecionado)) {
+			return;
+		}
+		int optRet = JOptionPane.showConfirmDialog(comp, Lang.msg(
+				"carregarCampeonato", new String[] { campeonatoSelecionado }),
+				Lang.msg("detelhesCampeonato"), JOptionPane.YES_NO_OPTION);
+		if (optRet == JOptionPane.YES_OPTION) {
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.VER_CLASSIFICACAO);
+			Object ret = enviarObjeto(mesa11to);
+			if (!(ret instanceof Mesa11TO)) {
+				return;
+			}
+			mesa11to = (Mesa11TO) ret;
+			Map data = (Map) mesa11to.getData();
+			List dadosTimes = (List) data
+					.get(ConstantesMesa11.VER_CLASSIFICACAO_TIMES);
+			List dadosJogadores = (List) data
+					.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
+			JPanel classificacaoPanel = controleChatCliente
+					.gerarPanelClassificacao(dadosTimes, dadosJogadores);
+			JOptionPane.showMessageDialog(comp, classificacaoPanel,
+					Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
+
+		}
 	}
 
 }
