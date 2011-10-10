@@ -16,6 +16,7 @@ import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.hibernate.TimesCampeonatoMesa11;
 import br.hibernate.Usuario;
+import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
 import br.nnpe.HibernateUtil;
 import br.recursos.Lang;
@@ -248,7 +249,13 @@ public class ControleCampeonatoServidor {
 	}
 
 	public Object verCampeonato(String campeonato) {
-		return controleJogosServidor.obterClassificacao(campeonato);
+		Mesa11TO mesa11to = (Mesa11TO) controleJogosServidor
+				.obterClassificacao(campeonato);
+		Map map = (Map) mesa11to.getData();
+		Object[] dadoscampeonato = controlePersistencia
+				.pesquisarDadosCampeonato(campeonato);
+		map.put(ConstantesMesa11.DADOS_CAMPEONATO, dadoscampeonato);
+		return mesa11to;
 
 	}
 }

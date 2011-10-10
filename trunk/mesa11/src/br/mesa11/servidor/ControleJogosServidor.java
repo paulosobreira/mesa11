@@ -167,8 +167,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome()
-				.equals(jogadaMesa11.getTimeClienteOnline())
+		if (controleJogo.timeJogadaVez().getNome().equals(
+				jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
@@ -380,7 +380,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -415,7 +416,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -440,7 +442,8 @@ public class ControleJogosServidor {
 		Map returnMap = new HashMap();
 		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_TIMES, dadosTimes);
 
-		Collection jogadores = controlePersistencia.obterJogadoresPartidas();
+		Collection jogadores = controlePersistencia
+				.obterJogadoresPartidas(campeonato);
 		Map mapaCassificJogador = new HashMap();
 		for (Iterator iterator = jogadores.iterator(); iterator.hasNext();) {
 			String usuario = (String) iterator.next();
@@ -471,9 +474,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -507,9 +512,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}

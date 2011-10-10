@@ -14,14 +14,14 @@ import javax.persistence.UniqueConstraint;
 @Entity
 public class CampeonatoMesa11 extends Mesa11Dados {
 
+	@Column(unique = true, nullable = false)
+	private String nome;
+
 	private Integer tempoJogo;
 
 	private Integer numeroJogadas;
 
 	private Integer tempoJogada;
-
-	@Column(unique = true, nullable = false)
-	private String nome;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
 	private Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11 = new LinkedList<TimesCampeonatoMesa11>();
