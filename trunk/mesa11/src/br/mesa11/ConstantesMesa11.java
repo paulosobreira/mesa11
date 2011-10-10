@@ -108,12 +108,13 @@ public class ConstantesMesa11 {
 	public static final String NIVEL_MEDIO = "NIVEL_MEDIO";
 	public static final String CRIAR_JOGO_CPU = "CRIAR_JOGO_CPU";
 	public static final String VER_CLASSIFICACAO = "VER_CLASSIFICACAO";
-	public static final Object VER_CLASSIFICACAO_TIMES = "VER_CLASSIFICACAO_TIMES";
-	public static final Object VER_CLASSIFICACAO_JOGADORES = "VER_CLASSIFICACAO_JOGADORES";
+	public static final String VER_CLASSIFICACAO_TIMES = "VER_CLASSIFICACAO_TIMES";
+	public static final String VER_CLASSIFICACAO_JOGADORES = "VER_CLASSIFICACAO_JOGADORES";
 	public static final String OBTER_TODOS_JOGADORES = "OBTER_TODOS_JOGADORES";
 	public static final String CRIAR_CAMPEONATO = "CRIAR_CAMPEONATO";
 	public static final String LISTAR_CAMPEONATOS = "LISTAR_CAMPEONATOS";
 	public static final String VER_CAMPEONATO = "VER_CAMPEONATO";
 	public static final String DADOS_CAMPEONATO = "DADOS_CAMPEONATO";
+	public static final String NUMERO_RODADAS = "NUMERO_RODADAS";
 
 }

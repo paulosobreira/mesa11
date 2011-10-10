@@ -254,6 +254,10 @@ public class ControleCampeonatoServidor {
 		Map map = (Map) mesa11to.getData();
 		Object[] dadoscampeonato = controlePersistencia
 				.pesquisarDadosCampeonato(campeonato);
+		CampeonatoMesa11 campeonatoMesa11 = controlePersistencia
+				.pesquisaCampeonato(campeonato);
+		map.put(ConstantesMesa11.NUMERO_RODADAS, campeonatoMesa11
+				.getTimesCampeonatoMesa11().size() - 1);
 		map.put(ConstantesMesa11.DADOS_CAMPEONATO, dadoscampeonato);
 		return mesa11to;
 
