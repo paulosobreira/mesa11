@@ -114,5 +114,6 @@ public class ConstantesMesa11 {
 	public static final String CRIAR_CAMPEONATO = "CRIAR_CAMPEONATO";
 	public static final String LISTAR_CAMPEONATOS = "LISTAR_CAMPEONATOS";
 	public static final String VER_CAMPEONATO = "VER_CAMPEONATO";
+	public static final String DADOS_CAMPEONATO = "DADOS_CAMPEONATO";
 
 }

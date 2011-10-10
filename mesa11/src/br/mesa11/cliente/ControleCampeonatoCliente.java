@@ -479,7 +479,7 @@ public class ControleCampeonatoCliente {
 		}
 		int optRet = JOptionPane.showConfirmDialog(comp, Lang.msg(
 				"carregarCampeonato", new String[] { campeonatoSelecionado }),
-				Lang.msg("detelhesCampeonato"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("detalhesCampeonato"), JOptionPane.YES_NO_OPTION);
 		if (optRet == JOptionPane.YES_OPTION) {
 			Mesa11TO mesa11to = new Mesa11TO();
 			mesa11to.setComando(ConstantesMesa11.VER_CAMPEONATO);
@@ -496,11 +496,16 @@ public class ControleCampeonatoCliente {
 					.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
 			JPanel classificacaoPanel = controleChatCliente
 					.gerarPanelClassificacao(dadosTimes, dadosJogadores);
-
-			JOptionPane.showMessageDialog(comp, classificacaoPanel,
-					Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
+			Object[] dadosCampeonato = (Object[]) data
+					.get(ConstantesMesa11.DADOS_CAMPEONATO);
+			JPanel campeonato = new JPanel();
+			campeonato.add(new JLabel((String) dadosCampeonato[0]));
+			JPanel geral = new JPanel(new BorderLayout());
+			geral.add(campeonato, BorderLayout.NORTH);
+			geral.add(classificacaoPanel, BorderLayout.CENTER);
+			JOptionPane.showMessageDialog(comp, geral, Lang
+					.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
 
 		}
 	}
-
 }
