@@ -23,6 +23,8 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 
 	private Integer tempoJogada;
 
+	private Integer numeroRodadas;
+
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "campeonatoMesa11")
 	private Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11 = new LinkedList<TimesCampeonatoMesa11>();
 
@@ -62,6 +64,14 @@ public class CampeonatoMesa11 extends Mesa11Dados {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public Integer getNumeroRodadas() {
+		return numeroRodadas;
+	}
+
+	public void setNumeroRodadas(Integer numeroRodadas) {
+		this.numeroRodadas = numeroRodadas;
 	}
 
 	public Collection<TimesCampeonatoMesa11> getTimesCampeonatoMesa11() {

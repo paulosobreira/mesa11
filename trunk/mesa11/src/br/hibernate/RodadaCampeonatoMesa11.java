@@ -116,8 +116,15 @@ public class RodadaCampeonatoMesa11 extends Mesa11Dados {
 
 	@Override
 	public String toString() {
-		return "[ " + timeCasa.getNome() + " X " + timeVisita.getNome()
-				+ " , rodada=" + rodada + "]";
+		return "RodadaCampeonatoMesa11 " + getId() + " [cpuCasa=" + cpuCasa
+				+ ", cpuVisita=" + cpuVisita + ", golsCasa=" + golsCasa
+				+ ", golsVisita=" + golsVisita + ", rodada=" + rodada + "]";
 	}
+
+	// @Override
+	// public String toString() {
+	// return "[ " + timeCasa.getNome() + " X " + timeVisita.getNome()
+	// + " , rodada=" + rodada + "]";
+	// }
 
 }
