@@ -1,6 +1,7 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.ColorModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -498,8 +500,7 @@ public class ControleCampeonatoCliente {
 					.gerarPanelClassificacao(dadosTimes, dadosJogadores);
 			Object[] dadosCampeonato = (Object[]) data
 					.get(ConstantesMesa11.DADOS_CAMPEONATO);
-			JPanel campeonato = new JPanel();
-			campeonato.add(new JLabel((String) dadosCampeonato[0]));
+			JPanel campeonato = gerarPanelInfoCampeonato(dadosCampeonato);
 			JPanel geral = new JPanel(new BorderLayout());
 			geral.add(campeonato, BorderLayout.NORTH);
 			geral.add(classificacaoPanel, BorderLayout.CENTER);
@@ -507,5 +508,64 @@ public class ControleCampeonatoCliente {
 					.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
 
 		}
+	}
+
+	private JPanel gerarPanelInfoCampeonato(Object[] dadosCampeonato) {
+		JPanel campeonato = new JPanel();
+		campeonato.setBorder(new TitledBorder("campeonato") {
+			@Override
+			public String getTitle() {
+				return Lang.msg("campeonato");
+			}
+		});
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("nomeCampeonato") + " : ";
+			}
+		});
+		campeonato.add(new JLabel((String) dadosCampeonato[0]) {
+			@Override
+			public Color getForeground() {
+				return Color.BLUE;
+			}
+		});
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroJogadas") + " : ";
+			}
+		});
+		campeonato.add(new JLabel(((Integer) dadosCampeonato[2]).toString()) {
+			@Override
+			public Color getForeground() {
+				return Color.BLUE;
+			}
+		});
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("tempoJogoMinutos") + " : ";
+			}
+		});
+		campeonato.add(new JLabel(((Integer) dadosCampeonato[1]).toString()) {
+			@Override
+			public Color getForeground() {
+				return Color.BLUE;
+			}
+		});
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("tempoJogadaSegundos") + " : ";
+			}
+		});
+		campeonato.add(new JLabel(((Integer) dadosCampeonato[3]).toString()) {
+			@Override
+			public Color getForeground() {
+				return Color.BLUE;
+			}
+		});
+		return campeonato;
 	}
 }
