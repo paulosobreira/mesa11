@@ -11,8 +11,10 @@ import java.util.List;
 import java.util.Map;
 
 import br.hibernate.Botao;
+import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Goleiro;
 import br.hibernate.PartidaMesa11;
+import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
@@ -20,6 +22,7 @@ import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.AtualizadorJogadaCPU;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.recursos.Lang;
@@ -542,6 +545,20 @@ public class ControleJogosServidor {
 				dadosJogadores);
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(returnMap);
+		return mesa11to;
+	}
+
+	public Object verRodada(CampeonatoMesa11 data) {
+		Mesa11TO mesa11to = new Mesa11TO();
+		List list = controlePersistencia.verRodada(data);
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
+					.next();
+			rodadaCampeonatoMesa11.setCampeonatoMesa11(null);
+			rodadaCampeonatoMesa11.getTimeCasa().setBotoes(null);
+			rodadaCampeonatoMesa11.getTimeVisita().setBotoes(null);
+		}
+		mesa11to.setData(list);
 		return mesa11to;
 	}
 }

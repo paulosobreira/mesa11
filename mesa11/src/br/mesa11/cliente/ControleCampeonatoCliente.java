@@ -13,6 +13,7 @@ import java.awt.image.ColorModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -500,7 +501,10 @@ public class ControleCampeonatoCliente {
 					.gerarPanelClassificacao(dadosTimes, dadosJogadores);
 			Object[] dadosCampeonato = (Object[]) data
 					.get(ConstantesMesa11.DADOS_CAMPEONATO);
-			JPanel campeonato = gerarPanelInfoCampeonato(dadosCampeonato);
+			Integer num_rodadas = (Integer) data
+					.get(ConstantesMesa11.NUMERO_RODADAS);
+			JPanel campeonato = gerarPanelInfoCampeonato(dadosCampeonato,
+					num_rodadas);
 			JPanel geral = new JPanel(new BorderLayout());
 			geral.add(campeonato, BorderLayout.NORTH);
 			geral.add(classificacaoPanel, BorderLayout.CENTER);
@@ -510,8 +514,9 @@ public class ControleCampeonatoCliente {
 		}
 	}
 
-	private JPanel gerarPanelInfoCampeonato(Object[] dadosCampeonato) {
-		JPanel campeonato = new JPanel();
+	private JPanel gerarPanelInfoCampeonato(final Object[] dadosCampeonato,
+			Integer numRodadas) {
+		JPanel campeonato = new JPanel(new GridLayout(3, 4));
 		campeonato.setBorder(new TitledBorder("campeonato") {
 			@Override
 			public String getTitle() {
@@ -566,6 +571,68 @@ public class ControleCampeonatoCliente {
 				return Color.BLUE;
 			}
 		});
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("numeroRodadas") + " : ";
+			}
+		});
+		campeonato.add(new JLabel(numRodadas.toString()) {
+			@Override
+			public Color getForeground() {
+				return Color.BLUE;
+			}
+		});
+
+		campeonato.add(new JLabel() {
+			@Override
+			public String getText() {
+				return Lang.msg("rodadas") + " : ";
+			}
+		});
+		final JComboBox rodadaCombo = new JComboBox();
+		for (int i = 1; i <= numRodadas; i++) {
+			rodadaCombo.addItem(new Integer(i));
+		}
+
+		JButton verRodada = new JButton() {
+			public String getText() {
+				return Lang.msg("verRodada");
+			}
+		};
+		verRodada.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mostrarRodada((String) dadosCampeonato[0],
+						(Integer) rodadaCombo.getSelectedItem());
+			}
+		});
+		JPanel rodadas = new JPanel();
+		rodadas.add(rodadaCombo);
+		rodadas.add(verRodada);
+		campeonato.add(rodadas);
+
 		return campeonato;
+	}
+
+	protected void mostrarRodada(String nomeCampeonato, Integer numeroRodada) {
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.VER_RODADA);
+		CampeonatoMesa11 campeonatoMesa11 = new CampeonatoMesa11();
+		campeonatoMesa11.setNome(nomeCampeonato);
+		campeonatoMesa11.setNumeroRodadas(numeroRodada);
+		mesa11to.setData(campeonatoMesa11);
+		Object ret = enviarObjeto(mesa11to);
+		if (!(ret instanceof Mesa11TO)) {
+			return;
+		}
+		mesa11to = (Mesa11TO) ret;
+		List list = (List) mesa11to.getData();
+		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			Object object = (Object) iterator.next();
+			System.out.println(object);
+		}
+
 	}
 }

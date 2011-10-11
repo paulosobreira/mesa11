@@ -119,6 +119,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_TODAS_IMAGENS.equals(mesa11TO
 				.getComando())) {
 			return controleJogosServidor.obterTodasImagens();
+		} else if (ConstantesMesa11.VER_RODADA.equals(mesa11TO.getComando())) {
+			return controleJogosServidor.verRodada((CampeonatoMesa11) mesa11TO
+					.getData());
 		} else if (ConstantesMesa11.VER_CLASSIFICACAO.equals(mesa11TO
 				.getComando())) {
 			try {
