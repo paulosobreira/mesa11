@@ -29,6 +29,8 @@ public class RodadaCampeonatoMesa11 extends Mesa11Dados {
 
 	private boolean cpuVisita;
 
+	private transient boolean iniciarPartida;
+
 	@ManyToOne
 	private Usuario jogadorCasa;
 	@ManyToOne
@@ -36,6 +38,14 @@ public class RodadaCampeonatoMesa11 extends Mesa11Dados {
 
 	public Time getTimeCasa() {
 		return timeCasa;
+	}
+
+	public boolean isIniciarPartida() {
+		return iniciarPartida;
+	}
+
+	public void setIniciarPartida(boolean iniciarPartida) {
+		this.iniciarPartida = iniciarPartida;
 	}
 
 	public void setTimeCasa(Time timeCasa) {
