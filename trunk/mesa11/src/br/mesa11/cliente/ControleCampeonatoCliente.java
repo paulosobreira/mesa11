@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -33,6 +34,7 @@ import javax.swing.table.TableModel;
 
 import br.hibernate.CampeonatoMesa11;
 import br.hibernate.JogadoresCampeonatoMesa11;
+import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.hibernate.TimesCampeonatoMesa11;
 import br.hibernate.Usuario;
@@ -40,6 +42,7 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.Util;
 import br.recursos.Lang;
+import br.tos.ClassificacaoTime;
 import br.tos.Mesa11TO;
 
 public class ControleCampeonatoCliente {
@@ -508,8 +511,8 @@ public class ControleCampeonatoCliente {
 			JPanel geral = new JPanel(new BorderLayout());
 			geral.add(campeonato, BorderLayout.NORTH);
 			geral.add(classificacaoPanel, BorderLayout.CENTER);
-			JOptionPane.showMessageDialog(comp, geral, Lang
-					.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(comp, geral,
+					Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
 
 		}
 	}
@@ -629,10 +632,167 @@ public class ControleCampeonatoCliente {
 		}
 		mesa11to = (Mesa11TO) ret;
 		List list = (List) mesa11to.getData();
-		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
-			Object object = (Object) iterator.next();
-			System.out.println(object);
-		}
+		JPanel rodadasPanel = gerarPainelRodadas(list);
+		JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
+				.getMainPanel(), rodadasPanel, Lang.msg("classificacao"),
+				JOptionPane.INFORMATION_MESSAGE);
 
+	}
+
+	private JPanel gerarPainelRodadas(final List rodadas) {
+		final JTable rodadasTable = new JTable();
+		final TableModel rodadasTableModel = new AbstractTableModel() {
+			@Override
+			public Object getValueAt(int rowIndex, int columnIndex) {
+				RodadaCampeonatoMesa11 value = (RodadaCampeonatoMesa11) rodadas
+						.get(rowIndex);
+
+				switch (columnIndex) {
+				case 0:
+					return new Boolean(value.isCpuCasa());
+				case 1:
+					return value.getJogadorCasa() != null ? value
+							.getJogadorCasa().getLogin() : "";
+				case 2:
+					return value.getTimeCasa().getNomeAbrev();
+				case 3:
+					return value.getGolsCasa();
+				case 4:
+					return value.getGolsVisita();
+				case 5:
+					return value.getTimeVisita().getNomeAbrev();
+				case 6:
+					return value.getJogadorVisita() != null ? value
+							.getJogadorVisita().getLogin() : "";
+				case 7:
+					return new Boolean(value.isCpuVisita());
+				case 9:
+					return new Boolean(value.isIniciarPartida());
+				default:
+					return "";
+				}
+			}
+
+			@Override
+			public int getRowCount() {
+				if (rodadas == null) {
+					return 0;
+				}
+				return rodadas.size();
+			}
+
+			@Override
+			public int getColumnCount() {
+				return 9;
+			}
+
+			@Override
+			public String getColumnName(int columnIndex) {
+
+				switch (columnIndex) {
+				case 0:
+					return Lang.msg("cpuCasa");
+				case 1:
+					return Lang.msg("jogadorCasa");
+				case 2:
+					return Lang.msg("timeCasa");
+				case 3:
+					return Lang.msg("gosCasa");
+				case 4:
+					return Lang.msg("golsVisita");
+				case 5:
+					return Lang.msg("timeVisita");
+				case 6:
+					return Lang.msg("jogadorVisita");
+				case 7:
+					return Lang.msg("cpuVisita");
+				case 8:
+					return Lang.msg("iniciarPartida");
+				default:
+					return "";
+				}
+
+			}
+
+			@Override
+			public Class getColumnClass(int c) {
+				return getValueAt(0, c).getClass();
+			}
+
+			public void setValueAt(Object value, int row, int col) {
+				System.out.println(value);
+				RodadaCampeonatoMesa11 campeonatoMesa11 = (RodadaCampeonatoMesa11) rodadas
+						.get(row);
+				switch (col) {
+				case 0:
+					campeonatoMesa11.setCpuCasa((Boolean) value);
+					break;
+				case 1: {
+					Usuario usuario = new Usuario();
+					usuario.setLogin((String) value);
+					campeonatoMesa11.setJogadorCasa(usuario);
+					break;
+				}
+				case 6: {
+					Usuario usuario = new Usuario();
+					usuario.setLogin((String) value);
+					campeonatoMesa11.setJogadorVisita(usuario);
+					break;
+				}
+				case 7:
+					campeonatoMesa11.setCpuVisita((Boolean) value);
+					break;
+				default:
+				}
+
+				fireTableCellUpdated(row, col);
+
+			}
+
+			@Override
+			public boolean isCellEditable(int rowIndex, int columnIndex) {
+				switch (columnIndex) {
+				case 0:
+					return true;
+				case 1:
+					return true;
+				case 2:
+					return false;
+				case 3:
+					return false;
+				case 4:
+					return false;
+				case 5:
+					return false;
+				case 6:
+					return true;
+				case 7:
+					return true;
+				case 8:
+					return true;
+				default:
+					return false;
+				}
+			}
+		};
+
+		JComboBox jogadores = new JComboBox();
+		jogadores.addItem("Paulo");
+		jogadores.addItem("Sobreira");
+		jogadores.addItem("Mark");
+		rodadasTable.setModel(rodadasTableModel);
+		rodadasTable.getColumnModel().getColumn(1)
+				.setCellEditor(new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(6)
+				.setCellEditor(new DefaultCellEditor(jogadores));
+		JScrollPane rodadasJs = new JScrollPane(rodadasTable) {
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(620, 150);
+			}
+		};
+		JPanel jPanel = new JPanel();
+		jPanel.add(rodadasJs);
+		return jPanel;
 	}
 }
