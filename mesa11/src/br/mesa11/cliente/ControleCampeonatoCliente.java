@@ -50,6 +50,7 @@ public class ControleCampeonatoCliente {
 	private ControleJogosCliente controleJogosCliente;
 	private ControleChatCliente controleChatCliente;
 	protected String campeonatoSelecionado;
+	private JComboBox rodadaCombo;
 
 	public ControleCampeonatoCliente(ControleJogosCliente controleJogosCliente,
 			ControleChatCliente controleChatCliente) {
@@ -511,9 +512,22 @@ public class ControleCampeonatoCliente {
 			JPanel geral = new JPanel(new BorderLayout());
 			geral.add(campeonato, BorderLayout.NORTH);
 			geral.add(classificacaoPanel, BorderLayout.CENTER);
-			JOptionPane.showMessageDialog(comp, geral,
-					Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
-
+			JLabel carregarRodadaSelecionada = new JLabel() {
+				@Override
+				public String getText() {
+					return Lang.msg("carregarRodadaSelecionada");
+				}
+			};
+			JPanel panel = new JPanel();
+			panel.add(carregarRodadaSelecionada);
+			geral.add(panel, BorderLayout.SOUTH);
+			int showConfirmDialog = JOptionPane.showConfirmDialog(comp, geral,
+					Lang.msg("classificacao"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.QUESTION_MESSAGE);
+			if (JOptionPane.YES_OPTION == showConfirmDialog) {
+				mostrarRodada((String) dadosCampeonato[0],
+						(Integer) rodadaCombo.getSelectedItem());
+			}
 		}
 	}
 
@@ -593,29 +607,11 @@ public class ControleCampeonatoCliente {
 				return Lang.msg("rodadas") + " : ";
 			}
 		});
-		final JComboBox rodadaCombo = new JComboBox();
+		rodadaCombo = new JComboBox();
 		for (int i = 1; i <= numRodadas; i++) {
 			rodadaCombo.addItem(new Integer(i));
 		}
-
-		JButton verRodada = new JButton() {
-			public String getText() {
-				return Lang.msg("verRodada");
-			}
-		};
-		verRodada.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				mostrarRodada((String) dadosCampeonato[0],
-						(Integer) rodadaCombo.getSelectedItem());
-			}
-		});
-		JPanel rodadas = new JPanel();
-		rodadas.add(rodadaCombo);
-		rodadas.add(verRodada);
-		campeonato.add(rodadas);
-
+		campeonato.add(rodadaCombo);
 		return campeonato;
 	}
 
@@ -632,14 +628,15 @@ public class ControleCampeonatoCliente {
 		}
 		mesa11to = (Mesa11TO) ret;
 		List list = (List) mesa11to.getData();
-		JPanel rodadasPanel = gerarPainelRodadas(list);
-		JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
-				.getMainPanel(), rodadasPanel, Lang.msg("classificacao"),
-				JOptionPane.INFORMATION_MESSAGE);
+		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
+		int showConfirmDialog = JOptionPane.showConfirmDialog(
+				controleChatCliente.getChatWindow().getMainPanel(),
+				rodadasPanel, Lang.msg("classificacao"),
+				JOptionPane.YES_NO_OPTION);
 
 	}
 
-	private JPanel gerarPainelRodadas(final List rodadas) {
+	private JPanel gerarPainelRodadas(final List rodadas, String nomeCampeonato) {
 		final JTable rodadasTable = new JTable();
 		final TableModel rodadasTableModel = new AbstractTableModel() {
 			@Override
@@ -666,8 +663,6 @@ public class ControleCampeonatoCliente {
 							.getJogadorVisita().getLogin() : "";
 				case 7:
 					return new Boolean(value.isCpuVisita());
-				case 9:
-					return new Boolean(value.isIniciarPartida());
 				default:
 					return "";
 				}
@@ -683,7 +678,7 @@ public class ControleCampeonatoCliente {
 
 			@Override
 			public int getColumnCount() {
-				return 9;
+				return 8;
 			}
 
 			@Override
@@ -706,8 +701,6 @@ public class ControleCampeonatoCliente {
 					return Lang.msg("jogadorVisita");
 				case 7:
 					return Lang.msg("cpuVisita");
-				case 8:
-					return Lang.msg("iniciarPartida");
 				default:
 					return "";
 				}
@@ -720,7 +713,9 @@ public class ControleCampeonatoCliente {
 			}
 
 			public void setValueAt(Object value, int row, int col) {
-				System.out.println(value);
+				if (value == null) {
+					return;
+				}
 				RodadaCampeonatoMesa11 campeonatoMesa11 = (RodadaCampeonatoMesa11) rodadas
 						.get(row);
 				switch (col) {
@@ -777,9 +772,16 @@ public class ControleCampeonatoCliente {
 		};
 
 		JComboBox jogadores = new JComboBox();
-		jogadores.addItem("Paulo");
-		jogadores.addItem("Sobreira");
-		jogadores.addItem("Mark");
+		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setComando(ConstantesMesa11.OBTER_JOGADORES_CAMPEONATO);
+		mesa11to.setData(campeonatoSelecionado);
+		mesa11to = (Mesa11TO) enviarObjeto(mesa11to);
+		List jogadoresSrv = (List) mesa11to.getData();
+		jogadores.addItem("");
+		for (Iterator iterator = jogadoresSrv.iterator(); iterator.hasNext();) {
+			String loginJogador = (String) iterator.next();
+			jogadores.addItem(loginJogador);
+		}
 		rodadasTable.setModel(rodadasTableModel);
 		rodadasTable.getColumnModel().getColumn(1)
 				.setCellEditor(new DefaultCellEditor(jogadores));
