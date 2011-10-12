@@ -4,7 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -51,6 +53,7 @@ public class ControleCampeonatoCliente {
 	private ControleChatCliente controleChatCliente;
 	protected String campeonatoSelecionado;
 	private JComboBox rodadaCombo;
+	private JTable rodadasTable;
 
 	public ControleCampeonatoCliente(ControleJogosCliente controleJogosCliente,
 			ControleChatCliente controleChatCliente) {
@@ -394,9 +397,9 @@ public class ControleCampeonatoCliente {
 	}
 
 	private JPanel gerarPanelCampeonatos(final List campeonatos) {
-		final JTable corridasTable = new JTable();
+		final JTable campeonatoTable = new JTable();
 
-		final TableModel corridasTableModel = new AbstractTableModel() {
+		final TableModel campeonatosTableModel = new AbstractTableModel() {
 
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
@@ -449,21 +452,21 @@ public class ControleCampeonatoCliente {
 
 			}
 		};
-		corridasTable.addMouseListener(new MouseAdapter() {
+		campeonatoTable.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
-				campeonatoSelecionado = (String) corridasTableModel.getValueAt(
-						corridasTable.getSelectedRow(), 0);
+				campeonatoSelecionado = (String) campeonatosTableModel
+						.getValueAt(campeonatoTable.getSelectedRow(), 0);
 				if (e.getClickCount() == 2) {
-					carregaCampeonatoSelecionado(corridasTable);
+					carregaCampeonatoSelecionado(campeonatoTable);
 				}
 			}
 
 		});
 
-		corridasTable.setModel(corridasTableModel);
-		JScrollPane jScrollPane = new JScrollPane(corridasTable) {
+		campeonatoTable.setModel(campeonatosTableModel);
+		JScrollPane jScrollPane = new JScrollPane(campeonatoTable) {
 			@Override
 			public Dimension getPreferredSize() {
 				return new Dimension(620, 150);
@@ -636,11 +639,23 @@ public class ControleCampeonatoCliente {
 						new String[] { numeroRodada.toString(),
 								campeonatoSelecionado }),
 				JOptionPane.YES_NO_OPTION);
+		if (JOptionPane.YES_OPTION == showConfirmDialog) {
+			Long id = (Long) rodadasTable.getValueAt(
+					rodadasTable.getSelectedRow(), 8);
+			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
+						.next();
+				if (rodadaCampeonatoMesa11.getId().equals(id)) {
+					System.out.println(rodadaCampeonatoMesa11);
+					break;
+				}
+			}
+		}
 
 	}
 
 	private JPanel gerarPainelRodadas(final List rodadas, String nomeCampeonato) {
-		final JTable rodadasTable = new JTable();
+		rodadasTable = new JTable();
 		final TableModel rodadasTableModel = new AbstractTableModel() {
 			@Override
 			public Object getValueAt(int rowIndex, int columnIndex) {
@@ -666,6 +681,8 @@ public class ControleCampeonatoCliente {
 							.getJogadorVisita().getLogin() : "";
 				case 7:
 					return new Boolean(value.isCpuVisita());
+				case 8:
+					return value.getId();
 				default:
 					return "";
 				}
@@ -681,7 +698,7 @@ public class ControleCampeonatoCliente {
 
 			@Override
 			public int getColumnCount() {
-				return 8;
+				return 9;
 			}
 
 			@Override
@@ -704,6 +721,8 @@ public class ControleCampeonatoCliente {
 					return Lang.msg("jogadorVisita");
 				case 7:
 					return Lang.msg("cpuVisita");
+				case 8:
+					return Lang.msg("id");
 				default:
 					return "";
 				}
@@ -777,7 +796,7 @@ public class ControleCampeonatoCliente {
 				case 7:
 					return true;
 				case 8:
-					return true;
+					return false;
 				default:
 					return false;
 				}
@@ -800,6 +819,12 @@ public class ControleCampeonatoCliente {
 				.setCellEditor(new DefaultCellEditor(jogadores));
 		rodadasTable.getColumnModel().getColumn(6)
 				.setCellEditor(new DefaultCellEditor(jogadores));
+		for (int i = 0; i < rodadasTableModel.getColumnCount(); i++) {
+			rodadasTable.getColumn(rodadasTableModel.getColumnName(i))
+					.setMinWidth(
+							Util.larguraTexto(
+									rodadasTableModel.getColumnName(i), null));
+		}
 		JScrollPane rodadasJs = new JScrollPane(rodadasTable) {
 			@Override
 			public Dimension getPreferredSize() {

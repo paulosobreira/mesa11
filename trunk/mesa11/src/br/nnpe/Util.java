@@ -1,6 +1,7 @@
 package br.nnpe;
 
 import java.awt.Graphics2D;
+import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -863,7 +864,11 @@ public class Util {
 	public static int larguraTexto(String msg, Graphics2D g2d) {
 		int largura = 0;
 		for (int i = 0; i < msg.length(); i++) {
-			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			if (g2d == null) {
+				largura += 7;
+			} else {
+				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
+			}
 		}
 		return largura;
 	}
