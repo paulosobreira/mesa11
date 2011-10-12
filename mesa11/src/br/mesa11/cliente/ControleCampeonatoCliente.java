@@ -631,7 +631,10 @@ public class ControleCampeonatoCliente {
 		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(
 				controleChatCliente.getChatWindow().getMainPanel(),
-				rodadasPanel, Lang.msg("classificacao"),
+				rodadasPanel,
+				Lang.msg("rodadaCampeonato",
+						new String[] { numeroRodada.toString(),
+								campeonatoSelecionado }),
 				JOptionPane.YES_NO_OPTION);
 
 	}
@@ -719,9 +722,14 @@ public class ControleCampeonatoCliente {
 				RodadaCampeonatoMesa11 campeonatoMesa11 = (RodadaCampeonatoMesa11) rodadas
 						.get(row);
 				switch (col) {
-				case 0:
-					campeonatoMesa11.setCpuCasa((Boolean) value);
+				case 0: {
+					Boolean val = (Boolean) value;
+					if (val) {
+						campeonatoMesa11.setJogadorCasa(null);
+					}
+					campeonatoMesa11.setCpuCasa(val);
 					break;
+				}
 				case 1: {
 					Usuario usuario = new Usuario();
 					usuario.setLogin((String) value);
@@ -734,9 +742,14 @@ public class ControleCampeonatoCliente {
 					campeonatoMesa11.setJogadorVisita(usuario);
 					break;
 				}
-				case 7:
-					campeonatoMesa11.setCpuVisita((Boolean) value);
+				case 7: {
+					Boolean val = (Boolean) value;
+					if (val) {
+						campeonatoMesa11.setJogadorVisita(null);
+					}
+					campeonatoMesa11.setCpuVisita(val);
 					break;
+				}
 				default:
 				}
 
