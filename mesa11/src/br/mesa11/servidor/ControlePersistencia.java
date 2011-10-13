@@ -47,8 +47,8 @@ public class ControlePersistencia {
 	public static Session getSession() {
 		Session session = HibernateUtil.currentSession();
 		try {
-			List jogador = session.createCriteria(Usuario.class)
-					.add(Restrictions.eq("id", new Long(0))).list();
+			List jogador = session.createCriteria(Usuario.class).add(
+					Restrictions.eq("id", new Long(0))).list();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 			HibernateUtil.closeSession();
@@ -215,8 +215,8 @@ public class ControlePersistencia {
 	public Object obterTimesJogador(String nomeJogador) {
 		Session session = ControlePersistencia.getSession();
 		try {
-			List times = session.createCriteria(Time.class)
-					.add(Restrictions.eq("nomeJogador", nomeJogador)).list();
+			List times = session.createCriteria(Time.class).add(
+					Restrictions.eq("nomeJogador", nomeJogador)).list();
 			String[] retorno = new String[times.size()];
 			int i = 0;
 			for (Iterator iterator = times.iterator(); iterator.hasNext();) {
@@ -236,8 +236,8 @@ public class ControlePersistencia {
 	public Time obterTime(String nome) {
 		Session session = ControlePersistencia.getSession();
 		try {
-			Time time = (Time) session.createCriteria(Time.class)
-					.add(Restrictions.eq("nome", nome)).uniqueResult();
+			Time time = (Time) session.createCriteria(Time.class).add(
+					Restrictions.eq("nome", nome)).uniqueResult();
 			time.setBotoes(Util.removePersistBag(time.getBotoes(), session));
 			session.evict(time);
 			return time;
@@ -279,16 +279,29 @@ public class ControlePersistencia {
 
 	}
 
-	public List obterPartidasTimeCasa(String timeCasa) {
+	public List obterPartidasTimeCasa(String timeCasa, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(PartidaMesa11.class)
-				.add(Restrictions.eq("nomeTimeCasa", timeCasa)).list();
+		if (Util.isNullOrEmpty(campeonato)) {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeTimeCasa", timeCasa)).list();
+		} else {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeTimeCasa", timeCasa)).add(
+					Restrictions.eq("campeonato", campeonato)).list();
+		}
 	}
 
-	public List obterPartidasTimeVisita(String timeVisita) {
+	public List obterPartidasTimeVisita(String timeVisita, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(PartidaMesa11.class)
-				.add(Restrictions.eq("nomeTimeVisita", timeVisita)).list();
+		if (Util.isNullOrEmpty(campeonato)) {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeTimeVisita", timeVisita)).list();
+		} else {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeTimeVisita", timeVisita)).add(
+					Restrictions.eq("campeonato", campeonato)).list();
+		}
+
 	}
 
 	public List obterTimes() {
@@ -301,17 +314,29 @@ public class ControlePersistencia {
 		return session.createCriteria(Usuario.class).list();
 	}
 
-	public List obterPartidasJogadorCasa(String login) {
+	public List obterPartidasJogadorCasa(String login, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(PartidaMesa11.class)
-				.add(Restrictions.eq("nomeJogadorCasa", login)).list();
+		if (Util.isNullOrEmpty(campeonato)) {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeJogadorCasa", login)).list();
+		} else {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeJogadorCasa", login)).add(
+					Restrictions.eq("campeonato", campeonato)).list();
+		}
 
 	}
 
-	public List obterPartidasJogadorVisita(String login) {
+	public List obterPartidasJogadorVisita(String login, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(PartidaMesa11.class)
-				.add(Restrictions.eq("nomeJogadorVisita", login)).list();
+		if (Util.isNullOrEmpty(campeonato)) {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeJogadorVisita", login)).list();
+		} else {
+			return session.createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("nomeJogadorVisita", login)).add(
+					Restrictions.eq("campeonato", campeonato)).list();
+		}
 
 	}
 
@@ -321,8 +346,8 @@ public class ControlePersistencia {
 		if (Util.isNullOrEmpty(campeonato)) {
 			list = getSession().createCriteria(PartidaMesa11.class).list();
 		} else {
-			list = getSession().createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("campeonato", campeonato)).list();
+			list = getSession().createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("campeonato", campeonato)).list();
 		}
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
@@ -338,8 +363,8 @@ public class ControlePersistencia {
 		if (Util.isNullOrEmpty(campeonato)) {
 			list = getSession().createCriteria(PartidaMesa11.class).list();
 		} else {
-			list = getSession().createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("campeonato", campeonato)).list();
+			list = getSession().createCriteria(PartidaMesa11.class).add(
+					Restrictions.eq("campeonato", campeonato)).list();
 		}
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator.next();
@@ -400,8 +425,8 @@ public class ControlePersistencia {
 
 	public CampeonatoMesa11 pesquisaCampeonato(String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		List list = session.createCriteria(CampeonatoMesa11.class)
-				.add(Restrictions.eq("nome", campeonato)).list();
+		List list = session.createCriteria(CampeonatoMesa11.class).add(
+				Restrictions.eq("nome", campeonato)).list();
 		if (!list.isEmpty()) {
 			return (CampeonatoMesa11) list.get(0);
 		}

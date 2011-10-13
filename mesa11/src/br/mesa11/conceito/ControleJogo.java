@@ -379,7 +379,7 @@ public class ControleJogo {
 			p.y = Util.inte(maxY) - 1;
 		}
 		novoPontoTela = p;
-		pontoPasando = bola.getCentro();
+		//pontoPasando = bola.getCentro();
 	}
 
 	public Shape limitesViewPort() {

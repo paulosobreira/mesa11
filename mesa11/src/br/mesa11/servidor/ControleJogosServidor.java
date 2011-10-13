@@ -188,8 +188,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome()
-				.equals(jogadaMesa11.getTimeClienteOnline())
+		if (controleJogo.timeJogadaVez().getNome().equals(
+				jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
@@ -380,8 +380,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setTime(time);
 				mapaCassificTime.put(time, classificacaoTime);
 			}
-			List partidasCasa = controlePersistencia
-					.obterPartidasTimeCasa(time);
+			List partidasCasa = controlePersistencia.obterPartidasTimeCasa(
+					time, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -401,7 +401,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -415,8 +416,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setTime(time);
 				mapaCassificTime.put(time, classificacaoTime);
 			}
-			List partidasCasa = controlePersistencia
-					.obterPartidasTimeVisita(time);
+			List partidasCasa = controlePersistencia.obterPartidasTimeVisita(
+					time, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -436,7 +437,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -473,8 +475,8 @@ public class ControleJogosServidor {
 				classificacaoUsuario.setLogin(usuario);
 				mapaCassificJogador.put(usuario, classificacaoUsuario);
 			}
-			List partidasCasa = controlePersistencia
-					.obterPartidasJogadorCasa(usuario);
+			List partidasCasa = controlePersistencia.obterPartidasJogadorCasa(
+					usuario, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -493,9 +495,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -510,7 +514,7 @@ public class ControleJogosServidor {
 				mapaCassificJogador.put(usuario, classificacaoUsuario);
 			}
 			List partidasCasa = controlePersistencia
-					.obterPartidasJogadorVisita(usuario);
+					.obterPartidasJogadorVisita(usuario, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -529,9 +533,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
