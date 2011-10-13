@@ -122,6 +122,23 @@ public class ControleJogosServidor {
 					controleJogo);
 			atualizadorJogadaCPU.start();
 		}
+		if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())) {
+			timeCasa.setControladoCPU(true);
+			controleJogo
+					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
+			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
+					controleJogo);
+			atualizadorJogadaCPU.start();
+		}
+		if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
+			timeVisita.setControladoCPU(true);
+			controleJogo
+					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
+			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
+					controleJogo);
+			atualizadorJogadaCPU.start();
+		}
+
 	}
 
 	public Object obterDadosJogo(Mesa11TO mesa11to) {
@@ -568,5 +585,32 @@ public class ControleJogosServidor {
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setData(jogadores);
 		return mesa11to;
+	}
+
+	public Object criarJogoCampeonato(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
+		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
+		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
+		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
+				proxyComandos);
+		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
+				.get(dadosJogoSrvMesa11.getNomeJogo());
+		if (jogoSrvMesa11.getDadosJogoSrvMesa11() != null
+				&& !Util.isNullOrEmpty(jogoSrvMesa11.getDadosJogoSrvMesa11()
+						.getNomeVisitante())) {
+			return new MsgSrv(Lang.msg("jogoInciado"));
+		}
+		if (jogoSrvMesa11 != null) {
+			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
+			dadosMesa11.getJogosCriados().remove(
+					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			dadosMesa11.getJogosAndamento().add(
+					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setData(dadosJogoSrvMesa11);
+			inciaJogoServidor(jogoSrvMesa11);
+			return mesa11to;
+		}
+		return null;
 	}
 }

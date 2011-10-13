@@ -2,11 +2,15 @@ package br.mesa11.servidor;
 
 import java.sql.Date;
 
+import br.hibernate.CampeonatoMesa11;
 import br.hibernate.PartidaMesa11;
+import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.ControleJogo;
+import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.SessaoCliente;
 
@@ -63,6 +67,9 @@ public class JogoServidor {
 	}
 
 	public void jogadorSaiuJogo(String nomeJogador) {
+		if (nomeJogador == null) {
+			return;
+		}
 		if (nomeJogador.equals(dadosJogoSrvMesa11.getNomeCriador())) {
 			dadosJogoSrvMesa11.setSaiuCriador(true);
 		}
@@ -109,26 +116,25 @@ public class JogoServidor {
 	}
 
 	public void fimJogoServidor() {
-		Logger
-				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
-						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-								.getNomeCriador()));
-		Logger
-				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
-						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-								.getNomeVisitante()));
+		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
+				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+						.getNomeCriador()));
+		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
+				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+						.getNomeVisitante()));
 		Logger.logar("dadosJogoSrvMesa11.isSaiuCriador()"
 				+ dadosJogoSrvMesa11.isSaiuCriador());
 		Logger.logar("dadosJogoSrvMesa11.isSaiuVisitante()"
 				+ dadosJogoSrvMesa11.isSaiuVisitante());
-		if (proxyComandos
-				.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())
-				|| (!dadosJogoSrvMesa11.isJogoVsCpu() && proxyComandos
-						.verificaSemSessao(dadosJogoSrvMesa11
-								.getNomeVisitante()))
-				|| (!dadosJogoSrvMesa11.isJogoVsCpu() && dadosJogoSrvMesa11
-						.isSaiuVisitante())
-				|| dadosJogoSrvMesa11.isSaiuCriador() || controleJogo == null) {
+		if (dadosJogoSrvMesa11.getIdRodadaCampeonato() == 0
+				&& (proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+						.getNomeCriador())
+						|| (!dadosJogoSrvMesa11.isJogoVsCpu() && proxyComandos
+								.verificaSemSessao(dadosJogoSrvMesa11
+										.getNomeVisitante()))
+						|| (!dadosJogoSrvMesa11.isJogoVsCpu() && dadosJogoSrvMesa11
+								.isSaiuVisitante())
+						|| dadosJogoSrvMesa11.isSaiuCriador() || controleJogo == null)) {
 			return;
 		}
 		PartidaMesa11 partidaMesa11 = new PartidaMesa11();
@@ -136,17 +142,29 @@ public class JogoServidor {
 		partidaMesa11.setFim(new Date(controleJogo.getTempoTerminado()));
 		partidaMesa11.setGolsTimeCasa(dadosJogoSrvMesa11.getGolsCasa());
 		partidaMesa11.setGolsTimeVisita(dadosJogoSrvMesa11.getGolsVisita());
-		partidaMesa11.setNomeJogadorCasa(dadosJogoSrvMesa11.getNomeCriador());
-		partidaMesa11.setNomeJogadorVisita(dadosJogoSrvMesa11
-				.getNomeVisitante());
+		partidaMesa11.setNomeJogadorCasa(Util.isNullOrEmpty(dadosJogoSrvMesa11
+				.getNomeCriador()) ? "CPU" : dadosJogoSrvMesa11
+				.getNomeCriador());
+		partidaMesa11.setNomeJogadorVisita(Util
+				.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante()) ? "CPU"
+				: dadosJogoSrvMesa11.getNomeVisitante());
 		partidaMesa11.setNomeTimeCasa(dadosJogoSrvMesa11.getTimeCasa());
 		partidaMesa11.setNomeTimeVisita(dadosJogoSrvMesa11.getTimeVisita());
 		partidaMesa11.setVsCpu(dadosJogoSrvMesa11.isJogoVsCpu());
+		if (dadosJogoSrvMesa11.getIdRodadaCampeonato() != 0) {
+			RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = proxyComandos
+					.pesquisarRodadaPorId(dadosJogoSrvMesa11
+							.getIdRodadaCampeonato());
+			partidaMesa11.setCampeonato(rodadaCampeonatoMesa11
+					.getCampeonatoMesa11().getNome());
+
+		}
 		if (dadosJogoSrvMesa11.isJogoVsCpu()) {
 			partidaMesa11.setNomeJogadorVisita("CPU");
 		}
 		try {
 			proxyComandos.gravarDados(partidaMesa11);
+			HibernateUtil.closeSession();
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

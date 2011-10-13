@@ -37,6 +37,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoJogadaRestanteJogoFormatado;
 	private String dica;
 	private GolJogador golJogador;
+	private long idRodadaCampeonato;
 
 	public boolean isJogoVsCpu() {
 		return jogoVsCpu;
@@ -44,6 +45,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public GolJogador getGolJogador() {
 		return golJogador;
+	}
+
+	public long getIdRodadaCampeonato() {
+		return idRodadaCampeonato;
+	}
+
+	public void setIdRodadaCampeonato(long idRodadaCampeonato) {
+		this.idRodadaCampeonato = idRodadaCampeonato;
 	}
 
 	public void setGolJogador(GolJogador golJogador) {

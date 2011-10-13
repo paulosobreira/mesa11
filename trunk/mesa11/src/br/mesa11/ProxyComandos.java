@@ -2,6 +2,7 @@ package br.mesa11;
 
 import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Mesa11Dados;
+import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.mesa11.servidor.ControleCampeonatoServidor;
 import br.mesa11.servidor.ControleChatServidor;
@@ -111,6 +112,11 @@ public class ProxyComandos {
 				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogoCpu((DadosJogoSrvMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.CRIAR_JOGO_CAMPEONATO.equals(mesa11TO
+				.getComando())) {
+			return controleJogosServidor
+					.criarJogoCampeonato((DadosJogoSrvMesa11) mesa11TO
+							.getData());
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
@@ -139,6 +145,15 @@ public class ProxyComandos {
 			try {
 				return controleCampeonatoServidor
 						.verCampeonato((String) mesa11TO.getData());
+			} finally {
+				HibernateUtil.closeSession();
+			}
+
+		} else if (ConstantesMesa11.DADOS_CAMPEONATO.equals(mesa11TO
+				.getComando())) {
+			try {
+				return controleCampeonatoServidor
+						.dadosCampeonato((String) mesa11TO.getData());
 			} finally {
 				HibernateUtil.closeSession();
 			}
@@ -177,6 +192,11 @@ public class ProxyComandos {
 
 	public void gravarDados(Mesa11Dados... mesa11Dados) throws Exception {
 		controlePersistencia.gravarDados(mesa11Dados);
+	}
+
+	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(long idRodadaCampeonato) {
+		return controlePersistencia
+				.pesquisarRodadaPorId(idRodadaCampeonato);
 	}
 
 }

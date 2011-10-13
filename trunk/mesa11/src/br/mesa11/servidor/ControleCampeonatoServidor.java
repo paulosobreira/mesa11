@@ -262,4 +262,10 @@ public class ControleCampeonatoServidor {
 		return mesa11to;
 
 	}
+
+	public Object dadosCampeonato(String campeonato) {
+		Object[] dadoscampeonato = controlePersistencia
+				.pesquisarDadosCampeonato(campeonato);
+		return dadoscampeonato;
+	}
 }
