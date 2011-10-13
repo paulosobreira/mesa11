@@ -20,6 +20,7 @@ public class JogoServidor {
 	private Time timeVisita;
 	private ControleJogo controleJogo;
 	private boolean saiuJogoNaoIniciado;
+	private boolean finalizado;
 	private ProxyComandos proxyComandos;
 	private long tempoCriacao = System.currentTimeMillis();
 
@@ -116,12 +117,17 @@ public class JogoServidor {
 	}
 
 	public void fimJogoServidor() {
-		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
-				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-						.getNomeCriador()));
-		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
-				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-						.getNomeVisitante()));
+		if (finalizado) {
+			return;
+		}
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeCriador()));
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeVisitante()));
 		Logger.logar("dadosJogoSrvMesa11.isSaiuCriador()"
 				+ dadosJogoSrvMesa11.isSaiuCriador());
 		Logger.logar("dadosJogoSrvMesa11.isSaiuVisitante()"
@@ -165,6 +171,7 @@ public class JogoServidor {
 		try {
 			proxyComandos.gravarDados(partidaMesa11);
 			HibernateUtil.closeSession();
+			finalizado = true;
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
