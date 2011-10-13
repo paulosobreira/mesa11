@@ -23,6 +23,7 @@ import br.hibernate.Botao;
 import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Mesa11Dados;
 import br.hibernate.PartidaMesa11;
+import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
 import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
@@ -432,5 +433,13 @@ public class ControlePersistencia {
 		} finally {
 			HibernateUtil.closeSession();
 		}
+	}
+
+	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(long idRodadaCampeonato) {
+		Session session = ControlePersistencia.getSession();
+		String hql = " from RodadaCampeonatoMesa11 obj where obj.id = :id  ";
+		Query qry = session.createQuery(hql);
+		qry.setParameter("id", idRodadaCampeonato);
+		return (RodadaCampeonatoMesa11) qry.uniqueResult();
 	}
 }

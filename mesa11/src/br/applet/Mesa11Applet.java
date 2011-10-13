@@ -49,7 +49,7 @@ public class Mesa11Applet extends JApplet {
 	private Sequencer sequencer;
 
 	private LookAndFeelInfo[] looks;
-	DecimalFormat decimalFormat = new DecimalFormat("#,#");
+	DecimalFormat decimalFormat = new DecimalFormat("#,##");
 	private String versao;
 
 	/**

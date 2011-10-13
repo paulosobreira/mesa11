@@ -646,7 +646,7 @@ public class ControleCampeonatoCliente {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
 				if (rodadaCampeonatoMesa11.getId().equals(id)) {
-					System.out.println(rodadaCampeonatoMesa11);
+					controleJogosCliente.criarJogoCampeonato(rodadaCampeonatoMesa11,nomeCampeonato);
 					break;
 				}
 			}
