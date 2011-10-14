@@ -2,6 +2,8 @@ package br.mesa11.servidor;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -249,17 +251,47 @@ public class ControleCampeonatoServidor {
 	}
 
 	public Object verCampeonato(String campeonato) {
-		Mesa11TO mesa11to = (Mesa11TO) controleJogosServidor
-				.obterClassificacao(campeonato);
-		Map map = (Map) mesa11to.getData();
-		Object[] dadoscampeonato = controlePersistencia
-				.pesquisarDadosCampeonato(campeonato);
-		CampeonatoMesa11 campeonatoMesa11 = controlePersistencia
-				.pesquisaCampeonato(campeonato);
-		map.put(ConstantesMesa11.NUMERO_RODADAS, campeonatoMesa11
-				.getTimesCampeonatoMesa11().size() - 1);
-		map.put(ConstantesMesa11.DADOS_CAMPEONATO, dadoscampeonato);
-		return mesa11to;
+		try {
+
+			Mesa11TO mesa11to = (Mesa11TO) controleJogosServidor
+					.obterClassificacao(campeonato);
+			Map map = (Map) mesa11to.getData();
+			Object[] dadoscampeonato = controlePersistencia
+					.pesquisarDadosCampeonato(campeonato);
+			CampeonatoMesa11 campeonatoMesa11 = controlePersistencia
+					.pesquisaCampeonato(campeonato);
+			map.put(ConstantesMesa11.NUMERO_RODADAS, campeonatoMesa11
+					.getTimesCampeonatoMesa11().size() - 1);
+			map.put(ConstantesMesa11.DADOS_CAMPEONATO, dadoscampeonato);
+
+			List<RodadaCampeonatoMesa11> rodadaCampeonatoMesa11Lista = new ArrayList<RodadaCampeonatoMesa11>(
+					(Collection<RodadaCampeonatoMesa11>) campeonatoMesa11
+							.getRodadaCampeonatoMesa11());
+
+			Collections.sort(rodadaCampeonatoMesa11Lista,
+					new Comparator<RodadaCampeonatoMesa11>() {
+						@Override
+						public int compare(RodadaCampeonatoMesa11 o1,
+								RodadaCampeonatoMesa11 o2) {
+							return new Integer(o1.getRodada())
+									.compareTo(new Integer(o2.getRodada()));
+						}
+					});
+			int rodadaAtual = 1;
+			for (Iterator iterator = rodadaCampeonatoMesa11Lista.iterator(); iterator
+					.hasNext();) {
+				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
+						.next();
+				if (rodadaCampeonatoMesa11.getRodadaEfetuda() == false) {
+					rodadaAtual = rodadaCampeonatoMesa11.getRodada();
+					break;
+				}
+			}
+			map.put(ConstantesMesa11.RODADA_ATUAL_CAMPEONATO, rodadaAtual);
+			return mesa11to;
+		} finally {
+			HibernateUtil.closeSession();
+		}
 
 	}
 

@@ -612,6 +612,12 @@ public class ControleJogosServidor {
 				return new MsgSrv(Lang.msg("usuarioNaoLogado",
 						new String[] { dadosJogoSrvMesa11.getNomeVisitante() }));
 		}
+		if (controlePersistencia.verificaRodadaFinalizada(dadosJogoSrvMesa11
+				.getIdRodadaCampeonato())) {
+			return new MsgSrv(Lang.msg("jogoRodadaJaAconteceu", new String[] {
+					dadosJogoSrvMesa11.getTimeCasa(),
+					dadosJogoSrvMesa11.getTimeVisita() }));
+		}
 		if (controlePersistencia.verificaUsuarioCampeonato(mesa11TO
 				.getSessaoCliente().getNomeJogador(), dadosJogoSrvMesa11
 				.getIdRodadaCampeonato())) {
@@ -620,6 +626,7 @@ public class ControleJogosServidor {
 							new String[] { mesa11TO.getSessaoCliente()
 									.getNomeJogador() }));
 		}
+
 		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,

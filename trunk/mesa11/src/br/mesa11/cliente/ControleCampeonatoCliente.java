@@ -510,8 +510,11 @@ public class ControleCampeonatoCliente {
 					.get(ConstantesMesa11.DADOS_CAMPEONATO);
 			Integer num_rodadas = (Integer) data
 					.get(ConstantesMesa11.NUMERO_RODADAS);
+			Integer rodada_atual_campeonato = (Integer) data
+					.get(ConstantesMesa11.RODADA_ATUAL_CAMPEONATO);
+
 			JPanel campeonato = gerarPanelInfoCampeonato(dadosCampeonato,
-					num_rodadas);
+					num_rodadas, rodada_atual_campeonato);
 			JPanel geral = new JPanel(new BorderLayout());
 			geral.add(campeonato, BorderLayout.NORTH);
 			geral.add(classificacaoPanel, BorderLayout.CENTER);
@@ -535,7 +538,7 @@ public class ControleCampeonatoCliente {
 	}
 
 	private JPanel gerarPanelInfoCampeonato(final Object[] dadosCampeonato,
-			Integer numRodadas) {
+			Integer numRodadas, Integer rodadaAtualCampeonato) {
 		JPanel campeonato = new JPanel(new GridLayout(3, 4));
 		campeonato.setBorder(new TitledBorder("campeonato") {
 			@Override
@@ -614,6 +617,7 @@ public class ControleCampeonatoCliente {
 		for (int i = 1; i <= numRodadas; i++) {
 			rodadaCombo.addItem(new Integer(i));
 		}
+		rodadaCombo.setSelectedItem(rodadaAtualCampeonato);
 		campeonato.add(rodadaCombo);
 		return campeonato;
 	}
@@ -634,19 +638,18 @@ public class ControleCampeonatoCliente {
 		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(
 				controleChatCliente.getChatWindow().getMainPanel(),
-				rodadasPanel,
-				Lang.msg("rodadaCampeonato",
-						new String[] { numeroRodada.toString(),
-								campeonatoSelecionado }),
+				rodadasPanel, Lang.msg("rodadaCampeonato", new String[] {
+						numeroRodada.toString(), campeonatoSelecionado }),
 				JOptionPane.YES_NO_OPTION);
 		if (JOptionPane.YES_OPTION == showConfirmDialog) {
-			Long id = (Long) rodadasTable.getValueAt(
-					rodadasTable.getSelectedRow(), 8);
+			Long id = (Long) rodadasTable.getValueAt(rodadasTable
+					.getSelectedRow(), 8);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
 				if (rodadaCampeonatoMesa11.getId().equals(id)) {
-					controleJogosCliente.criarJogoCampeonato(rodadaCampeonatoMesa11,nomeCampeonato);
+					controleJogosCliente.criarJogoCampeonato(
+							rodadaCampeonatoMesa11, nomeCampeonato);
 					break;
 				}
 			}
@@ -815,15 +818,15 @@ public class ControleCampeonatoCliente {
 			jogadores.addItem(loginJogador);
 		}
 		rodadasTable.setModel(rodadasTableModel);
-		rodadasTable.getColumnModel().getColumn(1)
-				.setCellEditor(new DefaultCellEditor(jogadores));
-		rodadasTable.getColumnModel().getColumn(6)
-				.setCellEditor(new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(1).setCellEditor(
+				new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(6).setCellEditor(
+				new DefaultCellEditor(jogadores));
 		for (int i = 0; i < rodadasTableModel.getColumnCount(); i++) {
 			rodadasTable.getColumn(rodadasTableModel.getColumnName(i))
 					.setMinWidth(
-							Util.larguraTexto(
-									rodadasTableModel.getColumnName(i), null));
+							Util.larguraTexto(rodadasTableModel
+									.getColumnName(i), null));
 		}
 		JScrollPane rodadasJs = new JScrollPane(rodadasTable) {
 			@Override
