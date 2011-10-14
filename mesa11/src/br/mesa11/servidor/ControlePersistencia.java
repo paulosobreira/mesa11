@@ -485,7 +485,7 @@ public class ControlePersistencia {
 	public boolean verificaRodadaFinalizada(long idRodadaCampeonato) {
 		Session session = ControlePersistencia.getSession();
 		try {
-			String hql = "select obj.id from RodadaCampeonatoMesa11 obj where obj.rodadaEfetuda = : rodadaEfetuada and obj.id = :idRodadaCampeonato  ";
+			String hql = "select obj.id from RodadaCampeonatoMesa11 obj where obj.rodadaEfetuda = :rodadaEfetuada and obj.id = :idRodadaCampeonato  ";
 			Query qry = session.createQuery(hql);
 			qry.setParameter("idRodadaCampeonato", idRodadaCampeonato);
 			qry.setParameter("rodadaEfetuada", new Boolean(true));

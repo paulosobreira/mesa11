@@ -252,7 +252,6 @@ public class ControleCampeonatoServidor {
 
 	public Object verCampeonato(String campeonato) {
 		try {
-
 			Mesa11TO mesa11to = (Mesa11TO) controleJogosServidor
 					.obterClassificacao(campeonato);
 			Map map = (Map) mesa11to.getData();
@@ -282,7 +281,8 @@ public class ControleCampeonatoServidor {
 					.hasNext();) {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
-				if (rodadaCampeonatoMesa11.getRodadaEfetuda() == false) {
+				if (rodadaCampeonatoMesa11.getRodadaEfetuda() == null
+						|| rodadaCampeonatoMesa11.getRodadaEfetuda() == false) {
 					rodadaAtual = rodadaCampeonatoMesa11.getRodada();
 					break;
 				}
