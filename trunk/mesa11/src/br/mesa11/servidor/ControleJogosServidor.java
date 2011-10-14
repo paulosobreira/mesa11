@@ -192,8 +192,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome()
-				.equals(jogadaMesa11.getTimeClienteOnline())
+		if (controleJogo.timeJogadaVez().getNome().equals(
+				jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
@@ -405,7 +405,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -440,7 +441,8 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -497,9 +499,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -533,9 +537,11 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor()
+						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+						.getGolsContra()
+						+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -591,7 +597,29 @@ public class ControleJogosServidor {
 		return mesa11to;
 	}
 
-	public Object criarJogoCampeonato(DadosJogoSrvMesa11 dadosJogoSrvMesa11) {
+	public Object criarJogoCampeonato(Mesa11TO mesa11TO) {
+		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11TO
+				.getData();
+		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())) {
+			if (proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+					.getNomeCriador()))
+				return new MsgSrv(Lang.msg("usuarioNaoLogado",
+						new String[] { dadosJogoSrvMesa11.getNomeCriador() }));
+		}
+		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
+			if (proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+					.getNomeVisitante()))
+				return new MsgSrv(Lang.msg("usuarioNaoLogado",
+						new String[] { dadosJogoSrvMesa11.getNomeVisitante() }));
+		}
+		if (controlePersistencia.verificaUsuarioCampeonato(mesa11TO
+				.getSessaoCliente().getNomeJogador(), dadosJogoSrvMesa11
+				.getIdRodadaCampeonato())) {
+			return new MsgSrv(Lang
+					.msg("usuarioNaoParticipaCampeonato",
+							new String[] { mesa11TO.getSessaoCliente()
+									.getNomeJogador() }));
+		}
 		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
