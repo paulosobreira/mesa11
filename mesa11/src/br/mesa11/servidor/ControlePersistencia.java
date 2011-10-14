@@ -467,4 +467,18 @@ public class ControlePersistencia {
 		qry.setParameter("id", idRodadaCampeonato);
 		return (RodadaCampeonatoMesa11) qry.uniqueResult();
 	}
+
+	public boolean verificaUsuarioCampeonato(String nomeJogador, long idRodada) {
+		Session session = ControlePersistencia.getSession();
+		try {
+			String hql = "select obj.id from CampeonatoMesa11 obj inner join obj.jogadoresCampeonatoMesa11 jog  inner join  obj.rodadaCampeonatoMesa11 rod  where rod.id = :idRodada and jog.usuario.login = :nomeJogador ";
+			Query qry = session.createQuery(hql);
+			qry.setParameter("idRodada", idRodada);
+			qry.setParameter("nomeJogador", nomeJogador);
+			List list = qry.list();
+			return !list.isEmpty();
+		} finally {
+			HibernateUtil.closeSession();
+		}
+	}
 }
