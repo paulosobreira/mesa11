@@ -379,7 +379,7 @@ public class ControleJogo {
 			p.y = Util.inte(maxY) - 1;
 		}
 		novoPontoTela = p;
-		//pontoPasando = bola.getCentro();
+		// pontoPasando = bola.getCentro();
 	}
 
 	public Shape limitesViewPort() {
@@ -740,7 +740,9 @@ public class ControleJogo {
 		Rectangle rectangle = (Rectangle) limitesViewPort();
 		if (rectangle == null)
 			return;
-
+		if (po == null) {
+			return;
+		}
 		Point ori = new Point((int) rectangle.getCenterX(),
 				(int) rectangle.getCenterY());
 		Point des = new Point((int) (po.getX() * mesaPanel.zoom),
@@ -2015,6 +2017,9 @@ public class ControleJogo {
 	}
 
 	public boolean verificaVezOnline() {
+		Logger.logar("verificaVezOnline() timeClienteOnline "
+				+ timeClienteOnline + " dadosJogoSrvMesa11.getTimeVez() "
+				+ dadosJogoSrvMesa11.getTimeVez());
 		return timeClienteOnline.equals(dadosJogoSrvMesa11.getTimeVez());
 	}
 
@@ -2235,7 +2240,9 @@ public class ControleJogo {
 	}
 
 	private void efetuaJogadaCliente() {
+		Logger.logar("efetuaJogadaCliente()");
 		if (dadosJogoSrvMesa11 != null && dadosJogoSrvMesa11.isWo()) {
+			Logger.logar("if (dadosJogoSrvMesa11 != null && dadosJogoSrvMesa11.isWo())");
 			return;
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
@@ -3202,6 +3209,12 @@ public class ControleJogo {
 	}
 
 	public Botao obterBotao(Point p) {
+		if (p == null) {
+			return null;
+		}
+		if (botoes == null) {
+			return null;
+		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao b = (Botao) botoes.get(id);
@@ -3254,8 +3267,14 @@ public class ControleJogo {
 	}
 
 	public Point2D getPontoPasandoZoom() {
-		return new Point2D.Double(getPontoPasando().x * mesaPanel.zoom,
-				getPontoPasando().y * mesaPanel.zoom);
+		if (pontoPasando == null) {
+			return null;
+		}
+		if (mesaPanel == null) {
+			return null;
+		}
+		return new Point2D.Double(pontoPasando.x * mesaPanel.zoom,
+				pontoPasando.y * mesaPanel.zoom);
 	}
 
 	public List<GolJogador> getGolsTempo() {

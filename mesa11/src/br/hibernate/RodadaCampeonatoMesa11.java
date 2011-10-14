@@ -36,6 +36,16 @@ public class RodadaCampeonatoMesa11 extends Mesa11Dados {
 	@ManyToOne
 	private Usuario jogadorVisita;
 
+	private Boolean rodadaEfetuda;
+
+	public Boolean getRodadaEfetuda() {
+		return rodadaEfetuda;
+	}
+
+	public void setRodadaEfetuda(Boolean rodadaEfetuda) {
+		this.rodadaEfetuda = rodadaEfetuda;
+	}
+
 	public Time getTimeCasa() {
 		return timeCasa;
 	}

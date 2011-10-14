@@ -79,8 +79,9 @@ public class AtualizadorVisual extends Thread {
 						&& botao == null
 						&& mesaPanel.zoom == mesaPanel.mouseZoom
 						&& (System.currentTimeMillis() - mesaPanel.lastZoomChange) > 5000
-						&& !controleJogo.miniViewPort().contains(
-								controleJogo.getPontoPasandoZoom())) {
+						&& !(controleJogo.getPontoPasandoZoom() != null && controleJogo
+								.miniViewPort().contains(
+										controleJogo.getPontoPasandoZoom()))) {
 					controleJogo
 							.centralizaPonto(controleJogo.getPontoPasando());
 				}
