@@ -114,8 +114,7 @@ public class ProxyComandos {
 					.criarJogoCpu((DadosJogoSrvMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.CRIAR_JOGO_CAMPEONATO.equals(mesa11TO
 				.getComando())) {
-			return controleJogosServidor
-					.criarJogoCampeonato(mesa11TO);
+			return controleJogosServidor.criarJogoCampeonato(mesa11TO);
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
@@ -141,12 +140,8 @@ public class ProxyComandos {
 
 		} else if (ConstantesMesa11.VER_CAMPEONATO
 				.equals(mesa11TO.getComando())) {
-			try {
-				return controleCampeonatoServidor
-						.verCampeonato((String) mesa11TO.getData());
-			} finally {
-				HibernateUtil.closeSession();
-			}
+			return controleCampeonatoServidor.verCampeonato((String) mesa11TO
+					.getData());
 
 		} else if (ConstantesMesa11.DADOS_CAMPEONATO.equals(mesa11TO
 				.getComando())) {
@@ -194,8 +189,7 @@ public class ProxyComandos {
 	}
 
 	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(long idRodadaCampeonato) {
-		return controlePersistencia
-				.pesquisarRodadaPorId(idRodadaCampeonato);
+		return controlePersistencia.pesquisarRodadaPorId(idRodadaCampeonato);
 	}
 
 }
