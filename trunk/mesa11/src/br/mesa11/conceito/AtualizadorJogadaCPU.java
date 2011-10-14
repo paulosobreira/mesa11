@@ -39,7 +39,7 @@ public class AtualizadorJogadaCPU extends Thread {
 				}
 				if (!controleJogo.isAnimando()) {
 					try {
-						Time timeJogadaVez = controleJogo.timeJogadaVez();
+						final Time timeJogadaVez = controleJogo.timeJogadaVez();
 						if (timeJogadaVez != null
 								&& timeJogadaVez.isControladoCPU()) {
 							if (controleJogo.isProcessando()) {
@@ -54,7 +54,8 @@ public class AtualizadorJogadaCPU extends Thread {
 									@Override
 									public void run() {
 										iniJogada = System.currentTimeMillis();
-										Logger.logar("Inicia Jogada CPU");
+										Logger.logar("Inicia Jogada CPU "
+												+ timeJogadaVez.getNome());
 										controleJogo.jogadaCPU();
 										Logger.logar("Tempo Jogada Cpu "
 												+ (System.currentTimeMillis() - iniJogada));

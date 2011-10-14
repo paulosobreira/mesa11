@@ -106,7 +106,8 @@ public class ControleJogosServidor {
 				.isSegundoUniformeTimeCasa());
 		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
 				.getTimeVisita());
-
+		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
+				.isSegundoUniformeTimeCasa());
 		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
 				.isSegundoUniformeTimeVisita());
 		jogoSrvMesa11.setTimeCasa(timeCasa);
@@ -116,6 +117,7 @@ public class ControleJogosServidor {
 				timeCasa, timeVisita);
 		if (dadosJogoSrvMesa11.isJogoVsCpu()) {
 			timeVisita.setControladoCPU(true);
+			timeCasa.setControladoCPU(false);
 			controleJogo
 					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
 			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
@@ -124,6 +126,7 @@ public class ControleJogosServidor {
 		}
 		if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())) {
 			timeCasa.setControladoCPU(true);
+			timeVisita.setControladoCPU(false);
 			controleJogo
 					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
 			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
@@ -132,6 +135,7 @@ public class ControleJogosServidor {
 		}
 		if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
 			timeVisita.setControladoCPU(true);
+			timeCasa.setControladoCPU(false);
 			controleJogo
 					.setNumeroJogadas(dadosJogoSrvMesa11.getNumeroJogadas());
 			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
@@ -188,8 +192,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
-		if (controleJogo.timeJogadaVez().getNome().equals(
-				jogadaMesa11.getTimeClienteOnline())
+		if (controleJogo.timeJogadaVez().getNome()
+				.equals(jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
 			if (jogoSrvMesa11.getControleJogo().efetuaJogada(
 					jogadaMesa11.getPontoClicado(),
@@ -401,8 +405,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -437,8 +440,7 @@ public class ControleJogosServidor {
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
 				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -495,11 +497,9 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -533,11 +533,9 @@ public class ControleJogosServidor {
 							.getDerrotas() + 1);
 				}
 				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor()
-						+ partidaMesa11.getGolsTimeVisita());
+						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
 				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra()
-						+ partidaMesa11.getGolsTimeCasa());
+						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -598,14 +596,10 @@ public class ControleJogosServidor {
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
 				proxyComandos);
+		jogoServidor.setJogoCampeonato(true);
 		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
 				.get(dadosJogoSrvMesa11.getNomeJogo());
-		if (jogoSrvMesa11.getDadosJogoSrvMesa11() != null
-				&& !Util.isNullOrEmpty(jogoSrvMesa11.getDadosJogoSrvMesa11()
-						.getNomeVisitante())) {
-			return new MsgSrv(Lang.msg("jogoInciado"));
-		}
 		if (jogoSrvMesa11 != null) {
 			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			dadosMesa11.getJogosCriados().remove(

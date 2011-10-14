@@ -1162,9 +1162,23 @@ public class ControleJogosCliente {
 			if (ret instanceof Mesa11TO) {
 				mesa11to = (Mesa11TO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+				String nomeJogador = controleChatCliente.getSessaoCliente()
+						.getNomeJogador();
+				String timeJogador = "";
+				if (rodadaCampeonatoMesa11.getJogadorCasa() != null
+						&& nomeJogador.equals(rodadaCampeonatoMesa11
+								.getJogadorCasa().getLogin())) {
+					timeJogador = rodadaCampeonatoMesa11.getTimeCasa()
+							.getNome();
+				}
+				if (rodadaCampeonatoMesa11.getJogadorVisita() != null
+						&& nomeJogador.equals(rodadaCampeonatoMesa11
+								.getJogadorVisita().getLogin())) {
+					timeJogador = rodadaCampeonatoMesa11.getTimeVisita()
+							.getNome();
+				}
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
-						dadosJogoSrvMesa11, mesa11Applet,
-						dadosJogoSrvMesa11.getTimeCasa());
+						dadosJogoSrvMesa11, mesa11Applet, timeJogador);
 				monitorJogo.start();
 			}
 		}
