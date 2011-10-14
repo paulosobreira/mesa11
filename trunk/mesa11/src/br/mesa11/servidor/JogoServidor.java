@@ -174,6 +174,7 @@ public class JogoServidor {
 			rodadaCampeonatoMesa11.setGolsCasa(partidaMesa11.getGolsTimeCasa());
 			rodadaCampeonatoMesa11.setGolsVisita(partidaMesa11
 					.getGolsTimeVisita());
+			
 			rodadaCampeonatoMesa11.setRodadaEfetuda(true);
 		}
 		if (dadosJogoSrvMesa11.isJogoVsCpu()) {

@@ -71,7 +71,19 @@ public class MonitorJogo extends Thread {
 				Logger.logarExept(e);
 			}
 		}
-		controleJogo.setDica("fimJogo");
+		Logger.logar("Fim de jogo");
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
+				for (int i = 0; i < 50; i++) {
+					controleJogo.setDica("fimJogo");
+					dormir(150);
+				}
+
+			}
+		};
+
 	}
 
 	private void dormir(long i) {
