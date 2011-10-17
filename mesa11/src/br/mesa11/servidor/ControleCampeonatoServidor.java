@@ -79,7 +79,10 @@ public class ControleCampeonatoServidor {
 			controlePersistencia.gravarDados(campeonatoMesa11);
 		} catch (Exception e) {
 			return new ErroServ(e);
+		} finally {
+			HibernateUtil.closeSession();
 		}
+
 		return (new MsgSrv(Lang.msg("campeonatoCriado")));
 	}
 

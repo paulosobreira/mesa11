@@ -638,12 +638,14 @@ public class ControleCampeonatoCliente {
 		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(
 				controleChatCliente.getChatWindow().getMainPanel(),
-				rodadasPanel, Lang.msg("rodadaCampeonato", new String[] {
-						numeroRodada.toString(), campeonatoSelecionado }),
+				rodadasPanel,
+				Lang.msg("rodadaCampeonato",
+						new String[] { numeroRodada.toString(),
+								campeonatoSelecionado }),
 				JOptionPane.YES_NO_OPTION);
 		if (JOptionPane.YES_OPTION == showConfirmDialog) {
-			Long id = (Long) rodadasTable.getValueAt(rodadasTable
-					.getSelectedRow(), 8);
+			Long id = (Long) rodadasTable.getValueAt(
+					rodadasTable.getSelectedRow(), 8);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
@@ -686,6 +688,10 @@ public class ControleCampeonatoCliente {
 					return new Boolean(value.isCpuVisita());
 				case 8:
 					return value.getId();
+				case 9:
+					return value.getRodadaEfetuda() != null
+							&& value.getRodadaEfetuda() ? Lang.msg("sim")
+							: Lang.msg("nao");
 				default:
 					return "";
 				}
@@ -701,7 +707,7 @@ public class ControleCampeonatoCliente {
 
 			@Override
 			public int getColumnCount() {
-				return 9;
+				return 10;
 			}
 
 			@Override
@@ -726,6 +732,8 @@ public class ControleCampeonatoCliente {
 					return Lang.msg("cpuVisita");
 				case 8:
 					return Lang.msg("id");
+				case 9:
+					return Lang.msg("aconteceu");
 				default:
 					return "";
 				}
@@ -800,6 +808,8 @@ public class ControleCampeonatoCliente {
 					return true;
 				case 8:
 					return false;
+				case 9:
+					return false;
 				default:
 					return false;
 				}
@@ -818,20 +828,20 @@ public class ControleCampeonatoCliente {
 			jogadores.addItem(loginJogador);
 		}
 		rodadasTable.setModel(rodadasTableModel);
-		rodadasTable.getColumnModel().getColumn(1).setCellEditor(
-				new DefaultCellEditor(jogadores));
-		rodadasTable.getColumnModel().getColumn(6).setCellEditor(
-				new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(1)
+				.setCellEditor(new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(6)
+				.setCellEditor(new DefaultCellEditor(jogadores));
 		for (int i = 0; i < rodadasTableModel.getColumnCount(); i++) {
 			rodadasTable.getColumn(rodadasTableModel.getColumnName(i))
 					.setMinWidth(
-							Util.larguraTexto(rodadasTableModel
-									.getColumnName(i), null));
+							Util.larguraTexto(
+									rodadasTableModel.getColumnName(i), null));
 		}
 		JScrollPane rodadasJs = new JScrollPane(rodadasTable) {
 			@Override
 			public Dimension getPreferredSize() {
-				return new Dimension(620, 150);
+				return new Dimension(680, 150);
 			}
 		};
 		JPanel jPanel = new JPanel();

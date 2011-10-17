@@ -819,11 +819,11 @@ public class Util {
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception {
-		Logger.logar(md5("whiplash"));
-		byteArray2file(
-				file2byteArray(new File("C:\\wall.bmp")),
-				"C:\\sobreira\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\algol-rpg\\midia\\mapas\\ce.png");
-
+		// Logger.logar(md5("whiplash"));
+		// byteArray2file(
+		// file2byteArray(new File("C:\\wall.bmp")),
+		// "C:\\sobreira\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp0\\wtpwebapps\\algol-rpg\\midia\\mapas\\ce.png");
+		System.out.println(intervalo(0, 5));
 	}
 
 	public static List formataLista(List list) {

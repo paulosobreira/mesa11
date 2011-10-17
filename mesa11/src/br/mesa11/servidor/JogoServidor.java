@@ -6,6 +6,7 @@ import br.hibernate.CampeonatoMesa11;
 import br.hibernate.PartidaMesa11;
 import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
+import br.hibernate.Usuario;
 import br.mesa11.ProxyComandos;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.HibernateUtil;
@@ -21,7 +22,9 @@ public class JogoServidor {
 	private ControleJogo controleJogo;
 	private boolean saiuJogoNaoIniciado;
 	private boolean finalizado;
-	private boolean jogoCampeonato;
+	private Long rodadaCampeonatoMesa11;
+	private String jogadorCampeonatoCasa;
+	private String jogadorCampeonatoVisita;
 	private ProxyComandos proxyComandos;
 	private long tempoCriacao = System.currentTimeMillis();
 
@@ -30,11 +33,31 @@ public class JogoServidor {
 	}
 
 	public boolean isJogoCampeonato() {
-		return jogoCampeonato;
+		return rodadaCampeonatoMesa11 != null;
 	}
 
-	public void setJogoCampeonato(boolean jogoCampeonato) {
-		this.jogoCampeonato = jogoCampeonato;
+	public String getJogadorCampeonatoCasa() {
+		return jogadorCampeonatoCasa;
+	}
+
+	public void setJogadorCampeonatoCasa(String jogadorCampeonatoCasa) {
+		this.jogadorCampeonatoCasa = jogadorCampeonatoCasa;
+	}
+
+	public String getJogadorCampeonatoVisita() {
+		return jogadorCampeonatoVisita;
+	}
+
+	public void setJogadorCampeonatoVisita(String jogadorCampeonatoVisita) {
+		this.jogadorCampeonatoVisita = jogadorCampeonatoVisita;
+	}
+
+	public Long getRodadaCampeonatoMesa11() {
+		return rodadaCampeonatoMesa11;
+	}
+
+	public void setRodadaCampeonatoMesa11(Long rodadaCampeonatoMesa11) {
+		this.rodadaCampeonatoMesa11 = rodadaCampeonatoMesa11;
 	}
 
 	public JogoServidor(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
@@ -174,7 +197,22 @@ public class JogoServidor {
 			rodadaCampeonatoMesa11.setGolsCasa(partidaMesa11.getGolsTimeCasa());
 			rodadaCampeonatoMesa11.setGolsVisita(partidaMesa11
 					.getGolsTimeVisita());
-			
+			if (!Util.isNullOrEmpty(partidaMesa11.getNomeJogadorCasa())) {
+				Usuario jogadorCasa = proxyComandos
+						.pesquisarUsuarioPorLogin(partidaMesa11
+								.getNomeJogadorCasa());
+				if (jogadorCasa != null) {
+					rodadaCampeonatoMesa11.setJogadorCasa(jogadorCasa);
+				}
+			}
+			if (!Util.isNullOrEmpty(partidaMesa11.getNomeJogadorVisita())) {
+				Usuario jogadorVisita = proxyComandos
+						.pesquisarUsuarioPorLogin(partidaMesa11
+								.getNomeJogadorVisita());
+				if (jogadorVisita != null) {
+					rodadaCampeonatoMesa11.setJogadorVisita(jogadorVisita);
+				}
+			}
 			rodadaCampeonatoMesa11.setRodadaEfetuda(true);
 		}
 		if (dadosJogoSrvMesa11.isJogoVsCpu()) {

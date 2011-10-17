@@ -4,6 +4,7 @@ import br.hibernate.CampeonatoMesa11;
 import br.hibernate.Mesa11Dados;
 import br.hibernate.RodadaCampeonatoMesa11;
 import br.hibernate.Time;
+import br.hibernate.Usuario;
 import br.mesa11.servidor.ControleCampeonatoServidor;
 import br.mesa11.servidor.ControleChatServidor;
 import br.mesa11.servidor.ControleJogosServidor;
@@ -190,6 +191,10 @@ public class ProxyComandos {
 
 	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(long idRodadaCampeonato) {
 		return controlePersistencia.pesquisarRodadaPorId(idRodadaCampeonato);
+	}
+
+	public Usuario pesquisarUsuarioPorLogin(String login) {
+		return controlePersistencia.obterJogadorPorLogin(login);
 	}
 
 }

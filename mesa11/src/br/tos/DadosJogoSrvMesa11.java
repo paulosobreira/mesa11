@@ -20,6 +20,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private boolean SegundoUniformeTimeVisita;
 	private boolean jogoTerminado;
 	private boolean jogoIniciado;
+	private boolean jogoCampeonatoIniciado;
 	private boolean processando;
 	private boolean wo;
 	private String bolaCampoCasa;
@@ -38,6 +39,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String dica;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
+
+	public boolean isJogoCampeonatoIniciado() {
+		return jogoCampeonatoIniciado;
+	}
+
+	public void setJogoCampeonatoIniciado(boolean jogoCampeonatoIniciado) {
+		this.jogoCampeonatoIniciado = jogoCampeonatoIniciado;
+	}
 
 	public boolean isJogoVsCpu() {
 		return jogoVsCpu;
