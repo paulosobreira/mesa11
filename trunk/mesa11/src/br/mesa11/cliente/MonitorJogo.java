@@ -216,6 +216,9 @@ public class MonitorJogo extends Thread {
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+			if (dadosJogoSrvMesa11.getIdRodadaCampeonato() != 0) {
+				return dadosJogoSrvMesa11.isJogoCampeonatoIniciado();
+			}
 			if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeCasa())
 					&& !Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
 				return true;

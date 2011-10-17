@@ -396,13 +396,9 @@ public class ControlePersistencia {
 
 	public Usuario obterJogadorPorLogin(String login) {
 		Session session = ControlePersistencia.getSession();
-		try {
 			Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
 					.add(Restrictions.eq("login", login)).uniqueResult();
 			return usuario;
-		} finally {
-			HibernateUtil.closeSession();
-		}
 	}
 
 	public List<CampeonatoMesa11> listarCampeonatos() {

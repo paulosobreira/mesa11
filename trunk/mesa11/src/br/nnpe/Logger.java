@@ -15,7 +15,7 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean debug = true;
+	public static boolean debug = false;
 
 	public static boolean novaSession = false;
 
@@ -90,8 +90,8 @@ public class Logger {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(component, retorno.toString(), Lang
-					.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(component, retorno.toString(),
+					Lang.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		} else if (e instanceof Exception) {
 			topExecpts((Exception) e);
