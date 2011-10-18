@@ -250,7 +250,18 @@ public class ControleCampeonatoServidor {
 	}
 
 	private Object verificaCampeonatoConcluido(CampeonatoMesa11 campeonato) {
-		return false;
+		Collection<RodadaCampeonatoMesa11> rodadaCampeonatoMesa11List = campeonato
+				.getRodadaCampeonatoMesa11();
+		for (Iterator iterator = rodadaCampeonatoMesa11List.iterator(); iterator
+				.hasNext();) {
+			RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
+					.next();
+			if (rodadaCampeonatoMesa11.getRodadaEfetuda() == null
+					|| !rodadaCampeonatoMesa11.getRodadaEfetuda()) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public Object verCampeonato(String campeonato) {

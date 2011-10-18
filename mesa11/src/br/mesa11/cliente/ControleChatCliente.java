@@ -602,7 +602,12 @@ public class ControleChatCliente {
 			}
 		});
 		panelTimes.add(jComboBoxTimes);
-		JOptionPane.showMessageDialog(chatWindow.getMainPanel(), panelTimes);
+		int showConfirmDialog = JOptionPane.showConfirmDialog(
+				chatWindow.getMainPanel(), panelTimes, Lang.msg("editarTime"),
+				JOptionPane.YES_NO_OPTION);
+		if (JOptionPane.YES_OPTION != showConfirmDialog) {
+			return;
+		}
 		if (!semTimes) {
 			String timeSelecionado = (String) jComboBoxTimes.getSelectedItem();
 			Logger.logar("timeSelecionado " + timeSelecionado);
