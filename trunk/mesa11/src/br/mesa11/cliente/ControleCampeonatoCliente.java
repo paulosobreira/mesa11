@@ -610,7 +610,7 @@ public class ControleCampeonatoCliente {
 		campeonato.add(new JLabel() {
 			@Override
 			public String getText() {
-				return Lang.msg("rodadas") + " : ";
+				return Lang.msg("rodadaSelecionada") + " : ";
 			}
 		});
 		rodadaCombo = new JComboBox();
@@ -645,7 +645,7 @@ public class ControleCampeonatoCliente {
 				JOptionPane.YES_NO_OPTION);
 		if (JOptionPane.YES_OPTION == showConfirmDialog) {
 			Long id = (Long) rodadasTable.getValueAt(
-					rodadasTable.getSelectedRow(), 8);
+					rodadasTable.getSelectedRow(), 9);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
@@ -678,20 +678,20 @@ public class ControleCampeonatoCliente {
 				case 3:
 					return value.getGolsCasa();
 				case 4:
-					return value.getGolsVisita();
-				case 5:
-					return value.getTimeVisita().getNomeAbrev();
-				case 6:
-					return value.getJogadorVisita() != null ? value
-							.getJogadorVisita().getLogin() : "";
-				case 7:
-					return new Boolean(value.isCpuVisita());
-				case 8:
-					return value.getId();
-				case 9:
 					return value.getRodadaEfetuda() != null
 							&& value.getRodadaEfetuda() ? Lang.msg("sim")
 							: Lang.msg("nao");
+				case 5:
+					return value.getGolsVisita();
+				case 6:
+					return value.getTimeVisita().getNomeAbrev();
+				case 7:
+					return value.getJogadorVisita() != null ? value
+							.getJogadorVisita().getLogin() : "";
+				case 8:
+					return new Boolean(value.isCpuVisita());
+				case 9:
+					return value.getId();
 				default:
 					return "";
 				}
@@ -723,17 +723,17 @@ public class ControleCampeonatoCliente {
 				case 3:
 					return Lang.msg("gosCasa");
 				case 4:
-					return Lang.msg("golsVisita");
-				case 5:
-					return Lang.msg("timeVisita");
-				case 6:
-					return Lang.msg("jogadorVisita");
-				case 7:
-					return Lang.msg("cpuVisita");
-				case 8:
-					return Lang.msg("id");
-				case 9:
 					return Lang.msg("aconteceu");
+				case 5:
+					return Lang.msg("golsVisita");
+				case 6:
+					return Lang.msg("timeVisita");
+				case 7:
+					return Lang.msg("jogadorVisita");
+				case 8:
+					return Lang.msg("cpuVisita");
+				case 9:
+					return Lang.msg("id");
 				default:
 					return "";
 				}
@@ -766,13 +766,13 @@ public class ControleCampeonatoCliente {
 					campeonatoMesa11.setJogadorCasa(usuario);
 					break;
 				}
-				case 6: {
+				case 7: {
 					Usuario usuario = new Usuario();
 					usuario.setLogin((String) value);
 					campeonatoMesa11.setJogadorVisita(usuario);
 					break;
 				}
-				case 7: {
+				case 8: {
 					Boolean val = (Boolean) value;
 					if (val) {
 						campeonatoMesa11.setJogadorVisita(null);
@@ -803,11 +803,11 @@ public class ControleCampeonatoCliente {
 				case 5:
 					return false;
 				case 6:
-					return true;
+					return false;
 				case 7:
 					return true;
 				case 8:
-					return false;
+					return true;
 				case 9:
 					return false;
 				default:
@@ -830,7 +830,7 @@ public class ControleCampeonatoCliente {
 		rodadasTable.setModel(rodadasTableModel);
 		rodadasTable.getColumnModel().getColumn(1)
 				.setCellEditor(new DefaultCellEditor(jogadores));
-		rodadasTable.getColumnModel().getColumn(6)
+		rodadasTable.getColumnModel().getColumn(7)
 				.setCellEditor(new DefaultCellEditor(jogadores));
 		for (int i = 0; i < rodadasTableModel.getColumnCount(); i++) {
 			rodadasTable.getColumn(rodadasTableModel.getColumnName(i))

@@ -661,6 +661,13 @@ public class ControleJogosServidor {
 						new String[] { dadosJogoSrvMesa11.getNomeVisitante() }));
 		}
 
+		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
+				&& !Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())
+				&& !mesa11TO.getSessaoCliente().getNomeJogador()
+						.equals(dadosJogoSrvMesa11.getNomeCriador())) {
+			return new MsgSrv(Lang.msg("jogadorCriadorJogadorCasa"));
+		}
+
 		dadosJogoSrvMesa11.setNomeJogo("Jogo " + contadorJogos++);
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,

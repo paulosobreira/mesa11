@@ -291,7 +291,7 @@ public class MesaPanel extends JPanel {
 		setarHints(g2d);
 
 		desenhaCampo(g2d);
-		desengaGol(g2d);
+		desenhaTravesGol(g2d);
 		desenhaFiguras(g2d);
 		if (botoes != null) {
 			for (Iterator iterator = botoes.keySet().iterator(); iterator
@@ -485,7 +485,7 @@ public class MesaPanel extends JPanel {
 			Color c1 = new Color(time.getCor1());
 			Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
 			g2d.setColor(corFundo);
-			msg = b.getNome();
+			msg = b.getNumero() + " " + b.getNome();
 			largura = 0;
 			for (int i = 0; i < msg.length(); i++) {
 				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
@@ -656,7 +656,7 @@ public class MesaPanel extends JPanel {
 				} else {
 					g2d.setColor(Color.WHITE);
 				}
-				g2d.drawString("" + botao.getNome(), x, y);
+				g2d.drawString(botao.getNumero() + " " + botao.getNome(), x, y);
 				y += 22;
 				g2d.setColor(corFundo);
 				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
@@ -1285,8 +1285,8 @@ public class MesaPanel extends JPanel {
 			g.fill(zoomedCentro);
 	}
 
-	private void desengaGol(Graphics2D g) {
-		g.setColor(Color.black);
+	private void desenhaTravesGol(Graphics2D g) {
+		g.setColor(Color.white);
 		Rectangle pequenaAreaCimaTemp = new Rectangle();
 		pequenaAreaCimaTemp.setBounds(
 				(int) ((LARGURA_PQ_AREA + LARGURA_PQ_AREA / 2) * zoom),
@@ -1323,7 +1323,7 @@ public class MesaPanel extends JPanel {
 				hasteEsquerdaGolCimaTemp.getHeight() - (LINHA * zoom));
 		g.setColor(corRede);
 		g.fill(areaGolCimaTemp);
-		g.setColor(Color.black);
+		g.setColor(Color.white);
 		Rectangle2D.Double hasteEsquerdaGolBaixoTemp = new Rectangle2D.Double();
 		hasteEsquerdaGolBaixoTemp.setRect(
 				hasteEsquerdaGolCimaTemp.getX(),
