@@ -48,7 +48,11 @@ public class ControleCampeonatoServidor {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Object criarCampeonato(CampeonatoMesa11 campeonatoMesa11) {
+	public Object criarCampeonato(Mesa11TO mesa11to) {
+
+		CampeonatoMesa11 campeonatoMesa11 = (CampeonatoMesa11) mesa11to
+				.getData();
+		boolean criadorNaLista = false;
 		Collection<JogadoresCampeonatoMesa11> jogadoresCampeonatoMesa11List = campeonatoMesa11
 				.getJogadoresCampeonatoMesa11();
 		for (Iterator iterator = jogadoresCampeonatoMesa11List.iterator(); iterator
@@ -59,6 +63,13 @@ public class ControleCampeonatoServidor {
 					.obterJogadorPorLogin(jogadoresCampeonatoMesa11
 							.getUsuario().getLogin());
 			jogadoresCampeonatoMesa11.setUsuario(usuario);
+			if (mesa11to.getSessaoCliente().getNomeJogador().equals(
+					jogadoresCampeonatoMesa11.getUsuario().getLogin())) {
+				criadorNaLista = true;
+			}
+		}
+		if (!criadorNaLista) {
+			return new MsgSrv(Lang.msg("criadorJogoDeveEstarEntreJogadores"));
 		}
 		Collection<TimesCampeonatoMesa11> timesCampeonatoMesa11List = campeonatoMesa11
 				.getTimesCampeonatoMesa11();

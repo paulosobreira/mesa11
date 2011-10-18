@@ -371,6 +371,7 @@ public class ControleCampeonatoCliente {
 					timesCampeonatoMesa11);
 		}
 		Mesa11TO mesa11to = new Mesa11TO();
+		mesa11to.setSessaoCliente(controleChatCliente.getSessaoCliente());
 		mesa11to.setData(campeonatoMesa11);
 		mesa11to.setComando(ConstantesMesa11.CRIAR_CAMPEONATO);
 		enviarObjeto(mesa11to);
@@ -638,14 +639,12 @@ public class ControleCampeonatoCliente {
 		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(
 				controleChatCliente.getChatWindow().getMainPanel(),
-				rodadasPanel,
-				Lang.msg("rodadaCampeonato",
-						new String[] { numeroRodada.toString(),
-								campeonatoSelecionado }),
+				rodadasPanel, Lang.msg("rodadaCampeonato", new String[] {
+						numeroRodada.toString(), campeonatoSelecionado }),
 				JOptionPane.YES_NO_OPTION);
 		if (JOptionPane.YES_OPTION == showConfirmDialog) {
-			Long id = (Long) rodadasTable.getValueAt(
-					rodadasTable.getSelectedRow(), 9);
+			Long id = (Long) rodadasTable.getValueAt(rodadasTable
+					.getSelectedRow(), 9);
 			for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 				RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
 						.next();
@@ -828,15 +827,15 @@ public class ControleCampeonatoCliente {
 			jogadores.addItem(loginJogador);
 		}
 		rodadasTable.setModel(rodadasTableModel);
-		rodadasTable.getColumnModel().getColumn(1)
-				.setCellEditor(new DefaultCellEditor(jogadores));
-		rodadasTable.getColumnModel().getColumn(7)
-				.setCellEditor(new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(1).setCellEditor(
+				new DefaultCellEditor(jogadores));
+		rodadasTable.getColumnModel().getColumn(7).setCellEditor(
+				new DefaultCellEditor(jogadores));
 		for (int i = 0; i < rodadasTableModel.getColumnCount(); i++) {
 			rodadasTable.getColumn(rodadasTableModel.getColumnName(i))
 					.setMinWidth(
-							Util.larguraTexto(
-									rodadasTableModel.getColumnName(i), null));
+							Util.larguraTexto(rodadasTableModel
+									.getColumnName(i), null));
 		}
 		JScrollPane rodadasJs = new JScrollPane(rodadasTable) {
 			@Override
