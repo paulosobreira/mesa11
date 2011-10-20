@@ -15,7 +15,7 @@ public class MsgSrv implements Serializable {
 	 */
 	public MsgSrv(String messageString) {
 		super();
-		this.messageString = Lang.key(messageString);
+		this.messageString = messageString;
 	}
 
 	public String getMessageString() {
