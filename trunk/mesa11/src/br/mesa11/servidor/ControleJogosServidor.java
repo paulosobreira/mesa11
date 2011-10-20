@@ -738,8 +738,8 @@ public class ControleJogosServidor {
 			fatorVisita += botao.getDefesa() + botao.getPrecisao()
 					+ botao.getForca();
 		}
-		fatorCasa /= Util.intervalo(30000.0, 35000.0);
-		fatorVisita /= Util.intervalo(30000.0, 35000.0);
+		fatorCasa /= Util.intervalo(28000.0, 36000.0);
+		fatorVisita /= Util.intervalo(28000.0, 36000.0);
 		Logger.logar("fatorCasa " + fatorCasa);
 		Logger.logar("fatorVisita " + fatorVisita);
 		for (int i = 0; i < gols; i++) {
