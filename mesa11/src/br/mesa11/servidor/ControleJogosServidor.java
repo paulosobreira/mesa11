@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import br.hibernate.Botao;
 import br.hibernate.CampeonatoMesa11;
@@ -628,6 +629,20 @@ public class ControleJogosServidor {
 				&& dadosJogoSrvMesa11.getNomeCriador().equals(
 						dadosJogoSrvMesa11.getNomeVisitante())) {
 			return new MsgSrv(Lang.msg("jogadoresIguais"));
+
+		}
+
+		Set<String> keySet = mapaJogos.keySet();
+		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
+			String key = (String) iterator.next();
+			JogoServidor jogoServidor = mapaJogos.get(key);
+			if (jogoServidor.isJogoCampeonato()
+					&& dadosJogoSrvMesa11.getIdRodadaCampeonato() == jogoServidor
+							.getRodadaCampeonatoMesa11()) {
+				return new MsgSrv(Lang.msg("jogoRodadaJaEmAdamento",
+						new String[] { dadosJogoSrvMesa11.getTimeCasa(),
+								dadosJogoSrvMesa11.getTimeVisita() }));
+			}
 
 		}
 
