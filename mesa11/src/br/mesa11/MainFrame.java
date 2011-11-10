@@ -1,7 +1,11 @@
 package br.mesa11;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
@@ -52,6 +56,19 @@ public class MainFrame {
 		gerarMenus();
 		frame.setSize(700, 800);
 		frame.setVisible(true);
+		frame.addWindowStateListener(new WindowStateListener() {
+
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				if (6 == e.getNewState()) {
+					Toolkit kit = frame.getToolkit();
+					Dimension screenSize = kit.getScreenSize();
+					int meio = (int) (screenSize.getWidth() / 2);
+					frame.setLocation(meio - 500, 0);
+					frame.setSize(1000, frame.getHeight() - 15);
+				}
+			}
+		});
 
 	}
 
@@ -165,8 +182,8 @@ public class MainFrame {
 				String msg = Lang.msg("feitoPor")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg,
-						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, msg, Lang
+						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
