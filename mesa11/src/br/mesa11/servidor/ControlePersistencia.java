@@ -17,6 +17,7 @@ import java.util.zip.ZipOutputStream;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Botao;
@@ -396,14 +397,15 @@ public class ControlePersistencia {
 
 	public Usuario obterJogadorPorLogin(String login) {
 		Session session = ControlePersistencia.getSession();
-			Usuario usuario = (Usuario) session.createCriteria(Usuario.class)
-					.add(Restrictions.eq("login", login)).uniqueResult();
-			return usuario;
+		Usuario usuario = (Usuario) session.createCriteria(Usuario.class).add(
+				Restrictions.eq("login", login)).uniqueResult();
+		return usuario;
 	}
 
 	public List<CampeonatoMesa11> listarCampeonatos() {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(CampeonatoMesa11.class).list();
+		return session.createCriteria(CampeonatoMesa11.class).addOrder(
+				Order.desc("dataCriacao")).list();
 
 	}
 
