@@ -533,13 +533,13 @@ public class MesaPanel extends JPanel {
 		int x = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width - 150);
 		int y = limitesViewPort.getBounds().y + 20;
-		Time timeMandante = controleJogo.obterTimeMandante();
+		Time timeCasa = controleJogo.obterTimeMandante();
 		Time timeVisita = controleJogo.obterTimeVisita();
-		if (timeMandante != null && timeVisita != null) {
+		if (timeCasa != null && timeVisita != null) {
 			int newx = limitesViewPort.getBounds().x
 					+ (limitesViewPort.getBounds().width / 2);
-			Color cM1 = new Color(timeMandante.getCor1());
-			Color cM2 = new Color(timeMandante.getCor2());
+			Color cM1 = new Color(timeCasa.getCor1());
+			Color cM2 = new Color(timeCasa.getCor2());
 			Color corFundo = ImageUtil.gerarCorTransparente(cM1, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
@@ -549,7 +549,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeMandante.getNomeAbrev(), newx - 90, y);
+			g2d.drawString("" + timeCasa.getNomeAbrev(), newx - 90, y);
 			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
@@ -559,7 +559,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + controleJogo.verGols(timeMandante), newx + 10,
+			g2d.drawString("" + controleJogo.verGols(timeCasa), newx + 10,
 					y);
 
 			Color cV1 = new Color(timeVisita.getCor1());
