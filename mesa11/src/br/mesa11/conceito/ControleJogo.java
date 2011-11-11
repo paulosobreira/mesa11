@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -15,6 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -159,6 +161,19 @@ public class ControleJogo {
 				super.windowClosing(e);
 			}
 
+		});
+		frame.addWindowStateListener(new WindowStateListener() {
+
+			@Override
+			public void windowStateChanged(WindowEvent e) {
+				if (6 == e.getNewState()) {
+					Toolkit kit = frame.getToolkit();
+					Dimension screenSize = kit.getScreenSize();
+					int meio = (int) (screenSize.getWidth() / 2);
+					frame.setLocation(meio - 500, 0);
+					frame.setSize(1000, frame.getHeight() - 15);
+				}
+			}
 		});
 	}
 
