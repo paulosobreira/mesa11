@@ -20,7 +20,7 @@ public class Time extends Mesa11Dados {
 	private String campo;
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "time", targetEntity = Botao.class)
 	private List<Botao> botoes = new ArrayList<Botao>();
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, unique = true, length = 3)
 	private String nomeAbrev;
 	@Column(nullable = false, unique = true)
 	private String nome;
