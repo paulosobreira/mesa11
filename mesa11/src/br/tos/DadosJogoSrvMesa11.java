@@ -35,10 +35,19 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String timeVez;
 	private String tempoJogoFormatado;
 	private String tempoRestanteJogoFormatado;
+	private long tempoRestanteJogo;
 	private String tempoJogadaRestanteJogoFormatado;
 	private String dica;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
+
+	public long getTempoRestanteJogo() {
+		return tempoRestanteJogo;
+	}
+
+	public void setTempoRestanteJogo(long tempoRestanteJogo) {
+		this.tempoRestanteJogo = tempoRestanteJogo;
+	}
 
 	public boolean isJogoCampeonatoIniciado() {
 		return jogoCampeonatoIniciado;
@@ -312,6 +321,34 @@ public class DadosJogoSrvMesa11 implements Serializable {
 
 	public void setSaiuVisitante(boolean saiuVisitante) {
 		this.saiuVisitante = saiuVisitante;
+	}
+
+	@Override
+	public String toString() {
+		return "DadosJogoSrvMesa11 [SegundoUniformeTimeCasa="
+				+ SegundoUniformeTimeCasa + ", SegundoUniformeTimeVisita="
+				+ SegundoUniformeTimeVisita + ", bolaCampoCasa="
+				+ bolaCampoCasa + ", bolaCampoVisita=" + bolaCampoVisita
+				+ ", dica=" + dica + ", golJogador=" + golJogador
+				+ ", golsCasa=" + golsCasa + ", golsVisita=" + golsVisita
+				+ ", idRodadaCampeonato=" + idRodadaCampeonato
+				+ ", jogoCampeonatoIniciado=" + jogoCampeonatoIniciado
+				+ ", jogoIniciado=" + jogoIniciado + ", jogoTerminado="
+				+ jogoTerminado + ", jogoVsCpu=" + jogoVsCpu + ", nomeCriador="
+				+ nomeCriador + ", nomeJogo=" + nomeJogo + ", nomeVisitante="
+				+ nomeVisitante + ", numeroJogadas=" + numeroJogadas
+				+ ", numeroJogadasTimeCasa=" + numeroJogadasTimeCasa
+				+ ", numeroJogadasTimeVisita=" + numeroJogadasTimeVisita
+				+ ", processando=" + processando + ", saiuCriador="
+				+ saiuCriador + ", saiuVisitante=" + saiuVisitante
+				+ ", senhaJogo=" + senhaJogo
+				+ ", tempoJogadaRestanteJogoFormatado="
+				+ tempoJogadaRestanteJogoFormatado + ", tempoJogo=" + tempoJogo
+				+ ", tempoJogoFormatado=" + tempoJogoFormatado
+				+ ", tempoJogoJogada=" + tempoJogoJogada
+				+ ", tempoRestanteJogoFormatado=" + tempoRestanteJogoFormatado
+				+ ", timeCasa=" + timeCasa + ", timeVez=" + timeVez
+				+ ", timeVisita=" + timeVisita + ", wo=" + wo + "]";
 	}
 
 }

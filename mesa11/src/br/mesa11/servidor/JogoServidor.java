@@ -103,6 +103,9 @@ public class JogoServidor {
 		if (nomeJogador == null) {
 			return;
 		}
+		if (finalizado) {
+			return;
+		}
 		if (nomeJogador.equals(dadosJogoSrvMesa11.getNomeCriador())) {
 			dadosJogoSrvMesa11.setSaiuCriador(true);
 		}
@@ -152,12 +155,14 @@ public class JogoServidor {
 		if (finalizado) {
 			return;
 		}
-		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
-				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-						.getNomeCriador()));
-		Logger.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
-				+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-						.getNomeVisitante()));
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador())"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeCriador()));
+		Logger
+				.logar("proxyComandos.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()"
+						+ proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
+								.getNomeVisitante()));
 		Logger.logar("dadosJogoSrvMesa11.isSaiuCriador()"
 				+ dadosJogoSrvMesa11.isSaiuCriador());
 		Logger.logar("dadosJogoSrvMesa11.isSaiuVisitante()"

@@ -1,6 +1,8 @@
 package br.mesa11.cliente;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -22,13 +24,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.WindowConstants;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.recursos.Lang;
+import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
+import br.tos.Mesa11TO;
 import br.tos.SessaoCliente;
 
 /**
@@ -192,7 +200,7 @@ public class ChatWindow {
 			}
 
 		});
-		
+
 		criarJogoVsCPU.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -391,32 +399,138 @@ public class ChatWindow {
 
 		DefaultListModel modelJogosCriados = ((DefaultListModel) listaJogosCriados
 				.getModel());
-		if (modelJogosCriados.size() != dadosMesa11.getJogosCriados().size()) {
-			modelJogosCriados.clear();
-			mapaJogosCriados.clear();
-			for (Iterator iter = dadosMesa11.getJogosCriados().iterator(); iter
-					.hasNext();) {
-				String element = (String) iter.next();
-				String key = Lang.decodeTexto(element);
-				mapaJogosCriados.put(key, element);
-				modelJogosCriados.addElement(key);
+		modelJogosCriados.clear();
+		mapaJogosCriados.clear();
+		for (Iterator iter = dadosMesa11.getJogosCriados().iterator(); iter
+				.hasNext();) {
+			String nmJogo = (String) iter.next();
+			String key = Lang.decodeTexto(nmJogo);
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
+			mesa11to.setData(nmJogo);
+			String placar = "";
+			Object ret = controleChatCliente.enviarObjeto(mesa11to);
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
+						.getData();
+				mesa11to = new Mesa11TO();
+				mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
+				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+				ret = controleChatCliente.enviarObjeto(mesa11to);
+				mesa11to = (Mesa11TO) ret;
+				Time timeCasa = (Time) mesa11to.getData();
+				placar += " " + timeCasa.getNomeAbrev() + " X ";
 			}
+
+			mapaJogosCriados.put(key, Util.isNullOrEmpty(nmJogo) ? nmJogo
+					: placar);
+			modelJogosCriados.addElement(key);
 		}
+
+		listaJogosCriados.setCellRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object nmJogo, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Object placar = mapaJogosCriados.get(nmJogo);
+				JPanel jPanel = new JPanel(new GridLayout(1, 1));
+				if (placar == null) {
+					jPanel.add(new JLabel(nmJogo.toString()));
+				} else {
+					jPanel.setLayout(new GridLayout(2, 1));
+					jPanel.add(new JLabel(nmJogo.toString()));
+					jPanel.add(new JLabel(placar.toString()));
+				}
+
+				if (isSelected) {
+					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
+				} else {
+					for (int i = 0; i < jPanel.getComponentCount(); i++) {
+						Component component = jPanel.getComponent(i);
+						component.setBackground(Color.WHITE);
+					}
+					jPanel.setBackground(Color.WHITE);
+				}
+
+				return jPanel;
+			}
+		});
 
 		DefaultListModel modelJogosAndamento = ((DefaultListModel) listaJogosAndamento
 				.getModel());
-		if (modelJogosAndamento.size() != dadosMesa11.getJogosAndamento()
-				.size()) {
-			modelJogosAndamento.clear();
-			mapaJogosAndamento.clear();
-			for (Iterator iter = dadosMesa11.getJogosAndamento().iterator(); iter
-					.hasNext();) {
-				String element = (String) iter.next();
-				String key = Lang.decodeTexto(element);
-				mapaJogosAndamento.put(key, element);
-				modelJogosAndamento.addElement(key);
+		modelJogosAndamento.clear();
+		mapaJogosAndamento.clear();
+		for (Iterator iter = dadosMesa11.getJogosAndamento().iterator(); iter
+				.hasNext();) {
+			String nmJogo = (String) iter.next();
+			Logger.logar("nmJogo " + nmJogo);
+			String key = Lang.decodeTexto(nmJogo);
+
+			Mesa11TO mesa11to = new Mesa11TO();
+			mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
+			mesa11to.setData(nmJogo);
+			String placar = "";
+			Object ret = controleChatCliente.enviarObjeto(mesa11to);
+			if (ret instanceof Mesa11TO) {
+				mesa11to = (Mesa11TO) ret;
+				DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
+						.getData();
+				mesa11to = new Mesa11TO();
+				mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
+				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+				ret = controleChatCliente.enviarObjeto(mesa11to);
+				mesa11to = (Mesa11TO) ret;
+				Time timeCasa = (Time) mesa11to.getData();
+				placar += " " + timeCasa.getNomeAbrev() + " "
+						+ dadosJogoSrvMesa11.getGolsCasa() + " X ";
+				if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
+					mesa11to = new Mesa11TO();
+					mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
+					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
+					ret = controleChatCliente.enviarObjeto(mesa11to);
+					mesa11to = (Mesa11TO) ret;
+					Time timeVisita = (Time) mesa11to.getData();
+					placar += dadosJogoSrvMesa11.getGolsVisita() + " "
+							+ timeVisita.getNomeAbrev();
+				}
+
 			}
+			mesa11to = (Mesa11TO) ret;
+
+			mapaJogosAndamento.put(key, Util.isNullOrEmpty(nmJogo) ? nmJogo
+					: placar);
+			modelJogosAndamento.addElement(key);
 		}
+
+		listaJogosAndamento.setCellRenderer(new ListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList list,
+					Object nmJogo, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				Object placar = mapaJogosAndamento.get(nmJogo);
+				JPanel jPanel = new JPanel(new GridLayout(1, 1));
+				if (placar == null) {
+					jPanel.add(new JLabel(nmJogo.toString()));
+				} else {
+					jPanel.setLayout(new GridLayout(2, 1));
+					jPanel.add(new JLabel(nmJogo.toString()));
+					jPanel.add(new JLabel(placar.toString()));
+				}
+
+				if (isSelected) {
+					jPanel.setBorder(new LineBorder(new Color(184, 207, 229)));
+				} else {
+					for (int i = 0; i < jPanel.getComponentCount(); i++) {
+						Component component = jPanel.getComponent(i);
+						component.setBackground(Color.WHITE);
+					}
+					jPanel.setBackground(Color.WHITE);
+				}
+
+				return jPanel;
+			}
+		});
 
 	}
 

@@ -62,6 +62,7 @@ public class MesaPanel extends JPanel {
 			/ FAIXAS;
 	public static final BasicStroke rota = new BasicStroke(2.5f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+	private static final int TAM_MAX_NM_TIME = 14;
 
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
@@ -291,7 +292,6 @@ public class MesaPanel extends JPanel {
 
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
-
 		desenhaCampo(g2d);
 		desenhaTravesGol(g2d);
 		desenhaFiguras(g2d);
@@ -549,7 +549,16 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeCasa.getNomeAbrev(), newx - 90, y);
+			String nmTime = "";
+			if (timeCasa != null && !Util.isNullOrEmpty(timeCasa.getNome())) {
+				for (int i = 0; i < timeCasa.getNome().length(); i++) {
+					if (i > TAM_MAX_NM_TIME) {
+						break;
+					}
+					nmTime += timeCasa.getNome().charAt(i);
+				}
+			}
+			g2d.drawString("" + nmTime, newx - 90, y);
 			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
@@ -559,8 +568,7 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + controleJogo.verGols(timeCasa), newx + 10,
-					y);
+			g2d.drawString("" + controleJogo.verGols(timeCasa), newx + 10, y);
 
 			Color cV1 = new Color(timeVisita.getCor1());
 			Color cV2 = new Color(timeVisita.getCor2());
@@ -573,7 +581,16 @@ public class MesaPanel extends JPanel {
 			} else {
 				g2d.setColor(Color.WHITE);
 			}
-			g2d.drawString("" + timeVisita.getNomeAbrev(), newx + 70, y);
+			nmTime = "";
+			if (timeVisita != null && !Util.isNullOrEmpty(timeVisita.getNome())) {
+				for (int i = 0; i < timeVisita.getNome().length(); i++) {
+					if (i > TAM_MAX_NM_TIME) {
+						break;
+					}
+					nmTime += timeVisita.getNome().charAt(i);
+				}
+			}
+			g2d.drawString("" + nmTime, newx + 70, y);
 			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 			g2d.setColor(corFundo);
 			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
@@ -621,7 +638,17 @@ public class MesaPanel extends JPanel {
 				} else {
 					g2d.setColor(Color.WHITE);
 				}
-				g2d.drawString("" + time.getNomeAbrev(), x, y);
+				String nmTime = "";
+				if (time != null && !Util.isNullOrEmpty(time.getNome())) {
+					for (int i = 0; i < time.getNome().length(); i++) {
+						if (i > TAM_MAX_NM_TIME) {
+							break;
+						}
+						nmTime += time.getNome().charAt(i);
+					}
+				}
+
+				g2d.drawString("" + nmTime, x, y);
 			}
 		}
 		if (controleJogo.isJogoOnlineCliente()

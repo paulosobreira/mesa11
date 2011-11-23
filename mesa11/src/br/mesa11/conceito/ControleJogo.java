@@ -121,6 +121,7 @@ public class ControleJogo {
 	private JProgressBar progressBar;
 	private JFrame progressBarFrame;
 	private Point posicaoBolaJogada;
+	private Thread autoCloseProgressBar;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -340,6 +341,22 @@ public class ControleJogo {
 		if (progressBarFrame != null && !progressBarFrame.isVisible()) {
 			progressBarFrame.requestFocus();
 			progressBarFrame.setVisible(true);
+			if (autoCloseProgressBar == null || !autoCloseProgressBar.isAlive()) {
+				autoCloseProgressBar = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							Thread.sleep(30000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						escondePorgressBar();
+					}
+				});
+				autoCloseProgressBar.start();
+			}
 			return;
 		}
 	}
@@ -3282,6 +3299,19 @@ public class ControleJogo {
 
 	public Botao obterBotao(Long idJogador) {
 		return botoes.get(idJogador);
+	}
+
+	public long getTempoRestanteJogo() {
+		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
+			return dadosJogoSrvMesa11.getTempoRestanteJogo();
+		}
+		if (controlePartida == null) {
+			return 0;
+		}
+		if (jogoTerminado) {
+			return 0;
+		}
+		return controlePartida.tempoRestanteJogo();
 	}
 
 }
