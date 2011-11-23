@@ -42,17 +42,13 @@ public class MonitorJogo extends Thread {
 			try {
 				dormir(tempoDormir);
 				if (timesSelecionados() && controleJogo == null) {
-					// Logger.logar("Antes iniciaJogo();");
 					iniciaJogo();
-					// Logger.logar("Depois iniciaJogo();");
 				}
 				if (controleJogo != null) {
-					// Logger.logar("Antes atualizaDadosJogoSrvMesa11();");
 					atualizaDadosJogoSrvMesa11();
-					// Logger.logar("Depois atualizaDadosJogoSrvMesa11();");
 					jogoTerminado = controleJogo.isJogoTerminado();
-					// Logger
-					// .logar("jogoTerminado = controleJogo.isJogoTerminado();");
+					Logger
+							.logar("jogoTerminado = controleJogo.isJogoTerminado();");
 					if (erroComunic > 20) {
 						jogoTerminado = true;
 					}
@@ -64,7 +60,7 @@ public class MonitorJogo extends Thread {
 						&& controleJogo != null) {
 					Logger.logar("controleJogo.setProblemasRede(true);");
 					controleJogo.setProblemasRede(true);
-				} else {
+				} else if (controleJogo != null) {
 					controleJogo.setProblemasRede(false);
 				}
 			} catch (Exception e) {
@@ -73,17 +69,17 @@ public class MonitorJogo extends Thread {
 		}
 		Logger.logar("Fim de jogo");
 		Runnable runnable = new Runnable() {
-
 			@Override
 			public void run() {
 				for (int i = 0; i < 50; i++) {
-					controleJogo.setDica("fimJogo");
+					if (controleJogo != null)
+						controleJogo.setDica("fimJogo");
 					dormir(150);
 				}
-
 			}
 		};
-
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 
 	private void dormir(long i) {
@@ -103,6 +99,11 @@ public class MonitorJogo extends Thread {
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+			if (dadosJogoSrvMesa11.getTempoRestanteJogo() == 0) {
+				controleJogo.setJogoTerminado(true);
+				controleJogo.setDica("fimJogo");
+				return;
+			}
 			if (dadosJogoSrvMesa11.getGolJogador() != null
 					&& !controleJogo.getGolsTempo().contains(
 							dadosJogoSrvMesa11.getGolJogador())) {
@@ -119,7 +120,8 @@ public class MonitorJogo extends Thread {
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
 				if ("gol".equals(dadosJogoSrvMesa11.getDica())
 						|| "golContra".equals(dadosJogoSrvMesa11.getDica())) {
-					Logger.logar("controleJogo.getMesaPanel().setDesenhaGol();");
+					Logger
+							.logar("controleJogo.getMesaPanel().setDesenhaGol();");
 					threadGol = new Thread(new Runnable() {
 						@Override
 						public void run() {

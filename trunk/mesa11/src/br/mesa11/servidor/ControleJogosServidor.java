@@ -189,6 +189,9 @@ public class ControleJogosServidor {
 					.tempoJogoFormatado());
 			dadosJogoSrvMesa11.setTempoRestanteJogoFormatado(controleJogo
 					.tempoRestanteJogoFormatado());
+			dadosJogoSrvMesa11.setTempoRestanteJogo(controleJogo
+					.getTempoRestanteJogo());
+
 			dadosJogoSrvMesa11.setTempoJogadaRestanteJogoFormatado(controleJogo
 					.tempoJogadaRestanteJogoFormatado());
 			dadosJogoSrvMesa11.setNumeroJogadasTimeCasa(controleJogo

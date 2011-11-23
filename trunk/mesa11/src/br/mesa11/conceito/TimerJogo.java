@@ -1,5 +1,7 @@
 package br.mesa11.conceito;
 
+import br.nnpe.Logger;
+
 public class TimerJogo extends Thread {
 
 	private ControlePartida controlePartida;
@@ -16,12 +18,12 @@ public class TimerJogo extends Thread {
 		while (!controleJogo.isJogoTerminado()) {
 			try {
 				sleep(100);
+				controlePartida.verificaIntervalo();
+				controlePartida.verificaFalhaPorTempo();
+				controlePartida.verificaFimJogo();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Logger.logarExept(e);
 			}
-			controlePartida.verificaIntervalo();
-			controlePartida.verificaFimJogo();
-			controlePartida.verificaFalhaPorTempo();
 		}
 		controlePartida.verificaFimJogo();
 	}
