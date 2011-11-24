@@ -47,8 +47,6 @@ public class MonitorJogo extends Thread {
 				if (controleJogo != null) {
 					atualizaDadosJogoSrvMesa11();
 					jogoTerminado = controleJogo.isJogoTerminado();
-					Logger
-							.logar("jogoTerminado = controleJogo.isJogoTerminado();");
 					if (erroComunic > 20) {
 						jogoTerminado = true;
 					}
@@ -73,7 +71,7 @@ public class MonitorJogo extends Thread {
 			public void run() {
 				for (int i = 0; i < 50; i++) {
 					if (controleJogo != null)
-						controleJogo.setDica("fimJogo");
+						controleJogo.getDadosJogoSrvMesa11().setDica("fimJogo");
 					dormir(150);
 				}
 			}
@@ -96,14 +94,14 @@ public class MonitorJogo extends Thread {
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);
+		if (ret == null) {
+			jogoTerminado = true;
+			return;
+		}
 		if (ret instanceof Mesa11TO) {
 			mesa11to = (Mesa11TO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
-			if (dadosJogoSrvMesa11.getTempoRestanteJogo() == 0) {
-				controleJogo.setJogoTerminado(true);
-				controleJogo.setDica("fimJogo");
-				return;
-			}
+			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (dadosJogoSrvMesa11.getGolJogador() != null
 					&& !controleJogo.getGolsTempo().contains(
 							dadosJogoSrvMesa11.getGolJogador())) {
@@ -120,8 +118,6 @@ public class MonitorJogo extends Thread {
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
 				if ("gol".equals(dadosJogoSrvMesa11.getDica())
 						|| "golContra".equals(dadosJogoSrvMesa11.getDica())) {
-					Logger
-							.logar("controleJogo.getMesaPanel().setDesenhaGol();");
 					threadGol = new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -146,7 +142,6 @@ public class MonitorJogo extends Thread {
 					&& controleJogo != null && !controleJogo.isAnimando()
 					&& !controleJogo.isEsperandoJogadaOnline()
 					&& controleJogo.verificaPosicaoDiffBotoes()) {
-				Logger.logar("atualizaBotoesClienteOnline(");
 				controleJogo.atualizaBotoesClienteOnline(
 						this.timeStampAnimacao, true);
 			}
@@ -180,6 +175,7 @@ public class MonitorJogo extends Thread {
 		} else {
 			erroComunic++;
 		}
+
 	}
 
 	private void iniciaJogo() {

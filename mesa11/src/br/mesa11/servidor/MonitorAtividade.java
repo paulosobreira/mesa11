@@ -80,8 +80,10 @@ public class MonitorAtividade extends Thread {
 								.getDadosJogoSrvMesa11().getNomeCriador());
 					}
 					if (jogoServidor.isJogoCampeonato()
-							&& !Util.isNullOrEmpty(jogoServidor
-									.getDadosJogoSrvMesa11().getNomeVisitante())
+							&& !Util
+									.isNullOrEmpty(jogoServidor
+											.getDadosJogoSrvMesa11()
+											.getNomeVisitante())
 							&& proxyComandos
 									.verificaSemSessao(jogoServidor
 											.getDadosJogoSrvMesa11()
@@ -99,8 +101,9 @@ public class MonitorAtividade extends Thread {
 						 * Apaga o jogo em 5 minutos apos termino
 						 */
 
-						if ((timeNow - jogoServidor.getTempoTerminado()) > 300000) {
-							Logger.logar("Apaga o jogo em 5 minutos apos termino");
+						if ((timeNow - jogoServidor.getTempoTerminado()) > 10000) {
+							Logger
+									.logar("Apaga o jogo em 5 minutos apos termino");
 							jogoRemover = key;
 						}
 					} else {
@@ -109,17 +112,18 @@ public class MonitorAtividade extends Thread {
 						 */
 
 						if ((timeNow - jogoServidor.getTempoCriacao()) > 2100000) {
-							Logger.logar("Apaga o jogo em 35 minutos apos criacão");
+							Logger
+									.logar("Apaga o jogo em 35 minutos apos criacão");
 							jogoRemover = key;
 						}
 					}
 				}
 				if (jogoRemover != null) {
 					jogos.remove(jogoRemover);
-					proxyComandos.getDadosMesa11().getJogosAndamento()
-							.remove(jogoRemover);
-					proxyComandos.getDadosMesa11().getJogosCriados()
-							.remove(jogoRemover);
+					proxyComandos.getDadosMesa11().getJogosAndamento().remove(
+							jogoRemover);
+					proxyComandos.getDadosMesa11().getJogosCriados().remove(
+							jogoRemover);
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);

@@ -3302,9 +3302,6 @@ public class ControleJogo {
 	}
 
 	public long getTempoRestanteJogo() {
-		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
-			return dadosJogoSrvMesa11.getTempoRestanteJogo();
-		}
 		if (controlePartida == null) {
 			return 0;
 		}
