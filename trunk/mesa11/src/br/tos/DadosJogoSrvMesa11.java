@@ -35,19 +35,10 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String timeVez;
 	private String tempoJogoFormatado;
 	private String tempoRestanteJogoFormatado;
-	private long tempoRestanteJogo;
 	private String tempoJogadaRestanteJogoFormatado;
 	private String dica;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
-
-	public long getTempoRestanteJogo() {
-		return tempoRestanteJogo;
-	}
-
-	public void setTempoRestanteJogo(long tempoRestanteJogo) {
-		this.tempoRestanteJogo = tempoRestanteJogo;
-	}
 
 	public boolean isJogoCampeonatoIniciado() {
 		return jogoCampeonatoIniciado;

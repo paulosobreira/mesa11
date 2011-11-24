@@ -544,7 +544,6 @@ public class ControleJogosCliente {
 	}
 
 	public void verDetalhesJogo(String jogoSelecionado) {
-
 		Mesa11TO mesa11to = new Mesa11TO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(jogoSelecionado);
@@ -555,7 +554,6 @@ public class ControleJogosCliente {
 		mesa11to = (Mesa11TO) ret;
 		final DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
 				.getData();
-
 		final JLabel uniformeCasa = new JLabel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -569,7 +567,6 @@ public class ControleJogosCliente {
 		ret = enviarObjeto(mesa11to);
 		mesa11to = (Mesa11TO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
-
 		if (Util.isNullOrEmpty(timeCasa.getImagem())) {
 			uniformeCasa.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
 					timeCasa,
@@ -580,7 +577,6 @@ public class ControleJogosCliente {
 					+ "midia/" + timeCasa.getImagem());
 			uniformeCasa.setIcon(icon);
 		}
-
 		final JLabel uniforme = new JLabel() {
 			@Override
 			public Dimension getPreferredSize() {
@@ -606,7 +602,6 @@ public class ControleJogosCliente {
 						+ "midia/" + timeVisita.getImagem());
 				uniforme.setIcon(icon);
 			}
-
 		}
 		JPanel uniformesPanel = new JPanel();
 		uniformesPanel.setBorder(new TitledBorder("") {
@@ -617,7 +612,7 @@ public class ControleJogosCliente {
 		});
 		uniformesPanel.add(uniformeCasa);
 		uniformesPanel.add(uniforme);
-		JPanel panelComboTimes = new JPanel(new GridLayout(1, 2));
+		JPanel panelComboTimes = new JPanel(new GridLayout(1, 2, 10, 5));
 		panelComboTimes.setBorder(new TitledBorder("") {
 			@Override
 			public String getTitle() {
@@ -639,13 +634,12 @@ public class ControleJogosCliente {
 				: dadosJogoSrvMesa11.getNomeVisitante();
 		panelComboTimes.add(new JLabel(nmTimeViz
 				+ " - "
-				+ (dadosJogoSrvMesa11.getGolsVisita() != 0 ? ""
-						+ dadosJogoSrvMesa11.getGolsVisita() : "") + " -"
+				+ (Util.isNullOrEmpty(nmViz) ? "" : ""
+						+ dadosJogoSrvMesa11.getGolsVisita()) + " -"
 				+ (dadosJogoSrvMesa11.isJogoVsCpu() ? "CPU" : nmViz)));
 		JPanel escolhaTimesPanel = new JPanel(new BorderLayout());
 		escolhaTimesPanel.add(panelComboTimes, BorderLayout.NORTH);
 		escolhaTimesPanel.add(uniformesPanel, BorderLayout.CENTER);
-
 		JPanel opcoesJogoPanel = new JPanel(new GridLayout(3, 2, 10, 10));
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
@@ -653,7 +647,6 @@ public class ControleJogosCliente {
 				return Lang.msg("numeroJogadas");
 			}
 		});
-
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -666,7 +659,6 @@ public class ControleJogosCliente {
 				return Lang.msg("tempoJogoMinutos");
 			}
 		});
-
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {
@@ -679,7 +671,6 @@ public class ControleJogosCliente {
 				return Lang.msg("tempoJogadaSegundos");
 			}
 		});
-
 		opcoesJogoPanel.add(new JLabel() {
 			@Override
 			public String getText() {
