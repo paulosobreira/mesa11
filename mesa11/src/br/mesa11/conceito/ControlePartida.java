@@ -815,7 +815,11 @@ public class ControlePartida {
 	}
 
 	public String verGols(Time time) {
-		return mapaGols.get(time).toString();
+		Integer integer = mapaGols.get(time);
+		if(integer==null){
+			return "";
+		}
+		return integer.toString();
 	}
 
 	public Integer verGolsInt(Time time) {
