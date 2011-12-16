@@ -1219,7 +1219,7 @@ public class ControleJogo {
 		}
 	}
 
-	private void posicionaBotaoAleatoriamenteNoSeuCampo(Botao b) {
+	public void posicionaBotaoAleatoriamenteNoSeuCampo(Botao b) {
 		boolean botaoPosicionado = false;
 
 		while (!botaoPosicionado) {

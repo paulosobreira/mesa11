@@ -688,6 +688,15 @@ public class ControlePartida {
 	}
 
 	public void reversaoJogada() {
+		Time timePerdeuBola = timeJogadaVez();
+		List<Botao> botoes = timePerdeuBola.getBotoes();
+		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
+			Botao botao = (Botao) iterator.next();
+			if (GeoUtil.distaciaEntrePontos(controleJogo.getBola().getCentro(),
+					botao.getCentro()) < ConstantesMesa11.RAIO_BOTAO) {
+				controleJogo.posicionaBotaoAleatoriamenteNoSeuCampo(botao);
+			}
+		}
 		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
 				: ConstantesMesa11.CAMPO_BAIXO);
 		Logger.logar("reversaoJogada");
@@ -816,7 +825,7 @@ public class ControlePartida {
 
 	public String verGols(Time time) {
 		Integer integer = mapaGols.get(time);
-		if(integer==null){
+		if (integer == null) {
 			return "";
 		}
 		return integer.toString();
