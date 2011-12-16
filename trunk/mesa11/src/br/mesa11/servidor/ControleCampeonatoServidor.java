@@ -81,6 +81,11 @@ public class ControleCampeonatoServidor {
 					.getTime().getNome());
 			timesCampeonatoMesa11.setTime(time);
 		}
+
+		if (timesCampeonatoMesa11List.size() % 2 != 0) {
+			return new MsgSrv(Lang.msg("qtdeTimesNoCampeonatoDeveSerPar"));
+		}
+
 		/**
 		 * Gera as rodadas do campeonato.
 		 */
