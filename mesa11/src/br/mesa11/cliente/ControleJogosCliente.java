@@ -36,10 +36,10 @@ import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.recursos.Lang;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
-import br.tos.Mesa11TO;
 
 public class ControleJogosCliente {
 	private ChatWindow chatWindow;
@@ -71,7 +71,7 @@ public class ControleJogosCliente {
 		this.mesa11Applet = mesa11Applet;
 	}
 
-	private Object enviarObjeto(Mesa11TO mesa11to) {
+	private Object enviarObjeto(NnpeTO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;
@@ -85,7 +85,7 @@ public class ControleJogosCliente {
 					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
 		Object ret = enviarObjeto(mesa11to);
 		final JLabel uniforme = new JLabel() {
@@ -95,16 +95,16 @@ public class ControleJogosCliente {
 						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] times = (String[]) mesa11to.getData();
 			jComboBoxTimes = new JComboBox(times);
 			String nomeTime = times[0];
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setData(nomeTime);
 			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 			ret = enviarObjeto(mesa11to);
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 			Time time = (Time) mesa11to.getData();
 			if (Util.isNullOrEmpty(time.getImagem())) {
 				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
@@ -122,11 +122,11 @@ public class ControleJogosCliente {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-					Mesa11TO mesa11to = new Mesa11TO();
+					NnpeTO mesa11to = new NnpeTO();
 					mesa11to.setData(nomeTime);
 					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 					Object ret = enviarObjeto(mesa11to);
-					mesa11to = (Mesa11TO) ret;
+					mesa11to = (NnpeTO) ret;
 					Time time = (Time) mesa11to.getData();
 
 					if (Util.isNullOrEmpty(time.getImagem())) {
@@ -147,11 +147,11 @@ public class ControleJogosCliente {
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniforme = !segundoUniforme;
 				String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-				Mesa11TO mesa11to = new Mesa11TO();
+				NnpeTO mesa11to = new NnpeTO();
 				mesa11to.setData(nomeTime);
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				Object ret = enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
 				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
 						segundoUniforme ? 2 : 1)));
@@ -268,12 +268,12 @@ public class ControleJogosCliente {
 			dadosJogoSrvMesa11.setBolaCampoCasa(Lang
 					.key((String) campoBolaCombo.getSelectedItem()));
 			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO);
 			mesa11to.setData(dadosJogoSrvMesa11);
 			ret = enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
 						dadosJogoSrvMesa11, mesa11Applet,
@@ -289,14 +289,14 @@ public class ControleJogosCliente {
 					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(jogoSelecionado);
 		Object ret = enviarObjeto(mesa11to);
-		if (!(ret instanceof Mesa11TO)) {
+		if (!(ret instanceof NnpeTO)) {
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		final DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
 				.getData();
 
@@ -307,11 +307,11 @@ public class ControleJogosCliente {
 						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
 		if (Util.isNullOrEmpty(timeCasa.getImagem())) {
 			uniformeCasa.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
@@ -329,11 +329,11 @@ public class ControleJogosCliente {
 						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
 		ret = enviarObjeto(mesa11to);
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] times = (String[]) mesa11to.getData();
 			Vector timesDisponiveis = new Vector();
 			for (int i = 0; i < times.length; i++) {
@@ -343,11 +343,11 @@ public class ControleJogosCliente {
 			}
 			jComboBoxTimes = new JComboBox(timesDisponiveis);
 			String nomeTime = (String) timesDisponiveis.get(0);
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setData(nomeTime);
 			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 			ret = enviarObjeto(mesa11to);
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 			Time time = (Time) mesa11to.getData();
 			if (Util.isNullOrEmpty(time.getImagem())) {
 				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
@@ -364,11 +364,11 @@ public class ControleJogosCliente {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-					Mesa11TO mesa11to = new Mesa11TO();
+					NnpeTO mesa11to = new NnpeTO();
 					mesa11to.setData(nomeTime);
 					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 					Object ret = enviarObjeto(mesa11to);
-					mesa11to = (Mesa11TO) ret;
+					mesa11to = (NnpeTO) ret;
 					Time time = (Time) mesa11to.getData();
 					if (Util.isNullOrEmpty(time.getImagem())) {
 						uniforme.setIcon(new ImageIcon(BotaoUtils
@@ -395,11 +395,11 @@ public class ControleJogosCliente {
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniforme = !segundoUniforme;
 				String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-				Mesa11TO mesa11to = new Mesa11TO();
+				NnpeTO mesa11to = new NnpeTO();
 				mesa11to.setData(nomeTime);
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				Object ret = enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
 				if (Util.isNullOrEmpty(time.getImagem())) {
 					uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
@@ -518,12 +518,12 @@ public class ControleJogosCliente {
 			dadosJogoSrvMesa11.setSenhaJogo(jTextFieldSenhaJogo.getText());
 			dadosJogoSrvMesa11.setNomeVisitante(controleChatCliente
 					.getSessaoCliente().getNomeJogador());
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.ENTRAR_JOGO);
 			mesa11to.setData(dadosJogoSrvMesa11);
 			ret = enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				DadosJogoSrvMesa11 dadosJogoSrvMesa11Jogo = (DadosJogoSrvMesa11) mesa11to
 						.getData();
 				Logger.logar("Entar Jogo");
@@ -537,14 +537,14 @@ public class ControleJogosCliente {
 	}
 
 	public void verDetalhesJogo(String jogoSelecionado) {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(jogoSelecionado);
 		Object ret = enviarObjeto(mesa11to);
-		if (!(ret instanceof Mesa11TO)) {
+		if (!(ret instanceof NnpeTO)) {
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		final DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
 				.getData();
 		final JLabel uniformeCasa = new JLabel() {
@@ -554,11 +554,11 @@ public class ControleJogosCliente {
 						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
 		if (Util.isNullOrEmpty(timeCasa.getImagem())) {
 			uniformeCasa.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
@@ -577,11 +577,11 @@ public class ControleJogosCliente {
 			}
 		};
 		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 			ret = enviarObjeto(mesa11to);
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 			Time timeVisita = (Time) mesa11to.getData();
 
 			if (Util.isNullOrEmpty(timeVisita.getImagem())) {
@@ -707,7 +707,7 @@ public class ControleJogosCliente {
 					Lang.msg("jaEstaEmUmJogo"));
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
 		Object ret = enviarObjeto(mesa11to);
 		final JLabel uniforme = new JLabel() {
@@ -724,17 +724,17 @@ public class ControleJogosCliente {
 						ConstantesMesa11.DIAMENTRO_BOTAO + 10);
 			}
 		};
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] times = (String[]) mesa11to.getData();
 			jComboBoxTimes = new JComboBox(times);
 			jComboBoxTimesCpu = new JComboBox(times);
 			String nomeTime = times[0];
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setData(nomeTime);
 			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 			ret = enviarObjeto(mesa11to);
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 			Time time = (Time) mesa11to.getData();
 			if (Util.isNullOrEmpty(time.getImagem())) {
 				uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time,
@@ -756,11 +756,11 @@ public class ControleJogosCliente {
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-					Mesa11TO mesa11to = new Mesa11TO();
+					NnpeTO mesa11to = new NnpeTO();
 					mesa11to.setData(nomeTime);
 					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 					Object ret = enviarObjeto(mesa11to);
-					mesa11to = (Mesa11TO) ret;
+					mesa11to = (NnpeTO) ret;
 					Time time = (Time) mesa11to.getData();
 					if (Util.isNullOrEmpty(time.getImagem())) {
 						uniforme.setIcon(new ImageIcon(BotaoUtils
@@ -780,11 +780,11 @@ public class ControleJogosCliente {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
 					String nomeTime = (String) jComboBoxTimesCpu
 							.getSelectedItem();
-					Mesa11TO mesa11to = new Mesa11TO();
+					NnpeTO mesa11to = new NnpeTO();
 					mesa11to.setData(nomeTime);
 					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 					Object ret = enviarObjeto(mesa11to);
-					mesa11to = (Mesa11TO) ret;
+					mesa11to = (NnpeTO) ret;
 					Time time = (Time) mesa11to.getData();
 					if (Util.isNullOrEmpty(time.getImagem())) {
 						uniformeCpu.setIcon(new ImageIcon(BotaoUtils
@@ -804,11 +804,11 @@ public class ControleJogosCliente {
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniforme = !segundoUniforme;
 				String nomeTime = (String) jComboBoxTimes.getSelectedItem();
-				Mesa11TO mesa11to = new Mesa11TO();
+				NnpeTO mesa11to = new NnpeTO();
 				mesa11to.setData(nomeTime);
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				Object ret = enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
 				if (Util.isNullOrEmpty(time.getImagem())) {
 					uniforme.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
@@ -821,11 +821,11 @@ public class ControleJogosCliente {
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniformeCpu = !segundoUniformeCpu;
 				String nomeTime = (String) jComboBoxTimesCpu.getSelectedItem();
-				Mesa11TO mesa11to = new Mesa11TO();
+				NnpeTO mesa11to = new NnpeTO();
 				mesa11to.setData(nomeTime);
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				Object ret = enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
 				if (Util.isNullOrEmpty(time.getImagem())) {
 					uniformeCpu.setIcon(new ImageIcon(BotaoUtils
@@ -975,12 +975,12 @@ public class ControleJogosCliente {
 			} else {
 				dadosJogoSrvMesa11.setBolaCampoVisita(ConstantesMesa11.BOLA);
 			}
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO_CPU);
 			mesa11to.setData(dadosJogoSrvMesa11);
 			ret = enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				monitorJogo = new MonitorJogo(controleChatCliente, this,
 						dadosJogoSrvMesa11, mesa11Applet,
@@ -1133,7 +1133,7 @@ public class ControleJogosCliente {
 		escolhaTimesPanel.add(panelComboJogadores, BorderLayout.CENTER);
 		escolhaTimesPanel.add(uniformesPanel, BorderLayout.SOUTH);
 
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.DADOS_CAMPEONATO);
 		mesa11to.setData(nomeCampeonato);
 		Object ret = enviarObjeto(mesa11to);
@@ -1230,13 +1230,13 @@ public class ControleJogosCliente {
 			if (rodadaCampeonatoMesa11.getJogadorVisita() != null)
 				dadosJogoSrvMesa11.setNomeVisitante(rodadaCampeonatoMesa11
 						.getJogadorVisita().getLogin());
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.CRIAR_JOGO_CAMPEONATO);
 			mesa11to.setSessaoCliente(controleChatCliente.getSessaoCliente());
 			mesa11to.setData(dadosJogoSrvMesa11);
 			ret = enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 				String nomeJogador = controleChatCliente.getSessaoCliente()
 						.getNomeJogador();

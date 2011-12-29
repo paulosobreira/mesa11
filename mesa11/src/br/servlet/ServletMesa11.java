@@ -13,7 +13,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,12 +35,11 @@ import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
-import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
+import br.nnpe.Constantes;
 import br.nnpe.Email;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 import br.nnpe.ZipUtil;
 import br.recursos.Lang;
 
@@ -92,8 +90,8 @@ public class ServletMesa11 extends HttpServlet {
 		String ip = Inet4Address.getLocalHost().getHostAddress();
 		int port = 80;
 		try {
-			Connector[] connectors = ServerFactory.getServer().findService(
-					"Catalina").findConnectors();
+			Connector[] connectors = ServerFactory.getServer()
+					.findService("Catalina").findConnectors();
 			for (int i = 0; i < connectors.length; i++) {
 				if ("HTTP/1.1".equals(connectors[i].getProtocol())) {
 					port = connectors[i].getPort();
@@ -147,7 +145,7 @@ public class ServletMesa11 extends HttpServlet {
 
 				Object escrever = proxyComandos.processarObjeto(object);
 
-				if (ConstantesMesa11.modoZip) {
+				if (Constantes.modoZip) {
 					dumaparDadosZip(ZipUtil.compactarObjeto(Logger.debug,
 							escrever, res.getOutputStream()));
 				} else {
@@ -220,11 +218,9 @@ public class ServletMesa11 extends HttpServlet {
 		if ("backup".equals(param)) {
 			response.setContentType("application/x-zip-compressed");
 			try {
-				response
-						.setHeader("Content-Disposition",
-								"attachment;filename=\"" + "mesa11_data" + "_"
-										+ dateFormat.format(new Date())
-										+ ".zip" + "\"");
+				response.setHeader("Content-Disposition",
+						"attachment;filename=\"" + "mesa11_data" + "_"
+								+ dateFormat.format(new Date()) + ".zip" + "\"");
 
 				byte[] ret = obterBytesBase();
 				if (ret == null) {

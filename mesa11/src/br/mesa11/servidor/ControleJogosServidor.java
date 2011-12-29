@@ -28,6 +28,10 @@ import br.mesa11.conceito.ControleJogo;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.MsgSrv;
+import br.nnpe.tos.SessaoCliente;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 import br.tos.BotaoPosSrvMesa11;
@@ -35,12 +39,8 @@ import br.tos.ClassificacaoTime;
 import br.tos.ClassificacaoUsuario;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
-import br.tos.ErroServ;
 import br.tos.JogadaMesa11;
-import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
 import br.tos.PosicaoBtnsSrvMesa11;
-import br.tos.SessaoCliente;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
@@ -72,7 +72,7 @@ public class ControleJogosServidor {
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
 				proxyComandos);
 		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11);
 		return mesa11to;
 	}
@@ -110,7 +110,7 @@ public class ControleJogosServidor {
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			dadosMesa11.getJogosAndamento().add(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
 			dadosJogoSrvMesa11.setJogoCampeonatoIniciado(true);
 			inciaJogoServidor(jogoSrvMesa11);
@@ -168,7 +168,7 @@ public class ControleJogosServidor {
 
 	}
 
-	public Object obterDadosJogo(Mesa11TO mesa11to) {
+	public Object obterDadosJogo(NnpeTO mesa11to) {
 		String nomejogo = (String) mesa11to.getData();
 
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
@@ -203,7 +203,7 @@ public class ControleJogosServidor {
 						.get(mesa11to.getTamListaGols()));
 			}
 		}
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setData(jogoSrvMesa11.getDadosJogoSrvMesa11());
 		return mesa11to;
 	}
@@ -235,7 +235,7 @@ public class ControleJogosServidor {
 		if (jogoSrvMesa11 == null) {
 			return null;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(jogoSrvMesa11.getControleJogo().obterUltimaJogada());
 		return mesa11to;
 	}
@@ -258,7 +258,7 @@ public class ControleJogosServidor {
 				&& tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
 			pulaPosicaoBotoes = true;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
 		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
 		for (Iterator iterator = jogoSrvMesa11.getControleJogo().getBotoes()
@@ -337,7 +337,7 @@ public class ControleJogosServidor {
 		return null;
 	}
 
-	public Object gravarImagem(Mesa11TO mesa11to) {
+	public Object gravarImagem(NnpeTO mesa11to) {
 		File file = new File(ServletMesa11.mediaDir + mesa11to.getData());
 		if (file.exists()) {
 			return new MsgSrv("imagemExistente");
@@ -354,7 +354,7 @@ public class ControleJogosServidor {
 	public Object obterTodasImagens() {
 		File file = new File(ServletMesa11.mediaDir);
 		try {
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(file.list());
 			return mesa11to;
 		} catch (Exception e) {
@@ -382,7 +382,7 @@ public class ControleJogosServidor {
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			dadosMesa11.getJogosAndamento().add(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
 			dadosJogoSrvMesa11.setJogoVsCpu(true);
 			inciaJogoServidor(jogoSrvMesa11);
@@ -588,13 +588,13 @@ public class ControleJogosServidor {
 		});
 		returnMap.put(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES,
 				dadosJogadores);
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(returnMap);
 		return mesa11to;
 	}
 
 	public Object verRodada(CampeonatoMesa11 data) {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		List list = controlePersistencia.verRodada(data);
 		for (Iterator iterator = list.iterator(); iterator.hasNext();) {
 			RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = (RodadaCampeonatoMesa11) iterator
@@ -615,12 +615,12 @@ public class ControleJogosServidor {
 					.next();
 			jogadores.add(jogadoresCampeonatoMesa11.getUsuario().getLogin());
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(jogadores);
 		return mesa11to;
 	}
 
-	public Object criarJogoCampeonato(Mesa11TO mesa11TO) {
+	public Object criarJogoCampeonato(NnpeTO mesa11TO) {
 		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11TO
 				.getData();
 
@@ -698,7 +698,7 @@ public class ControleJogosServidor {
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
 				.get(dadosJogoSrvMesa11.getNomeJogo());
 		if (jogoSrvMesa11 != null) {
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
 			if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
 					|| Util

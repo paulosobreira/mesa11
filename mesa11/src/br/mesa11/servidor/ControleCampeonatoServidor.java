@@ -21,11 +21,11 @@ import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.ProxyComandos;
 import br.nnpe.HibernateUtil;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.MsgSrv;
 import br.recursos.Lang;
 import br.tos.DadosMesa11;
-import br.tos.ErroServ;
-import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
 
 public class ControleCampeonatoServidor {
 	private ProxyComandos proxyComandos;
@@ -48,7 +48,7 @@ public class ControleCampeonatoServidor {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Object criarCampeonato(Mesa11TO mesa11to) {
+	public Object criarCampeonato(NnpeTO mesa11to) {
 
 		CampeonatoMesa11 campeonatoMesa11 = (CampeonatoMesa11) mesa11to
 				.getData();
@@ -260,7 +260,7 @@ public class ControleCampeonatoServidor {
 			retorno.add(row);
 		}
 		HibernateUtil.closeSession();
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(retorno);
 		return mesa11to;
 	}
@@ -282,7 +282,7 @@ public class ControleCampeonatoServidor {
 
 	public Object verCampeonato(String campeonato) {
 		try {
-			Mesa11TO mesa11to = (Mesa11TO) controleJogosServidor
+			NnpeTO mesa11to = (NnpeTO) controleJogosServidor
 					.obterClassificacao(campeonato);
 			Map map = (Map) mesa11to.getData();
 			Object[] dadoscampeonato = controlePersistencia

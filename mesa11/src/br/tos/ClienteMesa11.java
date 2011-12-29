@@ -2,6 +2,8 @@ package br.tos;
 
 import java.io.Serializable;
 
+import br.nnpe.tos.SessaoCliente;
+
 /**
  * @author Paulo Sobreira Criado em 28/07/2007 as 15:51:36
  */

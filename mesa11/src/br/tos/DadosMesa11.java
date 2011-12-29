@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import br.nnpe.tos.SessaoCliente;
+
 /**
  * @author paulo.sobreira
  * 

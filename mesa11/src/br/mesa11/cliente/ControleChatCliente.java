@@ -30,15 +30,15 @@ import br.mesa11.conceito.ControleJogo;
 import br.mesa11.visao.EditorTime;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.MsgSrv;
+import br.nnpe.tos.SessaoCliente;
 import br.recursos.Lang;
 import br.tos.ClassificacaoTime;
 import br.tos.ClassificacaoUsuario;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
-import br.tos.ErroServ;
-import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
-import br.tos.SessaoCliente;
 
 public class ControleChatCliente {
 	private FormLogin formLogin;
@@ -161,20 +161,20 @@ public class ControleChatCliente {
 		if (chatWindow == null) {
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.ATUALIZAR_VISAO);
 		mesa11to.setSessaoCliente(sessaoCliente);
 		Object ret = enviarObjeto(mesa11to);
 		if (ret == null) {
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		DadosMesa11 dadosMesa11 = (DadosMesa11) mesa11to.getData();
 		chatWindow.atualizar(dadosMesa11);
 		controleJogosCliente.setDadosMesa11(dadosMesa11);
 	}
 
-	public Object enviarObjeto(Mesa11TO mesa11to) {
+	public Object enviarObjeto(NnpeTO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;
@@ -183,7 +183,7 @@ public class ControleChatCliente {
 	}
 
 	private boolean registrarUsuario() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		ClienteMesa11 clienteMesa11 = new ClienteMesa11();
 		mesa11to.setData(clienteMesa11);
 		clienteMesa11.setNomeJogador(formLogin.getNome().getText());
@@ -220,8 +220,8 @@ public class ControleChatCliente {
 		if (ret == null) {
 			return false;
 		}
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
 			this.sessaoCliente = cliente;
 		}
@@ -251,7 +251,7 @@ public class ControleChatCliente {
 		}
 		ClienteMesa11 clienteMesa11 = new ClienteMesa11(sessaoCliente);
 		clienteMesa11.setTexto(text);
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(clienteMesa11);
 		mesa11to.setComando(ConstantesMesa11.ENVIAR_TEXTO);
 		Object ret = enviarObjeto(mesa11to);
@@ -263,7 +263,7 @@ public class ControleChatCliente {
 					.msg("problemasRede"), "Erro", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		chatWindow.atualizar((DadosMesa11) mesa11to.getData());
 	}
 
@@ -368,13 +368,13 @@ public class ControleChatCliente {
 			logar();
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.VER_CLASSIFICACAO);
 		Object ret = enviarObjeto(mesa11to);
-		if (!(ret instanceof Mesa11TO)) {
+		if (!(ret instanceof NnpeTO)) {
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		Map data = (Map) mesa11to.getData();
 		List dadosTimes = (List) data
 				.get(ConstantesMesa11.VER_CLASSIFICACAO_TIMES);
@@ -577,15 +577,15 @@ public class ControleChatCliente {
 	}
 
 	public void editarTime() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
 		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
 				.msg("semTimes") });
 		boolean semTimes = true;
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] times = (String[]) mesa11to.getData();
 			jComboBoxTimes = new JComboBox(times);
 			semTimes = false;
@@ -607,12 +607,12 @@ public class ControleChatCliente {
 		if (!semTimes) {
 			String timeSelecionado = (String) jComboBoxTimes.getSelectedItem();
 			Logger.logar("timeSelecionado " + timeSelecionado);
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 			mesa11to.setData(timeSelecionado);
 			ret = enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
 				ControleJogo controleJogo = new ControleJogo(mesa11Applet,
 						null, null, null);
@@ -630,7 +630,7 @@ public class ControleChatCliente {
 	}
 
 	public void sairJogo() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);

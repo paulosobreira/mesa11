@@ -1,11 +1,11 @@
-package br.tos;
+package br.nnpe.tos;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
 import br.mesa11.conceito.GolJogador;
 
-public class Mesa11TO implements Serializable {
+public class NnpeTO implements Serializable {
 
 	private String comando;
 

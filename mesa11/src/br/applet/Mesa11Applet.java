@@ -23,11 +23,12 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.cliente.ControleChatCliente;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
 import br.nnpe.ZipUtil;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.MsgSrv;
 import br.recursos.Lang;
-import br.tos.ErroServ;
-import br.tos.MsgSrv;
 
 public class Mesa11Applet extends JApplet {
 
@@ -150,7 +151,7 @@ public class Mesa11Applet extends JApplet {
 						"application/x-www-form-urlencoded");
 				connection.getOutputStream().write(
 						byteArrayOutputStream.toByteArray());
-				if (ConstantesMesa11.modoZip) {
+				if (Constantes.modoZip) {
 					retorno = ZipUtil.descompactarObjeto(connection
 							.getInputStream());
 				} else {
