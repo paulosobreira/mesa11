@@ -2,7 +2,6 @@ package br.mesa11;
 
 public class ConstantesMesa11 {
 
-	public static boolean modoZip = true;
 
 	public static final String TITULO = "Mesa11 Ver";
 

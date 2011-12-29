@@ -12,8 +12,8 @@ import br.mesa11.conceito.ControleJogo;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.SessaoCliente;
 import br.tos.DadosJogoSrvMesa11;
-import br.tos.SessaoCliente;
 
 public class JogoServidor {
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;

@@ -8,8 +8,8 @@ import br.mesa11.conceito.ControleJogo;
 import br.mesa11.servidor.JogoServidor;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.tos.DadosJogoSrvMesa11;
-import br.tos.Mesa11TO;
 import br.tos.PosicaoBtnsSrvMesa11;
 
 public class MonitorJogo extends Thread {
@@ -89,7 +89,7 @@ public class MonitorJogo extends Thread {
 	}
 
 	private void atualizaDadosJogoSrvMesa11() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
@@ -98,8 +98,8 @@ public class MonitorJogo extends Thread {
 			jogoTerminado = true;
 			return;
 		}
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (dadosJogoSrvMesa11.getGolJogador() != null
@@ -157,12 +157,12 @@ public class MonitorJogo extends Thread {
 			return;
 		}
 		dormir(tempoDormir);
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_ULTIMA_JOGADA);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		ret = enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret != null && ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
 			if (!controleJogo.isAnimando() && animacao != null
 					&& animacao.getTimeStamp() > timeStampAnimacao) {
@@ -179,19 +179,19 @@ public class MonitorJogo extends Thread {
 	}
 
 	private void iniciaJogo() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		Object ret = enviarObjeto(mesa11to);
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
 		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
 				.isSegundoUniformeTimeCasa());
-		mesa11to = new Mesa11TO();
+		mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		Time timeVisita = (Time) mesa11to.getData();
 		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
 				.isSegundoUniformeTimeVisita());
@@ -207,12 +207,12 @@ public class MonitorJogo extends Thread {
 	}
 
 	private boolean timesSelecionados() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		Object ret = enviarObjeto(mesa11to);
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			if (dadosJogoSrvMesa11.getIdRodadaCampeonato() != 0) {
 				return dadosJogoSrvMesa11.isJogoCampeonatoIniciado();
@@ -225,7 +225,7 @@ public class MonitorJogo extends Thread {
 		return false;
 	}
 
-	private Object enviarObjeto(Mesa11TO mesa11to) {
+	private Object enviarObjeto(NnpeTO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;

@@ -43,9 +43,9 @@ import br.hibernate.Usuario;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.visao.Java2sAutoComboBox;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.recursos.Lang;
 import br.tos.ClassificacaoTime;
-import br.tos.Mesa11TO;
 
 public class ControleCampeonatoCliente {
 
@@ -62,11 +62,11 @@ public class ControleCampeonatoCliente {
 	}
 
 	public void criarCampeonato() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_TIMES);
 		Object ret = enviarObjeto(mesa11to);
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] times = (String[]) mesa11to.getData();
 			final DefaultListModel defaultListModelTimes = new DefaultListModel();
 			final DefaultListModel defaultListModelTimesSelecionados = new DefaultListModel();
@@ -230,12 +230,12 @@ public class ControleCampeonatoCliente {
 					return Lang.msg("jogadores");
 				}
 			});
-			mesa11to = new Mesa11TO();
+			mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.OBTER_TODOS_JOGADORES);
 			ret = enviarObjeto(mesa11to);
 			String[] jogadores = new String[] { "" };
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				jogadores = (String[]) mesa11to.getData();
 
 			}
@@ -370,23 +370,23 @@ public class ControleCampeonatoCliente {
 			campeonatoMesa11.getTimesCampeonatoMesa11().add(
 					timesCampeonatoMesa11);
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setSessaoCliente(controleChatCliente.getSessaoCliente());
 		mesa11to.setData(campeonatoMesa11);
 		mesa11to.setComando(ConstantesMesa11.CRIAR_CAMPEONATO);
 		enviarObjeto(mesa11to);
 	}
 
-	private Object enviarObjeto(Mesa11TO mesa11to) {
+	private Object enviarObjeto(NnpeTO mesa11to) {
 		return controleChatCliente.enviarObjeto(mesa11to);
 	}
 
 	public void verCampeonatos() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.LISTAR_CAMPEONATOS);
 		Object ret = enviarObjeto(mesa11to);
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			List campeonatos = (List) mesa11to.getData();
 			JPanel campeonastosPanel = gerarPanelCampeonatos(campeonatos);
 			JOptionPane.showMessageDialog(controleChatCliente.getChatWindow()
@@ -492,14 +492,14 @@ public class ControleCampeonatoCliente {
 				"carregarCampeonato", new String[] { campeonatoSelecionado }),
 				Lang.msg("detalhesCampeonato"), JOptionPane.YES_NO_OPTION);
 		if (optRet == JOptionPane.YES_OPTION) {
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.VER_CAMPEONATO);
 			mesa11to.setData(campeonatoSelecionado);
 			Object ret = enviarObjeto(mesa11to);
-			if (!(ret instanceof Mesa11TO)) {
+			if (!(ret instanceof NnpeTO)) {
 				return;
 			}
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 			Map data = (Map) mesa11to.getData();
 			List dadosTimes = (List) data
 					.get(ConstantesMesa11.VER_CLASSIFICACAO_TIMES);
@@ -624,17 +624,17 @@ public class ControleCampeonatoCliente {
 	}
 
 	protected void mostrarRodada(String nomeCampeonato, Integer numeroRodada) {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.VER_RODADA);
 		CampeonatoMesa11 campeonatoMesa11 = new CampeonatoMesa11();
 		campeonatoMesa11.setNome(nomeCampeonato);
 		campeonatoMesa11.setNumeroRodadas(numeroRodada);
 		mesa11to.setData(campeonatoMesa11);
 		Object ret = enviarObjeto(mesa11to);
-		if (!(ret instanceof Mesa11TO)) {
+		if (!(ret instanceof NnpeTO)) {
 			return;
 		}
-		mesa11to = (Mesa11TO) ret;
+		mesa11to = (NnpeTO) ret;
 		List list = (List) mesa11to.getData();
 		JPanel rodadasPanel = gerarPainelRodadas(list, nomeCampeonato);
 		int showConfirmDialog = JOptionPane.showConfirmDialog(
@@ -816,10 +816,10 @@ public class ControleCampeonatoCliente {
 		};
 
 		JComboBox jogadores = new JComboBox();
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_JOGADORES_CAMPEONATO);
 		mesa11to.setData(campeonatoSelecionado);
-		mesa11to = (Mesa11TO) enviarObjeto(mesa11to);
+		mesa11to = (NnpeTO) enviarObjeto(mesa11to);
 		List jogadoresSrv = (List) mesa11to.getData();
 		jogadores.addItem("");
 		for (Iterator iterator = jogadoresSrv.iterator(); iterator.hasNext();) {

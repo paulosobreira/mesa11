@@ -64,12 +64,12 @@ import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 import br.nnpe.PopupListener;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import br.tos.BotaoPosSrvMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.JogadaMesa11;
-import br.tos.Mesa11TO;
 import br.tos.PosicaoBtnsSrvMesa11;
 
 public class ControleJogo {
@@ -1651,7 +1651,7 @@ public class ControleJogo {
 	}
 
 	private void salvarTimeOnline(Time time) {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(time);
 		mesa11to.setComando(ConstantesMesa11.SALVAR_TIME);
 		mesa11Applet.enviarObjeto(mesa11to);
@@ -2018,7 +2018,7 @@ public class ControleJogo {
 		return mesa11Applet != null;
 	}
 
-	public Object enviarObjeto(Mesa11TO mesa11to) {
+	public Object enviarObjeto(NnpeTO mesa11to) {
 		if (mesa11Applet == null) {
 			Logger.logar("enviarObjeto mesa11Applet null");
 			return null;
@@ -2255,7 +2255,7 @@ public class ControleJogo {
 	}
 
 	public void sairJogoOnline() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
 		mesa11to.setData(nomeJogadorOnline);
 		Object ret = enviarObjeto(mesa11to);
@@ -2268,7 +2268,7 @@ public class ControleJogo {
 					.logar("if (dadosJogoSrvMesa11 != null && dadosJogoSrvMesa11.isWo())");
 			return;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		JogadaMesa11 jogadaMesa11 = new JogadaMesa11(timeClienteOnline,
 				dadosJogoSrvMesa11);
 		Point p1 = getPontoClicado();
@@ -2357,13 +2357,13 @@ public class ControleJogo {
 
 	public void atualizaBotoesClienteOnline(long timeStampAnimacao,
 			boolean centralizaBola) {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo() + "-"
 				+ timeStampAnimacao);
 		Object ret = enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret != null && ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
 					.getData();
 			if (posicaoBtnsSrvMesa11 != null) {
@@ -2496,7 +2496,7 @@ public class ControleJogo {
 			}
 			sumAng += botao.getAngulo();
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.VERIFICA_POSICAO_DIFF_BOTOES);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo() + "-" + sumx + ""
 				+ sumy + "" + sumAng);

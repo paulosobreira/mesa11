@@ -32,10 +32,10 @@ import br.nnpe.Dia;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.MsgSrv;
 import br.recursos.Lang;
-import br.tos.ErroServ;
-import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
 
 /**
  * @author Paulo Sobreira Criado em 23/02/2010
@@ -225,7 +225,7 @@ public class ControlePersistencia {
 				retorno[i] = time.getNome();
 				i++;
 			}
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(retorno);
 			return mesa11to;
 		} finally {
@@ -260,7 +260,7 @@ public class ControlePersistencia {
 			retorno[i] = nome;
 			i++;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(retorno);
 		return mesa11to;
 	}
@@ -375,7 +375,7 @@ public class ControlePersistencia {
 		return jogadores;
 	}
 
-	public Mesa11TO obterTodosJogadores() {
+	public NnpeTO obterTodosJogadores() {
 		Dia dia = new Dia();
 		dia.advance(-240);
 		Session session = ControlePersistencia.getSession();
@@ -390,7 +390,7 @@ public class ControlePersistencia {
 			retorno[i] = nome;
 			i++;
 		}
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(retorno);
 		return mesa11to;
 	}

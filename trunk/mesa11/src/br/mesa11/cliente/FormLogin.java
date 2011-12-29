@@ -25,8 +25,8 @@ import br.applet.Mesa11Applet;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.recursos.Lang;
-import br.tos.Mesa11TO;
 
 public class FormLogin extends JPanel {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
@@ -195,11 +195,11 @@ public class FormLogin extends JPanel {
 	}
 
 	protected void capchaReload() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
 		Object ret = mesa11Applet.enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret != null && ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			capchaChave = (String) mesa11to.getData();
 			capchaImage.setIcon(new ImageIcon(mesa11to.getDataBytes()));
 		}

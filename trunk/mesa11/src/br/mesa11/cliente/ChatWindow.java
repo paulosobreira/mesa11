@@ -33,11 +33,11 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.SessaoCliente;
 import br.recursos.Lang;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
-import br.tos.Mesa11TO;
-import br.tos.SessaoCliente;
 
 /**
  * @author paulo.sobreira
@@ -405,20 +405,20 @@ public class ChatWindow {
 				.hasNext();) {
 			String nmJogo = (String) iter.next();
 			String key = Lang.decodeTexto(nmJogo);
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 			mesa11to.setData(nmJogo);
 			String placar = "";
 			Object ret = controleChatCliente.enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
 						.getData();
-				mesa11to = new Mesa11TO();
+				mesa11to = new NnpeTO();
 				mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				ret = controleChatCliente.enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time timeCasa = (Time) mesa11to.getData();
 				placar += " " + timeCasa.getNomeAbrev() + " X ";
 			}
@@ -467,36 +467,36 @@ public class ChatWindow {
 			Logger.logar("nmJogo " + nmJogo);
 			String key = Lang.decodeTexto(nmJogo);
 
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 			mesa11to.setData(nmJogo);
 			String placar = "";
 			Object ret = controleChatCliente.enviarObjeto(mesa11to);
-			if (ret instanceof Mesa11TO) {
-				mesa11to = (Mesa11TO) ret;
+			if (ret instanceof NnpeTO) {
+				mesa11to = (NnpeTO) ret;
 				DadosJogoSrvMesa11 dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to
 						.getData();
-				mesa11to = new Mesa11TO();
+				mesa11to = new NnpeTO();
 				mesa11to.setData(dadosJogoSrvMesa11.getTimeCasa());
 				mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 				ret = controleChatCliente.enviarObjeto(mesa11to);
-				mesa11to = (Mesa11TO) ret;
+				mesa11to = (NnpeTO) ret;
 				Time timeCasa = (Time) mesa11to.getData();
 				placar += " " + timeCasa.getNomeAbrev() + " "
 						+ dadosJogoSrvMesa11.getGolsCasa() + " X ";
 				if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
-					mesa11to = new Mesa11TO();
+					mesa11to = new NnpeTO();
 					mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 					mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 					ret = controleChatCliente.enviarObjeto(mesa11to);
-					mesa11to = (Mesa11TO) ret;
+					mesa11to = (NnpeTO) ret;
 					Time timeVisita = (Time) mesa11to.getData();
 					placar += dadosJogoSrvMesa11.getGolsVisita() + " "
 							+ timeVisita.getNomeAbrev();
 				}
 
 			}
-			mesa11to = (Mesa11TO) ret;
+			mesa11to = (NnpeTO) ret;
 
 			mapaJogosAndamento.put(key, Util.isNullOrEmpty(nmJogo) ? nmJogo
 					: placar);

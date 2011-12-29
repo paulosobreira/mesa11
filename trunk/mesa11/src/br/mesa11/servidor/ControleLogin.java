@@ -22,14 +22,14 @@ import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
+import br.nnpe.tos.ErroServ;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.MsgSrv;
+import br.nnpe.tos.SessaoCliente;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
-import br.tos.ErroServ;
-import br.tos.Mesa11TO;
-import br.tos.MsgSrv;
-import br.tos.SessaoCliente;
 
 import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
 
@@ -114,7 +114,7 @@ public class ControleLogin {
 
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
 
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(sessaoCliente);
 		return mesa11to;
 	}
@@ -169,7 +169,7 @@ public class ControleLogin {
 			String chave = String.valueOf(System.currentTimeMillis());
 			BufferedImage challenge = capcha.getImageChallengeForID(chave);
 			ImageIO.write(challenge, "jpg", jpegstream);
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
 			mesa11to.setData(chave);
 			mesa11to.setDataBytes(jpegstream.toByteArray());

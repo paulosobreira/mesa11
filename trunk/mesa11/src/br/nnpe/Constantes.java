@@ -1,6 +1,9 @@
 package br.nnpe;
 
 public class Constantes {
+
+	public static boolean modoZip = true;
+
 	public static final String CONFIG = "configuracoes";
 	public final static String CRYPTOGRAPHY = "_CRYPTOGRAPHY_";
 	public final static String DOWNLOAD_DATA = "_DOWNLOAD_";
@@ -36,10 +39,10 @@ public class Constantes {
 	public static final int MIN_CICLO = 50;
 	public static final int MAX_CICLO = 120;
 
-//	 public static final int MAX_VOLTAS = 2;
-//	public static final int MIN_VOLTAS = 2;
-//	public static final int MIN_CICLO = 50;
-//	public static final int MAX_CICLO = 50;
+	// public static final int MAX_VOLTAS = 2;
+	// public static final int MIN_VOLTAS = 2;
+	// public static final int MIN_CICLO = 50;
+	// public static final int MAX_CICLO = 50;
 
 	private Constantes() {
 	}

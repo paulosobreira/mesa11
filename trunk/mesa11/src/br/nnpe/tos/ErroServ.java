@@ -1,4 +1,4 @@
-package br.tos;
+package br.nnpe.tos;
 
 import java.io.Serializable;
 

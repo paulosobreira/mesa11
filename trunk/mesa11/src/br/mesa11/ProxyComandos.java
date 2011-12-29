@@ -13,12 +13,12 @@ import br.mesa11.servidor.ControlePersistencia;
 import br.mesa11.servidor.MonitorAtividade;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
+import br.nnpe.tos.NnpeTO;
+import br.nnpe.tos.SessaoCliente;
 import br.tos.ClienteMesa11;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
-import br.tos.Mesa11TO;
-import br.tos.SessaoCliente;
 
 public class ProxyComandos {
 	private ControleLogin controleLogin;
@@ -43,7 +43,7 @@ public class ProxyComandos {
 	}
 
 	public Object processarObjeto(Object object) {
-		Mesa11TO mesa11TO = (Mesa11TO) object;
+		NnpeTO mesa11TO = (NnpeTO) object;
 		if (ConstantesMesa11.ATUALIZAR_VISAO.equals(mesa11TO.getComando())) {
 			return atualizarDadosVisao(mesa11TO);
 		} else if (ConstantesMesa11.VERIFICA_POSICAO_DIFF_BOTOES
@@ -90,7 +90,7 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.OBTER_TIME.equals(mesa11TO.getComando())) {
 			Time time = controlePersistencia.obterTime((String) mesa11TO
 					.getData());
-			Mesa11TO mesa11to = new Mesa11TO();
+			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(time);
 			return mesa11to;
 		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
@@ -158,7 +158,7 @@ public class ProxyComandos {
 		return null;
 	}
 
-	private Object atualizarDadosVisao(Mesa11TO mesa11to) {
+	private Object atualizarDadosVisao(NnpeTO mesa11to) {
 		if (mesa11to.getSessaoCliente() != null) {
 			controleChatServidor.atualizaSessaoCliente(mesa11to
 					.getSessaoCliente());

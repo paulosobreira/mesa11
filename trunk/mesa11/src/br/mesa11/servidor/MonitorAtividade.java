@@ -8,7 +8,7 @@ import java.util.Map;
 import br.mesa11.ProxyComandos;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.tos.SessaoCliente;
+import br.nnpe.tos.SessaoCliente;
 
 /**
  * @author Paulo Sobreira Criado em 25/08/2007 as 11:22:46

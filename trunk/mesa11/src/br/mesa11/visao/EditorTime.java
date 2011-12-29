@@ -58,9 +58,9 @@ import br.nnpe.ExampleFileFilter;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
+import br.nnpe.tos.NnpeTO;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
-import br.tos.Mesa11TO;
 
 /**
  * @author Sobreira 19/06/2010
@@ -273,7 +273,7 @@ public class EditorTime extends JPanel {
 		enviarImagem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Mesa11TO mesa11to = new Mesa11TO();
+				NnpeTO mesa11to = new NnpeTO();
 				if (Util.isNullOrEmpty(nomeImgIconLabel)
 						|| imagemEnviar == null) {
 					JOptionPane.showMessageDialog(EditorTime.this, Lang
@@ -408,11 +408,11 @@ public class EditorTime extends JPanel {
 	}
 
 	private void recarregarComboImagens() {
-		Mesa11TO mesa11to = new Mesa11TO();
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODAS_IMAGENS);
 		Object ret = controleJogo.enviarObjeto(mesa11to);
-		if (ret instanceof Mesa11TO) {
-			mesa11to = (Mesa11TO) ret;
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
 			String[] imagens = (String[]) mesa11to.getData();
 			Arrays.sort(imagens);
 			if (imagens != null) {
