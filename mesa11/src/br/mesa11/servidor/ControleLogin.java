@@ -64,13 +64,21 @@ public class ControleLogin {
 		}
 
 		Session session = ControlePersistencia.getSession();
-		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+		List usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario != null) {
 			return new MsgSrv(Lang.msg("loginNaoDisponivel"));
 		}
+		usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("email", clienteMesa11.getEmailJogador()))
+				.list();
+		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
+		if (usuario != null) {
+			return new MsgSrv(Lang.msg("emailNaoDisponivel"));
+		}
+
 		usuario = new Usuario();
 		usuario.setLogin(clienteMesa11.getNomeJogador());
 		usuario.setLoginCriador(clienteMesa11.getNomeJogador());
@@ -146,9 +154,10 @@ public class ControleLogin {
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();
 		try {
-			List usuarios = session.createCriteria(Usuario.class).add(
-					Restrictions.eq("login", clienteMesa11.getNomeJogador()))
-					.list();
+			List usuarios = session
+					.createCriteria(Usuario.class)
+					.add(Restrictions.eq("login",
+							clienteMesa11.getNomeJogador())).list();
 			usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 			if (usuario == null) {
 				return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
@@ -188,14 +197,15 @@ public class ControleLogin {
 		}
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();
-		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+		List usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario == null) {
-			usuarios = session.createCriteria(Usuario.class).add(
-					Restrictions.eq("email", clienteMesa11.getEmailJogador()))
-					.list();
+			usuarios = session
+					.createCriteria(Usuario.class)
+					.add(Restrictions.eq("email",
+							clienteMesa11.getEmailJogador())).list();
 			usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		}
 		if (usuario == null) {
