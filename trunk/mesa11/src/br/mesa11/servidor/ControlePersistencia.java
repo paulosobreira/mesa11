@@ -74,7 +74,6 @@ public class ControlePersistencia {
 		Dia dia = new Dia("01/06/2009");
 		Dia hj = new Dia();
 		Logger.logar(hj.daysBetween(dia));
-		Logger.logar("ALEMANHA".length());
 	}
 
 	public byte[] obterBytesBase() {
