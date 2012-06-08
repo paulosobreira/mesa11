@@ -1,13 +1,15 @@
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowStateListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import br.nnpe.ImageUtil;
+
 public class TesteWindow {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		final JFrame frame = new JFrame() {
 			// @Override
 			// public Dimension getPreferredSize() {
@@ -29,19 +31,22 @@ public class TesteWindow {
 			// }
 
 		};
-		frame.addWindowStateListener(new WindowStateListener() {
 
-			@Override
-			public void windowStateChanged(WindowEvent e) {
-				if (6 == e.getNewState()) {
-					Toolkit kit = frame.getToolkit();
-					Dimension screenSize = kit.getScreenSize();
-					int meio = (int) (screenSize.getWidth() / 2);
-					frame.setLocation(meio - 400, 0);
-					frame.setSize(800, frame.getHeight() - 15);
-				}
-			}
-		});
+		final BufferedImage cruzeiro = ImageIO.read(TesteWindow.class
+				.getResource("esp2010-7.jpg"));
+		final BufferedImage transpb4 = ImageUtil.gerarFade(
+				ImageIO.read(TesteWindow.class.getResource("transp-b7.png")),
+				150);
+		frame.setSize(300, 300);
+		JPanel jPanel = new JPanel() {
+			protected void paintComponent(java.awt.Graphics g) {
+				super.paintComponent(g);
+				g.drawImage(cruzeiro, 50, 50, null);
+				g.drawImage(transpb4, 48, 48, null);
+
+			};
+		};
+		frame.getContentPane().add(jPanel);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 	}

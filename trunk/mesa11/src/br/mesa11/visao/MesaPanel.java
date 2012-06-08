@@ -130,11 +130,15 @@ public class MesaPanel extends JPanel {
 	private int contProblemaRede;
 	private int desenhaGol;
 	public long lastZoomChange;
+	private BufferedImage acrilico;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		if (!controleJogo.isJogoOnlineSrvidor()) {
 			grama1 = CarregadorRecursos.carregaImg("grama1.jpg");
 			grama2 = CarregadorRecursos.carregaImg("grama2.jpg");
+			acrilico = ImageUtil.gerarFade(CarregadorRecursos
+					.carregaBufferedImageTransparecia("acrilico.png", null),
+					150);
 		}
 		if (Logger.debug) {
 			grama1 = null;
@@ -174,48 +178,46 @@ public class MesaPanel extends JPanel {
 		penaltyBaixo = new Rectangle(LARGURA_MESA / 2, ALTURA_MESA
 				- BORDA_CAMPO - PENALTI, DOBRO_LINHA, DOBRO_LINHA);
 		hasteDireitaGolCima = new Rectangle(Util.inte(pequenaAreaCima.getX()
-				+ pequenaAreaCima.getWidth() - (110)), Util
-				.inte(pequenaAreaCima.getY() + (LINHA)
+				+ pequenaAreaCima.getWidth() - (110)),
+				Util.inte(pequenaAreaCima.getY() + (LINHA)
 						- (pequenaAreaCima.getHeight() * .50)), Util.inte(10),
 				Util.inte(pequenaAreaCima.getHeight() * .50));
-		hasteEsquerdaGolCima = new Rectangle(Util
-				.inte(pequenaAreaCima.getX() + (110)), Util
-				.inte(pequenaAreaCima.getY() + (LINHA)
+		hasteEsquerdaGolCima = new Rectangle(
+				Util.inte(pequenaAreaCima.getX() + (110)),
+				Util.inte(pequenaAreaCima.getY() + (LINHA)
 						- (pequenaAreaCima.getHeight() * .50)), Util.inte(10),
 				Util.inte(pequenaAreaCima.getHeight() * .50));
 		hasteTopoGolCima = new Rectangle(
-				Util.inte(hasteEsquerdaGolCima.getX()), Util
-						.inte(hasteDireitaGolCima.getY()), Util
-						.inte(hasteDireitaGolCima.getX()
-								- hasteEsquerdaGolCima.getX()), Util.inte(10));
-		areaGolCima = new Rectangle(Util
-				.inte(hasteEsquerdaGolCima.getCenterX()), Util
-				.inte(hasteTopoGolCima.getY()), Util.inte(hasteTopoGolCima
-				.getWidth()), Util.inte(hasteEsquerdaGolCima.getHeight()
-				- (LINHA)));
+				Util.inte(hasteEsquerdaGolCima.getX()),
+				Util.inte(hasteDireitaGolCima.getY()),
+				Util.inte(hasteDireitaGolCima.getX()
+						- hasteEsquerdaGolCima.getX()), Util.inte(10));
+		areaGolCima = new Rectangle(
+				Util.inte(hasteEsquerdaGolCima.getCenterX()),
+				Util.inte(hasteTopoGolCima.getY()), Util.inte(hasteTopoGolCima
+						.getWidth()), Util.inte(hasteEsquerdaGolCima
+						.getHeight() - (LINHA)));
 		linhaGolCima = new Rectangle(areaGolCima.x, areaGolCima.y
 				+ areaGolCima.height, areaGolCima.width, LINHA);
 		hasteDireitaGolBaixo = new Rectangle(Util.inte(hasteDireitaGolCima
 				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA)
 				+ pequenaAreaBaixo.getHeight()), 10, Util.inte(pequenaAreaBaixo
-				.getHeight()
-				- (pequenaAreaBaixo.getHeight() * .50)));
+				.getHeight() - (pequenaAreaBaixo.getHeight() * .50)));
 		hasteEsquerdaGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolCima
 				.getX()), Util.inte(pequenaAreaBaixo.getY() - (LINHA)
 				+ pequenaAreaBaixo.getHeight()), 10, Util.inte(pequenaAreaBaixo
-				.getHeight()
-				- (pequenaAreaBaixo.getHeight() * .50)));
+				.getHeight() - (pequenaAreaBaixo.getHeight() * .50)));
 		hasteTopoGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolBaixo
 				.getX()), Util.inte(hasteDireitaGolBaixo.getY()
-				+ hasteDireitaGolBaixo.getHeight()), Util
-				.inte(hasteDireitaGolBaixo.getX()
-						- hasteEsquerdaGolBaixo.getX() + Util.inte(10)), Util
-				.inte(10));
+				+ hasteDireitaGolBaixo.getHeight()),
+				Util.inte(hasteDireitaGolBaixo.getX()
+						- hasteEsquerdaGolBaixo.getX() + Util.inte(10)),
+				Util.inte(10));
 		areaGolBaixo = new Rectangle(Util.inte(hasteEsquerdaGolBaixo
 				.getCenterX()), Util.inte(hasteTopoGolBaixo.getY()
-				- hasteEsquerdaGolBaixo.getHeight() + (LINHA)), Util
-				.inte(hasteTopoGolCima.getWidth()), Util
-				.inte(hasteEsquerdaGolBaixo.getHeight() - (LINHA)));
+				- hasteEsquerdaGolBaixo.getHeight() + (LINHA)),
+				Util.inte(hasteTopoGolCima.getWidth()),
+				Util.inte(hasteEsquerdaGolBaixo.getHeight() - (LINHA)));
 		linhaGolBaixo = new Rectangle(areaGolBaixo.x, areaGolBaixo.y - LINHA,
 				areaGolBaixo.width, LINHA);
 		this.controleJogo = controleJogo;
@@ -342,21 +344,20 @@ public class MesaPanel extends JPanel {
 					g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom),
 							Util.inte(controleJogo.ptDstBola.y * zoom), 5, 5);
 				if (controleJogo.golJogadaCpu != null)
-					g2d.drawLine(Util.inte(controleJogo.getBola().getCentro().x
-							* zoom), Util.inte(controleJogo.getBola()
-							.getCentro().y
-							* zoom), Util.inte(controleJogo.golJogadaCpu.x
-							* zoom), Util.inte(controleJogo.golJogadaCpu.y
-							* zoom));
+					g2d.drawLine(
+							Util.inte(controleJogo.getBola().getCentro().x
+									* zoom),
+							Util.inte(controleJogo.getBola().getCentro().y
+									* zoom),
+							Util.inte(controleJogo.golJogadaCpu.x * zoom),
+							Util.inte(controleJogo.golJogadaCpu.y * zoom));
 			}
 			g2d.draw(controleJogo.miniViewPort());
 
 			if (controleJogo.getPontoPasando() != null) {
 				g2d.setColor(Color.BLACK);
-				g2d
-						.fillOval((int) controleJogo.getPontoPasandoZoom()
-								.getX(), (int) controleJogo
-								.getPontoPasandoZoom().getY(), 10, 10);
+				g2d.fillOval((int) controleJogo.getPontoPasandoZoom().getX(),
+						(int) controleJogo.getPontoPasandoZoom().getY(), 10, 10);
 			}
 		}
 
@@ -408,8 +409,8 @@ public class MesaPanel extends JPanel {
 						|| !(botao instanceof Goleiro)) {
 					continue;
 				}
-				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
-						.getCentro());
+				List raioPonto = GeoUtil.drawBresenhamLine(p0,
+						botao.getCentro());
 				if (raioPonto.size() <= (botao.getRaio() / 2)) {
 					Goleiro g = new Goleiro();
 					g.setCentroTodos(pAtual);
@@ -436,8 +437,7 @@ public class MesaPanel extends JPanel {
 					Goleiro g = new Goleiro();
 					g.setCentroTodos(botao.getCentro());
 
-					g.setRotacao(GeoUtil
-							.calculaAngulo(g.getCentro(), pAtual, 0));
+					g.setRotacao(GeoUtil.calculaAngulo(g.getCentro(), pAtual, 0));
 
 					if ((getGrandeAreaCima()
 							.contains(g.getShape(1).getBounds())
@@ -608,18 +608,18 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d
-					.drawString("" + controleJogo.tempoRestanteJogoFormatado(),
-							x, y);
+			g2d.drawString("" + controleJogo.tempoRestanteJogoFormatado(), x, y);
 			g2d.drawString(Lang.msg("de") + " ", x + 35, y);
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 55, y);
 			y += 25;
 			g2d.setColor(lightWhite);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
-			g2d.drawString(Lang.msg("jogadas") + " "
-					+ controleJogo.obterNumJogadas(time) + " " + Lang.msg("de")
-					+ " " + controleJogo.getNumeroJogadas(), x, y);
+			g2d.drawString(
+					Lang.msg("jogadas") + " "
+							+ controleJogo.obterNumJogadas(time) + " "
+							+ Lang.msg("de") + " "
+							+ controleJogo.getNumeroJogadas(), x, y);
 
 			y += 25;
 			if (controleJogo.isEsperandoJogadaOnline()
@@ -660,10 +660,9 @@ public class MesaPanel extends JPanel {
 			g2d.setColor(Color.BLACK);
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
-			g2d
-					.drawString(" "
-							+ controleJogo.tempoJogadaRestanteJogoFormatado(),
-							x - 5, y);
+			g2d.drawString(
+					" " + controleJogo.tempoJogadaRestanteJogoFormatado(),
+					x - 5, y);
 
 			g2d.setFont(fontOri);
 		}
@@ -799,13 +798,14 @@ public class MesaPanel extends JPanel {
 
 	private void desennhaCirculo(Graphics g2d) {
 		if (controleJogo.getPontoBtnDirClicado() != null) {
-			List l = GeoUtil.drawCircle(Util.inte(controleJogo
-					.getPontoBtnDirClicado().x
-					* zoom), Util.inte(controleJogo.getPontoBtnDirClicado().y
-					* zoom), Util.inte(ConstantesMesa11.PERIMETRO * zoom));
-			g2d.fillOval(Util.inte(controleJogo.getPontoBtnDirClicado().x
-					* zoom), Util.inte(controleJogo.getPontoBtnDirClicado().y
-					* zoom), 2, 2);
+			List l = GeoUtil.drawCircle(
+					Util.inte(controleJogo.getPontoBtnDirClicado().x * zoom),
+					Util.inte(controleJogo.getPontoBtnDirClicado().y * zoom),
+					Util.inte(ConstantesMesa11.PERIMETRO * zoom));
+			g2d.fillOval(
+					Util.inte(controleJogo.getPontoBtnDirClicado().x * zoom),
+					Util.inte(controleJogo.getPontoBtnDirClicado().y * zoom),
+					2, 2);
 			g2d.setColor(Color.BLACK);
 			for (Iterator iterator = l.iterator(); iterator.hasNext();) {
 				Point p = (Point) iterator.next();
@@ -839,8 +839,8 @@ public class MesaPanel extends JPanel {
 				if (botao == null || botao.getCentro() == null) {
 					continue;
 				}
-				List raioPonto = GeoUtil.drawBresenhamLine(p0, botao
-						.getCentro());
+				List raioPonto = GeoUtil.drawBresenhamLine(p0,
+						botao.getCentro());
 				if (raioPonto.size() <= botao.getRaio()) {
 					g2d.drawLine(Util.inte(p0.x * zoom),
 							Util.inte(p0.y * zoom), Util.inte(pAtual.x * zoom),
@@ -853,10 +853,10 @@ public class MesaPanel extends JPanel {
 					Point destino = GeoUtil.calculaPonto(angulo,
 							Util.inte(GeoUtil.drawBresenhamLine(p0, pAtual)
 									.size() * 10), botao.getCentro());
-					g2d.drawLine(Util.inte(botao.getCentro().x * zoom), Util
-							.inte(botao.getCentro().y * zoom), Util
-							.inte(destino.x * zoom), Util
-							.inte(destino.y * zoom));
+					g2d.drawLine(Util.inte(botao.getCentro().x * zoom),
+							Util.inte(botao.getCentro().y * zoom),
+							Util.inte(destino.x * zoom),
+							Util.inte(destino.y * zoom));
 					break;
 				}
 			}
@@ -931,8 +931,17 @@ public class MesaPanel extends JPanel {
 				(int) (botaoImg.getHeight() * zoom),
 				BufferedImage.TYPE_INT_ARGB);
 
+		BufferedImage zoomBufferAcrilico = new BufferedImage(
+				(int) (acrilico.getWidth() + 2 * zoom),
+				(int) (acrilico.getHeight() + 2 * zoom),
+				BufferedImage.TYPE_INT_ARGB);
+
 		affineTransformOp.filter(botaoImg, zoomBuffer);
+		affineTransformOp.filter(acrilico, zoomBufferAcrilico);
+
 		g.drawImage(zoomBuffer, botx, boty, null);
+		if (botao.getId() != 0)
+			g.drawImage(zoomBufferAcrilico, botx, boty, null);
 		// g.setColor(Color.black);
 		// g.drawOval(botx, boty, Util.inte(botao.getDiamentro() * zoom), Util
 		// .inte(botao.getDiamentro() * zoom));
@@ -972,14 +981,12 @@ public class MesaPanel extends JPanel {
 		AffineTransformOp affineTransformOp = new AffineTransformOp(
 				affineTransform, AffineTransformOp.TYPE_BILINEAR);
 		if (zoom != oldZoom && grama1 != null && grama2 != null) {
-			grama1Zoomed = new BufferedImage(Util
-					.inte(grama1.getWidth() * zoom), Util.inte(grama1
-					.getHeight()
-					* zoom), grama1.getType());
-			grama2Zoomed = new BufferedImage(Util
-					.inte(grama2.getWidth() * zoom), Util.inte(grama1
-					.getHeight()
-					* zoom), grama2.getType());
+			grama1Zoomed = new BufferedImage(
+					Util.inte(grama1.getWidth() * zoom), Util.inte(grama1
+							.getHeight() * zoom), grama1.getType());
+			grama2Zoomed = new BufferedImage(
+					Util.inte(grama2.getWidth() * zoom), Util.inte(grama1
+							.getHeight() * zoom), grama2.getType());
 			affineTransformOp.filter(grama1, grama1Zoomed);
 			affineTransformOp.filter(grama2, grama2Zoomed);
 		}
@@ -998,12 +1005,11 @@ public class MesaPanel extends JPanel {
 						g.fill(zoomedFaixasGrama[contFaixas]);
 					if (limitesViewPort
 							.intersects(zoomedFaixasGrama[contFaixas])) {
-						g
-								.drawImage(grama1Zoomed, Util
-										.inte(zoomedFaixasGrama[contFaixas]
-												.getX()), Util
-										.inte(zoomedFaixasGrama[contFaixas]
-												.getY()), null);
+						g.drawImage(
+								grama1Zoomed,
+								Util.inte(zoomedFaixasGrama[contFaixas].getX()),
+								Util.inte(zoomedFaixasGrama[contFaixas].getY()),
+								null);
 					}
 
 				}
@@ -1018,9 +1024,9 @@ public class MesaPanel extends JPanel {
 						((ALTURA_FAIXA) * zoom));
 
 				if (limitesViewPort.intersects(zoomedFaixasGrama[i])) {
-					g.drawImage(grama2Zoomed, Util.inte(zoomedFaixasGrama[i]
-							.getX()), Util.inte(zoomedFaixasGrama[i].getY()),
-							null);
+					g.drawImage(grama2Zoomed,
+							Util.inte(zoomedFaixasGrama[i].getX()),
+							Util.inte(zoomedFaixasGrama[i].getY()), null);
 				}
 
 			}
@@ -1054,9 +1060,9 @@ public class MesaPanel extends JPanel {
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
 		if (zoomedMeiaLuaCimaGrama.intersects((Rectangle) limitesViewPort)) {
 			// g.fill(zoomedMeiaLuaCimaGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedMeiaLuaCimaBorda.getWidth()), Util
-					.inte(zoomedMeiaLuaCimaBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedMeiaLuaCimaBorda.getWidth()),
+					Util.inte(zoomedMeiaLuaCimaBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Ellipse2D.Double((0 * zoom), (0 * zoom),
@@ -1069,8 +1075,8 @@ public class MesaPanel extends JPanel {
 					((RAIO_CENTRO - DOBRO_LINHA) * zoom)));
 			graphics.fill(new Rectangle2D.Double(0, 0,
 					((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedMeiaLuaCimaBorda.getX()), Util
-					.inte(zoomedMeiaLuaCimaBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedMeiaLuaCimaBorda.getX()),
+					Util.inte(zoomedMeiaLuaCimaBorda.getY()), null);
 
 		}
 		/**
@@ -1089,9 +1095,9 @@ public class MesaPanel extends JPanel {
 				((RAIO_CENTRO - DOBRO_LINHA) * zoom));
 		if (zoomedMeiaLuaBaixoGrama.intersects((Rectangle) limitesViewPort)) {
 			// g.fill(zoomedMeiaLuaBaixoGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedMeiaLuaBaixoBorda.getWidth()), Util
-					.inte(zoomedMeiaLuaBaixoBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedMeiaLuaBaixoBorda.getWidth()),
+					Util.inte(zoomedMeiaLuaBaixoBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Ellipse2D.Double((0), (0), (RAIO_CENTRO * zoom),
@@ -1105,8 +1111,8 @@ public class MesaPanel extends JPanel {
 			graphics.fill(new Rectangle2D.Double(0,
 					(RAIO_CENTRO - ALTURA_GDE_AREA) * zoom,
 					((LARGURA_GDE_AREA) * zoom), ((ALTURA_GDE_AREA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedMeiaLuaBaixoBorda.getX()), Util
-					.inte(zoomedMeiaLuaBaixoBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedMeiaLuaBaixoBorda.getX()),
+					Util.inte(zoomedMeiaLuaBaixoBorda.getY()), null);
 
 		}
 		/**
@@ -1126,9 +1132,9 @@ public class MesaPanel extends JPanel {
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
 		if (limitesViewPort.intersects(zoomedGdeAreaCimaGrama)) {
 			// g.fill(zoomedGdeAreaCimaGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedGdeAreaCimaBorda.getWidth()), Util
-					.inte(zoomedGdeAreaCimaBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedGdeAreaCimaBorda.getWidth()),
+					Util.inte(zoomedGdeAreaCimaBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Rectangle2D.Double(0, 0,
@@ -1140,8 +1146,8 @@ public class MesaPanel extends JPanel {
 					((LINHA) * zoom),
 					((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 					((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedGdeAreaCimaBorda.getX()), Util
-					.inte(zoomedGdeAreaCimaBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedGdeAreaCimaBorda.getX()),
+					Util.inte(zoomedGdeAreaCimaBorda.getY()), null);
 		}
 		/**
 		 * GdeArae Baixo
@@ -1161,9 +1167,9 @@ public class MesaPanel extends JPanel {
 				((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom));
 		if (limitesViewPort.intersects(zoomedGdeAreaBaixoGrama)) {
 			// g.fill(zoomedGdeAreaBaixoGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedGdeAreaBaixoBorda.getWidth()), Util
-					.inte(zoomedGdeAreaBaixoBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedGdeAreaBaixoBorda.getWidth()),
+					Util.inte(zoomedGdeAreaBaixoBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Rectangle2D.Double((0), (0),
@@ -1175,8 +1181,8 @@ public class MesaPanel extends JPanel {
 					((LINHA) * zoom),
 					((LARGURA_GDE_AREA - DOBRO_LINHA) * zoom),
 					((ALTURA_GDE_AREA - DOBRO_LINHA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedGdeAreaBaixoBorda.getX()), Util
-					.inte(zoomedGdeAreaBaixoBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedGdeAreaBaixoBorda.getX()),
+					Util.inte(zoomedGdeAreaBaixoBorda.getY()), null);
 
 		}
 		/**
@@ -1197,9 +1203,9 @@ public class MesaPanel extends JPanel {
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
 		if (limitesViewPort.intersects(zoomedpqAreaCimaGrama)) {
 			// g.fill(zoomedpqAreaCimaGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedpqAreaCimaBorda.getWidth()), Util
-					.inte(zoomedpqAreaCimaBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedpqAreaCimaBorda.getWidth()),
+					Util.inte(zoomedpqAreaCimaBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Rectangle2D.Double(0, 0,
@@ -1210,8 +1216,8 @@ public class MesaPanel extends JPanel {
 			graphics.fill(new Rectangle2D.Double(((LINHA) * zoom),
 					((LINHA) * zoom), ((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 					((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedpqAreaCimaBorda.getX()), Util
-					.inte(zoomedpqAreaCimaBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedpqAreaCimaBorda.getX()),
+					Util.inte(zoomedpqAreaCimaBorda.getY()), null);
 		}
 		/**
 		 * PQArae Baixo
@@ -1229,9 +1235,9 @@ public class MesaPanel extends JPanel {
 				((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom));
 		if (limitesViewPort.intersects(zoomedpqAreaBaixoGrama)) {
 			// g.fill(zoomedpqAreaBaixoGrama);
-			BufferedImage bi = new BufferedImage(Util
-					.inte(zoomedpqAreaBaixoBorda.getWidth()), Util
-					.inte(zoomedpqAreaBaixoBorda.getHeight()),
+			BufferedImage bi = new BufferedImage(
+					Util.inte(zoomedpqAreaBaixoBorda.getWidth()),
+					Util.inte(zoomedpqAreaBaixoBorda.getHeight()),
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D graphics = (Graphics2D) bi.getGraphics();
 			graphics.fill(new Rectangle2D.Double(0, 0,
@@ -1242,8 +1248,8 @@ public class MesaPanel extends JPanel {
 			graphics.fill(new Rectangle2D.Double(((LINHA) * zoom),
 					((LINHA) * zoom), ((LARGURA_PQ_AREA - DOBRO_LINHA) * zoom),
 					((ALTURA_PQ_AREA - DOBRO_LINHA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedpqAreaBaixoBorda.getX()), Util
-					.inte(zoomedpqAreaBaixoBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedpqAreaBaixoBorda.getX()),
+					Util.inte(zoomedpqAreaBaixoBorda.getY()), null);
 		}
 		/**
 		 * Circulo Centro
@@ -1275,8 +1281,8 @@ public class MesaPanel extends JPanel {
 			graphics.fill(new Ellipse2D.Double(((LINHA) * zoom),
 					((LINHA) * zoom), ((RAIO_CENTRO - DOBRO_LINHA) * zoom),
 					((RAIO_CENTRO - DOBRO_LINHA) * zoom)));
-			g.drawImage(bi, Util.inte(zoomedcentroBorda.getX()), Util
-					.inte(zoomedcentroBorda.getY()), null);
+			g.drawImage(bi, Util.inte(zoomedcentroBorda.getX()),
+					Util.inte(zoomedcentroBorda.getY()), null);
 
 		}
 
@@ -1359,21 +1365,26 @@ public class MesaPanel extends JPanel {
 		g.fill(areaGolCimaTemp);
 		g.setColor(Color.white);
 		Rectangle2D.Double hasteEsquerdaGolBaixoTemp = new Rectangle2D.Double();
-		hasteEsquerdaGolBaixoTemp.setRect(hasteEsquerdaGolCimaTemp.getX(),
+		hasteEsquerdaGolBaixoTemp.setRect(
+				hasteEsquerdaGolCimaTemp.getX(),
 				pequenaAreaBaixoTemp.getY() - (LINHA * zoom)
-						+ pequenaAreaBaixoTemp.getHeight(), 10 * zoom,
+						+ pequenaAreaBaixoTemp.getHeight(),
+				10 * zoom,
 				pequenaAreaBaixoTemp.getHeight()
 						- (pequenaAreaBaixoTemp.getHeight() * .50));
 		g.fill(hasteEsquerdaGolBaixoTemp);
 		Rectangle2D.Double hasteDireitaGolBaixoTemp = new Rectangle2D.Double();
-		hasteDireitaGolBaixoTemp.setRect(hasteDireitaGolCimaTemp.getX(),
+		hasteDireitaGolBaixoTemp.setRect(
+				hasteDireitaGolCimaTemp.getX(),
 				pequenaAreaBaixoTemp.getY() - (LINHA * zoom)
-						+ pequenaAreaBaixoTemp.getHeight(), 10 * zoom,
+						+ pequenaAreaBaixoTemp.getHeight(),
+				10 * zoom,
 				pequenaAreaBaixoTemp.getHeight()
 						- (pequenaAreaBaixoTemp.getHeight() * .50));
 		g.fill(hasteDireitaGolBaixoTemp);
 		Rectangle2D.Double hasteTopoGolBaixoTemp = new Rectangle2D.Double();
-		hasteTopoGolBaixoTemp.setRect(hasteEsquerdaGolBaixoTemp.getX(),
+		hasteTopoGolBaixoTemp.setRect(
+				hasteEsquerdaGolBaixoTemp.getX(),
 				hasteDireitaGolBaixoTemp.getY()
 						+ hasteDireitaGolBaixoTemp.getHeight(),
 				hasteDireitaGolBaixoTemp.getX()
@@ -1382,7 +1393,8 @@ public class MesaPanel extends JPanel {
 		g.fill(hasteTopoGolBaixoTemp);
 
 		Rectangle2D.Double areaGolBaixoTemp = new Rectangle2D.Double();
-		areaGolBaixoTemp.setRect(hasteEsquerdaGolBaixoTemp.getCenterX(),
+		areaGolBaixoTemp.setRect(
+				hasteEsquerdaGolBaixoTemp.getCenterX(),
 				hasteTopoGolBaixoTemp.getY()
 						- hasteEsquerdaGolBaixoTemp.getHeight()
 						+ (LINHA * zoom), hasteTopoGolCimaTemp.getWidth(),
@@ -1469,15 +1481,15 @@ public class MesaPanel extends JPanel {
 	}
 
 	public Point golBaixo() {
-		Point p = new Point(Util.inte(getPenaltyBaixo().x), Util
-				.inte(getPequenaAreaBaixo().getLocation().y
+		Point p = new Point(Util.inte(getPenaltyBaixo().x),
+				Util.inte(getPequenaAreaBaixo().getLocation().y
 						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2)));
 		return p;
 	}
 
 	public Point golCima() {
-		Point p = new Point(Util.inte(getPenaltyCima().x), Util
-				.inte(getPequenaAreaCima().getLocation().y - 20));
+		Point p = new Point(Util.inte(getPenaltyCima().x),
+				Util.inte(getPequenaAreaCima().getLocation().y - 20));
 		return p;
 	}
 
