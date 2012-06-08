@@ -15,7 +15,6 @@
 	</security>	
 	
 	<resources>
-		<j2se version="1.6"   />
 		<jar href="a-mesa11.jar" />
     </resources>
 
