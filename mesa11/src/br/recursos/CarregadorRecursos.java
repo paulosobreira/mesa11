@@ -1,6 +1,9 @@
 package br.recursos;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -27,12 +31,54 @@ public class CarregadorRecursos {
 		return CarregadorRecursos.class.getResource(imagem);
 	}
 
+	public static BufferedImage carregaImagem(String file) {
+		try {
+			return ImageIO.read(CarregadorRecursos.class.getResource(file));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static BufferedImage carregaBufferedImageTransparecia(String file,
+			Color cor) {
+		BufferedImage buffer = carregaImagem(file);
+		ImageIcon img = new ImageIcon(buffer);
+		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
+				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+
+		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
+
+		BufferedImage bufferedImageRetorno = new BufferedImage(
+				img.getIconWidth(), img.getIconHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Raster srcRaster = srcBufferedImage.getData();
+		WritableRaster destRaster = bufferedImageRetorno.getRaster();
+		int[] argbArray = new int[4];
+
+		for (int i = 0; i < img.getIconWidth(); i++) {
+			for (int j = 0; j < img.getIconHeight(); j++) {
+				argbArray = new int[4];
+				argbArray = srcRaster.getPixel(i, j, argbArray);
+
+				Color c = new Color(argbArray[0], argbArray[1], argbArray[2],
+						argbArray[3]);
+				if (c.equals(cor)) {
+					argbArray[3] = 0;
+				}
+				destRaster.setPixel(i, j, argbArray);
+			}
+		}
+
+		return bufferedImageRetorno;
+	}
+
 	public static BufferedImage carregaBufferedImageTranspareciaBranca(
 			String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(CarregadorRecursos.class
-					.getResource(file));
+			ImageIcon icon = new ImageIcon(
+					CarregadorRecursos.class.getResource(file));
 			buffer = ImageUtil.toBufferedImage(icon.getImage());
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
@@ -48,8 +94,8 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBackGround(String backGroundStr,
 			JPanel panel) {
-		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
-				.getResource(backGroundStr));
+		ImageIcon icon = new ImageIcon(
+				CarregadorRecursos.class.getResource(backGroundStr));
 		BufferedImage backGround = ImageUtil.toBufferedImage(icon.getImage());
 		panel.setSize(backGround.getWidth(), backGround.getHeight());
 		if (backGround == null) {
@@ -107,8 +153,8 @@ public class CarregadorRecursos {
 		if (bufferedImage != null) {
 			return bufferedImage;
 		}
-		ImageIcon icon = new ImageIcon(CarregadorRecursos.class
-				.getResource(img));
+		ImageIcon icon = new ImageIcon(
+				CarregadorRecursos.class.getResource(img));
 		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
 		bufferImages.put(img, bufferedImage);
 		return bufferedImage;
