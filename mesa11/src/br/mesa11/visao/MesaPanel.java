@@ -138,7 +138,7 @@ public class MesaPanel extends JPanel {
 			grama2 = CarregadorRecursos.carregaImg("grama2.jpg");
 			acrilico = ImageUtil.gerarFade(CarregadorRecursos
 					.carregaBufferedImageTransparecia("acrilico.png", null),
-					150);
+					120);
 		}
 		if (Logger.debug) {
 			grama1 = null;
@@ -298,20 +298,22 @@ public class MesaPanel extends JPanel {
 		desenhaTravesGol(g2d);
 		desenhaFiguras(g2d);
 		if (botoes != null) {
-			for (Iterator iterator = botoes.keySet().iterator(); iterator
-					.hasNext();) {
-				Long id = (Long) iterator.next();
-				if (zero.equals(id)) {
-					continue;
-				}
-				Botao botao = (Botao) botoes.get(id);
-				if (botao instanceof Goleiro) {
-					Goleiro goleiro = (Goleiro) botao;
-					desenhaGoleiro(goleiro, g2d);
-				} else {
-					desenhaBotao(botao, g2d);
-				}
+			synchronized (botoes) {
+				for (Iterator iterator = botoes.keySet().iterator(); iterator
+						.hasNext();) {
+					Long id = (Long) iterator.next();
+					if (zero.equals(id)) {
+						continue;
+					}
+					Botao botao = (Botao) botoes.get(id);
+					if (botao instanceof Goleiro) {
+						Goleiro goleiro = (Goleiro) botao;
+						desenhaGoleiro(goleiro, g2d);
+					} else {
+						desenhaBotao(botao, g2d);
+					}
 
+				}
 			}
 			desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
 		}
