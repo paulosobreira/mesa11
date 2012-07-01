@@ -9,6 +9,7 @@ public class JogadaMesa11 implements Serializable {
 	private Point pontoClicado;
 	private Point pontoSolto;
 	private int idGoleiro;
+	private long idBtnJogadaAssitida;
 	private double rotacaoGoleiro;
 
 	public JogadaMesa11(String timeClienteOnline,
@@ -20,6 +21,14 @@ public class JogadaMesa11 implements Serializable {
 
 	public String getTimeClienteOnline() {
 		return timeClienteOnline;
+	}
+
+	public long getIdBtnJogadaAssitida() {
+		return idBtnJogadaAssitida;
+	}
+
+	public void setIdBtnJogadaAssitida(long idBtnJogadaAssitida) {
+		this.idBtnJogadaAssitida = idBtnJogadaAssitida;
 	}
 
 	public void setTimeClienteOnline(String timeClienteOnline) {

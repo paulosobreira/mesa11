@@ -292,11 +292,9 @@ public class ControleCampeonatoServidor {
 			map.put(ConstantesMesa11.NUMERO_RODADAS, campeonatoMesa11
 					.getTimesCampeonatoMesa11().size() - 1);
 			map.put(ConstantesMesa11.DADOS_CAMPEONATO, dadoscampeonato);
-
 			List<RodadaCampeonatoMesa11> rodadaCampeonatoMesa11Lista = new ArrayList<RodadaCampeonatoMesa11>(
 					(Collection<RodadaCampeonatoMesa11>) campeonatoMesa11
 							.getRodadaCampeonatoMesa11());
-
 			Collections.sort(rodadaCampeonatoMesa11Lista,
 					new Comparator<RodadaCampeonatoMesa11>() {
 						@Override
