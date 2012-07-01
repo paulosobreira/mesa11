@@ -130,10 +130,8 @@ public class MonitorJogo extends Thread {
 						}
 					});
 					if (threadGol != null && !threadGol.isAlive()) {
-						dadosJogoSrvMesa11.setDica(null);
 						threadGol.start();
 					}
-
 				}
 				controleJogo.centralizaBola();
 			}
@@ -164,10 +162,14 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
+			while (controleJogo.isAnimando()) {
+				dormir(50);
+			}
 			if (!controleJogo.isAnimando() && animacao != null
 					&& animacao.getTimeStamp() > timeStampAnimacao) {
 				timeStampAnimacao = animacao.getTimeStamp();
 				controleJogo.executaAnimacao(animacao);
+				controleJogo.zeraBtnAssistido();
 			}
 			if (erroComunic >= 0) {
 				erroComunic--;

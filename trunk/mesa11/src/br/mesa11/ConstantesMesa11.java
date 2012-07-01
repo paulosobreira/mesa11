@@ -2,7 +2,6 @@ package br.mesa11;
 
 public class ConstantesMesa11 {
 
-
 	public static final String TITULO = "Mesa11 Ver";
 
 	public static String CAMPO_CIMA = "CAMPO_CIMA";
@@ -67,7 +66,7 @@ public class ConstantesMesa11 {
 
 	public static final int PERIMETRO = 400;
 
-	public static final int DIAMENTRO_BOTAO = 128;
+	public static final int DIAMENTRO_BOTAO = 138;
 
 	public static final int RAIO_BOTAO = DIAMENTRO_BOTAO / 2;
 	public static final String GOLEIRO_ROTACAO = "GOLEIRO_ROTACAO";
@@ -119,5 +118,6 @@ public class ConstantesMesa11 {
 	public static final String OBTER_JOGADORES_CAMPEONATO = "OBTER_JOGADORES_CAMPEONATO";
 	public static final String CRIAR_JOGO_CAMPEONATO = "CRIAR_JOGO_CAMPEONATO";
 	public static final String RODADA_ATUAL_CAMPEONATO = "RODADA_ATUAL_CAMPEONATO";
+	public static final String JOGADA_ASSITIDA = "JOGADA_ASSITIDA";
 
 }

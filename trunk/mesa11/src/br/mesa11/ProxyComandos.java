@@ -65,6 +65,9 @@ public class ProxyComandos {
 		} else if (ConstantesMesa11.JOGADA.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.jogada((JogadaMesa11) mesa11TO
 					.getData());
+		} else if (ConstantesMesa11.JOGADA_ASSITIDA.equals(mesa11TO.getComando())) {
+			return controleJogosServidor.jogadaAssitida((JogadaMesa11) mesa11TO
+					.getData());
 		} else if (ConstantesMesa11.SAIR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.sairJogo((String) mesa11TO.getData());
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
@@ -104,8 +107,7 @@ public class ProxyComandos {
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.CRIAR_CAMPEONATO.equals(mesa11TO
 				.getComando())) {
-			return controleCampeonatoServidor
-					.criarCampeonato(mesa11TO);
+			return controleCampeonatoServidor.criarCampeonato(mesa11TO);
 		} else if (ConstantesMesa11.LISTAR_CAMPEONATOS.equals(mesa11TO
 				.getComando())) {
 			return controleCampeonatoServidor.listarCampeonatos();

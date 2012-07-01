@@ -203,7 +203,7 @@ public class EditorTime extends JPanel {
 	}
 
 	private Component gerarEnviarImagem() {
-		final int lado = ConstantesMesa11.DIAMENTRO_BOTAO + 10;
+		final int lado = ConstantesMesa11.DIAMENTRO_BOTAO;
 		BufferedImage botaoImg = new BufferedImage(lado, lado,
 				BufferedImage.TYPE_INT_ARGB);
 		imgLocalIconLabel.setIcon(new ImageIcon(botaoImg));
@@ -245,8 +245,8 @@ public class EditorTime extends JPanel {
 						BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 				graphics2d.setColor(Color.WHITE);
-				graphics2d.fillRect(0, 0, botaoImg.getWidth(), botaoImg
-						.getWidth());
+				graphics2d.fillRect(0, 0, botaoImg.getWidth(),
+						botaoImg.getWidth());
 				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor), (menor));
 				graphics2d.setClip(externo);
 				graphics2d.drawImage(botaoImg, 0, 0, null);
@@ -276,8 +276,9 @@ public class EditorTime extends JPanel {
 				NnpeTO mesa11to = new NnpeTO();
 				if (Util.isNullOrEmpty(nomeImgIconLabel)
 						|| imagemEnviar == null) {
-					JOptionPane.showMessageDialog(EditorTime.this, Lang
-							.msg("nomeVazio"), "", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(EditorTime.this,
+							Lang.msg("nomeVazio"), "",
+							JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				mesa11to.setComando(ConstantesMesa11.ENVIAR_IMAGEM);
@@ -291,8 +292,8 @@ public class EditorTime extends JPanel {
 				if (ConstantesMesa11.OK.equals(EditorTime.this.controleJogo
 						.enviarObjeto(mesa11to))) {
 					recarregarComboImagens();
-					JOptionPane.showMessageDialog(EditorTime.this, Lang
-							.msg("imagemEnviada"), "",
+					JOptionPane.showMessageDialog(EditorTime.this,
+							Lang.msg("imagemEnviada"), "",
 							JOptionPane.INFORMATION_MESSAGE);
 					if (comboBoxNomeImgs != null) {
 						comboBoxNomeImgs.setSelectedItem(nomeImgIconLabel);
@@ -400,8 +401,7 @@ public class EditorTime extends JPanel {
 			return;
 		}
 		ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-				.getMesa11Applet().getCodeBase()
-				+ "midia/" + arquivo);
+				.getMesa11Applet().getCodeBase() + "midia/" + arquivo);
 		if (icon != null)
 			imgRemotaIconLabel.setIcon(icon);
 
@@ -441,8 +441,8 @@ public class EditorTime extends JPanel {
 
 	private Component gerarTabelaAtributosBotao() {
 		tabelaBotoes = new JTable();
-		final BotaoTableModel botaoTableModel = new BotaoTableModel(time
-				.getBotoes(), controleJogo);
+		final BotaoTableModel botaoTableModel = new BotaoTableModel(
+				time.getBotoes(), controleJogo);
 		tabelaBotoes.setModel(botaoTableModel);
 		botaoTableModel.addMouseListener(tabelaBotoes);
 		TableColumn columnNome = tabelaBotoes.getColumnModel().getColumn(0);
@@ -732,8 +732,8 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}
@@ -750,8 +750,8 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}
@@ -767,8 +767,8 @@ public class EditorTime extends JPanel {
 		labelCor3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}
@@ -785,8 +785,8 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}
@@ -803,8 +803,8 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}
@@ -821,8 +821,8 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Color color = JColorChooser.showDialog(EditorTime.this, Lang
-						.msg("escolhaCor"), Color.WHITE);
+				Color color = JColorChooser.showDialog(EditorTime.this,
+						Lang.msg("escolhaCor"), Color.WHITE);
 				if (color == null) {
 					return;
 				}

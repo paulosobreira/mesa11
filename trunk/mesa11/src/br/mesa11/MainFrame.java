@@ -180,8 +180,8 @@ public class MainFrame {
 				String msg = Lang.msg("feitoPor")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg, Lang
-						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, msg,
+						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -212,6 +212,32 @@ public class MainFrame {
 			}
 		});
 		menuJogo.add(iniciarLivre);
+
+		JMenuItem iniciarLivreAssis = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("iniciarJogoLivreAssis");
+			}
+
+		};
+		iniciarLivreAssis.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo != null) {
+					controleJogo.limparJogo();
+				}
+				controleJogo = new ControleJogo(frame);
+				controleJogo.inicializaVideo();
+				frame.setSize(700, 800);
+				frame.setVisible(true);
+				controleJogo.centroCampo();
+				controleJogo.setZoom(0.3);
+				controleJogo.setCodeBase(codeBase);
+				controleJogo.iniciaJogoLivreAssistido();
+			}
+		});
+		menuJogo.add(iniciarLivreAssis);
+
 		JMenuItem bolaPenaltiCima = new JMenuItem() {
 			public String getText() {
 				return Lang.msg("bolaPenaltiCima");

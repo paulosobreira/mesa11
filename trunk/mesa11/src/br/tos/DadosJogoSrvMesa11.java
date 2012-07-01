@@ -10,6 +10,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String nomeJogo;
 	private String nomeCriador;
 	private boolean saiuCriador;
+	private boolean assistido = true;
 	private String nomeVisitante;
 	private boolean saiuVisitante;
 	private boolean jogoVsCpu;
@@ -39,6 +40,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String dica;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
+
+	public boolean isAssistido() {
+		return assistido;
+	}
+
+	public void setAssistido(boolean assistido) {
+		this.assistido = assistido;
+	}
 
 	public boolean isJogoCampeonatoIniciado() {
 		return jogoCampeonatoIniciado;

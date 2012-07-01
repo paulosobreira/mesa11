@@ -31,6 +31,9 @@ public class MesaMouseListener extends MouseAdapter {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if (controleJogo.isAssistido()) {
+			return;
+		}
 		if (controleJogo.isJogoTerminado()) {
 			return;
 		}
@@ -52,6 +55,9 @@ public class MesaMouseListener extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
+		if (controleJogo.isAssistido()) {
 			return;
 		}
 		selecionaBotao(e);
@@ -93,12 +99,15 @@ public class MesaMouseListener extends MouseAdapter {
 			if (botao instanceof Goleiro) {
 				continue;
 			}
-			List raioPonto = GeoUtil.drawBresenhamLine(pontoClicado, botao
-					.getCentro());
+			List raioPonto = GeoUtil.drawBresenhamLine(pontoClicado,
+					botao.getCentro());
 			if (raioPonto.size() <= botao.getRaio()) {
 				controleJogo.setBotaoSelecionado(botao);
 				break;
 			}
+		}
+		if (controleJogo.isAssistido()) {
+			controleJogo.setarBtnAssistido();
 		}
 
 	}
