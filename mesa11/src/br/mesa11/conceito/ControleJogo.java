@@ -2333,7 +2333,7 @@ public class ControleJogo {
 					int cont = 0;
 					while (isAnimando()) {
 						try {
-							Thread.sleep(500);
+							Thread.sleep(50);
 							cont++;
 							if (cont > 50) {
 								Logger.logar("threadAtualizaBotoesClienteOnline cont  "
