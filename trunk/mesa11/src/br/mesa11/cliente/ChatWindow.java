@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,6 +31,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
+import br.applet.MesaAppletLocalDummy;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
@@ -270,8 +273,12 @@ public class ChatWindow {
 		JPanel ePanel = new JPanel(new GridLayout(1, 2));
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		JPanel chatPanel = new JPanel();
+		String ver = " Main";
+		if (controleChatCliente != null) {
+			ver = controleChatCliente.getVersao();
+		}
 		chatPanel.setBorder(new TitledBorder("Chat Room "
-				+ ConstantesMesa11.TITULO + controleChatCliente.getVersao()));
+				+ ConstantesMesa11.TITULO + ver));
 		JPanel usersPanel = new JPanel();
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
@@ -378,12 +385,20 @@ public class ChatWindow {
 	}
 
 	public static void main(String[] args) {
-		ChatWindow paddockWindow = new ChatWindow(null);
+		MesaAppletLocalDummy applet = new MesaAppletLocalDummy();
+		ControleChatCliente controleChatCliente = new ControleChatCliente(
+				applet, new SessaoCliente());
+		ChatWindow paddockWindow = new ChatWindow(controleChatCliente);
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(paddockWindow.getMainPanel());
-		frame.setSize(820, 380);
+		frame.setSize(820, 410);
 		frame.setVisible(true);
-		frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.exit(0);
+			}
+		});
 	}
 
 	public void atualizar(DadosMesa11 dadosMesa11) {

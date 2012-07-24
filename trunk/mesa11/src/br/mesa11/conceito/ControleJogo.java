@@ -118,7 +118,7 @@ public class ControleJogo {
 	private JFrame progressBarFrame;
 	private Point posicaoBolaJogada;
 	private Thread autoCloseProgressBar;
-	private boolean assistido;
+	private boolean autoMira;
 	private Botao btnAssistido;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
@@ -361,7 +361,7 @@ public class ControleJogo {
 	public void iniciaJogoOnline(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
 			Time timeCasa, Time timeVisita) {
 		bola = new Bola(0);
-		assistido = dadosJogoSrvMesa11.isAssistido();
+		autoMira = dadosJogoSrvMesa11.isAutoMira();
 		if (isJogoOnlineCliente()) {
 			BufferedImage buff = CarregadorRecursos.carregaImg("bola.png");
 			BufferedImage newBuffer = new BufferedImage((buff.getWidth()),
@@ -1933,7 +1933,7 @@ public class ControleJogo {
 	}
 
 	public boolean isAssistido() {
-		return assistido;
+		return autoMira;
 	}
 
 	public String verGols(Time time) {
@@ -2534,10 +2534,10 @@ public class ControleJogo {
 			return;
 		}
 
-		if (!assistido && !timeJogadaVez.isControladoCPU()) {
+		if (!autoMira && !timeJogadaVez.isControladoCPU()) {
 			return;
 		}
-		if (assistido && !timeJogadaVez.isControladoCPU()
+		if (autoMira && !timeJogadaVez.isControladoCPU()
 				&& btnAssistido == null) {
 			return;
 		}
@@ -2609,7 +2609,7 @@ public class ControleJogo {
 
 		Set descartados = new HashSet();
 		Botao btnPrximo = null;
-		if (assistido && !timeJogadaVez.isControladoCPU()
+		if (autoMira && !timeJogadaVez.isControladoCPU()
 				&& btnAssistido != null) {
 			btnPrximo = btnAssistido;
 		} else {
@@ -2650,7 +2650,7 @@ public class ControleJogo {
 						bola.getCentro()) > btnPrximo.getRaio()
 				&& !btnPrximo.getShape(1).intersects(
 						bola.getShape(1).getBounds())) {
-			if (assistido && !timeJogadaVez.isControladoCPU()) {
+			if (autoMira && !timeJogadaVez.isControladoCPU()) {
 				break;
 			}
 			Logger.logar("Recalculando caluclarPontGol Gol " + gol
@@ -3360,7 +3360,7 @@ public class ControleJogo {
 	}
 
 	public void iniciaJogoLivreAssistido() {
-		assistido = true;
+		autoMira = true;
 		iniciaJogoLivre();
 	}
 
@@ -3390,7 +3390,7 @@ public class ControleJogo {
 	}
 
 	public void zeraBtnAssistido() {
-		if (assistido) {
+		if (autoMira) {
 			btnAssistido = null;
 		}
 	}
