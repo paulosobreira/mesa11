@@ -243,6 +243,11 @@ img {
 				Jogar Offline
 				<img src="webstart.png" border="0">
 			</a> 
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<a id="link" href="mesa11edit.jnlp" style="text-align: left;">
+				Editar Times
+				<img src="webstart.png" border="0">
+			</a> 
 
 		</div><br>
 		<div id="shotsPromo" class="highslide-gallery">

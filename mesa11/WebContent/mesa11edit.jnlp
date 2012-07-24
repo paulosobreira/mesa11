@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jnlp spec="1.0+"
-	codebase="http://{host}/mesa11/" href="mesa11online.jnlp">
+	codebase="http://{host}/mesa11/" href="mesa11edit.jnlp">
 	<information>
-		<title>Mesa11 Concentracao</title>
+		<title>Mesa11 Editor</title>
 		<vendor>Paulo Sobreira</vendor>
 		<homepage href="http://sowbreira.appspot.com/" />
-		<description>Mesa-11 (Futebol de Botao)</description>
+		<description>Mesa-11 (Futebol de Botao) Editor De times</description>
 		<offline-allowed />
 		<icon href="icon.png"/>  
  	</information>
 
+	<security>
+		<all-permissions />
+	</security>	
+
 	<resources>
 		<j2se version="1.7"  />
-		<jar href="mesa11.jar" />
+		<jar href="a-mesa11.jar" />
     </resources>
 
 	  <applet-desc 
