@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import br.applet.Mesa11Applet;
+import br.applet.MesaAppletLocalDummy;
 import br.hibernate.Botao;
 import br.hibernate.Goleiro;
 import br.hibernate.Time;
@@ -87,6 +88,12 @@ public class ControleChatCliente {
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
 		threadAtualizadora.start();
+	}
+
+	public ControleChatCliente(MesaAppletLocalDummy applet,
+			SessaoCliente sessaoCliente) {
+		this(applet);
+		this.sessaoCliente = sessaoCliente;
 	}
 
 	public void logar() {
