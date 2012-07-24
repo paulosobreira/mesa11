@@ -10,12 +10,9 @@
 		<offline-allowed />
 	</information>
 
-	<security>
-		<all-permissions />
-	</security>	
-	
 	<resources>
-		<jar href="a-mesa11.jar" />
+		<j2se version="1.7"  />
+		<jar href="mesa11.jar" />
     </resources>
 
 	<application-desc

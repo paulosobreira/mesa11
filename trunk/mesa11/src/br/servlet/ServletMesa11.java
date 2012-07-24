@@ -68,6 +68,7 @@ public class ServletMesa11 extends HttpServlet {
 		Lang.setSrvgame(true);
 		try {
 			atualizarJnlp("mesa11online.jnlp");
+			atualizarJnlp("mesa11edit.jnlp");
 			atualizarJnlp("mesa11.jnlp");
 		} catch (Exception e) {
 			Logger.logarExept(e);
