@@ -10,7 +10,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String nomeJogo;
 	private String nomeCriador;
 	private boolean saiuCriador;
-	private boolean autoMira = true;
+	private boolean autoMira;
 	private String nomeVisitante;
 	private boolean saiuVisitante;
 	private boolean jogoVsCpu;

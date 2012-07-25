@@ -135,15 +135,6 @@ public class MonitorJogo extends Thread {
 				}
 				controleJogo.centralizaBola();
 			}
-			if (timeVez != null
-					&& !timeVez.equals(dadosJogoSrvMesa11.getTimeVez())
-					&& controleJogo != null && !controleJogo.isAnimando()
-					&& !controleJogo.isEsperandoJogadaOnline()
-					&& controleJogo.verificaPosicaoDiffBotoes()) {
-				controleJogo.atualizaBotoesClienteOnline(
-						this.timeStampAnimacao, true);
-			}
-
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
 			if (erroComunic >= 0) {
 				erroComunic--;
