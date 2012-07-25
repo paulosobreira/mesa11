@@ -29,8 +29,8 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 
 		if (newzoom >= 1) {
 			mesaPanel.mouseZoom = 1;
-		} else if (newzoom <= 0.1) {
-			mesaPanel.mouseZoom = 0.1;
+		} else if (newzoom <= 0.3) {
+			mesaPanel.mouseZoom = 0.3;
 		} else {
 			mesaPanel.mouseZoom = newzoom;
 		}

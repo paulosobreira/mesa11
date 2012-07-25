@@ -2333,9 +2333,9 @@ public class ControleJogo {
 					int cont = 0;
 					while (isAnimando()) {
 						try {
-							Thread.sleep(50);
+							Thread.sleep(5);
 							cont++;
-							if (cont > 50) {
+							if (cont > 50000) {
 								Logger.logar("threadAtualizaBotoesClienteOnline cont  "
 										+ cont);
 								return;
