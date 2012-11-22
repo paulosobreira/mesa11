@@ -146,8 +146,8 @@ public class ControleLogin {
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
 		ServletMesa11.email.sendSimpleMail("Mesa-11 Game Password",
-				new String[] { email }, "admin@f1mane.com",
-				"Your game user:password is " + nome + ":" + senha, false);
+				new String[] { email }, "Your game user:password is " + nome
+						+ ":" + senha, false);
 	}
 
 	public Object logar(ClienteMesa11 clienteMesa11) {
