@@ -258,13 +258,13 @@ public class ControleJogo {
 
 	public ControleJogo(JogoServidor jogoServidor) {
 		this.frame = frame;
+		this.jogoServidor = jogoServidor;
 		mesaPanel = new MesaPanel(this);
 		scrollPane = new JScrollPane(mesaPanel,
 				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		bola = new Bola(0);
 		botoes.put(bola.getId(), bola);
-		this.jogoServidor = jogoServidor;
 	}
 
 	public List<Animacao> getListaAnimacoes() {

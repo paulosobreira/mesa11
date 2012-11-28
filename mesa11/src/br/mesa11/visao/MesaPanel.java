@@ -15,10 +15,8 @@ import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -136,8 +134,12 @@ public class MesaPanel extends JPanel {
 
 	public MesaPanel(ControleJogo controleJogo) {
 		if (!controleJogo.isJogoOnlineSrvidor()) {
-			grama1 = CarregadorRecursos.carregaImg("grama1.jpg");
-			grama2 = CarregadorRecursos.carregaImg("grama2.jpg");
+			try {
+				grama1 = CarregadorRecursos.carregaImg("grama1.jpg");
+				grama2 = CarregadorRecursos.carregaImg("grama2.jpg");
+			} catch (Exception e) {
+				Logger.logarExept(e);
+			}
 		}
 		if (Logger.debug) {
 			grama1 = null;
@@ -753,7 +755,7 @@ public class MesaPanel extends JPanel {
 			controleJogo.mudarDica();
 			dica = controleJogo.getDica();
 		}
-		
+
 		Color corTexto = null;
 		if (ConstantesMesa11.PROBLEMA_REDE.equals(dica)) {
 			g2d.setColor(red);
