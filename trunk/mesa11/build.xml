@@ -53,6 +53,7 @@
 			<fileset dir="src">
 				<include name="br/recursos/**/*.wav" />
 				<include name="br/recursos/**/*.png" />
+				<include name="br/recursos/**/*.jpg" />
 			</fileset>
 		</jar>
 	</target>
@@ -92,7 +93,7 @@
 				<include name="WEB-INF/lib/mesa11.jar" />
 				<include name="a-mesa11.jar" />
 				<include name="mesa11.jar" />
-				<include name="topwarRecursos.jar" />
+				<include name="mesa11Recursos.jar" />
 			</fileset>
 		</war>
 	</target>
