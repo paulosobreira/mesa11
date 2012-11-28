@@ -248,18 +248,19 @@ img {
 
 		</div><br>
 		<div id="shotsPromo" class="highslide-gallery">
-			<table style="text-align: center;padding: 15px">
+			<table style="text-align: center;padding: 5px">
 			<tr>
 			<td colspan="2">Veja Tambem</td>
 			</tr>
-			<tr><td>
+			<tr>
+			<td  style="text-align: center;padding: 10px">	
 				<a id="link" 
 					href="../../f1mane" style="text-align: center;"
 					target="_BLANK">  F1-mane </a><br><br>
 				<a href="./../f1mane/fm1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../f1mane/fm1.jpg" width="130" height="120" /></a>
 				<a href="./../f1mane/fm2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../f1mane/fm2.jpg" width="130" height="120" /></a>
 			</td>
-			<td>				
+			<td  style="text-align: center;padding: 10px">					
 				<a id="link" 
 					href="../../mesa11" style="text-align: center;"
 					target="_BLANK">  Top-War </a><br><br>
