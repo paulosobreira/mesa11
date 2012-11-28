@@ -21,7 +21,7 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJar,atualizaLib,sign_jar,criarWar">
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,criarWar">
 	</target>
 
 	<target name="atualizaVersao">
@@ -48,6 +48,15 @@
 		</copy>
 	</target>
 
+	<target name="criarJarRecursos">
+		<jar jarfile="mesa11Recursos.jar" compress="true" manifest="MANIFEST.MF">
+			<fileset dir="src">
+				<include name="br/recursos/**/*.wav" />
+				<include name="br/recursos/**/*.png" />
+			</fileset>
+		</jar>
+	</target>
+
 	<target name="criarJar">
 		<jar jarfile="mesa11.jar" compress="true" manifest="WebContent/META-INF/MANIFEST.MF">
 			<fileset dir="build">
@@ -56,6 +65,9 @@
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
+				<exclude name="**/*.jpg" />
+				<exclude name="**/*.png" />
+				<exclude name="**/*.wav" />
 			</fileset>
 		</jar>
 	</target>
@@ -64,8 +76,10 @@
 		<delete file="WebContent/WEB-INF/lib/mesa11.jar" />
 		<delete file="WebContent/mesa11.jar" />
 		<copy file="mesa11.jar" todir="WebContent" />
+		<copy file="mesa11Recursos.jar" todir="WebContent" />
 		<copy file="mesa11.jar" todir="WebContent/WEB-INF/lib" />
 		<delete file="mesa11.jar" />
+		<delete file="mesa11Recursos.jar" />
 	</target>
 
 	<target name="criarWar" depends="">
@@ -78,6 +92,7 @@
 				<include name="WEB-INF/lib/mesa11.jar" />
 				<include name="a-mesa11.jar" />
 				<include name="mesa11.jar" />
+				<include name="topwarRecursos.jar" />
 			</fileset>
 		</war>
 	</target>
