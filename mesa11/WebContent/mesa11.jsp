@@ -182,23 +182,20 @@ img {
 				<h1 id="description">Futebol de botão</h1>
 			</span>
 			<a id="link" style="position: absolute; left: 150px; top: 10px;font-size: 16px;"
-				href="http://twitter.com/mesa11" style="text-align: right;"
-				target="_BLANK">Twitter</a>
-			<a id="link" style="position: absolute; left: 250px; top: 10px;font-size: 16px;"
+				href="http://sowbra.com.br" style="text-align: right;"
+				target="_BLANK">Sowbra Games</a>
+			<a id="link" style="position: absolute; left: 320px; top: 10px;font-size: 16px;"
 				href="http://sowbreira.appspot.com/" style="text-align: right;"
-				target="_BLANK">Site Autor</a>
-			<a id="link" style="position: absolute; left: 370px; top: 10px;font-size: 16px;"
-				href="http://www.java.com/" style="text-align: right;"
-				target="_BLANK">Instale o Java</a>		
+				target="_BLANK">Sowbreira</a>
 			<a id="link" style="position: absolute; left: 150px; top: 50px;font-size: 16px;"
 				style="text-align: right;" onclick="document.getElementById('pop').style.display='block';">
 				Como Jogar</a>				
 			<a id="link" style="position: absolute; left: 300px; top: 50px;font-size: 16px;"
-				href="mailto:sowbreira@gmail.com" style="text-align: right;"
-				target="_BLANK">Sugestões,Colaborar ...</a>
-			<br>					
+				href="http://www.java.com/" style="text-align: right;"
+				target="_BLANK">Instale o Java</a>
+			<br>				
 		</div>
-		<div id="pop" style="background-color: #F0F0F0;">
+		<div id="pop" style="background-color: white">
 	    	Mesa 11 Futebol de botão
 	    	<a href="#" style="position:absolute; left:92%" onclick="document.getElementById('pop').style.display='none';">[X]</a>
 			<p style="color: #0084B4;">
@@ -234,32 +231,44 @@ img {
 			<a href="m11-10.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="m11-10.jpg" width="130" height="120" /></a><br>
 		</div>
 		<div style="text-align: center;">
-			<a id="link"  href="mesa11online.jnlp" style="text-align: left;">
+			<a id="link"  href="mesa11online.jnlp" style="text-align: left; padding: 5px;">
 				Jogar Online  
 				<img src="webstart.png" border="0">
 			</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<a id="link" href="mesa11.jnlp" style="text-align: left;">
+			&nbsp;&nbsp;&nbsp;
+			<a id="link" href="mesa11.jnlp" style="text-align: left; padding: 5px;">
 				Jogar Offline
 				<img src="webstart.png" border="0">
 			</a> 
-			&nbsp;&nbsp;&nbsp;&nbsp;
-			<a id="link" href="mesa11edit.jnlp" style="text-align: left;">
+			&nbsp;&nbsp;&nbsp;
+			<a id="link" href="mesa11edit.jnlp" style="text-align: left; padding: 5px;">
 				Editar Times
 				<img src="webstart.png" border="0">
 			</a> 
 
 		</div><br>
 		<div id="shotsPromo" class="highslide-gallery">
-			Veja Tambem <br><br>
-			<a id="link" 
-				href="../../f1mane" style="text-align: center;"
-				target="_BLANK">  F1-mane </a><br>
-			<a href="./../f1mane/fm1.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="./../f1mane/fm1.jpg" width="130" height="120" /></a>
-			<a href="./../f1mane/fm2.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="./../f1mane/fm2.jpg" width="130" height="120" /></a>
-			<a href="./../f1mane/fm3.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="./../f1mane/fm3.jpg" width="130" height="120" /></a>
-			<a href="./../f1mane/fm4.jpg" style="padding-left: 10px; padding-right: 10px;" onclick="return hs.expand(this)"> <img src="./../f1mane/fm4.jpg" width="130" height="120" /></a>
-		</div>		
+			<table style="text-align: center;padding: 15px">
+			<tr>
+			<td colspan="2">Veja Tambem</td>
+			</tr>
+			<tr><td>
+				<a id="link" 
+					href="../../f1mane" style="text-align: center;"
+					target="_BLANK">  F1-mane </a><br><br>
+				<a href="./../f1mane/fm1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../f1mane/fm1.jpg" width="130" height="120" /></a>
+				<a href="./../f1mane/fm2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="./../f1mane/fm2.jpg" width="130" height="120" /></a>
+			</td>
+			<td>				
+				<a id="link" 
+					href="../../mesa11" style="text-align: center;"
+					target="_BLANK">  Top-War </a><br><br>
+				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw1.jpg" width="130" height="120" /></a>
+				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw2.jpg" width="130" height="120" /></a>
+			</td></tr>
+			</table>
+		</div>			
+	
 	</div>
 	</td>
 	</tr>
