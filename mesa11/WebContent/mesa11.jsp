@@ -264,7 +264,7 @@ img {
 					href="../../mesa11" style="text-align: center;"
 					target="_BLANK">  Top-War </a><br><br>
 				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw1.jpg" width="130" height="120" /></a>
-				<a href="../../topwar/tw1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw2.jpg" width="130" height="120" /></a>
+				<a href="../../topwar/tw2.jpg" style="padding: 5px" onclick="return hs.expand(this)"> <img  src="../../topwar/tw2.jpg" width="130" height="120" /></a>
 			</td></tr>
 			</table>
 		</div>			
