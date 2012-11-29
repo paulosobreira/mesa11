@@ -40,6 +40,25 @@ public class CarregadorRecursos {
 		return null;
 	}
 
+	public static BufferedImage carregaBufferedImage(String file) {
+		BufferedImage buffer = null;
+		try {
+			ImageIcon icon = new ImageIcon(
+					CarregadorRecursos.class.getResource(file));
+			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			if (buffer == null) {
+				Logger.logar("img=" + buffer);
+				System.exit(1);
+			}
+
+		} catch (Exception e) {
+			Logger.logar("Erro gerando transparencia para :" + file);
+			Logger.logarExept(e);
+		}
+
+		return buffer;
+	}
+
 	public static BufferedImage carregaBufferedImageTransparecia(String file,
 			Color cor) {
 		BufferedImage buffer = carregaImagem(file);
