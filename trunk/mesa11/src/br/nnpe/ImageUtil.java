@@ -11,6 +11,8 @@ import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.awt.Transparency;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
@@ -27,6 +29,19 @@ import javax.swing.ImageIcon;
  */
 public class ImageUtil {
 	// This method returns a buffered image with the contents of an image
+
+	public static BufferedImage geraResize(BufferedImage src, double fatorx,
+			double fatory) {
+		AffineTransform afZoom = new AffineTransform();
+		afZoom.setToScale(fatorx, fatory);
+		BufferedImage dst = new BufferedImage((int) Math.round(src.getWidth()
+				* fatorx), (int) Math.round(src.getHeight() * fatory),
+				BufferedImage.TYPE_INT_ARGB);
+		AffineTransformOp op = new AffineTransformOp(afZoom,
+				AffineTransformOp.TYPE_BILINEAR);
+		op.filter(src, dst);
+		return dst;
+	}
 
 	public static BufferedImage gerarFade(BufferedImage src, int translucidez) {
 		ImageIcon img = new ImageIcon(src);

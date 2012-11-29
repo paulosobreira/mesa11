@@ -4,11 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +23,7 @@ import java.util.Set;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -27,17 +33,20 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 
 import br.applet.MesaAppletLocalDummy;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
+import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.nnpe.tos.NnpeTO;
 import br.nnpe.tos.SessaoCliente;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
@@ -47,7 +56,7 @@ import br.tos.DadosMesa11;
  * 
  */
 public class ChatWindow {
-
+	protected BufferedImage img;
 	private JPanel mainPanel;
 	private ControleChatCliente controleChatCliente;
 	private JList listaClientes = new JList();
@@ -142,12 +151,30 @@ public class ChatWindow {
 			return Lang.msg("sobre");
 		}
 	};
+
+	private Component compTransp(JComponent c) {
+		c.setBackground(new Color(255, 255, 255, 0));
+		return c;
+	}
+
 	private JLabel infoLabel1 = new JLabel();
 	private Set chatTimes = new HashSet();
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public ChatWindow(ControleChatCliente controleChatCliente) {
-		mainPanel = new JPanel(new BorderLayout());
+		img = ImageUtil.geraResize(
+				CarregadorRecursos.carregaBufferedImage("mesa11-bkg.png"),
+				1.30, 0.79);
+
+		mainPanel = new JPanel(new BorderLayout()) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D graphics2d = (Graphics2D) g;
+				if (img != null)
+					graphics2d.drawImage(img, null, 0, 0);
+			}
+		};
 		if (controleChatCliente != null) {
 			this.controleChatCliente = controleChatCliente;
 			controleChatCliente.setChatWindow(this);
@@ -261,18 +288,49 @@ public class ChatWindow {
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
-						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg,
+						Lang.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
 	}
 
 	private void gerarLayout() {
+		compTransp(textAreaChat);
+		textAreaChat.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
+			}
+		});
+		textAreaChat.addInputMethodListener(new InputMethodListener() {
+
+			@Override
+			public void inputMethodTextChanged(InputMethodEvent event) {
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
+			}
+
+			@Override
+			public void caretPositionChanged(InputMethodEvent event) {
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
+			}
+		});
+		compTransp(listaClientes);
+		compTransp(listaJogosCriados);
+		compTransp(listaJogosAndamento);
 		JPanel cPanel = new JPanel(new BorderLayout());
+		compTransp(cPanel);
 		JPanel ePanel = new JPanel(new GridLayout(1, 2));
+		compTransp(ePanel);
 		mainPanel.add(cPanel, BorderLayout.CENTER);
 		JPanel chatPanel = new JPanel();
+		compTransp(chatPanel);
 		String ver = " Main";
 		if (controleChatCliente != null) {
 			ver = controleChatCliente.getVersao();
@@ -280,6 +338,7 @@ public class ChatWindow {
 		chatPanel.setBorder(new TitledBorder("Chat Room "
 				+ ConstantesMesa11.TITULO + ver));
 		JPanel usersPanel = new JPanel();
+		compTransp(usersPanel);
 		usersPanel.setBorder(new TitledBorder("Jogadores Online") {
 			public String getTitle() {
 				return Lang.msg("jogadoresOnline");
@@ -288,11 +347,13 @@ public class ChatWindow {
 		cPanel.add(chatPanel, BorderLayout.CENTER);
 		mainPanel.add(ePanel, BorderLayout.EAST);
 		JPanel inputPanel = new JPanel();
+		compTransp(inputPanel);
 		cPanel.add(inputPanel, BorderLayout.SOUTH);
 		ePanel.add(usersPanel);
 		JPanel jogsPanel = new JPanel(new GridLayout(2, 1));
-
+		compTransp(jogsPanel);
 		JPanel jogsPanelCriados = new JPanel();
+		compTransp(jogsPanelCriados);
 		jogsPanelCriados.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
 				return Lang.msg("jogosCriados");
@@ -300,6 +361,7 @@ public class ChatWindow {
 		}));
 
 		JPanel jogsAndamentoPanel = new JPanel();
+		compTransp(jogsAndamentoPanel);
 		jogsAndamentoPanel.setBorder((new TitledBorder("Lista de Jogos") {
 			public String getTitle() {
 				return Lang.msg("jogosAndamnto");
@@ -318,6 +380,7 @@ public class ChatWindow {
 				return new Dimension(120, 340);
 			}
 		};
+		compTransp(jogsPane);
 		usersPanel.add(jogsPane);
 		JScrollPane jogsCriados = new JScrollPane(listaJogosCriados) {
 			@Override
@@ -326,6 +389,7 @@ public class ChatWindow {
 				return new Dimension(120, 155);
 			}
 		};
+		compTransp(jogsCriados);
 		JScrollPane jogsAndamento = new JScrollPane(listaJogosAndamento) {
 			@Override
 			public Dimension getPreferredSize() {
@@ -333,9 +397,11 @@ public class ChatWindow {
 				return new Dimension(120, 155);
 			}
 		};
+		compTransp(jogsAndamento);
 		jogsPanelCriados.add(jogsCriados);
 		jogsAndamentoPanel.add(jogsAndamento);
 		JPanel buttonsPanel = new JPanel();
+		compTransp(buttonsPanel);
 		buttonsPanel.setLayout(new GridLayout(3, 4));
 		buttonsPanel.add(entrarJogo);
 		buttonsPanel.add(criarJogo);
@@ -364,6 +430,7 @@ public class ChatWindow {
 		buttonsPanel.add(verCampeonato);
 		buttonsPanel.add(sobre);
 		JPanel panelTextoEnviar = new JPanel();
+		compTransp(panelTextoEnviar);
 		panelTextoEnviar.setBorder(new TitledBorder("Texto Enviar") {
 			public String getTitle() {
 				return Lang.msg("textoEnviar");
@@ -376,7 +443,24 @@ public class ChatWindow {
 		inputPanel.add(buttonsPanel, BorderLayout.CENTER);
 		inputPanel.add(infoLabel1, BorderLayout.SOUTH);
 		chatPanel.setLayout(new BorderLayout());
-		chatPanel.add(new JScrollPane(textAreaChat), BorderLayout.CENTER);
+		JScrollPane jScrollPane = new JScrollPane(textAreaChat);
+		jScrollPane.addInputMethodListener(new InputMethodListener() {
+
+			@Override
+			public void inputMethodTextChanged(InputMethodEvent event) {
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
+			}
+
+			@Override
+			public void caretPositionChanged(InputMethodEvent event) {
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
+			}
+		});
+		chatPanel.add(compTransp(jScrollPane), BorderLayout.CENTER);
 
 	}
 
@@ -450,12 +534,13 @@ public class ChatWindow {
 					boolean cellHasFocus) {
 				Object placar = mapaJogosCriados.get(nmJogo);
 				JPanel jPanel = new JPanel(new GridLayout(1, 1));
+				compTransp(jPanel);
 				if (placar == null) {
 					jPanel.add(new JLabel(nmJogo.toString()));
 				} else {
 					jPanel.setLayout(new GridLayout(2, 1));
-					jPanel.add(new JLabel(nmJogo.toString()));
-					jPanel.add(new JLabel(placar.toString()));
+					jPanel.add(compTransp(new JLabel(nmJogo.toString())));
+					jPanel.add(compTransp(new JLabel(placar.toString())));
 				}
 
 				if (isSelected) {
@@ -463,11 +548,11 @@ public class ChatWindow {
 				} else {
 					for (int i = 0; i < jPanel.getComponentCount(); i++) {
 						Component component = jPanel.getComponent(i);
-						component.setBackground(Color.WHITE);
 					}
-					jPanel.setBackground(Color.WHITE);
 				}
-
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
 				return jPanel;
 			}
 		});
@@ -542,10 +627,15 @@ public class ChatWindow {
 					}
 					jPanel.setBackground(Color.WHITE);
 				}
-
+				if (mainPanel != null) {
+					mainPanel.repaint();
+				}
 				return jPanel;
 			}
 		});
+		if (mainPanel != null) {
+			mainPanel.repaint();
+		}
 
 	}
 
@@ -559,6 +649,9 @@ public class ChatWindow {
 			textAreaChat.append(dadosMesa11.getLinhaChat() + "\n");
 			textAreaChat.setCaretPosition(textAreaChat.getText().length());
 			chatTimes.add(dadosMesa11.getDataTime());
+			if (mainPanel != null) {
+				mainPanel.repaint();
+			}
 		}
 	}
 
@@ -586,6 +679,9 @@ public class ChatWindow {
 		text += " " + Lang.msg("maxJogos") + " " + 10;
 
 		infoLabel1.setText(text);
+		if (mainPanel != null) {
+			mainPanel.repaint();
+		}
 
 	}
 
