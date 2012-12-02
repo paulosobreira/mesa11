@@ -92,6 +92,7 @@
 			<fileset dir="WebContent">
 				<include name="WEB-INF/lib/mesa11.jar" />
 				<include name="a-mesa11.jar" />
+				<include name="a-mesa11Recursos.jar" />
 				<include name="mesa11.jar" />
 				<include name="mesa11Recursos.jar" />
 			</fileset>
@@ -100,6 +101,9 @@
 	<target name="sign_jar">
 		<signjar jar="WebContent/mesa11.jar" signedjar="WebContent/a-mesa11.jar" alias="mesa11-key" keystore="jar-keystore" storepass="123456" keypass="123456">
 		</signjar>
+		<signjar jar="WebContent/mesa11Recursos.jar" signedjar="WebContent/a-mesa11Recursos.jar" alias="mesa11-key" keystore="jar-keystore" storepass="123456" keypass="123456">
+		</signjar>
+
 		<!---<delete file="WebContent/mesa11.jar" />-->
 	</target>
 </project>
