@@ -110,8 +110,8 @@ public class Mesa11Applet extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
@@ -145,8 +145,8 @@ public class Mesa11Applet extends JApplet {
 					connection.setReadTimeout(latenciaReal);
 				stream.writeObject(enviar);
 				stream.flush();
-				connection.setRequestProperty("Content-Length",
-						String.valueOf(byteArrayOutputStream.size()));
+				connection.setRequestProperty("Content-Length", String
+						.valueOf(byteArrayOutputStream.size()));
 				connection.setRequestProperty("Content-Length",
 						"application/x-www-form-urlencoded");
 				connection.getOutputStream().write(
@@ -155,8 +155,8 @@ public class Mesa11Applet extends JApplet {
 					retorno = ZipUtil.descompactarObjeto(connection
 							.getInputStream());
 				} else {
-					ObjectInputStream ois = new ObjectInputStream(
-							connection.getInputStream());
+					ObjectInputStream ois = new ObjectInputStream(connection
+							.getInputStream());
 					retorno = ois.readObject();
 				}
 			} catch (Exception e) {
@@ -170,17 +170,16 @@ public class Mesa11Applet extends JApplet {
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
 				Logger.logar(erroServ.obterErroFormatado());
-				JOptionPane.showMessageDialog(this,
-						Lang.decodeTexto(erroServ.obterErroFormatado()),
-						Lang.msg("erroRecebendo"), JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.decodeTexto(erroServ
+						.obterErroFormatado()), Lang.msg("erroRecebendo"),
+						JOptionPane.ERROR_MESSAGE);
 				return erroServ;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane.showMessageDialog(this,
-						Lang.msg(Lang.decodeTexto(msgSrv.getMessageString())),
-						Lang.msg("msgServidor"),
-						JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(this, Lang.msg(Lang
+						.decodeTexto(msgSrv.getMessageString())), Lang
+						.msg("msgServidor"), JOptionPane.INFORMATION_MESSAGE);
 				return msgSrv;
 			}
 			return retorno;
@@ -192,8 +191,8 @@ public class Mesa11Applet extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(),
-					Lang.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
+					.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
@@ -213,14 +212,14 @@ public class Mesa11Applet extends JApplet {
 					somatorio += longElement.longValue();
 				}
 				int media = (int) (somatorio / 10);
-				if (media > 240) {
-					setLatenciaMinima(240);
+				if (media > ConstantesMesa11.LATENCIA_MAX) {
+					setLatenciaMinima(ConstantesMesa11.LATENCIA_MAX);
 				} else {
 					setLatenciaMinima(media);
 				}
-				if (media < 120)
-					setLatenciaMinima(120);
-				else if (media < 240) {
+				if (media < ConstantesMesa11.LATENCIA_MIN)
+					setLatenciaMinima(ConstantesMesa11.LATENCIA_MIN);
+				else if (media < ConstantesMesa11.LATENCIA_MAX) {
 					setLatenciaMinima(media);
 				}
 				setLatenciaReal(media);
