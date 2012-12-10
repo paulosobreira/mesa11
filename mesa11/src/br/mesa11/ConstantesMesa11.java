@@ -119,5 +119,7 @@ public class ConstantesMesa11 {
 	public static final String CRIAR_JOGO_CAMPEONATO = "CRIAR_JOGO_CAMPEONATO";
 	public static final String RODADA_ATUAL_CAMPEONATO = "RODADA_ATUAL_CAMPEONATO";
 	public static final String JOGADA_ASSITIDA = "JOGADA_ASSITIDA";
+	public static final int LATENCIA_MAX = 240;
+	public static final int LATENCIA_MIN = 120;
 
 }
