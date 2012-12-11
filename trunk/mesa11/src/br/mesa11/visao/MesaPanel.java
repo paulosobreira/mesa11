@@ -308,6 +308,7 @@ public class MesaPanel extends JPanel {
 		desenhaGolsJogo(g2d);
 		desenhaProblemaRede(g2d);
 		desenhaGol(g2d);
+		desenhaLag(g2d);
 		desenhaDebug(g2d);
 
 	}
@@ -1620,7 +1621,7 @@ public class MesaPanel extends JPanel {
 			}
 
 			Point pointDesenhaLag = new Point(limitesViewPort.getBounds().x
-					+ (limitesViewPort.getBounds().width) - 75, Util
+					+ (limitesViewPort.getBounds().width) - 120, Util
 					.inte(limitesViewPort.getBounds().y
 							+ limitesViewPort.getBounds().getHeight() - 90));
 			g2d.setColor(lightWhite);
