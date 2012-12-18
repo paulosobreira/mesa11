@@ -5,12 +5,10 @@ import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.Animacao;
 import br.mesa11.conceito.ControleJogo;
-import br.mesa11.servidor.JogoServidor;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.nnpe.tos.NnpeTO;
 import br.tos.DadosJogoSrvMesa11;
-import br.tos.PosicaoBtnsSrvMesa11;
 
 public class MonitorJogo extends Thread {
 	private ControleChatCliente controleChatCliente;
@@ -38,7 +36,8 @@ public class MonitorJogo extends Thread {
 
 	@Override
 	public void run() {
-		while (!jogoTerminado) {
+		boolean interrrupt = false;
+		while (!jogoTerminado && !interrrupt) {
 			try {
 				dormir(tempoDormir);
 				if (timesSelecionados() && controleJogo == null) {
@@ -61,7 +60,8 @@ public class MonitorJogo extends Thread {
 				} else if (controleJogo != null) {
 					controleJogo.setProblemasRede(false);
 				}
-			} catch (Exception e) {
+			} catch (InterruptedException e) {
+				interrrupt = true;
 				Logger.logarExept(e);
 			}
 		}
@@ -72,7 +72,11 @@ public class MonitorJogo extends Thread {
 				for (int i = 0; i < 50; i++) {
 					if (controleJogo != null)
 						controleJogo.getDadosJogoSrvMesa11().setDica("fimJogo");
-					dormir(150);
+					try {
+						dormir(150);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		};
@@ -80,15 +84,11 @@ public class MonitorJogo extends Thread {
 		thread.start();
 	}
 
-	private void dormir(long i) {
-		try {
-			sleep(i);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	private void dormir(long i) throws InterruptedException {
+		sleep(i);
 	}
 
-	private void atualizaDadosJogoSrvMesa11() {
+	private void atualizaDadosJogoSrvMesa11() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
