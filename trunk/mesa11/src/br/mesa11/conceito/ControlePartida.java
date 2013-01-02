@@ -600,8 +600,13 @@ public class ControlePartida {
 
 	public void zerarTimerJogada() {
 		tempoJogadaAtualMilis = System.currentTimeMillis();
-		tempoJogadaFimMilis = tempoJogadaAtualMilis
-				+ (tempoJogadaSegundos * 1000);
+		if (controleJogo.isJogoOnlineSrvidor()) {
+			tempoJogadaFimMilis = tempoJogadaAtualMilis
+					+ (tempoJogadaSegundos * 1500);
+		} else {
+			tempoJogadaFimMilis = tempoJogadaAtualMilis
+					+ (tempoJogadaSegundos * 1000);
+		}
 		// Logger.logar("zerarTimerJogada");
 	}
 
