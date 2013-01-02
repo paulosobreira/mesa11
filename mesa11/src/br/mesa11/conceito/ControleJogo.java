@@ -2418,6 +2418,11 @@ public class ControleJogo {
 			listaAnimacoes.add(animacaoJogada);
 			animacaoCliente = animacaoJogada;
 			animacaoCliente.setTimeStamp(System.currentTimeMillis());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 
 	}
