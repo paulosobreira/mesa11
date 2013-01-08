@@ -152,7 +152,7 @@ public class EditorTime extends JPanel {
 				String text = textFieldNomeAbrevTime.getText();
 				String abrev = "";
 				for (int i = 0; i < text.length(); i++) {
-					if (i > 2) {
+					if (i >= ConstantesMesa11.TAMANHO_MAX_NOME_ABREV_TIME) {
 						break;
 					}
 					abrev += text.charAt(i);
