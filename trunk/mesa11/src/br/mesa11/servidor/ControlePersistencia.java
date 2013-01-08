@@ -186,12 +186,22 @@ public class ControlePersistencia {
 		for (Iterator iterator = botoes.iterator(); iterator.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			if (Util.isNullOrEmpty(botao.getNome())) {
-				botao.setNome(time.getNomeAbrev());
+				botao.setNome(time.getNome());
 			} else if (botao.getNome().length() > ConstantesMesa11.TAMANHO_MAX_NOME_TIME) {
 				return new MsgSrv("nomeBotaoMuitoGrande");
 			}
 		}
 		Session session = ControlePersistencia.getSession();
+
+		List times = session.createCriteria(Time.class)
+				.add(Restrictions.eq("nomeAbrev", time.getNomeAbrev())).list();
+		if (time.getId() == null && !times.isEmpty()) {
+			Time t = (Time) times.get(0);
+			return new MsgSrv(Lang.msg("nomeJaEstaSendoUsado", new String[] {
+					time.getNomeAbrev(), t.getNome() }));
+		}
+		HibernateUtil.closeSession();
+		session = ControlePersistencia.getSession();
 		Transaction transaction = session.beginTransaction();
 		try {
 			if (time.getId() == null) {
