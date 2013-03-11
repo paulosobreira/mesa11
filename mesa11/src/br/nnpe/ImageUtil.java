@@ -1,7 +1,6 @@
 package br.nnpe;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -9,7 +8,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -19,6 +17,8 @@ import java.awt.image.PixelGrabber;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
@@ -48,8 +48,8 @@ public class ImageUtil {
 		BufferedImage srcBufferedImage = new BufferedImage(img.getIconWidth(),
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
@@ -101,8 +101,8 @@ public class ImageUtil {
 
 			GraphicsConfiguration gc = gs.getDefaultConfiguration();
 
-			bimage = gc.createCompatibleImage(image.getWidth(null),
-					image.getHeight(null), transparency);
+			bimage = gc.createCompatibleImage(image.getWidth(null), image
+					.getHeight(null), transparency);
 		} catch (HeadlessException e) {
 			// The system does not have a screen
 		}
@@ -115,8 +115,8 @@ public class ImageUtil {
 				type = BufferedImage.TYPE_INT_ARGB;
 			}
 
-			bimage = new BufferedImage(image.getWidth(null),
-					image.getHeight(null), type);
+			bimage = new BufferedImage(image.getWidth(null), image
+					.getHeight(null), type);
 		}
 
 		// Copy image to buffered image
@@ -168,8 +168,8 @@ public class ImageUtil {
 				img.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
 		srcBufferedImage.getGraphics().drawImage(img.getImage(), 0, 0, null);
 
-		BufferedImage bufferedImageRetorno = new BufferedImage(
-				img.getIconWidth(), img.getIconHeight(),
+		BufferedImage bufferedImageRetorno = new BufferedImage(img
+				.getIconWidth(), img.getIconHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		Raster srcRaster = srcBufferedImage.getData();
 		WritableRaster destRaster = bufferedImageRetorno.getRaster();
@@ -210,6 +210,7 @@ public class ImageUtil {
 	}
 
 	public static ImageIcon carregarImagem(String stringUrl) {
+
 		try {
 			URL url = null;
 			url = new URL(stringUrl);
@@ -223,7 +224,19 @@ public class ImageUtil {
 				return icon;
 			}
 		} catch (Exception e) {
-			Logger.logarExept(e);
+			try {
+				String current = new java.io.File(".").getCanonicalPath();
+				System.out.println("Current dir:" + current);
+				String currentDir = System.getProperty("user.dir");
+				System.out.println("Current dir using System:" + currentDir);
+				BufferedImage carregaImagem = ImageIO.read(new File(currentDir
+						+ stringUrl));
+				ImageIcon icon = new ImageIcon(carregaImagem);
+				return icon;
+			} catch (IOException e1) {
+				Logger.logarExept(e);
+				// e1.printStackTrace();
+			}
 		}
 		return null;
 	}
