@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
+import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class MainFrame {
 	private JFrame frame;
 	private ControleJogo controleJogo;
 	private JApplet mesa11Applet;
-	private String codeBase;
+	private String codeBase = File.separator + "WebContent" + File.separator;
 	private Mesa11Applet ver = new Mesa11Applet();
 
 	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
@@ -52,7 +53,6 @@ public class MainFrame {
 
 		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
-		frame.setSize(700, 800);
 		frame.setVisible(true);
 		frame.addWindowStateListener(new WindowStateListener() {
 
@@ -67,7 +67,7 @@ public class MainFrame {
 				}
 			}
 		});
-
+		iniciaJogoLivre();
 	}
 
 	private void gerarMenus() {
@@ -180,8 +180,8 @@ public class MainFrame {
 				String msg = Lang.msg("feitoPor")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg,
-						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, msg, Lang
+						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -201,14 +201,7 @@ public class MainFrame {
 				if (controleJogo != null) {
 					controleJogo.limparJogo();
 				}
-				controleJogo = new ControleJogo(frame);
-				controleJogo.inicializaVideo();
-				frame.setSize(700, 800);
-				frame.setVisible(true);
-				controleJogo.centroCampo();
-				controleJogo.setZoom(0.3);
-				controleJogo.setCodeBase(codeBase);
-				controleJogo.iniciaJogoLivre();
+				iniciaJogoLivre();
 			}
 		});
 		menuJogo.add(iniciarLivre);
@@ -228,12 +221,12 @@ public class MainFrame {
 				}
 				controleJogo = new ControleJogo(frame);
 				controleJogo.inicializaVideo();
-				frame.setSize(700, 800);
 				frame.setVisible(true);
 				controleJogo.centroCampo();
 				controleJogo.setZoom(0.3);
 				controleJogo.setCodeBase(codeBase);
 				controleJogo.iniciaJogoLivreAssistido();
+				frame.setSize(700, 800);
 			}
 		});
 		menuJogo.add(iniciarLivreAssis);
@@ -424,5 +417,16 @@ public class MainFrame {
 
 	public void setVisible(boolean b) {
 		frame.setVisible(b);
+	}
+
+	private void iniciaJogoLivre() {
+		controleJogo = new ControleJogo(frame);
+		controleJogo.inicializaVideo();
+		frame.setVisible(true);
+		controleJogo.centroCampo();
+		controleJogo.setZoom(0.3);
+		controleJogo.setCodeBase(codeBase);
+		controleJogo.iniciaJogoLivre();
+		frame.setSize(700, 800);
 	}
 }
