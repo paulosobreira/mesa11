@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_17" class="java.beans.XMLDecoder">
+ <object class="br.hibernate.Time" id="Time0">
+  <void property="botoes">
+   <object class="java.util.LinkedList">
+    <void method="add">
+     <object class="br.hibernate.Goleiro">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>719</int>
+      </void>
+      <void property="forca">
+       <int>778</int>
+      </void>
+      <void property="goleiro">
+       <boolean>true</boolean>
+      </void>
+      <void property="id">
+       <long>265</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>1</int>
+      </void>
+      <void property="precisao">
+       <int>962</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+      <void property="titular">
+       <boolean>true</boolean>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>603</int>
+      </void>
+      <void property="forca">
+       <int>825</int>
+      </void>
+      <void property="id">
+       <long>266</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>2</int>
+      </void>
+      <void property="precisao">
+       <int>872</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>926</int>
+      </void>
+      <void property="forca">
+       <int>544</int>
+      </void>
+      <void property="id">
+       <long>267</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>3</int>
+      </void>
+      <void property="precisao">
+       <int>961</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>848</int>
+      </void>
+      <void property="forca">
+       <int>978</int>
+      </void>
+      <void property="id">
+       <long>268</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>4</int>
+      </void>
+      <void property="precisao">
+       <int>919</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>621</int>
+      </void>
+      <void property="id">
+       <long>269</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>5</int>
+      </void>
+      <void property="precisao">
+       <int>892</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>911</int>
+      </void>
+      <void property="forca">
+       <int>788</int>
+      </void>
+      <void property="id">
+       <long>270</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>6</int>
+      </void>
+      <void property="precisao">
+       <int>618</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>777</int>
+      </void>
+      <void property="forca">
+       <int>507</int>
+      </void>
+      <void property="id">
+       <long>271</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>7</int>
+      </void>
+      <void property="precisao">
+       <int>867</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>567</int>
+      </void>
+      <void property="forca">
+       <int>533</int>
+      </void>
+      <void property="id">
+       <long>272</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>8</int>
+      </void>
+      <void property="precisao">
+       <int>528</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>975</int>
+      </void>
+      <void property="forca">
+       <int>847</int>
+      </void>
+      <void property="id">
+       <long>273</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>9</int>
+      </void>
+      <void property="precisao">
+       <int>873</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>965</int>
+      </void>
+      <void property="forca">
+       <int>700</int>
+      </void>
+      <void property="id">
+       <long>274</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>10</int>
+      </void>
+      <void property="precisao">
+       <int>540</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357601222000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>853</int>
+      </void>
+      <void property="forca">
+       <int>844</int>
+      </void>
+      <void property="id">
+       <long>275</long>
+      </void>
+      <void property="imagem">
+       <string>gremio.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Gremio</string>
+      </void>
+      <void property="numero">
+       <int>11</int>
+      </void>
+      <void property="precisao">
+       <int>950</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="cor1RGB">
+   <int>-16737793</int>
+  </void>
+  <void property="cor3RGB">
+   <int>-1</int>
+  </void>
+  <void property="cor4RGB">
+   <int>-1</int>
+  </void>
+  <void property="cor5RGB">
+   <int>-16777216</int>
+  </void>
+  <void property="cor6RGB">
+   <int>-16737793</int>
+  </void>
+  <void property="corMeiaNumero1">
+   <boolean>true</boolean>
+  </void>
+  <void property="corMeiaNumero2">
+   <boolean>true</boolean>
+  </void>
+  <void property="dataCriacao">
+   <object class="java.sql.Timestamp">
+    <long>1357601222000</long>
+   </object>
+  </void>
+  <void property="id">
+   <long>25</long>
+  </void>
+  <void property="imagem">
+   <string>gremio.jpg</string>
+  </void>
+  <void property="loginCriador">
+   <string>sobreira</string>
+  </void>
+  <void property="nome">
+   <string>Gremio</string>
+  </void>
+  <void property="nomeAbrev">
+   <string>GRE</string>
+  </void>
+  <void property="nomeJogador">
+   <string>sobreira</string>
+  </void>
+  <void property="qtdePontos">
+   <int>0</int>
+  </void>
+  <void property="tipoUniforme1">
+   <int>3</int>
+  </void>
+ </object>
+</java>
