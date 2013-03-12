@@ -34,7 +34,7 @@ public class MainFrame {
 	private JFrame frame;
 	private ControleJogo controleJogo;
 	private JApplet mesa11Applet;
-	private String codeBase = File.separator + "WebContent" + File.separator;
+	private String codeBase;
 	private Mesa11Applet ver = new Mesa11Applet();
 
 	public MainFrame(JApplet mesa11Applet, Usuario usuario, String codeBase) {
@@ -83,6 +83,16 @@ public class MainFrame {
 		bar.add(menuJogoLivre);
 		gerarMenusJogoLivre(menuJogoLivre);
 
+		JMenu menuDebug = new JMenu() {
+			public String getText() {
+				return Lang.msg("menuDebug");
+			}
+
+		};
+
+		bar.add(menuDebug);
+		gerarMenusDebug(menuDebug);
+
 		JMenu menuEditarTime = new JMenu() {
 			public String getText() {
 				return Lang.msg("menuEditarTime");
@@ -102,135 +112,7 @@ public class MainFrame {
 		gerarMenusSobre(info);
 	}
 
-	private void gerarMenusEditarTime(JMenu menuEditarTime) {
-		JMenuItem criarTime = new JMenuItem("") {
-			public String getText() {
-				return Lang.msg("criarTime");
-			}
-
-		};
-		criarTime.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Time time = new Time();
-				time.setQtdePontos(Util.intervalo(100, 1000));
-				if (controleJogo == null) {
-					controleJogo = new ControleJogo(frame);
-				}
-				EditorTime editorTime = new EditorTime(time, controleJogo);
-				JOptionPane.showMessageDialog(frame, editorTime);
-			}
-		});
-		menuEditarTime.add(criarTime);
-		JMenuItem carregarTime = new JMenuItem("") {
-			public String getText() {
-				return Lang.msg("carregarTime");
-			}
-
-		};
-		carregarTime.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (controleJogo == null) {
-					controleJogo = new ControleJogo(frame);
-				}
-				controleJogo.carregarTime();
-			}
-		});
-		menuEditarTime.add(carregarTime);
-	}
-
-	private void gerarMenusSobre(JMenu menu2) {
-		JMenuItem logs = new JMenuItem("Ver Logs") {
-			public String getText() {
-				return Lang.msg("verLogs");
-			}
-
-		};
-		logs.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					JTextArea area = new JTextArea(20, 50);
-					Set top = Logger.topExceptions.keySet();
-					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
-						String exept = (String) iterator.next();
-						area.append("Quantidade : "
-								+ Logger.topExceptions.get(exept));
-						area.append("\n");
-						area.append(exept.replaceAll("<br>", "\n"));
-						area.append("\n");
-					}
-					area.setCaretPosition(0);
-					JOptionPane.showMessageDialog(MainFrame.this.frame,
-							new JScrollPane(area), Lang.msg("listaDeErros"),
-							JOptionPane.INFORMATION_MESSAGE);
-				} catch (Exception ex) {
-					Logger.logarExept(ex);
-				}
-			}
-		});
-		menu2.add(logs);
-
-		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
-			public String getText() {
-				return Lang.msg("sobreAutor");
-			}
-
-		};
-		sobre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String msg = Lang.msg("feitoPor")
-						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
-						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg,
-						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		menu2.add(sobre);
-	}
-
-	private void gerarMenusJogoLivre(JMenu menuJogo) {
-		JMenuItem iniciarLivre = new JMenuItem() {
-			public String getText() {
-				return Lang.msg("iniciarJogoLivre");
-			}
-
-		};
-		iniciarLivre.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (controleJogo != null) {
-					controleJogo.limparJogo();
-				}
-				iniciaJogoLivre();
-			}
-		});
-		menuJogo.add(iniciarLivre);
-
-		JMenuItem iniciarLivreAssis = new JMenuItem() {
-			public String getText() {
-				return Lang.msg("iniciarJogoLivreAssis");
-			}
-
-		};
-		iniciarLivreAssis.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				if (controleJogo != null) {
-					controleJogo.limparJogo();
-				}
-				controleJogo = new ControleJogo(frame);
-				controleJogo.inicializaVideo();
-				frame.setVisible(true);
-				controleJogo.centroCampo();
-				controleJogo.setZoom(0.3);
-				controleJogo.setCodeBase(codeBase);
-				controleJogo.iniciaJogoLivreAssistido();
-				frame.setSize(700, 800);
-			}
-		});
-		menuJogo.add(iniciarLivreAssis);
-
+	private void gerarMenusDebug(JMenu menuJogo) {
 		JMenuItem bolaPenaltiCima = new JMenuItem() {
 			public String getText() {
 				return Lang.msg("bolaPenaltiCima");
@@ -400,8 +282,139 @@ public class MainFrame {
 
 	}
 
+	private void gerarMenusEditarTime(JMenu menuEditarTime) {
+		JMenuItem criarTime = new JMenuItem("") {
+			public String getText() {
+				return Lang.msg("criarTime");
+			}
+
+		};
+		criarTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Time time = new Time();
+				time.setQtdePontos(Util.intervalo(100, 1000));
+				if (controleJogo == null) {
+					controleJogo = new ControleJogo(frame);
+				}
+				EditorTime editorTime = new EditorTime(time, controleJogo);
+				JOptionPane.showMessageDialog(frame, editorTime);
+			}
+		});
+		menuEditarTime.add(criarTime);
+		JMenuItem carregarTime = new JMenuItem("") {
+			public String getText() {
+				return Lang.msg("carregarTime");
+			}
+
+		};
+		carregarTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (controleJogo == null) {
+					controleJogo = new ControleJogo(frame);
+				}
+				controleJogo.carregarTime();
+			}
+		});
+		menuEditarTime.add(carregarTime);
+	}
+
+	private void gerarMenusSobre(JMenu menu2) {
+		JMenuItem logs = new JMenuItem("Ver Logs") {
+			public String getText() {
+				return Lang.msg("verLogs");
+			}
+
+		};
+		logs.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JTextArea area = new JTextArea(20, 50);
+					Set top = Logger.topExceptions.keySet();
+					for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+						String exept = (String) iterator.next();
+						area.append("Quantidade : "
+								+ Logger.topExceptions.get(exept));
+						area.append("\n");
+						area.append(exept.replaceAll("<br>", "\n"));
+						area.append("\n");
+					}
+					area.setCaretPosition(0);
+					JOptionPane.showMessageDialog(MainFrame.this.frame,
+							new JScrollPane(area), Lang.msg("listaDeErros"),
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception ex) {
+					Logger.logarExept(ex);
+				}
+			}
+		});
+		menu2.add(logs);
+
+		JMenuItem sobre = new JMenuItem("Sobre o autor do jogo") {
+			public String getText() {
+				return Lang.msg("sobreAutor");
+			}
+
+		};
+		sobre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String msg = Lang.msg("feitoPor")
+						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
+						+ "http://sowbreira.appspot.com \n" + "2008-2010";
+				JOptionPane.showMessageDialog(frame, msg, Lang
+						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		menu2.add(sobre);
+	}
+
+	private void gerarMenusJogoLivre(JMenu menuJogo) {
+		JMenuItem iniciarLivre = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("iniciarJogoLivre");
+			}
+
+		};
+		iniciarLivre.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo != null) {
+					controleJogo.limparJogo();
+				}
+				iniciaJogoLivre();
+			}
+		});
+		menuJogo.add(iniciarLivre);
+
+		JMenuItem iniciarLivreAssis = new JMenuItem() {
+			public String getText() {
+				return Lang.msg("iniciarJogoLivreAssis");
+			}
+
+		};
+		iniciarLivreAssis.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (controleJogo != null) {
+					controleJogo.limparJogo();
+				}
+				controleJogo = new ControleJogo(frame);
+				controleJogo.inicializaVideo();
+				frame.setVisible(true);
+				controleJogo.centroCampo();
+				controleJogo.setZoom(0.3);
+				controleJogo.setCodeBase(codeBase);
+				controleJogo.iniciaJogoLivreAssistido();
+				frame.setSize(700, 800);
+			}
+		});
+		menuJogo.add(iniciarLivreAssis);
+
+	}
+
 	public static void main(String[] args) {
-		String codeBase = null;
+		String codeBase = File.separator + "WebContent" + File.separator;
 		if (args != null && args.length > 0) {
 			codeBase = args[0];
 		}

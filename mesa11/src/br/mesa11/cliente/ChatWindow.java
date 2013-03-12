@@ -162,16 +162,15 @@ public class ChatWindow {
 	private SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
 	public ChatWindow(ControleChatCliente controleChatCliente) {
-		img = ImageUtil.geraResize(
-				CarregadorRecursos.carregaBufferedImage("mesa11-bkg.png"),
-				1.30, 0.79);
+		img = ImageUtil.geraResize(CarregadorRecursos
+				.carregaBufferedImage("mesa11-bkg.png"), 1.30, 0.79);
 
 		mainPanel = new JPanel(new BorderLayout()) {
 			@Override
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D graphics2d = (Graphics2D) g;
-				if (img != null)
+				if (img != null && Logger.desenhaBG)
 					graphics2d.drawImage(img, null, 0, 0);
 			}
 		};
@@ -288,8 +287,8 @@ public class ChatWindow {
 						+ "sowbreira@gmail.com \n"
 						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
 
-				JOptionPane.showMessageDialog(getMainPanel(), msg,
-						Lang.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
+						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 
