@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_17" class="java.beans.XMLDecoder">
+ <object class="br.hibernate.Time" id="Time0">
+  <void property="botoes">
+   <object class="java.util.LinkedList">
+    <void method="add">
+     <object class="br.hibernate.Goleiro">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>961</int>
+      </void>
+      <void property="forca">
+       <int>850</int>
+      </void>
+      <void property="goleiro">
+       <boolean>true</boolean>
+      </void>
+      <void property="id">
+       <long>210</long>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>1</int>
+      </void>
+      <void property="precisao">
+       <int>559</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+      <void property="titular">
+       <boolean>true</boolean>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>770</int>
+      </void>
+      <void property="forca">
+       <int>838</int>
+      </void>
+      <void property="id">
+       <long>211</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>2</int>
+      </void>
+      <void property="precisao">
+       <int>646</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>919</int>
+      </void>
+      <void property="forca">
+       <int>630</int>
+      </void>
+      <void property="id">
+       <long>212</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>3</int>
+      </void>
+      <void property="precisao">
+       <int>876</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>547</int>
+      </void>
+      <void property="forca">
+       <int>973</int>
+      </void>
+      <void property="id">
+       <long>213</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>4</int>
+      </void>
+      <void property="precisao">
+       <int>749</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>975</int>
+      </void>
+      <void property="forca">
+       <int>958</int>
+      </void>
+      <void property="id">
+       <long>214</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>5</int>
+      </void>
+      <void property="precisao">
+       <int>687</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>834</int>
+      </void>
+      <void property="forca">
+       <int>946</int>
+      </void>
+      <void property="id">
+       <long>215</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>6</int>
+      </void>
+      <void property="precisao">
+       <int>906</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>824</int>
+      </void>
+      <void property="forca">
+       <int>631</int>
+      </void>
+      <void property="id">
+       <long>216</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>7</int>
+      </void>
+      <void property="precisao">
+       <int>991</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>682</int>
+      </void>
+      <void property="forca">
+       <int>999</int>
+      </void>
+      <void property="id">
+       <long>217</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>8</int>
+      </void>
+      <void property="precisao">
+       <int>640</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>857</int>
+      </void>
+      <void property="forca">
+       <int>643</int>
+      </void>
+      <void property="id">
+       <long>218</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>9</int>
+      </void>
+      <void property="precisao">
+       <int>984</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>877</int>
+      </void>
+      <void property="forca">
+       <int>778</int>
+      </void>
+      <void property="id">
+       <long>219</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>10</int>
+      </void>
+      <void property="precisao">
+       <int>713</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1357523729000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>931</int>
+      </void>
+      <void property="forca">
+       <int>802</int>
+      </void>
+      <void property="id">
+       <long>220</long>
+      </void>
+      <void property="imagem">
+       <string>botafogo.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Botafogo</string>
+      </void>
+      <void property="numero">
+       <int>11</int>
+      </void>
+      <void property="precisao">
+       <int>536</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="cor2RGB">
+   <int>-1</int>
+  </void>
+  <void property="cor3RGB">
+   <int>-1</int>
+  </void>
+  <void property="cor4RGB">
+   <int>-1</int>
+  </void>
+  <void property="corMeiaNumero1">
+   <boolean>true</boolean>
+  </void>
+  <void property="dataCriacao">
+   <object class="java.sql.Timestamp">
+    <long>1357523729000</long>
+   </object>
+  </void>
+  <void property="id">
+   <long>20</long>
+  </void>
+  <void property="imagem">
+   <string>botafogo.jpg</string>
+  </void>
+  <void property="loginCriador">
+   <string>sobreira</string>
+  </void>
+  <void property="nome">
+   <string>Botafogo</string>
+  </void>
+  <void property="nomeAbrev">
+   <string>BOT</string>
+  </void>
+  <void property="nomeJogador">
+   <string>sobreira</string>
+  </void>
+  <void property="qtdePontos">
+   <int>0</int>
+  </void>
+  <void property="tipoUniforme1">
+   <int>1</int>
+  </void>
+ </object>
+</java>
