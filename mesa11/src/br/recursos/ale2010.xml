@@ -1,380 +1,1025 @@
-<?xml version="1.0" encoding="UTF-8"?> 
-<java version="1.6.0_23" class="java.beans.XMLDecoder"> 
- <object id="Time0" class="br.hibernate.Time"> 
-  <void property="botoes"> 
-   <object class="java.util.LinkedList"> 
-    <void method="add"> 
-     <object class="br.hibernate.Goleiro"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="goleiro"> 
-       <boolean>true</boolean> 
-      </void> 
-      <void property="id"> 
-       <long>155</long> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Neuer</string> 
-      </void> 
-      <void property="numero"> 
-       <int>1</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-      <void property="titular"> 
-       <boolean>true</boolean> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>156</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-3.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>FriedRich</string> 
-      </void> 
-      <void property="numero"> 
-       <int>2</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>157</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-6.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>3</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>158</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-7.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>4</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>159</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-8.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>5</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>160</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-16.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>6</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>161</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-17.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>7</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>162</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-10.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>8</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>163</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-19.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>9</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>164</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-13.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>10</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-    <void method="add"> 
-     <object class="br.hibernate.Botao"> 
-      <void property="defesa"> 
-       <int>700</int> 
-      </void> 
-      <void property="forca"> 
-       <int>700</int> 
-      </void> 
-      <void property="id"> 
-       <long>165</long> 
-      </void> 
-      <void property="imagem"> 
-       <string>ale2010-11.jpg</string> 
-      </void> 
-      <void property="loginCriador"> 
-       <string>sobreira</string> 
-      </void> 
-      <void property="nome"> 
-       <string>Alem 2010</string> 
-      </void> 
-      <void property="numero"> 
-       <int>11</int> 
-      </void> 
-      <void property="precisao"> 
-       <int>700</int> 
-      </void> 
-      <void property="time"> 
-       <object idref="Time0"/> 
-      </void> 
-     </object> 
-    </void> 
-   </object> 
-  </void> 
-  <void property="cor1RGB"> 
-   <int>-1</int> 
-  </void> 
-  <void property="cor3RGB"> 
-   <int>-256</int> 
-  </void> 
-  <void property="cor6RGB"> 
-   <int>-256</int> 
-  </void> 
-  <void property="id"> 
-   <long>15</long> 
-  </void> 
-  <void property="loginCriador"> 
-   <string>sobreira</string> 
-  </void> 
-  <void property="nome"> 
-   <string>Alemanha 2010</string> 
-  </void> 
-  <void property="nomeAbrev"> 
-   <string>Alem 2010</string> 
-  </void> 
-  <void property="nomeJogador"> 
-   <string>sobreira</string> 
-  </void> 
-  <void property="qtdePontos"> 
-   <int>5000</int> 
-  </void> 
- </object> 
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.7.0_17" class="java.beans.XMLDecoder">
+ <object class="br.hibernate.Time" id="Time0">
+  <void property="botoes">
+   <object class="java.util.LinkedList">
+    <void method="add">
+     <object class="br.hibernate.Goleiro">
+      <void id="Point0" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point0"/>
+         <int>1715</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point0"/>
+         <int>210</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point0"/>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>522</int>
+      </void>
+      <void property="forca">
+       <int>526</int>
+      </void>
+      <void property="goleiro">
+       <boolean>true</boolean>
+      </void>
+      <void property="id">
+       <long>155</long>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Neuer</string>
+      </void>
+      <void property="numero">
+       <int>1</int>
+      </void>
+      <void property="precisao">
+       <int>520</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+      <void property="titular">
+       <boolean>true</boolean>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point1" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point1"/>
+         <int>1715</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point1"/>
+         <int>1206</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point1"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point2">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point2"/>
+          <int>1715</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point2"/>
+          <int>1206</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>502</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>677</int>
+      </void>
+      <void property="id">
+       <long>156</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-3.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>FriedRich</string>
+      </void>
+      <void property="numero">
+       <int>2</int>
+      </void>
+      <void id="Point3" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point3"/>
+         <int>1651</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point3"/>
+         <int>1142</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>959</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point4" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point4"/>
+         <int>527</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point4"/>
+         <int>1809</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point4"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point5">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point5"/>
+          <int>527</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point5"/>
+          <int>1809</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>552</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>508</int>
+      </void>
+      <void property="id">
+       <long>157</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-6.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>3</int>
+      </void>
+      <void id="Point6" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point6"/>
+         <int>463</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point6"/>
+         <int>1745</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>912</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point7" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point7"/>
+         <int>1121</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point7"/>
+         <int>1809</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point7"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point8">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point8"/>
+          <int>1121</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point8"/>
+          <int>1809</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>679</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>516</int>
+      </void>
+      <void property="id">
+       <long>158</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-7.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>4</int>
+      </void>
+      <void id="Point9" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point9"/>
+         <int>1057</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point9"/>
+         <int>1745</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>640</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point10" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point10"/>
+         <int>2903</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point10"/>
+         <int>1809</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point10"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point11">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point11"/>
+          <int>2903</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point11"/>
+          <int>1809</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>503</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>867</int>
+      </void>
+      <void property="id">
+       <long>159</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-8.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>5</int>
+      </void>
+      <void id="Point12" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point12"/>
+         <int>2839</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point12"/>
+         <int>1745</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>950</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point13" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point13"/>
+         <int>2309</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point13"/>
+         <int>1809</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point13"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point14">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point14"/>
+          <int>2309</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point14"/>
+          <int>1809</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>778</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>683</int>
+      </void>
+      <void property="id">
+       <long>160</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-16.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>6</int>
+      </void>
+      <void id="Point15" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point15"/>
+         <int>2245</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point15"/>
+         <int>1745</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>556</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point16" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point16"/>
+         <int>1715</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point16"/>
+         <int>1809</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point16"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point17">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point17"/>
+          <int>1715</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point17"/>
+          <int>1809</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>808</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>689</int>
+      </void>
+      <void property="id">
+       <long>161</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-17.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>7</int>
+      </void>
+      <void id="Point18" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point18"/>
+         <int>1651</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point18"/>
+         <int>1745</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>726</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point19" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point19"/>
+         <int>527</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point19"/>
+         <int>2412</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point19"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point20">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point20"/>
+          <int>527</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point20"/>
+          <int>2412</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>743</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>997</int>
+      </void>
+      <void property="id">
+       <long>162</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-10.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>8</int>
+      </void>
+      <void id="Point21" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point21"/>
+         <int>463</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point21"/>
+         <int>2348</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>827</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point22" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point22"/>
+         <int>1911</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point22"/>
+         <int>3117</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point22"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point23">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point23"/>
+          <int>1911</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point23"/>
+          <int>3117</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>811</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>591</int>
+      </void>
+      <void property="id">
+       <long>163</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-19.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>9</int>
+      </void>
+      <void id="Point24" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point24"/>
+         <int>1847</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point24"/>
+         <int>3053</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>901</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point25" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point25"/>
+         <int>2903</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point25"/>
+         <int>2412</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point25"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point26">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point26"/>
+          <int>2903</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point26"/>
+          <int>2412</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>608</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>525</int>
+      </void>
+      <void property="id">
+       <long>164</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-13.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>10</int>
+      </void>
+      <void id="Point27" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point27"/>
+         <int>2839</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point27"/>
+         <int>2348</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>816</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+    <void method="add">
+     <object class="br.hibernate.Botao">
+      <void id="Point28" property="centro">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point28"/>
+         <int>1721</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point28"/>
+         <int>2591</int>
+        </void>
+       </void>
+      </void>
+      <void property="centro">
+       <object idref="Point28"/>
+      </void>
+      <void property="centroInicio">
+       <object class="java.awt.Point" id="Point29">
+        <void class="java.awt.Point" method="getField">
+         <string>x</string>
+         <void method="set">
+          <object idref="Point29"/>
+          <int>1721</int>
+         </void>
+        </void>
+        <void class="java.awt.Point" method="getField">
+         <string>y</string>
+         <void method="set">
+          <object idref="Point29"/>
+          <int>2591</int>
+         </void>
+        </void>
+       </object>
+      </void>
+      <void property="dataCriacao">
+       <object class="java.sql.Timestamp">
+        <long>1293656388000</long>
+       </object>
+      </void>
+      <void property="defesa">
+       <int>804</int>
+      </void>
+      <void property="diamentro">
+       <int>128</int>
+      </void>
+      <void property="forca">
+       <int>577</int>
+      </void>
+      <void property="id">
+       <long>165</long>
+      </void>
+      <void property="imagem">
+       <string>ale2010-11.jpg</string>
+      </void>
+      <void property="loginCriador">
+       <string>sobreira</string>
+      </void>
+      <void property="nome">
+       <string>Alem 2010</string>
+      </void>
+      <void property="numero">
+       <int>11</int>
+      </void>
+      <void id="Point30" property="position">
+       <void class="java.awt.Point" method="getField">
+        <string>x</string>
+        <void method="set">
+         <object idref="Point30"/>
+         <int>1657</int>
+        </void>
+       </void>
+       <void class="java.awt.Point" method="getField">
+        <string>y</string>
+        <void method="set">
+         <object idref="Point30"/>
+         <int>2527</int>
+        </void>
+       </void>
+      </void>
+      <void property="precisao">
+       <int>735</int>
+      </void>
+      <void property="time">
+       <object idref="Time0"/>
+      </void>
+     </object>
+    </void>
+   </object>
+  </void>
+  <void property="campo">
+   <string>CAMPO_CIMA</string>
+  </void>
+  <void property="cor1RGB">
+   <int>-1</int>
+  </void>
+  <void property="cor3RGB">
+   <int>-256</int>
+  </void>
+  <void property="cor6RGB">
+   <int>-256</int>
+  </void>
+  <void property="dataCriacao">
+   <object class="java.sql.Timestamp">
+    <long>1293656388000</long>
+   </object>
+  </void>
+  <void property="id">
+   <long>15</long>
+  </void>
+  <void property="imagem">
+   <string>ale2010-11.jpg</string>
+  </void>
+  <void property="loginCriador">
+   <string>sobreira</string>
+  </void>
+  <void property="nome">
+   <string>Alemanha 2010</string>
+  </void>
+  <void property="nomeAbrev">
+   <string>ALE2010</string>
+  </void>
+  <void property="nomeJogador">
+   <string>sobreira</string>
+  </void>
+  <void property="qtdePontos">
+   <int>5000</int>
+  </void>
+ </object>
 </java>
