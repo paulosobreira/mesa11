@@ -12,7 +12,7 @@ public class MesaApplet extends JApplet {
 
 	private void initComponents() {
 		try {
-			final MainFrame frame = new MainFrame(this, null);
+			final MainFrame frame = new MainFrame(this, null, null);
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}

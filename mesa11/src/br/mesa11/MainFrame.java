@@ -37,8 +37,8 @@ public class MainFrame {
 	private String codeBase = File.separator + "WebContent" + File.separator;
 	private Mesa11Applet ver = new Mesa11Applet();
 
-	public MainFrame(JApplet mesa11Applet, Usuario usuario) {
-
+	public MainFrame(JApplet mesa11Applet, Usuario usuario, String codeBase) {
+		this.codeBase = codeBase;
 		frame = new JFrame() {
 			@Override
 			public String getTitle() {
@@ -180,8 +180,8 @@ public class MainFrame {
 				String msg = Lang.msg("feitoPor")
 						+ " Paulo Sobreira \n sowbreira@gmail.com \n"
 						+ "http://sowbreira.appspot.com \n" + "2008-2010";
-				JOptionPane.showMessageDialog(frame, msg, Lang
-						.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame, msg,
+						Lang.msg("sobreAutor"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		menu2.add(sobre);
@@ -401,10 +401,11 @@ public class MainFrame {
 	}
 
 	public static void main(String[] args) {
-		MainFrame frame = new MainFrame(null, null);
+		String codeBase = null;
 		if (args != null && args.length > 0) {
-			frame.setCodeBase(args[0]);
+			codeBase = args[0];
 		}
+		MainFrame frame = new MainFrame(null, null, codeBase);
 	}
 
 	public String getCodeBase() {
@@ -425,6 +426,7 @@ public class MainFrame {
 		frame.setVisible(true);
 		controleJogo.centroCampo();
 		controleJogo.setZoom(0.3);
+		Logger.logar(codeBase);
 		controleJogo.setCodeBase(codeBase);
 		controleJogo.iniciaJogoLivre();
 		frame.setSize(700, 800);
