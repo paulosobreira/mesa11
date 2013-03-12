@@ -177,8 +177,7 @@ public class ControlePartida {
 										: 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-								.getCodeBase()
-								+ "midia" + File.separator + time.getImagem());
+								.getCodeBase() + "midia/" + time.getImagem());
 						uniformeCima.setIcon(icon);
 					}
 					segundoUniformeCima = false;
@@ -200,8 +199,7 @@ public class ControlePartida {
 										: 1)));
 					} else {
 						ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-								.getCodeBase()
-								+ "midia" + File.separator + time.getImagem());
+								.getCodeBase() + "midia/" + time.getImagem());
 						uniformeBaixo.setIcon(icon);
 					}
 					segundoUniformeBaixo = false;
@@ -223,8 +221,7 @@ public class ControlePartida {
 									segundoUniformeBaixo ? 2 : 1)));
 				} else {
 					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-							.getCodeBase()
-							+ "midia" + File.separator + time.getImagem());
+							.getCodeBase() + "midia/" + time.getImagem());
 					uniformeCima.setIcon(icon);
 				}
 
@@ -246,8 +243,7 @@ public class ControlePartida {
 									segundoUniformeBaixo ? 2 : 1)));
 				} else {
 					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-							.getCodeBase()
-							+ "midia" + File.separator + time.getImagem());
+							.getCodeBase() + "midia/" + time.getImagem());
 					uniformeBaixo.setIcon(icon);
 				}
 
@@ -357,12 +353,12 @@ public class ControlePartida {
 		while (timesBaixo.getItemCount() > 1
 				&& timesCima.getSelectedItem().equals(
 						timesBaixo.getSelectedItem())) {
-			timesBaixo.setSelectedIndex(Util.intervalo(0, timesBaixo
-					.getItemCount() - 1));
+			timesBaixo.setSelectedIndex(Util.intervalo(0,
+					timesBaixo.getItemCount() - 1));
 			Logger.logar("Selecionado Outro Time Baixo");
 		}
-		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel, Lang
-				.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
+		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel,
+				Lang.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
 			return;
@@ -416,8 +412,8 @@ public class ControlePartida {
 				}
 				controleFormacao = new ControlePosicionamento(controleJogo);
 
-				controleFormacao.posicionaTimeCima(timeCima, bolaCima
-						.isSelected());
+				controleFormacao.posicionaTimeCima(timeCima,
+						bolaCima.isSelected());
 				bateuCentroCima = bolaCima.isSelected();
 				xmlDecoder = new XMLDecoder(CarregadorRecursos
 						.recursoComoStream(xmlBaixo));
@@ -444,8 +440,8 @@ public class ControlePartida {
 					}
 					botoes.put(botao.getId(), botao);
 				}
-				controleFormacao.posicionaTimeBaixo(timeBaixo, bolaBaixo
-						.isSelected());
+				controleFormacao.posicionaTimeBaixo(timeBaixo,
+						bolaBaixo.isSelected());
 				bateuCentroBaixo = bolaBaixo.isSelected();
 				for (Iterator iterator = botoes.keySet().iterator(); iterator
 						.hasNext();) {
@@ -506,7 +502,9 @@ public class ControlePartida {
 				try {
 					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
 							.getCodeBase()
-							+ "midia" + File.separator + time.getImagem());
+							+ "midia"
+							+ File.separator
+							+ time.getImagem());
 					buff = ImageUtil.toBufferedImage(icon.getImage());
 					imgCust = true;
 				} catch (Exception e2) {
@@ -520,8 +518,8 @@ public class ControlePartida {
 					time.isSegundoUniforme() ? 2 : 1, botao);
 		BufferedImage newBuffer = null;
 		if (imgCust) {
-			newBuffer = new BufferedImage((buff.getWidth() + 1), (buff
-					.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
+			newBuffer = new BufferedImage((buff.getWidth() + 1),
+					(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
 		} else {
 			newBuffer = new BufferedImage((buff.getWidth()),
 					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
@@ -531,11 +529,11 @@ public class ControlePartida {
 
 		Ellipse2D externo = null;
 		if (imgCust) {
-			externo = new Ellipse2D.Double(1, 1, (buff.getWidth() - 1), (buff
-					.getHeight() - 1));
+			externo = new Ellipse2D.Double(1, 1, (buff.getWidth() - 1),
+					(buff.getHeight() - 1));
 		} else {
-			externo = new Ellipse2D.Double(0, 0, (buff.getWidth()), (buff
-					.getHeight()));
+			externo = new Ellipse2D.Double(0, 0, (buff.getWidth()),
+					(buff.getHeight()));
 		}
 
 		graphics2d.setClip(externo);
@@ -703,14 +701,14 @@ public class ControlePartida {
 		Time time = b.getTime();
 		if (b.getId() == 0) {
 			Goleiro goleiroCima = controleJogo.obterGoleiroCima();
-			double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(b
-					.getCentro(), goleiroCima.getCentro());
+			double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(
+					b.getCentro(), goleiroCima.getCentro());
 			if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {
 				time = goleiroCima.getTime();
 			}
 			Goleiro goleiroBaixo = controleJogo.obterGoleiroBaixo();
-			double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(b
-					.getCentro(), goleiroBaixo.getCentro());
+			double distaciaEntrePontosBaixo = GeoUtil.distaciaEntrePontos(
+					b.getCentro(), goleiroBaixo.getCentro());
 			if (distaciaEntrePontosBaixo < goleiroBaixo.getDiamentro()) {
 				time = goleiroBaixo.getTime();
 			}
@@ -775,17 +773,17 @@ public class ControlePartida {
 
 	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
 		Goleiro goleiroTime = obterGoleiroTime(time);
-		double distGoleiroTime = GeoUtil.distaciaEntrePontos(goleiroTime
-				.getCentro(), bola.getCentro());
+		double distGoleiroTime = GeoUtil.distaciaEntrePontos(
+				goleiroTime.getCentro(), bola.getCentro());
 		double outraDistancia = 0;
 		if (timeCima.equals(time)) {
 			goleiroTime = obterGoleiroTime(timeBaixo);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		} else {
 			goleiroTime = obterGoleiroTime(timeCima);
-			outraDistancia = GeoUtil.distaciaEntrePontos(goleiroTime
-					.getCentro(), bola.getCentro());
+			outraDistancia = GeoUtil.distaciaEntrePontos(
+					goleiroTime.getCentro(), bola.getCentro());
 		}
 		return distGoleiroTime < outraDistancia;
 	}
@@ -962,8 +960,9 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima, timeCima
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeCima,
+								timeCima.isSegundoUniforme() ? 2 : 1,
+								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
 			} else {
 				carregarBotaoImagemBotao(botoesImagens, botao, timeCima);
@@ -975,8 +974,9 @@ public class ControlePartida {
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
 				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo, timeBaixo
-								.isSegundoUniforme() ? 2 : 1, (Goleiro) botao));
+						.desenhaUniformeGoleiro(timeBaixo,
+								timeBaixo.isSegundoUniforme() ? 2 : 1,
+								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
 			} else {
 				carregarBotaoImagemBotao(botoesImagens, botao, timeBaixo);

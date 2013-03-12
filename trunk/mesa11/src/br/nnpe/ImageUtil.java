@@ -226,9 +226,9 @@ public class ImageUtil {
 		} catch (Exception e) {
 			try {
 				String current = new java.io.File(".").getCanonicalPath();
-				System.out.println("Current dir:" + current);
+				Logger.logar("Current dir:" + current);
 				String currentDir = System.getProperty("user.dir");
-				System.out.println("Current dir using System:" + currentDir);
+				Logger.logar("Current dir using System:" + currentDir);
 				BufferedImage carregaImagem = ImageIO.read(new File(currentDir
 						+ stringUrl));
 				ImageIcon icon = new ImageIcon(carregaImagem);
