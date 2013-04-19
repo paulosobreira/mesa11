@@ -33,7 +33,6 @@ public class MainFrame {
 
 	private JFrame frame;
 	private ControleJogo controleJogo;
-	private JApplet mesa11Applet;
 	private String codeBase;
 	private Mesa11Applet ver = new Mesa11Applet();
 
@@ -50,8 +49,6 @@ public class MainFrame {
 		} else {
 
 		}
-
-		this.mesa11Applet = mesa11Applet;
 		gerarMenus();
 		frame.setVisible(true);
 		frame.addWindowStateListener(new WindowStateListener() {
