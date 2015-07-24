@@ -1,14 +1,9 @@
 package br.mesa11.servidor;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
@@ -17,24 +12,22 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 
 import br.hibernate.Usuario;
-import br.mesa11.ConstantesMesa11;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.PassGenerator;
 import br.nnpe.Util;
 import br.nnpe.tos.ErroServ;
-import br.nnpe.tos.NnpeTO;
 import br.nnpe.tos.MsgSrv;
+import br.nnpe.tos.NnpeTO;
 import br.nnpe.tos.SessaoCliente;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 
-import com.octo.captcha.service.image.DefaultManageableImageCaptchaService;
+
 
 public class ControleLogin {
-	private DefaultManageableImageCaptchaService capcha = new DefaultManageableImageCaptchaService();
 	private DadosMesa11 dadosMesa11;
 
 	public ControleLogin(DadosMesa11 dadosMesa11) {
@@ -52,17 +45,6 @@ public class ControleLogin {
 	public Object cadastrarUsuario(ClienteMesa11 clienteMesa11) {
 
 		Usuario usuario = null;
-		try {
-			Boolean validateResponseForID = capcha.validateResponseForID(
-					clienteMesa11.getChaveCapcha(), clienteMesa11.getTexto());
-			if (!validateResponseForID) {
-				return new MsgSrv(Lang.msg("capchaInvalido"));
-			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
-			return new MsgSrv(Lang.msg("capchaInvalido"));
-		}
-
 		Session session = ControlePersistencia.getSession();
 		List usuarios = session.createCriteria(Usuario.class).add(
 				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
@@ -171,30 +153,13 @@ public class ControleLogin {
 		}
 
 	}
-
+	@Deprecated
 	public Object novoCapcha() {
-		try {
-			ByteArrayOutputStream jpegstream = new ByteArrayOutputStream();
-			String chave = String.valueOf(System.currentTimeMillis());
-			BufferedImage challenge = capcha.getImageChallengeForID(chave);
-			ImageIO.write(challenge, "jpg", jpegstream);
-			NnpeTO mesa11to = new NnpeTO();
-			mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
-			mesa11to.setData(chave);
-			mesa11to.setDataBytes(jpegstream.toByteArray());
-			return mesa11to;
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
+
 		return new ErroServ(Lang.msg("erroCapcha"));
 	}
 
 	public Object recuperaSenha(ClienteMesa11 clienteMesa11) {
-		Boolean validateResponseForID = capcha.validateResponseForID(
-				clienteMesa11.getChaveCapcha(), clienteMesa11.getTexto());
-		if (!validateResponseForID) {
-			return new MsgSrv(Lang.msg("capchaInvalido"));
-		}
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();
 		List usuarios = session.createCriteria(Usuario.class).add(

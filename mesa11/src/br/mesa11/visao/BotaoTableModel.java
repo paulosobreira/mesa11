@@ -20,6 +20,7 @@ import br.hibernate.Botao;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 
 public class BotaoTableModel extends AbstractTableModel {
@@ -227,9 +228,9 @@ public class BotaoTableModel extends AbstractTableModel {
 						.getScaleInstance(0.5, 0.5);
 				AffineTransformOp affineTransformOp = new AffineTransformOp(
 						affineTransform, AffineTransformOp.TYPE_BILINEAR);
-				ImageIcon icon = new ImageIcon(url);
-				BufferedImage botaoImg = ImageUtil.toBufferedImage(icon
-						.getImage());
+
+				BufferedImage botaoImg = CarregadorRecursos.carregaImagemURL(url) ;
+
 				BufferedImage zoomBuffer = new BufferedImage((int) (botaoImg
 						.getWidth() * 0.5), (int) (botaoImg.getHeight() * 0.5),
 						BufferedImage.TYPE_INT_ARGB);

@@ -59,6 +59,7 @@ import br.nnpe.ImageUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
 import br.nnpe.tos.NnpeTO;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
 
@@ -89,6 +90,7 @@ public class EditorTime extends JPanel {
 	private JLabel imgLocalIconLabel = new JLabel();
 	private JLabel imgRemotaIconLabel = new JLabel();
 	private String nomeImgIconLabel;
+	private BufferedImage imgLocalIconImage;
 	private JComponent panelImgMostrar;
 	protected BufferedImage imagemEnviar;
 	private JComboBox comboBoxNomeImgsTabela;
@@ -230,9 +232,8 @@ public class EditorTime extends JPanel {
 				}
 				File file = fileChooser.getSelectedFile();
 				nomeImgIconLabel = file.getName();
-				BufferedImage botaoImg = ImageUtil
-						.toBufferedImage((new ImageIcon(file.getAbsolutePath()))
-								.getImage());
+				BufferedImage botaoImg = CarregadorRecursos
+						.carregaImagemFile(file);
 				double menor = Double.MAX_VALUE;
 				if (botaoImg.getWidth() < menor) {
 					menor = botaoImg.getWidth();
@@ -262,6 +263,7 @@ public class EditorTime extends JPanel {
 				affineTransformOp.filter(newBuffer, zoomBuffer);
 
 				imgLocalIconLabel.setIcon(new ImageIcon(zoomBuffer));
+				imgLocalIconImage = zoomBuffer;
 				imagemEnviar = zoomBuffer;
 			}
 		});
@@ -284,9 +286,7 @@ public class EditorTime extends JPanel {
 				mesa11to.setComando(ConstantesMesa11.ENVIAR_IMAGEM);
 
 				mesa11to.setData(nomeImgIconLabel);
-				BufferedImage buff = ImageUtil
-						.toBufferedImage(((ImageIcon) imgLocalIconLabel
-								.getIcon()).getImage());
+				BufferedImage buff = imgLocalIconImage;
 				mesa11to.setDataBytes(ImageUtil.bufferedImage2ByteArray(buff));
 
 				if (ConstantesMesa11.OK.equals(EditorTime.this.controleJogo

@@ -1,14 +1,8 @@
 package br.nnpe;
 
 import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.MediaTracker;
-import java.awt.Transparency;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -23,6 +17,8 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import br.recursos.CarregadorRecursos;
 
 /**
  * @author Paulo Sobreira Criado Em 21/08/2005
@@ -68,66 +64,6 @@ public class ImageUtil {
 		}
 
 		return bufferedImageRetorno;
-	}
-
-	public static BufferedImage toBufferedImage(Image image) {
-		if (image instanceof BufferedImage) {
-			return (BufferedImage) image;
-		}
-
-		// This code ensures that all the pixels in the image are loaded
-		image = new ImageIcon(image).getImage();
-
-		// Determine if the image has transparent pixels; for this method's
-		boolean hasAlpha = hasAlpha(image);
-
-		// Create a buffered image with a format that's compatible with the
-		// screen
-		BufferedImage bimage = null;
-
-		GraphicsEnvironment ge = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-
-		try {
-			// Determine the type of transparency of the new buffered image
-			int transparency = Transparency.OPAQUE;
-
-			if (hasAlpha) {
-				transparency = Transparency.BITMASK;
-			}
-
-			// Create the buffered image
-			GraphicsDevice gs = ge.getDefaultScreenDevice();
-
-			GraphicsConfiguration gc = gs.getDefaultConfiguration();
-
-			bimage = gc.createCompatibleImage(image.getWidth(null),
-					image.getHeight(null), transparency);
-		} catch (HeadlessException e) {
-			// The system does not have a screen
-		}
-
-		if (bimage == null) {
-			// Create a buffered image using the default color model
-			int type = BufferedImage.TYPE_INT_RGB;
-
-			if (hasAlpha) {
-				type = BufferedImage.TYPE_INT_ARGB;
-			}
-
-			bimage = new BufferedImage(image.getWidth(null),
-					image.getHeight(null), type);
-		}
-
-		// Copy image to buffered image
-		Graphics g = bimage.createGraphics();
-
-		// Paint the image onto the buffered image
-		g.drawImage(image, 0, 0, null);
-
-		g.dispose();
-
-		return bimage;
 	}
 
 	/**
@@ -216,13 +152,9 @@ public class ImageUtil {
 			url = new URL(stringUrl);
 			url.openConnection().setUseCaches(false);
 			Logger.logar(url);
-			ImageIcon icon = new ImageIcon(url);
-			if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-				Logger.logar("Status " + icon.getImageLoadStatus()
-						+ " Nao Carregado " + url);
-			} else {
-				return icon;
-			}
+			ImageIcon icon = new ImageIcon(
+					CarregadorRecursos.carregaImagemURL(url));
+			return icon;
 		} catch (Exception e) {
 			try {
 				String current = new java.io.File(".").getCanonicalPath();
@@ -240,4 +172,5 @@ public class ImageUtil {
 		}
 		return null;
 	}
+
 }

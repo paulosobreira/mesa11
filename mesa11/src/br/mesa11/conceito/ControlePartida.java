@@ -486,30 +486,17 @@ public class ControlePartida {
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
-				url = new URL(controleJogo.getCodeBase() + "midia/"
-						+ botao.getImagem());
-				Logger.logar(url);
-				ImageIcon icon = new ImageIcon(url);
-				buff = ImageUtil.toBufferedImage(icon.getImage());
-				if (icon.getImageLoadStatus() != MediaTracker.COMPLETE) {
-					Logger.logar("Status " + icon.getImageLoadStatus()
-							+ " Nao Carregado " + url);
-					buff = null;
-				} else {
-					imgCust = true;
+				String caminho = controleJogo.getCodeBase() + "midia/"
+						+ time.getImagem();
+				buff = CarregadorRecursos.carregaImagemLocal(caminho);
+				if (buff == null) {
+					url = new URL(caminho);
+					Logger.logar(url);
+					buff = CarregadorRecursos.carregaImagemURL(url);
 				}
+				imgCust = true;
 			} catch (Exception e) {
-				try {
-					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-							.getCodeBase()
-							+ "midia"
-							+ File.separator
-							+ time.getImagem());
-					buff = ImageUtil.toBufferedImage(icon.getImage());
-					imgCust = true;
-				} catch (Exception e2) {
-					Logger.logarExept(e);
-				}
+				Logger.logarExept(e);
 			} finally {
 			}
 		}

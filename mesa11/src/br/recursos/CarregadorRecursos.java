@@ -35,17 +35,38 @@ public class CarregadorRecursos {
 		try {
 			return ImageIO.read(CarregadorRecursos.class.getResource(file));
 		} catch (IOException e) {
-			e.printStackTrace();
+			Logger.logar(e);
 		}
 		return null;
+	}
+
+	public static BufferedImage carregaImagemFile(File file) {
+		try {
+			return ImageIO.read(file);
+		} catch (IOException e) {
+			Logger.logar(e);
+		}
+		return null;
+	}
+
+	public static BufferedImage carregaImagemLocal(String stringUrl) {
+		try {
+			String current = new java.io.File(".").getCanonicalPath();
+			Logger.logar("Current dir:" + current);
+			String currentDir = System.getProperty("user.dir");
+			Logger.logar("Current dir using System:" + currentDir);
+			return ImageIO.read(new File(currentDir + stringUrl));
+		} catch (Exception e) {
+			Logger.logar(e);
+		}
+		return null;
+
 	}
 
 	public static BufferedImage carregaBufferedImage(String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = carregaImagemSemCache(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -96,9 +117,7 @@ public class CarregadorRecursos {
 			String file) {
 		BufferedImage buffer = null;
 		try {
-			ImageIcon icon = new ImageIcon(
-					CarregadorRecursos.class.getResource(file));
-			buffer = ImageUtil.toBufferedImage(icon.getImage());
+			buffer = carregaImagemSemCache(file);
 			if (buffer == null) {
 				Logger.logar("img=" + buffer);
 				System.exit(1);
@@ -113,9 +132,7 @@ public class CarregadorRecursos {
 
 	public static BufferedImage carregaBackGround(String backGroundStr,
 			JPanel panel) {
-		ImageIcon icon = new ImageIcon(
-				CarregadorRecursos.class.getResource(backGroundStr));
-		BufferedImage backGround = ImageUtil.toBufferedImage(icon.getImage());
+		BufferedImage backGround = carregaImagemSemCache(backGroundStr);
 		panel.setSize(backGround.getWidth(), backGround.getHeight());
 		if (backGround == null) {
 			Logger.logar("backGround=" + backGround);
@@ -172,10 +189,26 @@ public class CarregadorRecursos {
 		if (bufferedImage != null) {
 			return bufferedImage;
 		}
-		ImageIcon icon = new ImageIcon(
-				CarregadorRecursos.class.getResource(img));
-		bufferedImage = ImageUtil.toBufferedImage(icon.getImage());
+		bufferedImage = carregaImagemSemCache(img);
 		bufferImages.put(img, bufferedImage);
 		return bufferedImage;
+	}
+
+	public static BufferedImage carregaImagemSemCache(String file) {
+		try {
+			return ImageIO.read(CarregadorRecursos.class.getResource(file));
+		} catch (IOException e) {
+			Logger.logar(e);
+		}
+		return null;
+	}
+
+	public static BufferedImage carregaImagemURL(URL url) {
+		try {
+			return ImageIO.read(url);
+		} catch (IOException e) {
+			Logger.logar(e);
+		}
+		return null;
 	}
 }
