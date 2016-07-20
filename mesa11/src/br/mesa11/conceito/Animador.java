@@ -23,19 +23,29 @@ public class Animador implements Runnable {
 	public void run() {
 		try {
 			animar(animacao);
+			animacao.setExecutou(true);
+		} catch (InterruptedException e) {
+			Logger.logarExept(e);
 		} finally {
 			if (animacao != null && animacao.getObjetoAnimacao() != null)
-				controleJogo.getBotoesComThread().remove(
-						animacao.getObjetoAnimacao());
+				controleJogo.getBotoesComThread()
+						.remove(animacao.getObjetoAnimacao());
 		}
 	}
 
-	private void animar(Animacao anim) {
+	private void animar(Animacao anim) throws InterruptedException {
 		if (anim == null || anim.getObjetoAnimacao() == null)
 			return;
-		Botao botao = (Botao) controleJogo.getBotoes().get(
-				anim.getObjetoAnimacao());
+		if (anim.isExecutou()) {
+			return;
+		}
+		Botao botao = (Botao) controleJogo.getBotoes()
+				.get(anim.getObjetoAnimacao());
 		List elements = anim.getPontosAnimacao();
+		if (elements == null || elements.size() == 0) {
+			Thread.sleep(100);
+			return;
+		}
 		double div = elements.size();
 		double porcentOld = 0;
 		int porcentOldDiv10 = 0;
@@ -59,63 +69,58 @@ public class Animador implements Runnable {
 				botao.setCentroInicio(point);
 				botao.setCentro(point);
 
-				try {
-					if (botao instanceof Bola) {
-						if (!controleJogo.isJogoOnlineCliente()) {
-							if (!controleJogo.isBolaFora()) {
-								if (controleJogo.verificaGol(botao)) {
-									controleJogo.setGol(botao);
-									Logger.logar("animar gol");
-								} else if (controleJogo
-										.verificaMetaEscanteio(botao)) {
-									controleJogo.setMetaEscanteio(botao);
-									Logger.logar("animar MetaEscanteio");
-								} else if (!controleJogo
-										.verificaDentroCampo(botao)) {
-									if (controleJogo.getLateral() == null) {
-										controleJogo.setLateral(botao
-												.getCentro());
-										Logger.logar("animar lateral");
-									}
+				if (botao instanceof Bola) {
+					if (!controleJogo.isJogoOnlineCliente()) {
+						if (!controleJogo.isBolaFora()) {
+							if (controleJogo.verificaGol(botao)) {
+								controleJogo.setGol(botao);
+								Logger.logar("animar gol");
+							} else if (controleJogo
+									.verificaMetaEscanteio(botao)) {
+								controleJogo.setMetaEscanteio(botao);
+								Logger.logar("animar MetaEscanteio");
+							} else if (!controleJogo
+									.verificaDentroCampo(botao)) {
+								if (controleJogo.getLateral() == null) {
+									controleJogo.setLateral(botao.getCentro());
+									Logger.logar("animar lateral");
 								}
-							}
-						}
-						if (porcent - porcentOld > 1 - index) {
-							porcentOld = porcent;
-							controleJogo
-									.centralizaBotao(controleJogo.getBola());
-							if (!controleJogo.isJogoOnlineSrvidor()) {
-								int porcentDiv10 = Util.inte(porcent / 10);
-								int sleep = 5 + porcentDiv10 - porcentOldDiv10;
-								if (sleep > 15) {
-									sleep = 15;
-								}
-								Thread.sleep(sleep);
-								porcentOldDiv10 = porcentDiv10;
-							} else {
-								Thread.sleep(5);
-							}
-						}
-
-					} else {
-						if (porcent - porcentOld > 1 - index) {
-							porcentOld = porcent;
-							if (!controleJogo.isJogoOnlineSrvidor()) {
-								int porcentDiv10 = Util.inte(porcent / 10);
-								int sleep = 7 + porcentDiv10 - porcentOldDiv10;
-								if (sleep > 17) {
-									sleep = 17;
-								}
-								Thread.sleep(sleep);
-								porcentOldDiv10 = porcentDiv10;
-							} else {
-								Thread.sleep(7);
 							}
 						}
 					}
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					if (porcent - porcentOld > 1 - index) {
+						porcentOld = porcent;
+						controleJogo.centralizaBotao(controleJogo.getBola());
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							int porcentDiv10 = Util.inte(porcent / 10);
+							int sleep = 5 + porcentDiv10 - porcentOldDiv10;
+							if (sleep > 15) {
+								sleep = 15;
+							}
+							Thread.sleep(sleep);
+							porcentOldDiv10 = porcentDiv10;
+						} else {
+							Thread.sleep(5);
+						}
+					}
+
+				} else {
+					if (porcent - porcentOld > 1 - index) {
+						porcentOld = porcent;
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							int porcentDiv10 = Util.inte(porcent / 10);
+							int sleep = 7 + porcentDiv10 - porcentOldDiv10;
+							if (sleep > 17) {
+								sleep = 17;
+							}
+							Thread.sleep(sleep);
+							porcentOldDiv10 = porcentDiv10;
+						} else {
+							Thread.sleep(7);
+						}
+					}
 				}
+
 			} else if (object instanceof Animacao) {
 				Animacao animIn = (Animacao) object;
 				Thread threadRodando = (Thread) controleJogo
@@ -123,8 +128,8 @@ public class Animador implements Runnable {
 				if (threadRodando == null) {
 					Animador animador = new Animador(animIn, controleJogo);
 					Thread thread = new Thread(animador);
-					controleJogo.getBotoesComThread().put(
-							animIn.getObjetoAnimacao(), thread);
+					controleJogo.getBotoesComThread()
+							.put(animIn.getObjetoAnimacao(), thread);
 					thread.start();
 				}
 			}

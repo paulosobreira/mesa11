@@ -11,6 +11,7 @@ public class Animacao implements Serializable {
 	private Long objetoAnimacao;
 	private int index;
 	private long timeStamp;
+	private boolean executou;
 
 	public static void main(String[] args) {
 		int variancia = 10 - 687 / 100;
@@ -49,6 +50,14 @@ public class Animacao implements Serializable {
 
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+
+	public boolean isExecutou() {
+		return executou;
+	}
+
+	public void setExecutou(boolean executou) {
+		this.executou = executou;
 	}
 
 }

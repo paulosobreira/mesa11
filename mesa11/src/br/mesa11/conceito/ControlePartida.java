@@ -99,7 +99,7 @@ public class ControlePartida {
 		}
 	}
 
-	public void iniciaJogoLivre() {
+	public boolean iniciaJogoLivre() {
 		GridLayout gridLayout = new GridLayout(6, 2);
 		gridLayout.setHgap(15);
 		gridLayout.setVgap(5);
@@ -361,12 +361,12 @@ public class ControlePartida {
 				Lang.msg("escolhaTimes"), JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (val != JOptionPane.YES_OPTION) {
-			return;
+			return false;
 		}
 		Thread run = new Thread(new Runnable() {
-
 			@Override
 			public void run() {
+				controleJogo.bolaCentro();
 				processaTempoJogo(tempoJogoCombo.getSelectedItem());
 				String xmlCima = obterKey((String) timesCima.getSelectedItem());
 				String xmlBaixo = obterKey((String) timesBaixo
@@ -471,6 +471,7 @@ public class ControlePartida {
 			}
 		});
 		run.start();
+		return true;
 	}
 
 	private void carregarBotaoImagemBotao(Map botoesImagens, Botao botao,

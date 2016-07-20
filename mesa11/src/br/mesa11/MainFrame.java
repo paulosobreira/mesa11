@@ -403,7 +403,7 @@ public class MainFrame {
 				controleJogo.setZoom(0.3);
 				controleJogo.setCodeBase(codeBase);
 				controleJogo.iniciaJogoLivreAssistido();
-				frame.setSize(700, 800);
+				frame.setSize(1000, frame.getHeight() - 15);
 			}
 		});
 		menuJogo.add(iniciarLivreAssis);
@@ -431,14 +431,17 @@ public class MainFrame {
 	}
 
 	private void iniciaJogoLivre() {
+		if(controleJogo!=null){
+			controleJogo.limparJogo();
+		}
 		controleJogo = new ControleJogo(frame);
 		controleJogo.inicializaVideo();
 		frame.setVisible(true);
-		controleJogo.centroCampo();
-		controleJogo.setZoom(0.3);
+		frame.setSize(1000, 700);
 		Logger.logar(codeBase);
 		controleJogo.setCodeBase(codeBase);
 		controleJogo.iniciaJogoLivre();
-		frame.setSize(700, 800);
+		controleJogo.centroCampo();
+		controleJogo.setZoom(0.3);
 	}
 }

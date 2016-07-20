@@ -14,13 +14,16 @@ public class AtualizadorJogadaCPU extends Thread {
 	public AtualizadorJogadaCPU(ControleJogo controleJogo) {
 		super();
 		this.controleJogo = controleJogo;
-		if (controleJogo.isJogoOnlineSrvidor()) {
-			intervaloEntreJogadas = Util.intervalo(1000, 2000);
-		}
+		intervaloEntreJogadas = Util.intervalo(1000, 2000);
 		setPriority(Thread.MIN_PRIORITY);
 	}
 
 	public void run() {
+		try {
+			sleep(2000);
+		} catch (InterruptedException e1) {
+			Logger.logarExept(e1);
+		}
 		while (!controleJogo.isJogoTerminado()) {
 			try {
 				if ((System.currentTimeMillis() - iniJogada) > 1000) {
