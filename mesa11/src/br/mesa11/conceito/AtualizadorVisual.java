@@ -1,20 +1,16 @@
 package br.mesa11.conceito;
 
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-
 import javax.swing.SwingUtilities;
 
 import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
 import br.nnpe.Logger;
-import br.nnpe.Util;
 
 public class AtualizadorVisual extends Thread {
 	private ControleJogo controleJogo;
 	private MesaPanel mesaPanel;
 	private boolean alive = true;
-	private int cont = 60, contAnimando = 20;
+	private int espera = 16;
 
 	public AtualizadorVisual(ControleJogo controleJogo) {
 		super();
@@ -30,7 +26,7 @@ public class AtualizadorVisual extends Thread {
 		while (alive) {
 			try {
 				if (controleJogo.isProcessando()) {
-					Thread.sleep(Util.intervalo(contAnimando, cont));
+					Thread.sleep(espera);
 					continue;
 				}
 				boolean scrooll = false;
@@ -42,45 +38,42 @@ public class AtualizadorVisual extends Thread {
 						public void run() {
 							if (!controleJogo.isProcessando()) {
 								mesaPanel.repaint();
-								controleJogo
-										.getScrollPane()
-										.getViewport()
-										.setViewPosition(
-												controleJogo.getNovoPontoTela());
+								controleJogo.getScrollPane().getViewport()
+										.setViewPosition(controleJogo
+												.getNovoPontoTela());
 							}
 						}
 					});
-					controleJogo.setVelhoPontoTela(controleJogo
-							.getNovoPontoTela());
+					controleJogo
+							.setVelhoPontoTela(controleJogo.getNovoPontoTela());
 				}
-				try {
-					if (controleJogo.isAnimando()
-							|| controleJogo.isProcessando()) {
-						Thread.sleep(contAnimando);
-						controleJogo.setPontoPasando(controleJogo.getBola()
-								.getCentro());
-					} else
-						Thread.sleep(cont);
-					if (!scrooll) {
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								if (!controleJogo.isProcessando()) {
-									mesaPanel.repaint();
-								}
+				if (controleJogo.isAnimando() || controleJogo.isProcessando()) {
+					Thread.sleep(espera);
+					controleJogo.setPontoPasando(
+							controleJogo.getBola().getCentro());
+				} else {
+					Thread.sleep(espera);
+				}
+				if (!scrooll) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							if (!controleJogo.isProcessando()) {
+								mesaPanel.repaint();
 							}
-						});
-					}
-				} catch (InterruptedException e) {
+						}
+					});
 				}
-				Botao botao = controleJogo.obterBotao(controleJogo
-						.getPontoPasando());
-				if (!controleJogo.isAnimando()
-						&& botao == null
+
+				Botao botao = controleJogo
+						.obterBotao(controleJogo.getPontoPasando());
+				if (!controleJogo.isAnimando() && botao == null
+						&& controleJogo.getPontoClicado() != null
 						&& mesaPanel.zoom == mesaPanel.mouseZoom
-						&& (System.currentTimeMillis() - mesaPanel.lastZoomChange) > 5000
-						&& !(controleJogo.getPontoPasandoZoom() != null && controleJogo
-								.miniViewPort().contains(
+						&& (System.currentTimeMillis()
+								- mesaPanel.lastZoomChange) > 5000
+						&& !(controleJogo.getPontoPasandoZoom() != null
+								&& controleJogo.miniViewPort().contains(
 										controleJogo.getPontoPasandoZoom()))) {
 					controleJogo
 							.centralizaPonto(controleJogo.getPontoPasando());
@@ -88,17 +81,6 @@ public class AtualizadorVisual extends Thread {
 
 			} catch (Exception e) {
 				Logger.logarExept(e);
-				try {
-					Thread.sleep(100);
-					if (cont < 120)
-						cont += 10;
-					if (contAnimando < 60)
-						contAnimando += 10;
-					Logger.logar("cont" + cont);
-					Logger.logar("contAnimando" + contAnimando);
-				} catch (InterruptedException e2) {
-
-				}
 			}
 		}
 	}

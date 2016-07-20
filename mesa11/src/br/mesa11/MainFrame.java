@@ -403,7 +403,7 @@ public class MainFrame {
 				controleJogo.setZoom(0.3);
 				controleJogo.setCodeBase(codeBase);
 				controleJogo.iniciaJogoLivreAssistido();
-				frame.setSize(700, 800);
+				frame.setSize(1000, frame.getHeight() - 15);
 			}
 		});
 		menuJogo.add(iniciarLivreAssis);
@@ -439,6 +439,7 @@ public class MainFrame {
 		Logger.logar(codeBase);
 		controleJogo.setCodeBase(codeBase);
 		controleJogo.iniciaJogoLivre();
-		frame.setSize(700, 800);
+		frame.pack();
+		frame.setSize(1000, frame.getHeight() - 15);
 	}
 }

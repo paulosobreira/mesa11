@@ -26,8 +26,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
-				.getPoint().y / mesaPanel.zoom));
+		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
+				(int) (e.getPoint().y / mesaPanel.zoom));
 		if (controleJogo.getBotaoSelecionado() != null
 				&& controleJogo.isCarregaBotao()) {
 			controleJogo.getBotaoSelecionado().setCentro(p);
@@ -35,16 +35,17 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 		/**
 		 * debug
 		 */
-		Map botoes = controleJogo.getBotoes();
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+		Map botoes = controleJogo.getBotoesCopia();
+		for (Iterator iterator = botoes.keySet().iterator(); iterator
+				.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
 			if (botao instanceof Goleiro) {
 				Goleiro goleiro = (Goleiro) botao;
 				if (goleiro.getShape(1).contains(p)) {
 					Logger.logar("Passando por Goleiro " + botao);
-					double retaGoleiro = GeoUtil.distaciaEntrePontos(goleiro
-							.getCentro(), p);
+					double retaGoleiro = GeoUtil
+							.distaciaEntrePontos(goleiro.getCentro(), p);
 					if (retaGoleiro > (goleiro.getRaio() / 2)) {
 						Logger.logar("Goleiro Rotacao " + botao);
 					} else {
@@ -52,8 +53,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 					}
 				}
 			} else {
-				List raioPonto = GeoUtil
-						.drawBresenhamLine(p, botao.getCentro());
+				List raioPonto = GeoUtil.drawBresenhamLine(p,
+						botao.getCentro());
 				if (raioPonto.size() <= botao.getRaio()) {
 					// Logger.logar("Passando por " + botao);
 					break;
@@ -68,8 +69,8 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 		if (controleJogo.isJogoTerminado()) {
 			return;
 		}
-		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom), (int) (e
-				.getPoint().y / mesaPanel.zoom));
+		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
+				(int) (e.getPoint().y / mesaPanel.zoom));
 		controleJogo.setPontoPasando(p);
 	}
 
