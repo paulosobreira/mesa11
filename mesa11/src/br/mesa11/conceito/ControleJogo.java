@@ -3304,7 +3304,6 @@ public class ControleJogo {
 			return null;
 		}
 		Map botoes = getBotoesCopia();
-
 		for (Iterator iterator = botoes.keySet().iterator(); iterator
 				.hasNext();) {
 			Long id = (Long) iterator.next();
