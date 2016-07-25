@@ -86,8 +86,8 @@ public class ControlePartida {
 		final Properties properties = new Properties();
 		try {
 			times = new Hashtable();
-			properties.load(CarregadorRecursos
-					.recursoComoStream("times.properties"));
+			properties.load(
+					CarregadorRecursos.recursoComoStream("times.properties"));
 			Enumeration propName = properties.propertyNames();
 			while (propName.hasMoreElements()) {
 				final String name = (String) propName.nextElement();
@@ -166,18 +166,19 @@ public class ControlePartida {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
-					String xmlCima = obterKey((String) timesCima
-							.getSelectedItem());
-					XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-							.recursoComoStream(xmlCima));
+					String xmlCima = obterKey(
+							(String) timesCima.getSelectedItem());
+					XMLDecoder xmlDecoder = new XMLDecoder(
+							CarregadorRecursos.recursoComoStream(xmlCima));
 					Time time = (Time) xmlDecoder.readObject();
 					if (Util.isNullOrEmpty(time.getImagem())) {
-						uniformeCima.setIcon(new ImageIcon(BotaoUtils
-								.desenhaUniforme(time, segundoUniformeBaixo ? 2
-										: 1)));
+						uniformeCima.setIcon(
+								new ImageIcon(BotaoUtils.desenhaUniforme(time,
+										segundoUniformeBaixo ? 2 : 1)));
 					} else {
-						ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-								.getCodeBase() + "midia/" + time.getImagem());
+						ImageIcon icon = ImageUtil
+								.carregarImagem(controleJogo.getCodeBase()
+										+ "midia/" + time.getImagem());
 						uniformeCima.setIcon(icon);
 					}
 					segundoUniformeCima = false;
@@ -188,18 +189,19 @@ public class ControlePartida {
 			@Override
 			public void itemStateChanged(ItemEvent arg0) {
 				if (arg0.getStateChange() == ItemEvent.SELECTED) {
-					String xmlBaixo = obterKey((String) timesBaixo
-							.getSelectedItem());
-					XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-							.recursoComoStream(xmlBaixo));
+					String xmlBaixo = obterKey(
+							(String) timesBaixo.getSelectedItem());
+					XMLDecoder xmlDecoder = new XMLDecoder(
+							CarregadorRecursos.recursoComoStream(xmlBaixo));
 					Time time = (Time) xmlDecoder.readObject();
 					if (Util.isNullOrEmpty(time.getImagem())) {
-						uniformeBaixo.setIcon(new ImageIcon(BotaoUtils
-								.desenhaUniforme(time, segundoUniformeBaixo ? 2
-										: 1)));
+						uniformeBaixo.setIcon(
+								new ImageIcon(BotaoUtils.desenhaUniforme(time,
+										segundoUniformeBaixo ? 2 : 1)));
 					} else {
-						ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-								.getCodeBase() + "midia/" + time.getImagem());
+						ImageIcon icon = ImageUtil
+								.carregarImagem(controleJogo.getCodeBase()
+										+ "midia/" + time.getImagem());
 						uniformeBaixo.setIcon(icon);
 					}
 					segundoUniformeBaixo = false;
@@ -212,16 +214,17 @@ public class ControlePartida {
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniformeCima = !segundoUniformeCima;
 				String xmlCima = obterKey((String) timesCima.getSelectedItem());
-				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-						.recursoComoStream(xmlCima));
+				XMLDecoder xmlDecoder = new XMLDecoder(
+						CarregadorRecursos.recursoComoStream(xmlCima));
 				Time time = (Time) xmlDecoder.readObject();
 				if (Util.isNullOrEmpty(time.getImagem())) {
-					uniformeCima.setIcon(new ImageIcon(
-							BotaoUtils.desenhaUniforme(time,
+					uniformeCima.setIcon(
+							new ImageIcon(BotaoUtils.desenhaUniforme(time,
 									segundoUniformeBaixo ? 2 : 1)));
 				} else {
-					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-							.getCodeBase() + "midia/" + time.getImagem());
+					ImageIcon icon = ImageUtil
+							.carregarImagem(controleJogo.getCodeBase()
+									+ "midia/" + time.getImagem());
 					uniformeCima.setIcon(icon);
 				}
 
@@ -232,18 +235,19 @@ public class ControlePartida {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				segundoUniformeBaixo = !segundoUniformeBaixo;
-				String xmlBaixo = obterKey((String) timesBaixo
-						.getSelectedItem());
-				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-						.recursoComoStream(xmlBaixo));
+				String xmlBaixo = obterKey(
+						(String) timesBaixo.getSelectedItem());
+				XMLDecoder xmlDecoder = new XMLDecoder(
+						CarregadorRecursos.recursoComoStream(xmlBaixo));
 				Time time = (Time) xmlDecoder.readObject();
 				if (Util.isNullOrEmpty(time.getImagem())) {
-					uniformeBaixo.setIcon(new ImageIcon(
-							BotaoUtils.desenhaUniforme(time,
+					uniformeBaixo.setIcon(
+							new ImageIcon(BotaoUtils.desenhaUniforme(time,
 									segundoUniformeBaixo ? 2 : 1)));
 				} else {
-					ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-							.getCodeBase() + "midia/" + time.getImagem());
+					ImageIcon icon = ImageUtil
+							.carregarImagem(controleJogo.getCodeBase()
+									+ "midia/" + time.getImagem());
 					uniformeBaixo.setIcon(icon);
 				}
 
@@ -337,7 +341,8 @@ public class ControlePartida {
 		iniciarJogoPanel.add(tempoJogoPanel, BorderLayout.NORTH);
 		iniciarJogoPanel.add(uniformesPanel, BorderLayout.SOUTH);
 		List itens = new ArrayList();
-		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = times.keySet().iterator(); iterator
+				.hasNext();) {
 			String key = (String) iterator.next();
 			itens.add(times.get(key));
 
@@ -350,11 +355,10 @@ public class ControlePartida {
 		for (Iterator iterator = itens.iterator(); iterator.hasNext();) {
 			timesCima.addItem(iterator.next());
 		}
-		while (timesBaixo.getItemCount() > 1
-				&& timesCima.getSelectedItem().equals(
-						timesBaixo.getSelectedItem())) {
-			timesBaixo.setSelectedIndex(Util.intervalo(0,
-					timesBaixo.getItemCount() - 1));
+		while (timesBaixo.getItemCount() > 1 && timesCima.getSelectedItem()
+				.equals(timesBaixo.getSelectedItem())) {
+			timesBaixo.setSelectedIndex(
+					Util.intervalo(0, timesBaixo.getItemCount() - 1));
 			Logger.logar("Selecionado Outro Time Baixo");
 		}
 		int val = JOptionPane.showConfirmDialog(frame, iniciarJogoPanel,
@@ -369,14 +373,14 @@ public class ControlePartida {
 				controleJogo.bolaCentro();
 				processaTempoJogo(tempoJogoCombo.getSelectedItem());
 				String xmlCima = obterKey((String) timesCima.getSelectedItem());
-				String xmlBaixo = obterKey((String) timesBaixo
-						.getSelectedItem());
+				String xmlBaixo = obterKey(
+						(String) timesBaixo.getSelectedItem());
 				if (xmlCima.equals(xmlBaixo)) {
 					return;
 				}
 
-				XMLDecoder xmlDecoder = new XMLDecoder(CarregadorRecursos
-						.recursoComoStream(xmlCima));
+				XMLDecoder xmlDecoder = new XMLDecoder(
+						CarregadorRecursos.recursoComoStream(xmlCima));
 				timeCima = (Time) xmlDecoder.readObject();
 				timeCima.setControladoCPU(timeCimaCPU.isSelected());
 				timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
@@ -389,17 +393,20 @@ public class ControlePartida {
 						botao.setId(id);
 					}
 					if (botao instanceof Goleiro || botao.isGoleiro()) {
-						botoesImagens.put(botao.getId(), BotaoUtils
-								.desenhaUniformeGoleiro(timeCima,
+						botoesImagens.put(botao.getId(),
+								BotaoUtils.desenhaUniformeGoleiro(timeCima,
 										segundoUniformeCima ? 2 : 1,
 										(Goleiro) botao));
 						botao.setCentro(mesaPanel.golCima());
 					} else {
 						if (botao instanceof Goleiro || botao.isGoleiro()) {
-							botoesImagens.put(botao.getId(), BotaoUtils
-									.desenhaUniformeGoleiro(timeCima, timeCima
-											.isSegundoUniforme() ? 2 : 1,
-											(Goleiro) botao));
+							botoesImagens.put(botao.getId(),
+									BotaoUtils
+											.desenhaUniformeGoleiro(timeCima,
+													timeCima.isSegundoUniforme()
+															? 2
+															: 1,
+													(Goleiro) botao));
 							botao.setCentro(mesaPanel.golCima());
 						} else {
 							carregarBotaoImagemBotao(botoesImagens, botao,
@@ -415,8 +422,8 @@ public class ControlePartida {
 				controleFormacao.posicionaTimeCima(timeCima,
 						bolaCima.isSelected());
 				bateuCentroCima = bolaCima.isSelected();
-				xmlDecoder = new XMLDecoder(CarregadorRecursos
-						.recursoComoStream(xmlBaixo));
+				xmlDecoder = new XMLDecoder(
+						CarregadorRecursos.recursoComoStream(xmlBaixo));
 				timeBaixo = (Time) xmlDecoder.readObject();
 				timeBaixo.setControladoCPU(timeBaixoCPU.isSelected());
 				timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
@@ -429,8 +436,8 @@ public class ControlePartida {
 						botao.setId(id);
 					}
 					if (botao instanceof Goleiro || botao.isGoleiro()) {
-						botoesImagens.put(botao.getId(), BotaoUtils
-								.desenhaUniformeGoleiro(timeBaixo,
+						botoesImagens.put(botao.getId(),
+								BotaoUtils.desenhaUniformeGoleiro(timeBaixo,
 										segundoUniformeBaixo ? 2 : 1,
 										(Goleiro) botao));
 						botao.setCentro(mesaPanel.golBaixo());
@@ -452,17 +459,18 @@ public class ControlePartida {
 					// + botao.isGoleiro() + " " + botao.getClass());
 				}
 				controleJogo.bolaCentro();
-				iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(), bolaCima
-						.isSelected() ? ConstantesMesa11.CAMPO_CIMA
-						: ConstantesMesa11.CAMPO_BAIXO);
+				iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
+						bolaCima.isSelected()
+								? ConstantesMesa11.CAMPO_CIMA
+								: ConstantesMesa11.CAMPO_BAIXO);
 				if (timeCima.getId() == null) {
 					timeCima.setId(System.currentTimeMillis());
 				}
 				if (timeBaixo.getId() == null) {
 					timeBaixo.setId(timeCima.getId() + 1);
 				}
-				controleJogo.setNumeroJogadas((Integer) numJogadaCombo
-						.getSelectedItem());
+				controleJogo.setNumeroJogadas(
+						(Integer) numJogadaCombo.getSelectedItem());
 				mapaGols.put(timeCima, new Integer(0));
 				mapaGols.put(timeBaixo, new Integer(0));
 				mapaJogadas.put(timeCima, new Integer(0));
@@ -487,8 +495,8 @@ public class ControlePartida {
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
-				String caminho = controleJogo.getCodeBase() + "midia/"
-						+ time.getImagem();
+				String caminho = controleJogo.getCodeBase() + "midia"
+						+ File.separator + time.getImagem();
 				buff = CarregadorRecursos.carregaImagemLocal(caminho);
 				if (buff == null) {
 					url = new URL(caminho);
@@ -509,8 +517,8 @@ public class ControlePartida {
 			newBuffer = new BufferedImage((buff.getWidth() + 1),
 					(buff.getHeight() + 1), BufferedImage.TYPE_INT_ARGB);
 		} else {
-			newBuffer = new BufferedImage((buff.getWidth()),
-					(buff.getHeight()), BufferedImage.TYPE_INT_ARGB);
+			newBuffer = new BufferedImage((buff.getWidth()), (buff.getHeight()),
+					BufferedImage.TYPE_INT_ARGB);
 		}
 		Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 		setarHints(graphics2d);
@@ -581,7 +589,8 @@ public class ControlePartida {
 	}
 
 	private String obterKey(String value) {
-		for (Iterator iterator = times.keySet().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = times.keySet().iterator(); iterator
+				.hasNext();) {
 			String key = (String) iterator.next();
 			String val = (String) times.get(key);
 			if (value.equals(val)) {
@@ -645,7 +654,8 @@ public class ControlePartida {
 		if (controleJogo.isAnimando()) {
 			return;
 		}
-		if (System.currentTimeMillis() > (inicioJogoMilis + (tempoJogoMilis / 2))) {
+		if (System.currentTimeMillis() > (inicioJogoMilis
+				+ (tempoJogoMilis / 2))) {
 			Time aux = timeBaixo;
 			timeBaixo = timeCima;
 			timeCima = aux;
@@ -709,14 +719,16 @@ public class ControlePartida {
 
 	public Time timeJogadaVez() {
 		if (controleJogo.isJogoOnlineCliente()) {
-			return timeCima.getNome().equals(
-					controleJogo.getDadosJogoSrvMesa11().getTimeVez()) ? timeCima
-					: timeBaixo;
+			return timeCima.getNome()
+					.equals(controleJogo.getDadosJogoSrvMesa11().getTimeVez())
+							? timeCima
+							: timeBaixo;
 		}
 		if (Util.isNullOrEmpty(campoTimeComBola)) {
 			return null;
 		}
-		return timeCima.getCampo().equals(campoTimeComBola) ? timeCima
+		return timeCima.getCampo().equals(campoTimeComBola)
+				? timeCima
 				: timeBaixo;
 	}
 
@@ -730,7 +742,8 @@ public class ControlePartida {
 				controleJogo.posicionaBotaoAleatoriamenteNoSeuCampo(botao);
 			}
 		}
-		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO ? ConstantesMesa11.CAMPO_CIMA
+		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
+				? ConstantesMesa11.CAMPO_CIMA
 				: ConstantesMesa11.CAMPO_BAIXO);
 		Logger.logar("reversaoJogada");
 		zerarJogadas();
@@ -761,8 +774,8 @@ public class ControlePartida {
 
 	public boolean verificaBolaPertoGoleiroTime(Time time, Botao bola) {
 		Goleiro goleiroTime = obterGoleiroTime(time);
-		double distGoleiroTime = GeoUtil.distaciaEntrePontos(
-				goleiroTime.getCentro(), bola.getCentro());
+		double distGoleiroTime = GeoUtil
+				.distaciaEntrePontos(goleiroTime.getCentro(), bola.getCentro());
 		double outraDistancia = 0;
 		if (timeCima.equals(time)) {
 			goleiroTime = obterGoleiroTime(timeBaixo);
@@ -899,9 +912,10 @@ public class ControlePartida {
 		Map botoesImagens = controleJogo.getBotoesImagens();
 		controleFormacao = new ControlePosicionamento(controleJogo);
 		Time timeBola = null;
-		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
-			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
-					.getBolaCampoVisita())) {
+		if (ConstantesMesa11.BOLA
+				.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
+			if (ConstantesMesa11.CAMPO_CIMA
+					.equals(dadosJogoSrvMesa11.getBolaCampoVisita())) {
 				controleFormacao.posicionaTimeCima(timeVisita, false);
 				controleFormacao.posicionaTimeBaixo(timeCasa, true);
 				timeCima = timeVisita;
@@ -919,10 +933,10 @@ public class ControlePartida {
 				bateuCentroBaixo = false;
 			}
 		}
-		if (ConstantesMesa11.BOLA.equals(dadosJogoSrvMesa11
-				.getBolaCampoVisita())) {
-			if (ConstantesMesa11.CAMPO_CIMA.equals(dadosJogoSrvMesa11
-					.getBolaCampoCasa())) {
+		if (ConstantesMesa11.BOLA
+				.equals(dadosJogoSrvMesa11.getBolaCampoVisita())) {
+			if (ConstantesMesa11.CAMPO_CIMA
+					.equals(dadosJogoSrvMesa11.getBolaCampoCasa())) {
 				controleFormacao.posicionaTimeCima(timeCasa, false);
 				controleFormacao.posicionaTimeBaixo(timeVisita, true);
 				timeCima = timeCasa;
@@ -943,12 +957,13 @@ public class ControlePartida {
 		timeCima.setCampo(ConstantesMesa11.CAMPO_CIMA);
 		timeBaixo.setCampo(ConstantesMesa11.CAMPO_BAIXO);
 		List botoesTimeCima = timeCima.getBotoes();
-		for (Iterator iterator = botoesTimeCima.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = botoesTimeCima.iterator(); iterator
+				.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeCima,
+				botoesImagens.put(botao.getId(),
+						BotaoUtils.desenhaUniformeGoleiro(timeCima,
 								timeCima.isSegundoUniforme() ? 2 : 1,
 								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golCima());
@@ -957,12 +972,13 @@ public class ControlePartida {
 			}
 		}
 		List botoesTimeBaixo = timeBaixo.getBotoes();
-		for (Iterator iterator = botoesTimeBaixo.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = botoesTimeBaixo.iterator(); iterator
+				.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			botoes.put(botao.getId(), botao);
 			if (botao instanceof Goleiro || botao.isGoleiro()) {
-				botoesImagens.put(botao.getId(), BotaoUtils
-						.desenhaUniformeGoleiro(timeBaixo,
+				botoesImagens.put(botao.getId(),
+						BotaoUtils.desenhaUniformeGoleiro(timeBaixo,
 								timeBaixo.isSegundoUniforme() ? 2 : 1,
 								(Goleiro) botao));
 				botao.setCentro(mesaPanel.golBaixo());
@@ -976,8 +992,9 @@ public class ControlePartida {
 			mapaGols.put(timeBaixo, new Integer(0));
 			mapaJogadas.put(timeCima, new Integer(0));
 			mapaJogadas.put(timeBaixo, new Integer(0));
-			String campoTimeComBola = timeBola.equals(timeCima) ? timeCima
-					.getCampo() : timeBaixo.getCampo();
+			String campoTimeComBola = timeBola.equals(timeCima)
+					? timeCima.getCampo()
+					: timeBaixo.getCampo();
 			processaTempoJogo(controleJogo.getJogoServidor()
 					.getDadosJogoSrvMesa11().getTempoJogo());
 			iniciaTempoJogada(controleJogo.getJogoServidor()

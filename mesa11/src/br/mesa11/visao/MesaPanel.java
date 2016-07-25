@@ -1650,7 +1650,7 @@ public class MesaPanel extends JPanel {
 		if (!controleJogo.isJogoIniciado()) {
 			return;
 		}
-		if (System.currentTimeMillis() - desenhaGol > 500000) {
+		if (System.currentTimeMillis() - desenhaGol > 5000) {
 			return;
 		}
 		int y = limitesViewPort.getBounds().y

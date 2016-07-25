@@ -26,7 +26,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>1</int>
@@ -65,7 +65,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>2</int>
@@ -101,7 +101,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>3</int>
@@ -137,7 +137,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>4</int>
@@ -173,7 +173,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>5</int>
@@ -209,7 +209,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>6</int>
@@ -245,7 +245,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>7</int>
@@ -281,7 +281,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>8</int>
@@ -317,7 +317,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>9</int>
@@ -353,7 +353,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>10</int>
@@ -389,7 +389,7 @@
        <string>sobreira</string>
       </void>
       <void property="nome">
-       <string>SÃ£o Paulo</string>
+       <string>São Paulo</string>
       </void>
       <void property="numero">
        <int>11</int>
@@ -434,7 +434,7 @@
    <string>sobreira</string>
   </void>
   <void property="nome">
-   <string>SÃ£o Paulo</string>
+   <string>São Paulo</string>
   </void>
   <void property="nomeAbrev">
    <string>SPF</string>

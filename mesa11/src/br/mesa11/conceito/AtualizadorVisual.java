@@ -25,60 +25,40 @@ public class AtualizadorVisual extends Thread {
 	public void run() {
 		while (alive) {
 			try {
-				if (controleJogo.isProcessando()) {
-					Thread.sleep(espera);
-					continue;
-				}
-				boolean scrooll = false;
-				if (controleJogo.getVelhoPontoTela() != controleJogo
-						.getNovoPontoTela()) {
-					scrooll = true;
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							if (!controleJogo.isProcessando()) {
-								mesaPanel.repaint();
-								controleJogo.getScrollPane().getViewport()
-										.setViewPosition(controleJogo
-												.getNovoPontoTela());
-							}
+				Thread.sleep(espera);
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						mesaPanel.repaint();
+						if (controleJogo.getScrollPane() != null
+								&& controleJogo.getScrollPane()
+										.getViewport() != null
+								&& controleJogo.getNovoPontoTela() != null) {
+							controleJogo.getScrollPane().getViewport()
+									.setViewPosition(
+											controleJogo.getNovoPontoTela());
 						}
-					});
-					controleJogo
-							.setVelhoPontoTela(controleJogo.getNovoPontoTela());
-				}
+					}
+				});
+
+				controleJogo.setVelhoPontoTela(controleJogo.getNovoPontoTela());
 				if (controleJogo.isAnimando() || controleJogo.isProcessando()) {
-					Thread.sleep(espera);
 					controleJogo.setPontoPasando(
 							controleJogo.getBola().getCentro());
-				} else {
-					Thread.sleep(espera);
-				}
-				if (!scrooll) {
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							if (!controleJogo.isProcessando()) {
-								mesaPanel.repaint();
-							}
-						}
-					});
 				}
 
-				Botao botao = controleJogo
-						.obterBotao(controleJogo.getPontoPasando());
-				if (!controleJogo.isAnimando() && botao == null
+				if (!controleJogo.isAnimando()
+						&& controleJogo.getPontoPasando() != null
 						&& controleJogo.getPontoClicado() != null
 						&& mesaPanel.zoom == mesaPanel.mouseZoom
 						&& (System.currentTimeMillis()
-								- mesaPanel.lastZoomChange) > 5000
+								- mesaPanel.lastZoomChange) > 100
 						&& !(controleJogo.getPontoPasandoZoom() != null
 								&& controleJogo.miniViewPort().contains(
 										controleJogo.getPontoPasandoZoom()))) {
 					controleJogo
 							.centralizaPonto(controleJogo.getPontoPasando());
 				}
-
 			} catch (Exception e) {
 				Logger.logarExept(e);
 			}
