@@ -395,24 +395,12 @@ public class ControlePartida {
 					if (botao instanceof Goleiro || botao.isGoleiro()) {
 						botoesImagens.put(botao.getId(),
 								BotaoUtils.desenhaUniformeGoleiro(timeCima,
-										segundoUniformeCima ? 2 : 1,
+										timeCima.isSegundoUniforme() ? 2 : 1,
 										(Goleiro) botao));
 						botao.setCentro(mesaPanel.golCima());
 					} else {
-						if (botao instanceof Goleiro || botao.isGoleiro()) {
-							botoesImagens.put(botao.getId(),
-									BotaoUtils
-											.desenhaUniformeGoleiro(timeCima,
-													timeCima.isSegundoUniforme()
-															? 2
-															: 1,
-													(Goleiro) botao));
-							botao.setCentro(mesaPanel.golCima());
-						} else {
-							carregarBotaoImagemBotao(botoesImagens, botao,
-									timeCima);
-						}
-
+						carregarBotaoImagemBotao(botoesImagens, botao,
+								timeCima);
 					}
 					botoes.put(botao.getId(), botao);
 
@@ -496,12 +484,22 @@ public class ControlePartida {
 			URL url = null;
 			try {
 				String caminho = controleJogo.getCodeBase() + "midia"
-						+ File.separator + time.getImagem();
+						+ File.separator + botao.getImagem();
 				buff = CarregadorRecursos.carregaImagemLocal(caminho);
 				if (buff == null) {
 					url = new URL(caminho);
 					Logger.logar(url);
 					buff = CarregadorRecursos.carregaImagemURL(url);
+				}
+				if (buff == null) {
+					caminho = controleJogo.getCodeBase() + "midia"
+							+ File.separator + time.getImagem();
+					buff = CarregadorRecursos.carregaImagemLocal(caminho);
+					if (buff == null) {
+						url = new URL(caminho);
+						Logger.logar(url);
+						buff = CarregadorRecursos.carregaImagemURL(url);
+					}
 				}
 				imgCust = true;
 			} catch (Exception e) {
@@ -541,12 +539,18 @@ public class ControlePartida {
 	private void setarHints(Graphics2D g2d) {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
 				RenderingHints.VALUE_DITHER_ENABLE);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+				RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+				RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+				RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
 
 	}
 

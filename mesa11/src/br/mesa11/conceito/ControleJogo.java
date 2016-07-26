@@ -524,7 +524,7 @@ public class ControleJogo {
 				}
 				botao.setCentro(point);
 				/**
-				 * Colisão com botões
+				 * Colisï¿½o com botï¿½es
 				 */
 				for (Iterator iterator = botoes.keySet().iterator(); iterator
 						.hasNext();) {
@@ -571,14 +571,14 @@ public class ControleJogo {
 							eventoAtual.setUltimoContato(botao);
 							eventoAtual.setEventoCod(
 									ConstantesMesa11.CONTATO_BOTAO_BOLA);
-							// Logger.logar("Botão Acerta Bola");
+							// Logger.logar("Botï¿½o Acerta Bola");
 							detAtingido *= (1 - (i / detAtingido));
 							bolaIngnora.add(botao);
-							// Logger.logar("Botão Acerta Bola detAtingido="
+							// Logger.logar("Botï¿½o Acerta Bola detAtingido="
 							// + detAtingido);
 						} else {
 							if ((botao instanceof Bola)) {
-								// Logger.logar("Bola Acerta Botão");
+								// Logger.logar("Bola Acerta Botï¿½o");
 								eventoAtual.setPonto(point);
 								eventoAtual.setUltimoContato(botaoAnalisado);
 								eventoAtual.setEventoCod(
@@ -611,7 +611,7 @@ public class ControleJogo {
 						List novaTrajetoria = new ArrayList();
 
 						/**
-						 * Rebatimento de bola em botão
+						 * Rebatimento de bola em botï¿½o
 						 */
 						int dest = 0;
 						if ((botao instanceof Bola)) {
@@ -620,7 +620,7 @@ public class ControleJogo {
 									bola.getCentro(), 90);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
 							// Logger
-							// .logar("Rebatimento de bola em botão (Botao Bola)
+							// .logar("Rebatimento de bola em botï¿½o (Botao Bola)
 							// dest="
 							// + dest);
 						} else if ((botaoAnalisado instanceof Bola)) {
@@ -628,14 +628,14 @@ public class ControleJogo {
 									botao.getDestino(), 90);
 							dest = Util.inte(detAtingido * .4);
 							// Logger
-							// .logar("Rebatimento de bola em botão
+							// .logar("Rebatimento de bola em botï¿½o
 							// (BotaoAnalizado Bola) dest="
 							// + dest);
 						} else {
 							angulo = GeoUtil.calculaAngulo(
 									botaoAnalisado.getCentro(), point, 90);
 							dest = Util.inte(trajetoriaBotao.size() * .1);
-							// Logger.logar("Botão Com Botão");
+							// Logger.logar("Botï¿½o Com Botï¿½o");
 							if (!eventoAtual.isNaBola()) {
 								eventoAtual.setPonto(point);
 								eventoAtual.setUltimoContato(botaoAnalisado);
@@ -2006,11 +2006,18 @@ public class ControleJogo {
 	}
 
 	public Goleiro obterGoleiroCima() {
-		return controlePartida.getTimeCima().obterGoleiro();
+		if (controlePartida != null && controlePartida.getTimeCima() != null) {
+			return controlePartida.getTimeCima().obterGoleiro();
+		}
+		return null;
+
 	}
 
 	public Goleiro obterGoleiroBaixo() {
-		return controlePartida.getTimeBaixo().obterGoleiro();
+		if (controlePartida != null && controlePartida.getTimeBaixo() != null) {
+			return controlePartida.getTimeBaixo().obterGoleiro();
+		}
+		return null;
 	}
 
 	public void verificaBolaParouEmCimaBotao() {
@@ -2654,7 +2661,7 @@ public class ControleJogo {
 		}
 
 		/**
-		 * Jogada Botão mais proximo chutar gol
+		 * Jogada Botï¿½o mais proximo chutar gol
 		 */
 
 		int contBtn = 0;
@@ -2863,7 +2870,7 @@ public class ControleJogo {
 	private Botao obterBtnJogadaCPU(List botoesTimeVez, Set descartados) {
 		Botao btnPrximo = obterBtnProximoLivre(botoesTimeVez, descartados);
 		/**
-		 * Botão mais proximo
+		 * Botï¿½o mais proximo
 		 */
 		if (btnPrximo == null) {
 			btnPrximo = obterBtnProximoAntesLinhaBola(botoesTimeVez,
