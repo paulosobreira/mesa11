@@ -72,6 +72,7 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 		Point p = new Point((int) (e.getPoint().x / mesaPanel.zoom),
 				(int) (e.getPoint().y / mesaPanel.zoom));
 		controleJogo.setPontoPasando(p);
+		controleJogo.setPontoArrastando(p);
 	}
 
 }

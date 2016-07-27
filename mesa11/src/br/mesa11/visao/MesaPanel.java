@@ -45,10 +45,9 @@ public class MesaPanel extends JPanel {
 	public static Color green2 = new Color(0, 200, 0, 150);
 	public static Color green = new Color(0, 255, 0, 150);
 	public static Color tansp = new Color(255, 255, 255, 100);
-	public final static Color yel = new Color(255, 255, 0, 150);
-	public final static Color lightWhite = new Color(255, 255, 255, 200);
-	public final static Color red = new Color(250, 0, 0, 150);
-	public static final String MUTEX = "MUTEX";
+	public final static Color amarelo = new Color(255, 255, 0, 150);
+	public final static Color brancoClaro = new Color(255, 255, 255, 200);
+	public final static Color vermelho = new Color(250, 0, 0, 150);
 	public static final int LARGURA_MESA = 3430;
 	public static final int ALTURA_MESA = 5286;
 	public static final int BORDA_CAMPO = 230;
@@ -136,7 +135,6 @@ public class MesaPanel extends JPanel {
 	public long lastZoomChange;
 	private int contMostraLag;
 	private Map botoes;
-	private long desenhaGol = 0;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		if (!controleJogo.isJogoOnlineSrvidor()) {
@@ -327,9 +325,9 @@ public class MesaPanel extends JPanel {
 		desenhaSombraGoleiro(g2d, botoes);
 		desenhaBotoes(g2d, botoes);
 		desenhaInfoJogo(g2d);
+		desenhaDica(g2d);
 		desenhaGolsJogo(g2d);
 		desenhaProblemaRede(g2d);
-		desenhaGol(g2d);
 		desenhaLag(g2d);
 		desenhaDebug(g2d);
 		Toolkit.getDefaultToolkit().sync();
@@ -471,9 +469,9 @@ public class MesaPanel extends JPanel {
 									.intersects(g.getShape(1).getBounds()))
 							&& !g.getShape(1).intersects(controleJogo.getBola()
 									.getShape(1).getBounds2D())) {
-						g2d.setColor(lightWhite);
+						g2d.setColor(brancoClaro);
 					} else {
-						g2d.setColor(red);
+						g2d.setColor(vermelho);
 					}
 
 					g2d.fill(g.getShape(zoom));
@@ -495,9 +493,9 @@ public class MesaPanel extends JPanel {
 									.intersects(g.getShape(1).getBounds()))
 							&& !g.getShape(1).intersects(controleJogo.getBola()
 									.getShape(1).getBounds2D())) {
-						g2d.setColor(lightWhite);
+						g2d.setColor(brancoClaro);
 					} else {
-						g2d.setColor(red);
+						g2d.setColor(vermelho);
 					}
 
 					g2d.fill(g.getShape(zoom));
@@ -520,7 +518,7 @@ public class MesaPanel extends JPanel {
 		int x = limitesViewPort.getBounds().x + 15;
 		int y = limitesViewPort.getBounds().y + 20;
 
-		g2d.setColor(lightWhite);
+		g2d.setColor(brancoClaro);
 		String msg = Lang.msg("gols");
 		int largura = 0;
 		for (int i = 0; i < msg.length(); i++) {
@@ -658,7 +656,7 @@ public class MesaPanel extends JPanel {
 		Time time = controleJogo.timeJogadaVez();
 		if (time != null) {
 			Color c1 = new Color(time.getCor1());
-			g2d.setColor(lightWhite);
+			g2d.setColor(brancoClaro);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("" + controleJogo.tempoRestanteJogoFormatado(), x,
@@ -666,7 +664,7 @@ public class MesaPanel extends JPanel {
 			g2d.drawString(Lang.msg("de") + " ", x + 35, y);
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 55, y);
 			y += 25;
-			g2d.setColor(lightWhite);
+			g2d.setColor(brancoClaro);
 			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(Lang.msg("jogadas") + " "
@@ -676,7 +674,7 @@ public class MesaPanel extends JPanel {
 			y += 25;
 			if (controleJogo.isEsperandoJogadaOnline()
 					|| controleJogo.isAnimando()) {
-				g2d.setColor(OcilaCor.geraOcila("aguarde", yel));
+				g2d.setColor(OcilaCor.geraOcila("aguarde", amarelo));
 				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + Lang.msg("aguarde"), x, y);
@@ -703,107 +701,106 @@ public class MesaPanel extends JPanel {
 				g2d.drawString("" + nmTime, x, y);
 			}
 		}
-		if (controleJogo.isJogoOnlineCliente() || (controleJogo.isJogoIniciado()
-				&& !(controleJogo.isAnimando()))) {
-			y += 50;
-			g2d.setColor(lightWhite);
-			g2d.fillRoundRect(x - 10, y - 40, 100, 45, 10, 10);
-			g2d.setColor(Color.BLACK);
-			Font fontOri = g2d.getFont();
-			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
-			g2d.drawString(
-					" " + controleJogo.tempoJogadaRestanteJogoFormatado(),
-					x - 5, y);
+		y += 50;
+		g2d.setColor(brancoClaro);
+		g2d.fillRoundRect(x - 10, y - 40, 100, 45, 10, 10);
+		g2d.setColor(Color.BLACK);
+		Font fontOri = g2d.getFont();
+		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
+		g2d.drawString(" " + controleJogo.tempoJogadaRestanteJogoFormatado(),
+				x - 5, y);
 
-			g2d.setFont(fontOri);
-		}
+		g2d.setFont(fontOri);
 		y += 25;
-		if (controleJogo.getPontoPasando() != null
-				&& !(controleJogo.isAnimando())) {
-			Botao botao = controleJogo
-					.obterBotao(controleJogo.getPontoPasando());
-			if (botao != null) {
-				if (botao.getId() == 0) {
-					return;
-				}
-				Color cV1 = new Color(botao.getTime().getCor1());
-				Color cV2 = new Color(botao.getTime().getCor2());
-				Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
-				int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString(botao.getNumero() + " " + botao.getNome(), x, y);
-				y += 22;
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString(Lang.msg("forca"), x, y);
-				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString("" + botao.getForca(), x + 68, y);
-				y += 22;
-				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString(Lang.msg("precisao"), x, y);
-				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString("" + botao.getPrecisao(), x + 68, y);
-				y += 22;
-				corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-				valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString(Lang.msg("defesa"), x, y);
-				corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-				valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-				if (valor > 250) {
-					g2d.setColor(Color.BLACK);
-				} else {
-					g2d.setColor(Color.WHITE);
-				}
-				g2d.drawString("" + botao.getDefesa(), x + 68, y);
+		Botao botao = controleJogo.obterBotao(controleJogo.getPontoPasando());
+		if (botao != null) {
+			if (botao.getId() == 0) {
+				return;
 			}
+			Color cV1 = new Color(botao.getTime().getCor1());
+			Color cV2 = new Color(botao.getTime().getCor2());
+			Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(botao.getNumero() + " " + botao.getNome(), x, y);
+			y += 22;
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(Lang.msg("forca"), x, y);
+			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString("" + botao.getForca(), x + 68, y);
+			y += 22;
+			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(Lang.msg("precisao"), x, y);
+			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString("" + botao.getPrecisao(), x + 68, y);
+			y += 22;
+			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString(Lang.msg("defesa"), x, y);
+			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+			g2d.setColor(corFundo);
+			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+			if (valor > 250) {
+				g2d.setColor(Color.BLACK);
+			} else {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.drawString("" + botao.getDefesa(), x + 68, y);
 		}
 
+	}
+
+	private void desenhaDica(Graphics2D g2d) {
+		int x;
+		int y;
+		Font fontOri;
 		x = limitesViewPort.getBounds().x
 				+ (limitesViewPort.getBounds().width / 2);
 		y = limitesViewPort.getBounds().y
@@ -816,13 +813,13 @@ public class MesaPanel extends JPanel {
 
 		Color corTexto = null;
 		if (ConstantesMesa11.PROBLEMA_REDE.equals(dica)) {
-			g2d.setColor(red);
+			g2d.setColor(vermelho);
 			corTexto = Color.WHITE;
 		} else {
-			g2d.setColor(lightWhite);
+			g2d.setColor(brancoClaro);
 			corTexto = Color.BLACK;
 		}
-		Font fontOri = g2d.getFont();
+		fontOri = g2d.getFont();
 		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica"))
 			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
 
@@ -832,6 +829,10 @@ public class MesaPanel extends JPanel {
 			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
 		}
 		x -= largura / 2;
+
+		if ("gol".equals(dica)) {
+			g2d.setColor(OcilaCor.geraOcila("gol", amarelo));
+		}
 
 		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica")) {
 			g2d.fillRoundRect(x - 10, y - 40, largura + 20, 45, 10, 10);
@@ -988,7 +989,7 @@ public class MesaPanel extends JPanel {
 			zoomBuffer = new BufferedImage(diam, diam,
 					BufferedImage.TYPE_INT_ARGB);
 			if (botao.equals(controleJogo.getBtnAssistido())) {
-				g.setColor(OcilaCor.geraOcila("BtnAssistido", yel));
+				g.setColor(OcilaCor.geraOcila("BtnAssistido", amarelo));
 			} else {
 				g.setColor(tansp);
 			}
@@ -1642,31 +1643,6 @@ public class MesaPanel extends JPanel {
 		return hasteEsquerdaGolBaixo;
 	}
 
-	public void setDesenhaGol() {
-		desenhaGol = System.currentTimeMillis();
-	}
-
-	private void desenhaGol(Graphics2D g2d) {
-		if (!controleJogo.isJogoIniciado()) {
-			return;
-		}
-		if (System.currentTimeMillis() - desenhaGol > 5000) {
-			return;
-		}
-		int y = limitesViewPort.getBounds().y
-				+ (limitesViewPort.getBounds().height / 2) - 130;
-		int largura = Util.larguraTexto(Lang.msg("problemaRede"), g2d);
-		int newx = limitesViewPort.getBounds().x
-				+ (limitesViewPort.getBounds().width / 2) - largura / 3;
-		g2d.setColor(OcilaCor.geraOcila("gol", Color.WHITE));
-		g2d.fillRoundRect(newx, y, largura + 10, 50, 15, 15);
-		g2d.setColor(Color.BLACK);
-		Font fontOri = g2d.getFont();
-		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
-		g2d.drawString(Lang.msg("gol"), newx + 15, y + 40);
-		g2d.setFont(fontOri);
-	}
-
 	private void desenhaLag(Graphics2D g2d) {
 		if (!controleJogo.isJogoIniciado()) {
 			return;
@@ -1694,7 +1670,7 @@ public class MesaPanel extends JPanel {
 							+ (limitesViewPort.getBounds().width) - 120,
 					Util.inte(limitesViewPort.getBounds().y
 							+ limitesViewPort.getBounds().getHeight() - 90));
-			g2d.setColor(lightWhite);
+			g2d.setColor(brancoClaro);
 			g2d.fillRoundRect(pointDesenhaLag.x, pointDesenhaLag.y, 65, 35, 15,
 					15);
 			Font fontOri = g2d.getFont();

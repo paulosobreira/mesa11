@@ -103,10 +103,10 @@ public class MonitorJogo extends Thread {
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (dadosJogoSrvMesa11.getGolJogador() != null
-					&& !controleJogo.getGolsTempo().contains(
-							dadosJogoSrvMesa11.getGolJogador())) {
-				controleJogo.getGolsTempo().add(
-						dadosJogoSrvMesa11.getGolJogador());
+					&& !controleJogo.getGolsTempo()
+							.contains(dadosJogoSrvMesa11.getGolJogador())) {
+				controleJogo.getGolsTempo()
+						.add(dadosJogoSrvMesa11.getGolJogador());
 			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if ("gol".equals(dadosJogoSrvMesa11.getDica())
@@ -116,23 +116,6 @@ public class MonitorJogo extends Thread {
 					|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
 					|| "penalti".equals(dadosJogoSrvMesa11.getDica())
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-				if ("gol".equals(dadosJogoSrvMesa11.getDica())
-						|| "golContra".equals(dadosJogoSrvMesa11.getDica())) {
-					threadGol = new Thread(new Runnable() {
-						@Override
-						public void run() {
-							try {
-								Thread.sleep(1500);
-							} catch (InterruptedException e) {
-								Logger.logarExept(e);
-							}
-							controleJogo.getMesaPanel().setDesenhaGol();
-						}
-					});
-					if (threadGol != null && !threadGol.isAlive()) {
-						threadGol.start();
-					}
-				}
 				controleJogo.centralizaBola();
 			}
 			timeVez = dadosJogoSrvMesa11.getTimeVez();
@@ -178,19 +161,19 @@ public class MonitorJogo extends Thread {
 		Object ret = enviarObjeto(mesa11to);
 		mesa11to = (NnpeTO) ret;
 		Time timeCasa = (Time) mesa11to.getData();
-		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
-				.isSegundoUniformeTimeCasa());
+		timeCasa.setSegundoUniforme(
+				dadosJogoSrvMesa11.isSegundoUniformeTimeCasa());
 		mesa11to = new NnpeTO();
 		mesa11to.setData(dadosJogoSrvMesa11.getTimeVisita());
 		mesa11to.setComando(ConstantesMesa11.OBTER_TIME);
 		ret = enviarObjeto(mesa11to);
 		mesa11to = (NnpeTO) ret;
 		Time timeVisita = (Time) mesa11to.getData();
-		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
-				.isSegundoUniformeTimeVisita());
+		timeVisita.setSegundoUniforme(
+				dadosJogoSrvMesa11.isSegundoUniformeTimeVisita());
 		controleJogo = new ControleJogo(mesa11Applet, timeClienteOnline,
-				dadosJogoSrvMesa11, controleChatCliente.getSessaoCliente()
-						.getNomeJogador());
+				dadosJogoSrvMesa11,
+				controleChatCliente.getSessaoCliente().getNomeJogador());
 		controleJogo.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa, timeVisita);
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
@@ -210,8 +193,8 @@ public class MonitorJogo extends Thread {
 			if (dadosJogoSrvMesa11.getIdRodadaCampeonato() != 0) {
 				return dadosJogoSrvMesa11.isJogoCampeonatoIniciado();
 			}
-			if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeCasa())
-					&& !Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
+			if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getTimeCasa()) && !Util
+					.isNullOrEmpty(dadosJogoSrvMesa11.getTimeVisita())) {
 				return true;
 			}
 		}

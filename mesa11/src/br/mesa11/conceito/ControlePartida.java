@@ -483,8 +483,8 @@ public class ControlePartida {
 		if (!Util.isNullOrEmpty(botao.getImagem())) {
 			URL url = null;
 			try {
-				String caminho = controleJogo.getCodeBase() + "midia"
-						+ File.separator + botao.getImagem();
+				String caminho = controleJogo.getCodeBase() + "midia/"
+						+ botao.getImagem();
 				buff = CarregadorRecursos.carregaImagemLocal(caminho);
 				if (buff == null) {
 					url = new URL(caminho);
@@ -492,8 +492,8 @@ public class ControlePartida {
 					buff = CarregadorRecursos.carregaImagemURL(url);
 				}
 				if (buff == null) {
-					caminho = controleJogo.getCodeBase() + "midia"
-							+ File.separator + time.getImagem();
+					caminho = controleJogo.getCodeBase() + "midia/"
+							+ time.getImagem();
 					buff = CarregadorRecursos.carregaImagemLocal(caminho);
 					if (buff == null) {
 						url = new URL(caminho);

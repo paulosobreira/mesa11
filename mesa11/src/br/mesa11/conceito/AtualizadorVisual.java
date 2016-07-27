@@ -48,8 +48,7 @@ public class AtualizadorVisual extends Thread {
 				}
 
 				if (!controleJogo.isAnimando()
-						&& controleJogo.getPontoPasando() != null
-						&& controleJogo.getPontoClicado() != null
+						&& controleJogo.getPontoArrastando() != null
 						&& mesaPanel.zoom == mesaPanel.mouseZoom
 						&& (System.currentTimeMillis()
 								- mesaPanel.lastZoomChange) > 100
@@ -57,7 +56,8 @@ public class AtualizadorVisual extends Thread {
 								&& controleJogo.miniViewPort().contains(
 										controleJogo.getPontoPasandoZoom()))) {
 					controleJogo
-							.centralizaPonto(controleJogo.getPontoPasando());
+							.centralizaPonto(controleJogo.getPontoArrastando());
+					controleJogo.setPontoArrastando(null);
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);
