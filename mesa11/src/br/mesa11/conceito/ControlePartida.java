@@ -371,6 +371,7 @@ public class ControlePartida {
 			@Override
 			public void run() {
 				controleJogo.bolaCentro();
+				controleJogo.removeBkg();
 				processaTempoJogo(tempoJogoCombo.getSelectedItem());
 				String xmlCima = obterKey((String) timesCima.getSelectedItem());
 				String xmlBaixo = obterKey(
@@ -438,14 +439,6 @@ public class ControlePartida {
 				controleFormacao.posicionaTimeBaixo(timeBaixo,
 						bolaBaixo.isSelected());
 				bateuCentroBaixo = bolaBaixo.isSelected();
-				for (Iterator iterator = botoes.keySet().iterator(); iterator
-						.hasNext();) {
-					Long id = (Long) iterator.next();
-					Botao botao = (Botao) botoes.get(id);
-					// Logger.logar(id + " " + botao.getPosition() + " "
-					// + botao.getNumero() + " " + botao.getNome() + " "
-					// + botao.isGoleiro() + " " + botao.getClass());
-				}
 				controleJogo.bolaCentro();
 				iniciaTempoJogada(tempoJogadaCombo.getSelectedItem(),
 						bolaCima.isSelected()
@@ -464,6 +457,7 @@ public class ControlePartida {
 				mapaJogadas.put(timeCima, new Integer(0));
 				mapaJogadas.put(timeBaixo, new Integer(0));
 				controleJogo.escondePorgressBar();
+				controleJogo.setJogoIniciado(true);
 			}
 		});
 		run.start();
@@ -820,6 +814,29 @@ public class ControlePartida {
 		controleJogo.bolaCentro();
 	}
 
+	public void processarGolContra(Botao botao) {
+		Time time = botao.getTime();
+		if (timeCima.equals(time)) {
+			controleFormacao.posicionaTimeCima(timeCima, true);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
+			Integer gols = (Integer) mapaGols.get(timeBaixo);
+			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
+		} else {
+			controleFormacao.posicionaTimeCima(timeCima, false);
+			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
+			Integer gols = (Integer) mapaGols.get(timeCima);
+			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
+		}
+		GolJogador golJogador = new GolJogador();
+		golJogador.setIdJogador(botao.getId());
+		golJogador.setTempoGol(tempoRestanteJogoFormatado());
+		golJogador.setContra(true);
+		golJogadors.add(golJogador);
+		centralizaGoleiroCima();
+		zerarJogadas();
+		controleJogo.bolaCentro();
+	}
+
 	public List<GolJogador> getGolJogadors() {
 		return golJogadors;
 	}
@@ -848,29 +865,6 @@ public class ControlePartida {
 			}
 		}
 
-	}
-
-	public void processarGolContra(Botao botao) {
-		Time time = botao.getTime();
-		if (timeCima.equals(time)) {
-			controleFormacao.posicionaTimeCima(timeCima, true);
-			controleFormacao.posicionaTimeBaixo(timeBaixo, false);
-			Integer gols = (Integer) mapaGols.get(timeBaixo);
-			mapaGols.put(timeBaixo, new Integer(gols.intValue() + 1));
-		} else {
-			controleFormacao.posicionaTimeCima(timeCima, false);
-			controleFormacao.posicionaTimeBaixo(timeBaixo, true);
-			Integer gols = (Integer) mapaGols.get(timeCima);
-			mapaGols.put(timeCima, new Integer(gols.intValue() + 1));
-		}
-		GolJogador golJogador = new GolJogador();
-		golJogador.setIdJogador(botao.getId());
-		golJogador.setTempoGol(tempoRestanteJogoFormatado());
-		golJogador.setContra(true);
-		golJogadors.add(golJogador);
-		centralizaGoleiroCima();
-		zerarJogadas();
-		controleJogo.bolaCentro();
 	}
 
 	public String verGols(Time time) {

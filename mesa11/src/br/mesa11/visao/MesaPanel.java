@@ -135,6 +135,8 @@ public class MesaPanel extends JPanel {
 	public long lastZoomChange;
 	private int contMostraLag;
 	private Map botoes;
+	private boolean desenhaBkg = true;
+	private Botao botaoInfo;
 
 	public MesaPanel(ControleJogo controleJogo) {
 		if (!controleJogo.isJogoOnlineSrvidor()) {
@@ -317,14 +319,15 @@ public class MesaPanel extends JPanel {
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
-		desenhaMesa11Bkg(g2d);
 		desenhaCampo(g2d);
+		desenhaMesa11Bkg(g2d);
 		desenhaTravesGol(g2d);
 		desenhaFiguras(g2d);
 		simulaRota(g2d, botoes);
 		desenhaSombraGoleiro(g2d, botoes);
 		desenhaBotoes(g2d, botoes);
 		desenhaInfoJogo(g2d);
+		desenhaInfoBotao(g2d);
 		desenhaDica(g2d);
 		desenhaGolsJogo(g2d);
 		desenhaProblemaRede(g2d);
@@ -334,7 +337,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaMesa11Bkg(Graphics2D g2d) {
-		if (controleJogo.isJogoIniciado()) {
+		if (!desenhaBkg) {
 			return;
 		}
 		if (mesa11Bkg != null) {
@@ -711,90 +714,106 @@ public class MesaPanel extends JPanel {
 				x - 5, y);
 
 		g2d.setFont(fontOri);
-		y += 25;
+	}
 
-		Botao botao = controleJogo.obterBotao(controleJogo.getPontoPasando());
-		if (botao != null) {
-			if (botao.getId() == 0) {
-				return;
-			}
-			Color cV1 = new Color(botao.getTime().getCor1());
-			Color cV2 = new Color(botao.getTime().getCor2());
-			Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+	private void desenhaInfoBotao(Graphics2D g2d) {
 
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
-			int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(botao.getNumero() + " " + botao.getNome(), x, y);
-			y += 22;
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(Lang.msg("forca"), x, y);
-			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString("" + botao.getForca(), x + 68, y);
-			y += 22;
-			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(Lang.msg("precisao"), x, y);
-			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString("" + botao.getPrecisao(), x + 68, y);
-			y += 22;
-			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
-			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString(Lang.msg("defesa"), x, y);
-			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
-			g2d.setColor(corFundo);
-			g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
-			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
-			if (valor > 250) {
-				g2d.setColor(Color.BLACK);
-			} else {
-				g2d.setColor(Color.WHITE);
-			}
-			g2d.drawString("" + botao.getDefesa(), x + 68, y);
+		int x = limitesViewPort.getBounds().x
+				+ (limitesViewPort.getBounds().width - 150);
+		int y = limitesViewPort.getBounds().y + 150;
+
+		Botao obterBotao = controleJogo
+				.obterBotao(controleJogo.getPontoPasando());
+		if (obterBotao != null && obterBotao.getId() != 0) {
+			botaoInfo = obterBotao;
+		} else if (!controleJogo.isAnimando()
+				&& controleJogo.getEventoAtual() != null
+				&& controleJogo.getEventoAtual().getUltimoContato() != null
+				&& controleJogo.getEventoAtual().getUltimoContato()
+						.getId() != 0) {
+			botaoInfo = controleJogo.getEventoAtual().getUltimoContato();
 		}
+		if (botaoInfo == null) {
+			return;
+		}
+		if (botaoInfo.getId() == 0) {
+			return;
+		}
+		Color cV1 = new Color(botaoInfo.getTime().getCor1());
+		Color cV2 = new Color(botaoInfo.getTime().getCor2());
+		Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+		int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString(botaoInfo.getNumero() + " " + botaoInfo.getNome(), x, y);
+		y += 22;
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString(Lang.msg("forca"), x, y);
+		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString("" + botaoInfo.getForca(), x + 68, y);
+		y += 22;
+		corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString(Lang.msg("precisao"), x, y);
+		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString("" + botaoInfo.getPrecisao(), x + 68, y);
+		y += 22;
+		corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString(Lang.msg("defesa"), x, y);
+		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
+		g2d.setColor(corFundo);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
+		if (valor > 250) {
+			g2d.setColor(Color.BLACK);
+		} else {
+			g2d.setColor(Color.WHITE);
+		}
+		g2d.drawString("" + botaoInfo.getDefesa(), x + 68, y);
 	}
 
 	private void desenhaDica(Graphics2D g2d) {
@@ -1008,7 +1027,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaCampo(Graphics2D g) {
-		if (!controleJogo.isJogoIniciado()) {
+		if (desenhaBkg) {
 			return;
 		}
 		int x = 0;
@@ -1681,4 +1700,13 @@ public class MesaPanel extends JPanel {
 		}
 
 	}
+
+	public boolean isDesenhaBkg() {
+		return desenhaBkg;
+	}
+
+	public void setDesenhaBkg(boolean desenhaBkg) {
+		this.desenhaBkg = desenhaBkg;
+	}
+
 }

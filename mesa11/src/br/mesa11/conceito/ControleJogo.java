@@ -330,9 +330,8 @@ public class ControleJogo {
 		controlePartida = new ControlePartida(this);
 		controleDicas = new ControleDicas(this);
 		criarProgressBar();
-		setJogoIniciado(controlePartida.iniciaJogoLivre());
-		escondePorgressBar();
-		if (jogoIniciado) {
+		boolean iniciaJogoLivre = controlePartida.iniciaJogoLivre();
+		if (iniciaJogoLivre) {
 			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
 					this);
 			atualizadorJogadaCPU.start();
@@ -3401,12 +3400,12 @@ public class ControleJogo {
 
 	public Map getBotoesCopia() {
 		Map<Long, Botao> botoesCopy = new HashMap<Long, Botao>();
-		synchronized (botoes) {
-			for (Iterator iterator = botoes.keySet().iterator(); iterator
-					.hasNext();) {
-				Long id = (Long) iterator.next();
-				botoesCopy.put(id, botoes.get(id));
+		try {
+			while (botoesCopy.isEmpty()) {
+				botoesCopy.putAll(botoes);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return botoesCopy;
 	}
@@ -3467,6 +3466,12 @@ public class ControleJogo {
 
 	public void setPontoArrastando(Point pontoArrastando) {
 		this.pontoArrastando = pontoArrastando;
+	}
+
+	public void removeBkg() {
+		if (mesaPanel != null) {
+			mesaPanel.setDesenhaBkg(false);
+		}
 	}
 
 }

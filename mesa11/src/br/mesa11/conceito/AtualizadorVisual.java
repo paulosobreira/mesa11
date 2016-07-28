@@ -1,9 +1,12 @@
 package br.mesa11.conceito;
 
+import java.awt.Point;
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
-import br.hibernate.Botao;
 import br.mesa11.visao.MesaPanel;
+import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
 
 public class AtualizadorVisual extends Thread {
@@ -34,9 +37,20 @@ public class AtualizadorVisual extends Thread {
 								&& controleJogo.getScrollPane()
 										.getViewport() != null
 								&& controleJogo.getNovoPontoTela() != null) {
-							controleJogo.getScrollPane().getViewport()
-									.setViewPosition(
-											controleJogo.getNovoPontoTela());
+							List drawBresenhamLine = GeoUtil.drawBresenhamLine(
+									controleJogo.getScrollPane().getViewport()
+											.getViewPosition(),
+									controleJogo.getNovoPontoTela());
+							if (drawBresenhamLine.isEmpty()) {
+								controleJogo.getScrollPane().getViewport()
+										.setViewPosition(controleJogo
+												.getNovoPontoTela());
+							} else {
+								Point point = (Point) drawBresenhamLine
+										.get(drawBresenhamLine.size() - 1);
+								controleJogo.getScrollPane().getViewport()
+										.setViewPosition(point);
+							}
 						}
 					}
 				});
