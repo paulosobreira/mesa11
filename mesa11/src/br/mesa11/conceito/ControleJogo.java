@@ -76,7 +76,7 @@ public class ControleJogo {
 	private JFrame frame;
 	private Map<Long, Botao> botoes = new HashMap<Long, Botao>();
 	private Map botoesImagens = new HashMap();
-	private Map botoesComThread = new HashMap();
+	private Map<Long,Animador> botoesComThread = new HashMap<Long,Animador>();
 	private List<Animacao> listaAnimacoes = new LinkedList<Animacao>();
 	private Botao bola;
 	private MesaPanel mesaPanel;
@@ -856,7 +856,7 @@ public class ControleJogo {
 		animacaoJogada.setObjetoAnimacao(bola.getId());
 		Animador animador = new Animador(animacaoJogada, this);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), thread);
+		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), animador);
 		thread.start();
 		bola.setCentroTodos(mesaPanel.getCentro().getLocation());
 		centralizaBola();
@@ -1439,7 +1439,7 @@ public class ControleJogo {
 		this.novoPontoTela = novoPontoTela;
 	}
 
-	public Map getBotoesComThread() {
+	public Map<Long,Animador> getBotoesComThread() {
 		return botoesComThread;
 	}
 
@@ -2298,8 +2298,8 @@ public class ControleJogo {
 		}
 		getBotoesComThread().clear();
 		Animador animador = new Animador(animacaoJogada, this);
+		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), animador);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), thread);
 		thread.start();
 		setPontoClicado(null);
 		zerarTimerJogada();
@@ -2367,7 +2367,7 @@ public class ControleJogo {
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
 		if (animacao.getObjetoAnimacao() != null)
-			getBotoesComThread().put(animacao.getObjetoAnimacao(), thread);
+			getBotoesComThread().put(animacao.getObjetoAnimacao(), animador);
 		thread.start();
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override

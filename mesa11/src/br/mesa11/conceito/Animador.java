@@ -123,13 +123,13 @@ public class Animador implements Runnable {
 
 			} else if (object instanceof Animacao) {
 				Animacao animIn = (Animacao) object;
-				Thread threadRodando = (Thread) controleJogo
+				Animador animadorCom = (Animador) controleJogo
 						.getBotoesComThread().get(animIn.getObjetoAnimacao());
-				if (threadRodando == null) {
+				if (animadorCom == null) {
 					Animador animador = new Animador(animIn, controleJogo);
 					Thread thread = new Thread(animador);
 					controleJogo.getBotoesComThread()
-							.put(animIn.getObjetoAnimacao(), thread);
+							.put(animIn.getObjetoAnimacao(), animador);
 					thread.start();
 				}
 			}
