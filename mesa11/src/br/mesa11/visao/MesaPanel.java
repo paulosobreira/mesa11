@@ -70,6 +70,7 @@ public class MesaPanel extends JPanel {
 
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
+	private static boolean debug = false;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -149,7 +150,7 @@ public class MesaPanel extends JPanel {
 				Logger.logarExept(e);
 			}
 		}
-		if (Logger.debug) {
+		if (debug) {
 			grama1 = null;
 			grama2 = null;
 			green2 = new Color(240, 240, 240);
@@ -353,13 +354,17 @@ public class MesaPanel extends JPanel {
 		if (!controleJogo.isJogoIniciado()) {
 			return;
 		}
-		if (Logger.debug) {
+		if (debug) {
 			if (controleJogo.ptDstBola != null
 					&& controleJogo.getBola() != null) {
-				g2d.setColor(Color.BLACK);
+				g2d.setColor(vermelho);
 				if (controleJogo.ptDstBola != null)
-					g2d.fillOval(Util.inte(controleJogo.ptDstBola.x * zoom),
-							Util.inte(controleJogo.ptDstBola.y * zoom), 5, 5);
+					g2d.fillOval(
+							Util.inte((controleJogo.ptDstBola.x
+									- controleJogo.getBola().getRaio()) * zoom),
+							Util.inte((controleJogo.ptDstBola.y
+									- controleJogo.getBola().getRaio()) * zoom),
+							5, 5);
 				if (controleJogo.golJogadaCpu != null)
 					g2d.drawLine(
 							Util.inte(controleJogo.getBola().getCentro().x
@@ -370,12 +375,6 @@ public class MesaPanel extends JPanel {
 							Util.inte(controleJogo.golJogadaCpu.y * zoom));
 			}
 			g2d.draw(controleJogo.miniViewPort());
-			if (controleJogo.getPontoPasando() != null) {
-				g2d.setColor(Color.BLACK);
-				g2d.fillOval((int) controleJogo.getPontoPasandoZoom().getX(),
-						(int) controleJogo.getPontoPasandoZoom().getY(), 10,
-						10);
-			}
 		}
 
 	}
@@ -1084,7 +1083,7 @@ public class MesaPanel extends JPanel {
 						((ALTURA_FAIXA) * zoom));
 
 				if (limitesViewPort.intersects(zoomedFaixasGrama[contFaixas])) {
-					if (Logger.debug)
+					if (debug)
 						g.fill(zoomedFaixasGrama[contFaixas]);
 					if (limitesViewPort
 							.intersects(zoomedFaixasGrama[contFaixas])) {
@@ -1573,13 +1572,13 @@ public class MesaPanel extends JPanel {
 	public Point golBaixo() {
 		Point p = new Point(Util.inte(getPenaltyBaixo().x),
 				Util.inte(getPequenaAreaBaixo().getLocation().y
-						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2)));
+						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2)-5));
 		return p;
 	}
 
 	public Point golCima() {
 		Point p = new Point(Util.inte(getPenaltyCima().x),
-				Util.inte(getPequenaAreaCima().getLocation().y - 20));
+				Util.inte(getPequenaAreaCima().getLocation().y - 15));
 		return p;
 	}
 

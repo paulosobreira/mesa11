@@ -57,6 +57,13 @@ public class AtualizadorJogadaCPU extends Thread {
 								jogadaCpu = new Thread(new Runnable() {
 									@Override
 									public void run() {
+										while(controleJogo.isAnimando()){
+											try {
+												sleep(500);
+											} catch (InterruptedException e) {
+												Logger.logarExept(e);
+											}
+										}
 										iniJogada = System.currentTimeMillis();
 										Logger.logar("Inicia Jogada CPU "
 												+ timeJogadaVez.getNome());

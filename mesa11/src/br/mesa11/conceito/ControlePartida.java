@@ -458,6 +458,7 @@ public class ControlePartida {
 				mapaJogadas.put(timeBaixo, new Integer(0));
 				controleJogo.escondePorgressBar();
 				controleJogo.setJogoIniciado(true);
+				controleJogo.atualizaBotoesCopia();
 			}
 		});
 		run.start();
@@ -746,6 +747,7 @@ public class ControlePartida {
 		Logger.logar("reversaoJogada");
 		zerarJogadas();
 		zerarTimerJogada();
+		controleJogo.centralizaBola();
 	}
 
 	public void zeraJogadaTime(Time time) {

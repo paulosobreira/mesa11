@@ -76,7 +76,7 @@ public class ControleJogo {
 	private JFrame frame;
 	private Map<Long, Botao> botoes = new HashMap<Long, Botao>();
 	private Map botoesImagens = new HashMap();
-	private Map<Long,Animador> botoesComThread = new HashMap<Long,Animador>();
+	private Map<Long, Thread> botoesComThread = new HashMap<Long, Thread>();
 	private List<Animacao> listaAnimacoes = new LinkedList<Animacao>();
 	private Botao bola;
 	private MesaPanel mesaPanel;
@@ -121,6 +121,7 @@ public class ControleJogo {
 	private Thread autoCloseProgressBar;
 	private boolean autoMira;
 	private Botao btnAssistido;
+	Map<Long, Botao> botoesCopy;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -616,7 +617,7 @@ public class ControleJogo {
 						List novaTrajetoria = new ArrayList();
 
 						/**
-						 * Rebatimento de bola em bot�o
+						 * Rebatimento de bola em botão
 						 */
 						int dest = 0;
 						if ((botao instanceof Bola)) {
@@ -625,7 +626,7 @@ public class ControleJogo {
 									bola.getCentro(), 90);
 							dest = Util.inte(trajetoriaBotao.size() * .2);
 							// Logger
-							// .logar("Rebatimento de bola em bot�o (Botao Bola)
+							// .logar("Rebatimento de bola em botão (Botao Bola)
 							// dest="
 							// + dest);
 						} else if ((botaoAnalisado instanceof Bola)) {
@@ -633,14 +634,14 @@ public class ControleJogo {
 									botao.getDestino(), 90);
 							dest = Util.inte(detAtingido * .4);
 							// Logger
-							// .logar("Rebatimento de bola em bot�o
+							// .logar("Rebatimento de bola em botão
 							// (BotaoAnalizado Bola) dest="
 							// + dest);
 						} else {
 							angulo = GeoUtil.calculaAngulo(
 									botaoAnalisado.getCentro(), point, 90);
 							dest = Util.inte(trajetoriaBotao.size() * .1);
-							// Logger.logar("Bot�o Com Bot�o");
+							// Logger.logar("Botão Com Botão");
 							if (!eventoAtual.isNaBola()) {
 								eventoAtual.setPonto(point);
 								eventoAtual.setUltimoContato(botaoAnalisado);
@@ -856,7 +857,9 @@ public class ControleJogo {
 		animacaoJogada.setObjetoAnimacao(bola.getId());
 		Animador animador = new Animador(animacaoJogada, this);
 		Thread thread = new Thread(animador);
-		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), animador);
+		synchronized (botoesComThread) {
+			botoesComThread.put(animacaoJogada.getObjetoAnimacao(), thread);
+		}
 		thread.start();
 		bola.setCentroTodos(mesaPanel.getCentro().getLocation());
 		centralizaBola();
@@ -1416,7 +1419,15 @@ public class ControleJogo {
 	}
 
 	public boolean isAnimando() {
-		return !botoesComThread.isEmpty();
+		synchronized (botoesComThread) {
+			for (Iterator iterator = botoesComThread.keySet()
+					.iterator(); iterator.hasNext();) {
+				Long id = (Long) iterator.next();
+				Thread thread = botoesComThread.get(id);
+				return thread.isAlive();
+			}
+		}
+		return false;
 	}
 
 	public Map<Long, Botao> getBotoes() {
@@ -1437,14 +1448,6 @@ public class ControleJogo {
 
 	public void setNovoPontoTela(Point novoPontoTela) {
 		this.novoPontoTela = novoPontoTela;
-	}
-
-	public Map<Long,Animador> getBotoesComThread() {
-		return botoesComThread;
-	}
-
-	public void setBotoesComThread(Map botoesComThread) {
-		this.botoesComThread = botoesComThread;
 	}
 
 	public Point getPontoPasando() {
@@ -2296,10 +2299,14 @@ public class ControleJogo {
 			if (botao.getCentroInicio() != null)
 				botao.setCentro(botao.getCentroInicio());
 		}
-		getBotoesComThread().clear();
+		synchronized (botoesComThread) {
+			botoesComThread.clear();
+		}
 		Animador animador = new Animador(animacaoJogada, this);
-		getBotoesComThread().put(animacaoJogada.getObjetoAnimacao(), animador);
 		Thread thread = new Thread(animador);
+		synchronized (botoesComThread) {
+			botoesComThread.put(animacaoJogada.getObjetoAnimacao(), thread);
+		}
 		thread.start();
 		setPontoClicado(null);
 		zerarTimerJogada();
@@ -2366,8 +2373,11 @@ public class ControleJogo {
 	public void executaAnimacao(final Animacao animacao) {
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
-		if (animacao.getObjetoAnimacao() != null)
-			getBotoesComThread().put(animacao.getObjetoAnimacao(), animador);
+		if (animacao.getObjetoAnimacao() != null) {
+			synchronized (botoesComThread) {
+				botoesComThread.put(animacao.getObjetoAnimacao(), thread);
+			}
+		}
 		thread.start();
 		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
 			@Override
@@ -3316,6 +3326,9 @@ public class ControleJogo {
 			return null;
 		}
 		Map botoes = getBotoesCopia();
+		if(botoes==null){
+			return null;
+		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator
 				.hasNext();) {
 			Long id = (Long) iterator.next();
@@ -3397,9 +3410,12 @@ public class ControleJogo {
 		}
 		return controlePartida.tempoRestanteJogo();
 	}
-
 	public Map getBotoesCopia() {
-		Map<Long, Botao> botoesCopy = new HashMap<Long, Botao>();
+		return botoesCopy;
+	}
+
+	public void atualizaBotoesCopia() {
+		botoesCopy = new HashMap<Long, Botao>();
 		try {
 			while (botoesCopy.isEmpty()) {
 				botoesCopy.putAll(botoes);
@@ -3407,7 +3423,6 @@ public class ControleJogo {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return botoesCopy;
 	}
 
 	public void iniciaJogoLivreAssistido() {
@@ -3471,6 +3486,24 @@ public class ControleJogo {
 	public void removeBkg() {
 		if (mesaPanel != null) {
 			mesaPanel.setDesenhaBkg(false);
+		}
+	}
+
+	public void removerBotoesComThread(Long objetoAnimacao) {
+		synchronized (botoesComThread) {
+			botoesComThread.remove(objetoAnimacao);
+		}
+	}
+
+	public void adicionarBotoesComThread(Long objetoAnimacao, Thread thread) {
+		synchronized (botoesComThread) {
+			botoesComThread.put(objetoAnimacao, thread);
+		}
+	}
+
+	public Thread obterBotoesComThread(Long objetoAnimacao) {
+		synchronized (botoesComThread) {
+			return botoesComThread.get(objetoAnimacao);
 		}
 	}
 

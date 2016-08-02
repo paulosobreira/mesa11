@@ -36,6 +36,9 @@ public class MesaMouseMotionListener implements MouseMotionListener {
 		 * debug
 		 */
 		Map botoes = controleJogo.getBotoesCopia();
+		if(botoes==null){
+			return;
+		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator
 				.hasNext();) {
 			Long id = (Long) iterator.next();

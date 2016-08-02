@@ -24,12 +24,13 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 			animacao.setExecutou(true);
+			controleJogo.atualizaBotoesCopia();
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);
 		} finally {
 			if (animacao != null && animacao.getObjetoAnimacao() != null)
-				controleJogo.getBotoesComThread()
-						.remove(animacao.getObjetoAnimacao());
+				controleJogo
+						.removerBotoesComThread(animacao.getObjetoAnimacao());
 		}
 	}
 
@@ -49,26 +50,17 @@ public class Animador implements Runnable {
 		double div = elements.size();
 		double porcentOld = 0;
 		int porcentOldDiv10 = 0;
-		boolean pula = false;
 		for (int i = 0; i < elements.size(); i++) {
 			double index = (i / div);
 			double porcent = index * 100.0;
 			Object object = (Object) elements.get(i);
 			if (object instanceof Point) {
 				Point point = (Point) object;
-				if (pula) {
-					pula = !pula;
-					continue;
-				} else {
-					pula = !pula;
-				}
-
 				if (controleJogo.verificaForaDosLimites(point)) {
 					return;
 				}
 				botao.setCentroInicio(point);
 				botao.setCentro(point);
-
 				if (botao instanceof Bola) {
 					if (!controleJogo.isJogoOnlineCliente()) {
 						if (!controleJogo.isBolaFora()) {
@@ -123,13 +115,13 @@ public class Animador implements Runnable {
 
 			} else if (object instanceof Animacao) {
 				Animacao animIn = (Animacao) object;
-				Animador animadorCom = (Animador) controleJogo
-						.getBotoesComThread().get(animIn.getObjetoAnimacao());
+				Thread animadorCom = (Thread) controleJogo
+						.obterBotoesComThread(animIn.getObjetoAnimacao());
 				if (animadorCom == null) {
 					Animador animador = new Animador(animIn, controleJogo);
 					Thread thread = new Thread(animador);
-					controleJogo.getBotoesComThread()
-							.put(animIn.getObjetoAnimacao(), animador);
+					controleJogo.adicionarBotoesComThread(
+							animIn.getObjetoAnimacao(), thread);
 					thread.start();
 				}
 			}
