@@ -32,9 +32,6 @@ public class FormLogin extends JPanel {
 	private JComboBox comboIdiomas = new JComboBox(new String[] {
 			Lang.msg("pt"), Lang.msg("en") });
 	private JTextField nomeLogar = new JTextField(20);
-	private JTextField capchaTexto = new JTextField(20);
-	private String capchaChave = "";
-	private JLabel capchaImage;
 	private JTextField nomeRegistrar = new JTextField(20);
 	private Mesa11Applet mesa11Applet;
 	private JTextField email = new JTextField(20);
@@ -83,9 +80,6 @@ public class FormLogin extends JPanel {
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
-		if (mesa11Applet != null) {
-			capchaReload();
-		}
 		setSize(300, 300);
 		setVisible(true);
 	}
@@ -158,53 +152,10 @@ public class FormLogin extends JPanel {
 
 		JPanel newPanel = new JPanel(new BorderLayout());
 		newPanel.add(registrarPanel, BorderLayout.NORTH);
-		newPanel.add(gerarCapchaPanel(), BorderLayout.CENTER);
 		return newPanel;
 	}
 
-	private Component gerarCapchaPanel() {
-		JPanel capchaPanel = new JPanel(new BorderLayout());
-		capchaImage = new JLabel();
 
-		JPanel capchaImagePanel = new JPanel();
-		capchaImagePanel.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				capchaReload();
-				super.mouseClicked(e);
-			}
-		});
-		capchaImagePanel.setBorder(new TitledBorder("") {
-			@Override
-			public String getTitle() {
-				return Lang.msg("clickNovaImagem");
-			}
-		});
-		capchaImagePanel.add(capchaImage);
-		capchaPanel.add(capchaImagePanel, BorderLayout.CENTER);
-		JPanel sulPanel = new JPanel();
-		sulPanel.setBorder(new TitledBorder("") {
-			@Override
-			public String getTitle() {
-				return Lang.msg("digiteFrase");
-			}
-		});
-		sulPanel.add(capchaTexto);
-		capchaPanel.add(sulPanel, BorderLayout.SOUTH);
-		return capchaPanel;
-	}
-
-	protected void capchaReload() {
-		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setComando(ConstantesMesa11.NOVO_CAPCHA);
-		Object ret = mesa11Applet.enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof NnpeTO) {
-			mesa11to = (NnpeTO) ret;
-			capchaChave = (String) mesa11to.getData();
-			capchaImage.setIcon(new ImageIcon(mesa11to.getDataBytes()));
-		}
-
-	}
 
 	private JPanel gerarLogin() {
 		JPanel panel = new JPanel();
@@ -263,12 +214,5 @@ public class FormLogin extends JPanel {
 		return email;
 	}
 
-	public String getCapchaTexto() {
-		return capchaTexto.getText();
-	}
-
-	public String getCapchaChave() {
-		return capchaChave;
-	}
 
 }

@@ -1,13 +1,10 @@
 package br.servlet;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -73,13 +70,6 @@ public class ServletMesa11 extends HttpServlet {
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
 		try {
-			atualizarJnlp("mesa11online.jnlp");
-			atualizarJnlp("mesa11edit.jnlp");
-			atualizarJnlp("mesa11.jnlp");
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-		try {
 			email = new Email(getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator);
 		} catch (Exception e) {
@@ -91,33 +81,12 @@ public class ServletMesa11 extends HttpServlet {
 		}
 	}
 
-	private void atualizarJnlp(String jnlp) throws IOException {
-		String file = webDir + File.separator + jnlp;
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String host = obterHost();
-		String readLine = reader.readLine();
-		StringBuffer buffer = new StringBuffer();
-		while (readLine != null) {
-			if (readLine.contains("{host}")) {
-				buffer.append(readLine.replace(replaceHost, host));
-			} else {
-				buffer.append(readLine);
-			}
-			readLine = reader.readLine();
-		}
-		reader.close();
-		FileWriter fileWriter = new FileWriter(file);
-		fileWriter.write(buffer.toString());
-		fileWriter.close();
-
-	}
-
 	private String obterHost() throws UnknownHostException {
 		String host = "";
 		try {
 			Properties properties = new Properties();
-			properties.load(this.getClass().getResourceAsStream(
-					"server.properties"));
+			properties.load(
+					this.getClass().getResourceAsStream("server.properties"));
 			host = properties.getProperty("host");
 			if (!Util.isNullOrEmpty(host)) {
 				return host;
@@ -223,9 +192,9 @@ public class ServletMesa11 extends HttpServlet {
 			String basePath = getServletContext().getRealPath("")
 					+ File.separator + "WEB-INF" + File.separator + "dump"
 					+ File.separator;
-			FileOutputStream fileOutputStream = new FileOutputStream(basePath
-					+ escrever.getClass().getSimpleName() + "-"
-					+ System.currentTimeMillis() + ".txt");
+			FileOutputStream fileOutputStream = new FileOutputStream(
+					basePath + escrever.getClass().getSimpleName() + "-"
+							+ System.currentTimeMillis() + ".txt");
 			fileOutputStream.write(arrayOutputStream.toByteArray());
 			fileOutputStream.close();
 
@@ -252,7 +221,8 @@ public class ServletMesa11 extends HttpServlet {
 			try {
 				response.setHeader("Content-Disposition",
 						"attachment;filename=\"" + "mesa11_data" + "_"
-								+ dateFormat.format(new Date()) + ".zip" + "\"");
+								+ dateFormat.format(new Date()) + ".zip"
+								+ "\"");
 
 				byte[] ret = obterBytesBase();
 				if (ret == null) {
@@ -363,13 +333,13 @@ public class ServletMesa11 extends HttpServlet {
 	private void topExceptions(HttpServletResponse res, PrintWriter printWriter)
 			throws IOException {
 
-		printWriter.write("<h2>Mesa-11 Exceções</h2><br><hr>");
+		printWriter.write("<h2>Mesa-11 Exceï¿½ï¿½es</h2><br><hr>");
 		synchronized (Logger.topExceptions) {
 			Set top = Logger.topExceptions.keySet();
 			for (Iterator iterator = top.iterator(); iterator.hasNext();) {
 				String exept = (String) iterator.next();
-				printWriter.write("Quantidade : "
-						+ Logger.topExceptions.get(exept));
+				printWriter.write(
+						"Quantidade : " + Logger.topExceptions.get(exept));
 				printWriter.write("<br>");
 				printWriter.write(exept);
 				printWriter.write("<br><hr>");
@@ -381,7 +351,7 @@ public class ServletMesa11 extends HttpServlet {
 
 	private void updateSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-			throws SQLException {
+					throws SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		Session session = sessionFactory.openSession();
 		DatabaseMetadata meta = new DatabaseMetadata(session.connection(),
@@ -411,7 +381,7 @@ public class ServletMesa11 extends HttpServlet {
 
 	private void createSchema(AnnotationConfiguration cfg,
 			SessionFactory sessionFactory, PrintWriter printWriter)
-			throws HibernateException, SQLException {
+					throws HibernateException, SQLException {
 		Dialect dialect = Dialect.getDialect(cfg.getProperties());
 		String[] strings = cfg.generateSchemaCreationScript(dialect);
 		executeStatement(sessionFactory, strings, printWriter);

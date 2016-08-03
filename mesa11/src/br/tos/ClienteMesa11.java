@@ -13,7 +13,6 @@ public class ClienteMesa11 implements Serializable {
 	private String nomeJogador;
 	private String senhaJogador;
 	private String emailJogador;
-	private String chaveCapcha;
 	private SessaoCliente sessaoCliente;
 	private String texto;
 	private String nomeJogo;
@@ -82,14 +81,6 @@ public class ClienteMesa11 implements Serializable {
 
 	public void setRecuperar(boolean recuperar) {
 		this.recuperar = recuperar;
-	}
-
-	public String getChaveCapcha() {
-		return chaveCapcha;
-	}
-
-	public void setChaveCapcha(String chaveCapcha) {
-		this.chaveCapcha = chaveCapcha;
 	}
 
 }

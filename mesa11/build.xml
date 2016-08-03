@@ -10,7 +10,8 @@
      ====================================================================== -->
 <project name="mesa11" default="targetPadrao">
 
-	<property name="TOMCAT_HOME"       value="C:\apache-tomcat-7.0.53"/>
+	<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-8.0.28"/>
+	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
 			<include name="*.jar" />
@@ -21,7 +22,11 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,criarWar">
+	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarLocalJnlp,criarWar">
+	</target>
+
+	
+	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarJnlp,criarWar">
 	</target>
 
 	<target name="atualizaVersao">
@@ -105,5 +110,19 @@
 		</signjar>
 
 		<!---<delete file="WebContent/mesa11.jar" />-->
+	</target>
+	
+	
+	
+	<target name="atualizarJnlp" description="Atualizar JNPL">
+		<replace dir="build" value="${HOST}" token="{host}">
+			<include name="*.jnlp" />
+		</replace>
+	</target>
+
+	<target name="atualizarLocalJnlp" description="Atualizar JNPL">
+		<replace dir="build" value="localhost:8080" token="{host}">
+			<include name="*.jnlp" />
+		</replace>
 	</target>
 </project>

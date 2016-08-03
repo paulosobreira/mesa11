@@ -3326,7 +3326,7 @@ public class ControleJogo {
 			return null;
 		}
 		Map botoes = getBotoesCopia();
-		if(botoes==null){
+		if (botoes == null) {
 			return null;
 		}
 		for (Iterator iterator = botoes.keySet().iterator(); iterator
@@ -3411,7 +3411,18 @@ public class ControleJogo {
 		return controlePartida.tempoRestanteJogo();
 	}
 	public Map getBotoesCopia() {
-		return botoesCopy;
+		if (botoesCopy == null) {
+			return null;
+		}
+		HashMap<Long, Botao> botoesCopy2 = new HashMap<Long, Botao>();
+		try {
+			while (botoesCopy2.isEmpty()) {
+				botoesCopy2.putAll(botoesCopy);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return botoesCopy2;
 	}
 
 	public void atualizaBotoesCopia() {

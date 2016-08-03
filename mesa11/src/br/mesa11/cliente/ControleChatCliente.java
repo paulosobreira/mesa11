@@ -208,8 +208,6 @@ public class ControleChatCliente {
 		}
 		clienteMesa11.setEmailJogador(formLogin.getEmail().getText());
 		clienteMesa11.setRecuperar(formLogin.getRecuperar().isSelected());
-		clienteMesa11.setChaveCapcha(formLogin.getCapchaChave());
-		clienteMesa11.setTexto(formLogin.getCapchaTexto());
 
 		if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
 				&& !Util.isNullOrEmpty(clienteMesa11.getSenhaJogador())) {

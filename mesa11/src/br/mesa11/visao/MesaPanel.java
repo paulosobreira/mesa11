@@ -417,7 +417,7 @@ public class MesaPanel extends JPanel {
 				+ (limitesViewPort.getBounds().width / 2) - largura / 3;
 		if (desenhaProblemaRede && contProblemaRede > 0) {
 			g2d.setColor(Color.yellow);
-			g2d.fillRoundRect(newx, y, largura + 10, 20, 15, 15);
+			g2d.fillRoundRect(newx, y, largura + 10, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(Lang.msg("problemaRede"), newx + 5, y + 15);
 			contProblemaRede = 10;
@@ -527,7 +527,7 @@ public class MesaPanel extends JPanel {
 			largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
 		}
 		// x -= largura / 2;
-		g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 0, 0);
 		g2d.setColor(Color.BLACK);
 		g2d.drawString(msg, x - 5, y);
 		for (Iterator iterator = golsTempo.iterator(); iterator.hasNext();) {
@@ -543,7 +543,7 @@ public class MesaPanel extends JPanel {
 			for (int i = 0; i < msg.length(); i++) {
 				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
 			}
-			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 15, largura + 10, 20, 0, 0);
 			int valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -561,7 +561,7 @@ public class MesaPanel extends JPanel {
 			for (int i = 0; i < msg.length(); i++) {
 				largura += g2d.getFontMetrics().charWidth(msg.charAt(i));
 			}
-			g2d.fillRoundRect(newX - 10, y - 15, largura + 10, 20, 10, 10);
+			g2d.fillRoundRect(newX - 10, y - 15, largura + 10, 20, 0, 0);
 			valor = (c2.getRed() + c2.getGreen() + c2.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -594,7 +594,7 @@ public class MesaPanel extends JPanel {
 			Color cM2 = new Color(timeCasa.getCor2());
 			Color corFundo = ImageUtil.gerarCorTransparente(cM1, 200);
 			g2d.setColor(corFundo);
-			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 10, 10);
+			g2d.fillRoundRect(newx - 100, y - 15, 100, 20, 0, 0);
 			int valor = (cM1.getRed() + cM1.getGreen() + cM1.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -613,7 +613,7 @@ public class MesaPanel extends JPanel {
 			g2d.drawString("" + nmTime, newx - 90, y);
 			corFundo = ImageUtil.gerarCorTransparente(cM2, 200);
 			g2d.setColor(corFundo);
-			g2d.fillRoundRect(newx, y - 15, 20, 20, 10, 10);
+			g2d.fillRoundRect(newx, y - 15, 20, 20, 0, 0);
 			valor = (cM2.getRed() + cM2.getGreen() + cM2.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -626,7 +626,7 @@ public class MesaPanel extends JPanel {
 			Color cV2 = new Color(timeVisita.getCor2());
 			corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 			g2d.setColor(corFundo);
-			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 10, 10);
+			g2d.fillRoundRect(newx + 60, y - 15, 100, 20, 0, 0);
 			valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -646,7 +646,7 @@ public class MesaPanel extends JPanel {
 			g2d.drawString("" + nmTime, newx + 70, y);
 			corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 			g2d.setColor(corFundo);
-			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 10, 10);
+			g2d.fillRoundRect(newx + 40, y - 15, 20, 20, 0, 0);
 			valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
 			if (valor > 250) {
 				g2d.setColor(Color.BLACK);
@@ -659,7 +659,7 @@ public class MesaPanel extends JPanel {
 		if (time != null) {
 			Color c1 = new Color(time.getCor1());
 			g2d.setColor(brancoClaro);
-			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("" + controleJogo.tempoRestanteJogoFormatado(), x,
 					y);
@@ -667,7 +667,7 @@ public class MesaPanel extends JPanel {
 			g2d.drawString(controleJogo.tempoJogoFormatado(), x + 55, y);
 			y += 25;
 			g2d.setColor(brancoClaro);
-			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 15, 100, 20, 0, 0);
 			g2d.setColor(Color.BLACK);
 			g2d.drawString(Lang.msg("jogadas") + " "
 					+ controleJogo.obterNumJogadas(time) + " " + Lang.msg("de")
@@ -677,13 +677,13 @@ public class MesaPanel extends JPanel {
 			if (controleJogo.isEsperandoJogadaOnline()
 					|| controleJogo.isAnimando()) {
 				g2d.setColor(OcilaCor.geraOcila("aguarde", amarelo));
-				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 0, 0);
 				g2d.setColor(Color.BLACK);
 				g2d.drawString("" + Lang.msg("aguarde"), x, y);
 			} else {
 				Color corFundo = ImageUtil.gerarCorTransparente(c1, 200);
 				g2d.setColor(corFundo);
-				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+				g2d.fillRoundRect(x - 10, y - 15, 100, 20, 0, 0);
 				int valor = (c1.getRed() + c1.getGreen() + c1.getBlue()) / 2;
 				if (valor > 250) {
 					g2d.setColor(Color.BLACK);
@@ -705,7 +705,7 @@ public class MesaPanel extends JPanel {
 		}
 		y += 50;
 		g2d.setColor(brancoClaro);
-		g2d.fillRoundRect(x - 10, y - 40, 100, 45, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 40, 100, 45, 0, 0);
 		g2d.setColor(Color.BLACK);
 		Font fontOri = g2d.getFont();
 		g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));
@@ -743,7 +743,7 @@ public class MesaPanel extends JPanel {
 		Color corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x - 10, y - 15, 100, 20, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 15, 100, 20, 0, 0);
 		int valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -753,7 +753,7 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(botaoInfo.getNumero() + " " + botaoInfo.getNome(), x, y);
 		y += 22;
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 0, 0);
 		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -763,7 +763,7 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(Lang.msg("forca"), x, y);
 		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 0, 0);
 		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -774,7 +774,7 @@ public class MesaPanel extends JPanel {
 		y += 22;
 		corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 0, 0);
 		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -784,7 +784,7 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(Lang.msg("precisao"), x, y);
 		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20,0, 0);
 		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -795,7 +795,7 @@ public class MesaPanel extends JPanel {
 		y += 22;
 		corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 10, 10);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 0,0);
 		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -805,7 +805,7 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(Lang.msg("defesa"), x, y);
 		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 10, 10);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 0, 0);
 		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -853,9 +853,9 @@ public class MesaPanel extends JPanel {
 		}
 
 		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica")) {
-			g2d.fillRoundRect(x - 10, y - 40, largura + 20, 45, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 40, largura + 20, 45, 0, 0);
 		} else {
-			g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 10, 10);
+			g2d.fillRoundRect(x - 10, y - 15, largura + 20, 20, 0, 0);
 		}
 
 		g2d.setColor(corTexto);
@@ -1689,8 +1689,8 @@ public class MesaPanel extends JPanel {
 					Util.inte(limitesViewPort.getBounds().y
 							+ limitesViewPort.getBounds().getHeight() - 90));
 			g2d.setColor(brancoClaro);
-			g2d.fillRoundRect(pointDesenhaLag.x, pointDesenhaLag.y, 65, 35, 15,
-					15);
+			g2d.fillRoundRect(pointDesenhaLag.x, pointDesenhaLag.y, 65, 35, 0,
+					0);
 			Font fontOri = g2d.getFont();
 			g2d.setFont(new Font(fontOri.getName(), Font.BOLD, 28));
 			g2d.setColor(OcilaCor.porcentVermelho100Verde0(lag / 10));
