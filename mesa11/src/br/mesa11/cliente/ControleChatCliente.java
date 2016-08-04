@@ -206,8 +206,7 @@ public class ControleChatCliente {
 			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), e
 					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
-		clienteMesa11.setEmailJogador(formLogin.getEmail().getText());
-		clienteMesa11.setRecuperar(formLogin.getRecuperar().isSelected());
+		clienteMesa11.setEmailJogador(formLogin.getEmailRegistrar().getText());
 
 		if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
 				&& !Util.isNullOrEmpty(clienteMesa11.getSenhaJogador())) {
