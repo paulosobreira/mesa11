@@ -39,7 +39,6 @@ import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
 
 import br.mesa11.ProxyComandos;
 import br.nnpe.Constantes;
-import br.nnpe.Email;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
 import br.nnpe.Util;
@@ -53,12 +52,10 @@ import br.recursos.Lang;
 public class ServletMesa11 extends HttpServlet {
 
 	public static String webInfDir;
-	private static String replaceHost = "{host}";
 	public static String webDir;
 	private ProxyComandos proxyComandos;
 
 	public static String mediaDir;
-	public static Email email;
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat(
 			"dd/MM/yyyy");
 
@@ -69,16 +66,6 @@ public class ServletMesa11 extends HttpServlet {
 		mediaDir = webDir + "midia" + File.separator;
 		proxyComandos = new ProxyComandos(webDir, webInfDir);
 		Lang.setSrvgame(true);
-		try {
-			email = new Email(getServletContext().getRealPath("")
-					+ File.separator + "WEB-INF" + File.separator);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-			email = null;
-		}
-		if (Logger.debug) {
-			email = null;
-		}
 	}
 
 	private String obterHost() throws UnknownHostException {

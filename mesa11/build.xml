@@ -50,6 +50,9 @@
 				<exclude name=".*/" />
 				<exclude name="**/*.java" />
 			</fileset>
+			<fileset dir="WebContent">
+				<include name="**/*.jnlp" />
+			</fileset>			
 		</copy>
 	</target>
 
@@ -92,14 +95,10 @@
 		<delete dir="${TOMCAT_HOME}/webapps/mesa11" />
 		<war compress="on" destfile="${TOMCAT_HOME}/webapps/mesa11.war">
 			<fileset dir="WebContent">
-				<exclude name="**/*.jar" />
+				<exclude name="**/*.jnlp" />
 			</fileset>
-			<fileset dir="WebContent">
-				<include name="WEB-INF/lib/mesa11.jar" />
-				<include name="a-mesa11.jar" />
-				<include name="a-mesa11Recursos.jar" />
-				<include name="mesa11.jar" />
-				<include name="mesa11Recursos.jar" />
+			<fileset dir="build">
+				<include name="**/*.jnlp" />
 			</fileset>
 		</war>
 	</target>

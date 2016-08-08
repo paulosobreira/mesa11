@@ -25,8 +25,6 @@ import br.servlet.ServletMesa11;
 import br.tos.ClienteMesa11;
 import br.tos.DadosMesa11;
 
-
-
 public class ControleLogin {
 	private DadosMesa11 dadosMesa11;
 
@@ -46,15 +44,15 @@ public class ControleLogin {
 
 		Usuario usuario = null;
 		Session session = ControlePersistencia.getSession();
-		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+		List usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario != null) {
 			return new MsgSrv(Lang.msg("loginNaoDisponivel"));
 		}
-		usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("email", clienteMesa11.getEmailJogador()))
+		usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("email", clienteMesa11.getEmailJogador()))
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario != null) {
@@ -114,23 +112,16 @@ public class ControleLogin {
 		String senha = generator.generateIt();
 		Logger.logar("geraSenhaMandaMail " + usuario + " senha " + senha);
 		usuario.setSenha(Util.md5(senha));
-		System.out.println(senha);
 		try {
-//			mandaMailSenha(usuario.getLogin(), usuario.getEmail(), senha);
+			mandaMailSenha(usuario.getLogin(), usuario.getEmail(), senha);
 		} catch (Exception e1) {
 			Logger.logarExept(e1);
-			if (ServletMesa11.email != null)
-				throw new Exception("srvEmailFora");
 		}
-
 	}
 
 	private void mandaMailSenha(String nome, String email, String senha)
 			throws AddressException, MessagingException {
 		Logger.logar("Senha :" + senha);
-		ServletMesa11.email.sendSimpleMail("Mesa-11 Game Password",
-				new String[] { email }, "Your game user:password is " + nome
-						+ ":" + senha, false);
 	}
 
 	public Object logar(ClienteMesa11 clienteMesa11) {
@@ -162,8 +153,8 @@ public class ControleLogin {
 	public Object recuperaSenha(ClienteMesa11 clienteMesa11) {
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();
-		List usuarios = session.createCriteria(Usuario.class).add(
-				Restrictions.eq("login", clienteMesa11.getNomeJogador()))
+		List usuarios = session.createCriteria(Usuario.class)
+				.add(Restrictions.eq("login", clienteMesa11.getNomeJogador()))
 				.list();
 		usuario = (Usuario) (usuarios.isEmpty() ? null : usuarios.get(0));
 		if (usuario == null) {
@@ -175,7 +166,8 @@ public class ControleLogin {
 		if (usuario == null) {
 			return new MsgSrv(Lang.msg("usuarioNaoEncontrado"));
 		}
-		if ((System.currentTimeMillis() - usuario.getUltimaRecuperacao()) < 300000) {
+		if ((System.currentTimeMillis()
+				- usuario.getUltimaRecuperacao()) < 300000) {
 			return new MsgSrv(Lang.msg("limiteTempo"));
 		}
 		try {
@@ -192,7 +184,7 @@ public class ControleLogin {
 			transaction.rollback();
 			return new ErroServ(e);
 		}
-		return new MsgSrv(Lang.msg("senhaEnviada", new String[] { email }));
+		return new MsgSrv(Lang.msg("senhaEnviada", new String[]{email}));
 	}
 
 	public boolean verificaSemSessao(String nomeCriador) {
