@@ -105,8 +105,8 @@ public class EditorTime extends JPanel {
 		this.controleJogo = controleJogo;
 		gerarLabelsCores();
 		JTabbedPane jTabbedPane = new JTabbedPane();
-		jTabbedPane
-				.addTab(Lang.msg("nomesBotoes"), gerarTabelaAtributosBotao());
+		jTabbedPane.addTab(Lang.msg("nomesBotoes"),
+				gerarTabelaAtributosBotao());
 		jTabbedPane.addTab(Lang.msg("coresBotoes"), gerarTabelaCores());
 		jTabbedPane.addTab(Lang.msg("enviarImagem"), gerarEnviarImagem());
 
@@ -152,20 +152,11 @@ public class EditorTime extends JPanel {
 			@Override
 			public void focusLost(FocusEvent e) {
 				String text = textFieldNomeAbrevTime.getText();
-				String abrev = "";
-				for (int i = 0; i < text.length(); i++) {
-					if (i >= ConstantesMesa11.TAMANHO_MAX_NOME_ABREV_TIME) {
-						break;
-					}
-					abrev += text.charAt(i);
-				}
-				EditorTime.this.time.setNomeAbrev(abrev.toUpperCase());
+				EditorTime.this.time.setNomeAbrev(text.toUpperCase());
 			}
 
 			@Override
 			public void focusGained(FocusEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 		panelTime.add(new JLabel() {
@@ -177,7 +168,8 @@ public class EditorTime extends JPanel {
 		qtdePts = new JLabel() {
 			@Override
 			public String getText() {
-				return EditorTime.this.time.getQtdePontos() == null ? "0"
+				return EditorTime.this.time.getQtdePontos() == null
+						? "0"
 						: EditorTime.this.time.getQtdePontos().toString();
 			}
 		};
@@ -241,14 +233,16 @@ public class EditorTime extends JPanel {
 				if (botaoImg.getHeight() < menor) {
 					menor = botaoImg.getHeight();
 				}
-				BufferedImage newBuffer = new BufferedImage((int) (botaoImg
-						.getWidth()), (int) (botaoImg.getHeight()),
+				BufferedImage newBuffer = new BufferedImage(
+						(int) (botaoImg.getWidth()),
+						(int) (botaoImg.getHeight()),
 						BufferedImage.TYPE_INT_RGB);
 				Graphics2D graphics2d = (Graphics2D) newBuffer.getGraphics();
 				graphics2d.setColor(Color.WHITE);
 				graphics2d.fillRect(0, 0, botaoImg.getWidth(),
 						botaoImg.getWidth());
-				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor), (menor));
+				Ellipse2D externo = new Ellipse2D.Double(0, 0, (menor),
+						(menor));
 				graphics2d.setClip(externo);
 				graphics2d.drawImage(botaoImg, 0, 0, null);
 
@@ -289,8 +283,8 @@ public class EditorTime extends JPanel {
 				BufferedImage buff = imgLocalIconImage;
 				mesa11to.setDataBytes(ImageUtil.bufferedImage2ByteArray(buff));
 
-				if (ConstantesMesa11.OK.equals(EditorTime.this.controleJogo
-						.enviarObjeto(mesa11to))) {
+				if (ConstantesMesa11.OK.equals(
+						EditorTime.this.controleJogo.enviarObjeto(mesa11to))) {
 					recarregarComboImagens();
 					JOptionPane.showMessageDialog(EditorTime.this,
 							Lang.msg("imagemEnviada"), "",
@@ -316,8 +310,8 @@ public class EditorTime extends JPanel {
 		mostrarImagemRemota();
 		if (!Util.isNullOrEmpty(time.getImagem())) {
 			comboBoxNomeImgs.setSelectedItem(time.getImagem());
-			System.out
-					.println("comboBoxNomeImgs.setSelectedItem(time.getImagem());");
+			System.out.println(
+					"comboBoxNomeImgs.setSelectedItem(time.getImagem());");
 		}
 		JButton buttonMostrar = new JButton() {
 			public String getText() {
@@ -400,8 +394,9 @@ public class EditorTime extends JPanel {
 		if (arquivo == null || !arquivo.endsWith("jpg")) {
 			return;
 		}
-		ImageIcon icon = ImageUtil.carregarImagem(controleJogo
-				.getMesa11Applet().getCodeBase() + "midia/" + arquivo);
+		ImageIcon icon = ImageUtil
+				.carregarImagem(controleJogo.getMesa11Applet().getCodeBase()
+						+ "midia/" + arquivo);
 		if (icon != null)
 			imgRemotaIconLabel.setIcon(icon);
 
@@ -462,8 +457,8 @@ public class EditorTime extends JPanel {
 			comboBoxNomeImgsTabela = new JComboBox();
 		}
 		recarregarComboImagens();
-		columnImgNome.setCellEditor(new DefaultCellEditor(
-				comboBoxNomeImgsTabela));
+		columnImgNome
+				.setCellEditor(new DefaultCellEditor(comboBoxNomeImgsTabela));
 
 		JComboBox comboBoxSimNao = new JComboBox();
 		comboBoxSimNao.addItem(Lang.msg("sim"));
@@ -618,26 +613,26 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero1(corAlternativa1
-						.isSelected());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 1)));
+				EditorTime.this.time
+						.setCorMeiaNumero1(corAlternativa1.isSelected());
+				imgUn1.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniforme(EditorTime.this.time, 1)));
 				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
 						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
 
 			}
 		});
-		uniformeAlternativo1 = new JComboBox(new String[] { "0", "1", "2", "3",
-				"4", "5" });
+		uniformeAlternativo1 = new JComboBox(
+				new String[]{"0", "1", "2", "3", "4", "5"});
 		uniformeAlternativo1.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selVal = (String) uniformeAlternativo1.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme1(new Integer(selVal)
-						.intValue());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 1)));
+				EditorTime.this.time
+						.setTipoUniforme1(new Integer(selVal).intValue());
+				imgUn1.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniforme(EditorTime.this.time, 1)));
 				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
 						.desenhaUniformeGoleiro(EditorTime.this.time, 1)));
 
@@ -658,26 +653,26 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				EditorTime.this.time.setCorMeiaNumero2(corAlternativa2
-						.isSelected());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 2)));
+				EditorTime.this.time
+						.setCorMeiaNumero2(corAlternativa2.isSelected());
+				imgUn2.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniforme(EditorTime.this.time, 2)));
 				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
 						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
 			}
 		});
 
-		uniformeAlternativo2 = new JComboBox(new String[] { "0", "1", "2", "3",
-				"4", "5" });
+		uniformeAlternativo2 = new JComboBox(
+				new String[]{"0", "1", "2", "3", "4", "5"});
 		uniformeAlternativo2.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String selVal = (String) uniformeAlternativo2.getSelectedItem();
-				EditorTime.this.time.setTipoUniforme2(new Integer(selVal)
-						.intValue());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(
-						EditorTime.this.time, 2)));
+				EditorTime.this.time
+						.setTipoUniforme2(new Integer(selVal).intValue());
+				imgUn2.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniforme(EditorTime.this.time, 2)));
 				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
 						.desenhaUniformeGoleiro(EditorTime.this.time, 2)));
 			}
@@ -739,10 +734,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor1);
 				time.setCor1RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 			}
 
 		});
@@ -757,10 +752,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor2);
 				time.setCor2RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -774,10 +769,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor3);
 				time.setCor3RGB(color.getRGB());
-				imgUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 1)));
-				imgGolUn1.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 1)));
+				imgUn1.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
+				imgGolUn1.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
 			}
 		});
@@ -792,10 +787,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor4);
 				time.setCor4RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -810,10 +805,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor5);
 				time.setCor5RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 
 			}
 		});
@@ -828,10 +823,10 @@ public class EditorTime extends JPanel {
 				}
 				setCor(color, labelCor6);
 				time.setCor6RGB(color.getRGB());
-				imgUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniforme(time, 2)));
-				imgGolUn2.setIcon(new ImageIcon(BotaoUtils
-						.desenhaUniformeGoleiro(time, 2)));
+				imgUn2.setIcon(
+						new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
+				imgGolUn2.setIcon(new ImageIcon(
+						BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 			}
 
 		});
@@ -842,12 +837,12 @@ public class EditorTime extends JPanel {
 		setCor(new Color(time.getCor5RGB()), labelCor5);
 		setCor(new Color(time.getCor6RGB()), labelCor6);
 		imgUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
-		imgGolUn1.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time,
-				1)));
+		imgGolUn1.setIcon(
+				new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 1)));
 
 		imgUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniforme(time, 2)));
-		imgGolUn2.setIcon(new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time,
-				2)));
+		imgGolUn2.setIcon(
+				new ImageIcon(BotaoUtils.desenhaUniformeGoleiro(time, 2)));
 
 	}
 
