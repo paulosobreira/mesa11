@@ -63,8 +63,9 @@ public class ControleLogin {
 		usuario.setLogin(clienteMesa11.getNomeJogador());
 		usuario.setLoginCriador(clienteMesa11.getNomeJogador());
 		usuario.setEmail(clienteMesa11.getEmailJogador());
+		String senha = null;
 		try {
-			geraSenhaMandaMail(usuario);
+			senha = geraSenhaMandaMail(usuario);
 		} catch (Exception e) {
 			return new ErroServ(e);
 		}
@@ -81,10 +82,14 @@ public class ControleLogin {
 			return new ErroServ(e.getMessage());
 		}
 		Logger.logar("cadastrarUsuario " + usuario);
-		return criarSessao(usuario);
+		return criarSessao(usuario,senha);
 	}
 
 	private Object criarSessao(Usuario usuario) {
+		return criarSessao(usuario, null);
+	}
+	
+	private Object criarSessao(Usuario usuario, String senha) {
 		SessaoCliente sessaoCliente = null;
 		Collection clientes = dadosMesa11.getClientes();
 		for (Iterator iterator = clientes.iterator(); iterator.hasNext();) {
@@ -101,13 +106,13 @@ public class ControleLogin {
 		}
 
 		sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
-
+		sessaoCliente.setSenhaCriada(senha);
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setData(sessaoCliente);
 		return mesa11to;
 	}
 
-	private void geraSenhaMandaMail(Usuario usuario) throws Exception {
+	private String geraSenhaMandaMail(Usuario usuario) throws Exception {
 		PassGenerator generator = new PassGenerator();
 		String senha = generator.generateIt();
 		Logger.logar("geraSenhaMandaMail " + usuario + " senha " + senha);
@@ -117,6 +122,7 @@ public class ControleLogin {
 		} catch (Exception e1) {
 			Logger.logarExept(e1);
 		}
+		return senha;
 	}
 
 	private void mandaMailSenha(String nome, String email, String senha)

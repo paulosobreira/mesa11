@@ -263,6 +263,9 @@ public class ControlePersistencia {
 		String hql = "select obj.nome from Time obj";
 		Query qry = session.createQuery(hql);
 		List times = qry.list();
+		if(times==null || times.isEmpty()){
+			return new ErroServ(Lang.msg("naoExisteTimes"));
+		}
 		String[] retorno = new String[times.size()];
 		int i = 0;
 		for (Iterator iterator = times.iterator(); iterator.hasNext();) {

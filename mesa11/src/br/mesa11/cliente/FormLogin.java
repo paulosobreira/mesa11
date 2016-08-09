@@ -34,9 +34,7 @@ public class FormLogin extends JPanel {
 	private Mesa11Applet mesa11Applet;
 	private JTextField nomeLogar = new JTextField(20);
 	private JTextField nomeRegistrar = new JTextField(20);
-	private JTextField nomeRecuperar = new JTextField(20);
 	private JTextField emailRegistrar = new JTextField(20);
-	private JTextField emailRecuperar = new JTextField(20);
 	private JPasswordField senha = new JPasswordField(20);
 	private int conta1;
 	private int conta2;
@@ -79,13 +77,12 @@ public class FormLogin extends JPanel {
 		sulaba1.add(gerarLogin(), BorderLayout.CENTER);
 		sulaba1.add(gerarLembrar(), BorderLayout.SOUTH);
 		panelAba1.add(sulaba1, BorderLayout.CENTER);
-		panelAba1.add(gerarIdiomas(), BorderLayout.SOUTH);
 		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
 		JPanel panelAba2 = new JPanel(new BorderLayout());
 		panelAba2.add(gerarRegistrar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
-
+		add(gerarIdiomas(), BorderLayout.SOUTH);
 		JPanel panelAba3 = new JPanel(new BorderLayout());
 		panelAba3.add(gerarRecuperar(), BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("recuperar"), panelAba3);
@@ -120,7 +117,6 @@ public class FormLogin extends JPanel {
 		langPanel.add(new JLabel() {
 			@Override
 			public String getText() {
-				// TODO Auto-generated method stub
 				return Lang.msg("lembrar");
 			}
 		});
@@ -140,6 +136,7 @@ public class FormLogin extends JPanel {
 					comboIdiomas.addItem(Lang.msg("en"));
 				}
 				FormLogin.this.repaint();
+				comboIdiomas.setSelectedItem(Lang.msg(i));
 			}
 		});
 		JPanel langPanel = new JPanel(new BorderLayout());
@@ -243,16 +240,8 @@ public class FormLogin extends JPanel {
 		return nomeRegistrar;
 	}
 
-	public JTextField getNomeRecuperar() {
-		return nomeRecuperar;
-	}
-
 	public JTextField getEmailRegistrar() {
 		return emailRegistrar;
-	}
-
-	public JTextField getEmailRecuperar() {
-		return emailRecuperar;
 	}
 
 }

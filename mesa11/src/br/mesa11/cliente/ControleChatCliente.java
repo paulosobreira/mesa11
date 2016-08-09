@@ -82,8 +82,8 @@ public class ControleChatCliente {
 		chatWindow = new ChatWindow(this);
 		controleJogosCliente = new ControleJogosCliente(chatWindow, this,
 				mesa11Applet);
-		controleCampeonato = new ControleCampeonatoCliente(
-				controleJogosCliente, this);
+		controleCampeonato = new ControleCampeonatoCliente(controleJogosCliente,
+				this);
 		atualizaVisao();
 		mesa11Applet.setLayout(new BorderLayout());
 		mesa11Applet.add(chatWindow.getMainPanel(), BorderLayout.CENTER);
@@ -102,13 +102,13 @@ public class ControleChatCliente {
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
-			FileContents fileContents = persistenceService.get(mesa11Applet
-					.getCodeBase());
+			FileContents fileContents = persistenceService
+					.get(mesa11Applet.getCodeBase());
 			if (fileContents == null) {
 				Logger.logar(" fileContents == null  ");
 			}
-			ObjectInputStream ois = new ObjectInputStream(fileContents
-					.getInputStream());
+			ObjectInputStream ois = new ObjectInputStream(
+					fileContents.getInputStream());
 			Map map = (Map) ois.readObject();
 			String login = (String) map.get("login");
 			String pass = (String) map.get("pass");
@@ -128,40 +128,43 @@ public class ControleChatCliente {
 			registrarUsuario();
 			atualizaVisao();
 			if (formLogin.getLembrar().isSelected()) {
-				try {
-					PersistenceService persistenceService = (PersistenceService) ServiceManager
-							.lookup("javax.jnlp.PersistenceService");
-					FileContents fileContents = null;
-					try {
-						fileContents = persistenceService.get(mesa11Applet
-								.getCodeBase());
-					} catch (Exception e) {
-						persistenceService.create(mesa11Applet.getCodeBase(),
-								1024);
-						fileContents = persistenceService.get(mesa11Applet
-								.getCodeBase());
-					}
-
-					if (fileContents == null) {
-						Logger.logar(" fileContents == null  ");
-
-					}
-
-					Map map = new HashMap();
-					map.put("login", formLogin.getNome().getText());
-					map.put("pass", String.valueOf((formLogin.getSenha()
-							.getPassword())));
-					ObjectOutputStream stream = new ObjectOutputStream(
-							fileContents.getOutputStream(true));
-					stream.writeObject(map);
-					stream.flush();
-
-				} catch (Exception e) {
-					Logger.logarExept(e);
-				}
+				lembrarSenha(formLogin.getName(),
+						String.valueOf((formLogin.getSenha().getPassword())));
 			}
 		}
 
+	}
+
+	private void lembrarSenha(String nome, String senha) {
+		try {
+			PersistenceService persistenceService = (PersistenceService) ServiceManager
+					.lookup("javax.jnlp.PersistenceService");
+			FileContents fileContents = null;
+			try {
+				fileContents = persistenceService
+						.get(mesa11Applet.getCodeBase());
+			} catch (Exception e) {
+				persistenceService.create(mesa11Applet.getCodeBase(), 1024);
+				fileContents = persistenceService
+						.get(mesa11Applet.getCodeBase());
+			}
+
+			if (fileContents == null) {
+				Logger.logar(" fileContents == null  ");
+
+			}
+
+			Map map = new HashMap();
+			map.put("login", nome);
+			map.put("pass", senha);
+			ObjectOutputStream stream = new ObjectOutputStream(
+					fileContents.getOutputStream(true));
+			stream.writeObject(map);
+			stream.flush();
+
+		} catch (Exception e) {
+			Logger.logarExept(e);
+		}
 	}
 
 	private void atualizaVisao() {
@@ -196,15 +199,15 @@ public class ControleChatCliente {
 		clienteMesa11.setNomeJogador(formLogin.getNome().getText());
 
 		try {
-			if (!Util.isNullOrEmpty(new String(formLogin.getSenha()
-					.getPassword()))) {
-				clienteMesa11.setSenhaJogador(Util.md5(new String(formLogin
-						.getSenha().getPassword())));
+			if (!Util.isNullOrEmpty(
+					new String(formLogin.getSenha().getPassword()))) {
+				clienteMesa11.setSenhaJogador(Util
+						.md5(new String(formLogin.getSenha().getPassword())));
 			}
 		} catch (Exception e) {
 			Logger.logarExept(e);
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), e
-					.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 		clienteMesa11.setEmailJogador(formLogin.getEmailRegistrar().getText());
 
@@ -227,6 +230,17 @@ public class ControleChatCliente {
 		if (ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
+
+			if (cliente.getSenhaCriada() != null) {
+				lembrarSenha(cliente.getNomeJogador(),
+						cliente.getSenhaCriada());
+				JOptionPane.showMessageDialog(mesa11Applet,
+						Lang.msg("senhaGerada",
+								new String[]{cliente.getNomeJogador(),
+										cliente.getSenhaCriada()}),
+						Lang.msg("guardeSenhaGerada"),
+						JOptionPane.INFORMATION_MESSAGE);
+			}
 			this.sessaoCliente = cliente;
 		}
 		return true;
@@ -263,8 +277,9 @@ public class ControleChatCliente {
 			return;
 		}
 		if (ret == null) {
-			JOptionPane.showMessageDialog(chatWindow.getMainPanel(), Lang
-					.msg("problemasRede"), "Erro", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(chatWindow.getMainPanel(),
+					Lang.msg("problemasRede"), "Erro",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		mesa11to = (NnpeTO) ret;
@@ -290,8 +305,8 @@ public class ControleChatCliente {
 			return;
 		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("entrarJogo") + jogoSelecionado, Lang
-						.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("entrarJogo") + jogoSelecionado,
+				Lang.msg("entrarJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.entrarJogo(jogoSelecionado);
 		}
@@ -308,8 +323,8 @@ public class ControleChatCliente {
 			return;
 		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
-				Lang.msg("verDetalhesJogo") + " " + jogoSelecionado, Lang
-						.msg("verDetalhesJogo"), JOptionPane.YES_NO_OPTION);
+				Lang.msg("verDetalhesJogo") + " " + jogoSelecionado,
+				Lang.msg("verDetalhesJogo"), JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION) {
 			controleJogosCliente.verDetalhesJogo(jogoSelecionado);
 		}
@@ -321,8 +336,6 @@ public class ControleChatCliente {
 			logar();
 			return;
 		}
-		// TODO Auto-generated method stub
-
 	}
 
 	public void criarTime() {
@@ -402,24 +415,24 @@ public class ControleChatCliente {
 						.get(rowIndex);
 
 				switch (columnIndex) {
-				case 0:
-					return value.getTime();
-				case 1:
-					return value.getJogos();
-				case 2:
-					return value.getVitorias();
-				case 3:
-					return value.getEmpates();
-				case 4:
-					return value.getDerrotas();
-				case 5:
-					return value.getSaldoGols();
-				case 6:
-					return value.getGolsFavor();
-				case 7:
-					return value.getGolsContra();
-				default:
-					return "";
+					case 0 :
+						return value.getTime();
+					case 1 :
+						return value.getJogos();
+					case 2 :
+						return value.getVitorias();
+					case 3 :
+						return value.getEmpates();
+					case 4 :
+						return value.getDerrotas();
+					case 5 :
+						return value.getSaldoGols();
+					case 6 :
+						return value.getGolsFavor();
+					case 7 :
+						return value.getGolsContra();
+					default :
+						return "";
 				}
 			}
 
@@ -440,24 +453,24 @@ public class ControleChatCliente {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					return Lang.msg("time");
-				case 1:
-					return Lang.msg("jogos");
-				case 2:
-					return Lang.msg("vitorias");
-				case 3:
-					return Lang.msg("empates");
-				case 4:
-					return Lang.msg("derrotas");
-				case 5:
-					return Lang.msg("saldogols");
-				case 6:
-					return Lang.msg("golsfavor");
-				case 7:
-					return Lang.msg("golscontra");
-				default:
-					return "";
+					case 0 :
+						return Lang.msg("time");
+					case 1 :
+						return Lang.msg("jogos");
+					case 2 :
+						return Lang.msg("vitorias");
+					case 3 :
+						return Lang.msg("empates");
+					case 4 :
+						return Lang.msg("derrotas");
+					case 5 :
+						return Lang.msg("saldogols");
+					case 6 :
+						return Lang.msg("golsfavor");
+					case 7 :
+						return Lang.msg("golscontra");
+					default :
+						return "";
 				}
 
 			}
@@ -479,24 +492,24 @@ public class ControleChatCliente {
 				ClassificacaoUsuario value = (ClassificacaoUsuario) dadosJogadores
 						.get(rowIndex);
 				switch (columnIndex) {
-				case 0:
-					return value.getLogin();
-				case 1:
-					return value.getJogos();
-				case 2:
-					return value.getVitorias();
-				case 3:
-					return value.getEmpates();
-				case 4:
-					return value.getDerrotas();
-				case 5:
-					return value.getSaldoGols();
-				case 6:
-					return value.getGolsFavor();
-				case 7:
-					return value.getGolsContra();
-				default:
-					return "";
+					case 0 :
+						return value.getLogin();
+					case 1 :
+						return value.getJogos();
+					case 2 :
+						return value.getVitorias();
+					case 3 :
+						return value.getEmpates();
+					case 4 :
+						return value.getDerrotas();
+					case 5 :
+						return value.getSaldoGols();
+					case 6 :
+						return value.getGolsFavor();
+					case 7 :
+						return value.getGolsContra();
+					default :
+						return "";
 				}
 			}
 
@@ -517,24 +530,24 @@ public class ControleChatCliente {
 			public String getColumnName(int columnIndex) {
 
 				switch (columnIndex) {
-				case 0:
-					return Lang.msg("jogador");
-				case 1:
-					return Lang.msg("jogos");
-				case 2:
-					return Lang.msg("vitorias");
-				case 3:
-					return Lang.msg("empates");
-				case 4:
-					return Lang.msg("derrotas");
-				case 5:
-					return Lang.msg("saldogols");
-				case 6:
-					return Lang.msg("golsfavor");
-				case 7:
-					return Lang.msg("golscontra");
-				default:
-					return "";
+					case 0 :
+						return Lang.msg("jogador");
+					case 1 :
+						return Lang.msg("jogos");
+					case 2 :
+						return Lang.msg("vitorias");
+					case 3 :
+						return Lang.msg("empates");
+					case 4 :
+						return Lang.msg("derrotas");
+					case 5 :
+						return Lang.msg("saldogols");
+					case 6 :
+						return Lang.msg("golsfavor");
+					case 7 :
+						return Lang.msg("golscontra");
+					default :
+						return "";
 				}
 
 			}
@@ -585,8 +598,8 @@ public class ControleChatCliente {
 		mesa11to.setComando(ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR);
 		mesa11to.setData(sessaoCliente.getNomeJogador());
 		Object ret = enviarObjeto(mesa11to);
-		JComboBox jComboBoxTimes = new JComboBox(new String[] { Lang
-				.msg("semTimes") });
+		JComboBox jComboBoxTimes = new JComboBox(
+				new String[]{Lang.msg("semTimes")});
 		boolean semTimes = true;
 		if (ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
@@ -602,8 +615,8 @@ public class ControleChatCliente {
 			}
 		});
 		panelTimes.add(jComboBoxTimes);
-		int showConfirmDialog = JOptionPane.showConfirmDialog(chatWindow
-				.getMainPanel(), panelTimes, Lang.msg("editarTime"),
+		int showConfirmDialog = JOptionPane.showConfirmDialog(
+				chatWindow.getMainPanel(), panelTimes, Lang.msg("editarTime"),
 				JOptionPane.YES_NO_OPTION);
 		if (JOptionPane.YES_OPTION != showConfirmDialog) {
 			return;
@@ -618,12 +631,12 @@ public class ControleChatCliente {
 			if (ret instanceof NnpeTO) {
 				mesa11to = (NnpeTO) ret;
 				Time time = (Time) mesa11to.getData();
-				ControleJogo controleJogo = new ControleJogo(mesa11Applet,
-						null, null, null);
+				ControleJogo controleJogo = new ControleJogo(mesa11Applet, null,
+						null, null);
 				EditorTime editorTime = new EditorTime(time, controleJogo);
-				int retOpt = JOptionPane.showConfirmDialog(chatWindow
-						.getMainPanel(), editorTime, Lang.msg("editarTime"),
-						JOptionPane.YES_NO_OPTION);
+				int retOpt = JOptionPane.showConfirmDialog(
+						chatWindow.getMainPanel(), editorTime,
+						Lang.msg("editarTime"), JOptionPane.YES_NO_OPTION);
 				if (retOpt == JOptionPane.YES_OPTION) {
 					controleJogo.salvarTime(time);
 				}

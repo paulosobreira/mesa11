@@ -13,6 +13,8 @@ public class SessaoCliente implements Serializable {
 	private long ulimaAtividade;
 
 	private String nomeJogador;
+	
+	private String senhaCriada;
 
 	public long getUlimaAtividade() {
 		return ulimaAtividade;
@@ -49,4 +51,14 @@ public class SessaoCliente implements Serializable {
 	public String toString() {
 		return nomeJogador;
 	}
+
+	public String getSenhaCriada() {
+		return senhaCriada;
+	}
+
+	public void setSenhaCriada(String senhaCriada) {
+		this.senhaCriada = senhaCriada;
+	}
+	
+	
 }
