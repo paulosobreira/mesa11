@@ -136,6 +136,9 @@ public class ControleChatCliente {
 	}
 
 	private void lembrarSenha(String nome, String senha) {
+		if(Util.isNullOrEmpty(nome) || Util.isNullOrEmpty(senha)){
+			return;
+		}
 		try {
 			PersistenceService persistenceService = (PersistenceService) ServiceManager
 					.lookup("javax.jnlp.PersistenceService");
@@ -231,9 +234,14 @@ public class ControleChatCliente {
 			mesa11to = (NnpeTO) ret;
 			SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
 			if (cliente.getSenhaCriada() != null) {
+				lembrarSenha(cliente.getNomeJogador(),
+						cliente.getSenhaCriada());
 				JOptionPane.showMessageDialog(mesa11Applet,
-						Lang.msg("senhaGerada", new String[] { cliente.getNomeJogador(), cliente.getSenhaCriada() }),
-						Lang.msg("guardeSenhaGerada"), JOptionPane.INFORMATION_MESSAGE);
+						Lang.msg("senhaGerada",
+								new String[]{cliente.getNomeJogador(),
+										cliente.getSenhaCriada()}),
+						Lang.msg("guardeSenhaGerada"),
+						JOptionPane.INFORMATION_MESSAGE);
 
 			}
 			this.sessaoCliente = cliente;
