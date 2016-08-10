@@ -230,16 +230,11 @@ public class ControleChatCliente {
 		if (ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			SessaoCliente cliente = (SessaoCliente) mesa11to.getData();
-
 			if (cliente.getSenhaCriada() != null) {
-				lembrarSenha(cliente.getNomeJogador(),
-						cliente.getSenhaCriada());
 				JOptionPane.showMessageDialog(mesa11Applet,
-						Lang.msg("senhaGerada",
-								new String[]{cliente.getNomeJogador(),
-										cliente.getSenhaCriada()}),
-						Lang.msg("guardeSenhaGerada"),
-						JOptionPane.INFORMATION_MESSAGE);
+						Lang.msg("senhaGerada", new String[] { cliente.getNomeJogador(), cliente.getSenhaCriada() }),
+						Lang.msg("guardeSenhaGerada"), JOptionPane.INFORMATION_MESSAGE);
+
 			}
 			this.sessaoCliente = cliente;
 		}
