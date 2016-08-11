@@ -436,8 +436,6 @@ public class MainFrame {
 		}
 		controleJogo = new ControleJogo(frame);
 		controleJogo.inicializaVideo();
-		frame.setVisible(true);
-		frame.setSize(1000, 700);
 		Logger.logar(codeBase);
 		controleJogo.setCodeBase(codeBase);
 		controleJogo.iniciaJogoLivre();

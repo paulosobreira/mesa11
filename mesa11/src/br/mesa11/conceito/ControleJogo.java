@@ -1924,9 +1924,8 @@ public class ControleJogo {
 		pararVideo();
 		atualizadorTela = new AtualizadorVisual(this);
 		atualizadorTela.start();
-		frame.setSize(1000, frame.getHeight() - 15);
 		frame.setVisible(true);
-
+		frame.setSize(1000, 700);
 	}
 
 	private void criarProgressBar() {
