@@ -733,6 +733,7 @@ public class EditorTime extends JPanel {
 					return;
 				}
 				setCor(color, labelCor1);
+				System.out.println(color.getRGB());
 				time.setCor1RGB(color.getRGB());
 				imgUn1.setIcon(
 						new ImageIcon(BotaoUtils.desenhaUniforme(time, 1)));
@@ -892,6 +893,12 @@ public class EditorTime extends JPanel {
 		botao.setTime(time);
 		time.getBotoes().add(botao);
 		time.setNomeAbrev("mesa11");
+		time.setCor1RGB(Util.criarCorAleatoria());
+		time.setCor2RGB(Util.criarCorAleatoria());
+		time.setCor3RGB(Util.criarCorAleatoria());
+		time.setCor4RGB(Util.criarCorAleatoria());
+		time.setCor5RGB(Util.criarCorAleatoria());
+		time.setCor6RGB(Util.criarCorAleatoria());
 		ControleJogo controleJogo = new ControleJogo(new JFrame());
 		EditorTime editorTime = new EditorTime(time, controleJogo);
 		// JFrame frame = new JFrame();

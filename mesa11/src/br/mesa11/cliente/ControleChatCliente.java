@@ -350,6 +350,12 @@ public class ControleChatCliente {
 		time.setLoginCriador(sessaoCliente.getNomeJogador());
 		time.setNomeJogador(sessaoCliente.getNomeJogador());
 		time.setQtdePontos(0);
+		time.setCor1RGB(Util.criarCorAleatoria());
+		time.setCor2RGB(Util.criarCorAleatoria());
+		time.setCor3RGB(Util.criarCorAleatoria());
+		time.setCor4RGB(Util.criarCorAleatoria());
+		time.setCor5RGB(Util.criarCorAleatoria());
+		time.setCor6RGB(Util.criarCorAleatoria());
 		Goleiro goleiro = new Goleiro();
 		goleiro.setForca(500);
 		goleiro.setPrecisao(500);

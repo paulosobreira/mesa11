@@ -1,7 +1,7 @@
 package br.nnpe;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.text.MaskFormatter;
@@ -39,7 +40,7 @@ public class Util {
 	public static final String MASCARA_CNPJ = "##.###.###/####-##";
 
 	/**
-	 * Verifica se um campo string é nulo ou vazio lançando um Exception caso
+	 * Verifica se um campo string ï¿½ nulo ou vazio lanï¿½ando um Exception caso
 	 * verdadeiro.
 	 * 
 	 * @param campo
@@ -52,13 +53,13 @@ public class Util {
 			throws Exception {
 		if ((campo == null) || "".equals(campo)) {
 			throw new Exception("O campo " + descricaoCampo.trim()
-					+ " é mandatório");
+					+ " ï¿½ mandatï¿½rio");
 		}
 	}
 
 	/**
-	 * Retorna true ou false ao receber uma String por parâmetro e verificar se
-	 * a mesma é igual a null ou vazio.
+	 * Retorna true ou false ao receber uma String por parï¿½metro e verificar se
+	 * a mesma ï¿½ igual a null ou vazio.
 	 * 
 	 * @param campo
 	 * @return
@@ -76,7 +77,7 @@ public class Util {
 	}
 
 	/**
-	 * Verifica se o intervalo de data é válido
+	 * Verifica se o intervalo de data ï¿½ vï¿½lido
 	 * 
 	 * @param dataInicial
 	 *            - data inicial
@@ -93,7 +94,7 @@ public class Util {
 	}
 
 	/**
-	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
+	 * Retorna <b>true</b> se o perï¿½odo de datas for vï¿½lido (data inicial deve
 	 * ser menor que a final).
 	 * 
 	 * @param dataInicial
@@ -105,7 +106,7 @@ public class Util {
 	public static boolean validaIntervaloData(java.sql.Date dataInicial,
 			java.sql.Date dataFinal) {
 		/**
-		 * Se a data inicial for após a data final retonar um número maior que
+		 * Se a data inicial for apï¿½s a data final retonar um nï¿½mero maior que
 		 * 0.
 		 */
 		if (dataInicial.compareTo(dataFinal) > 0) {
@@ -116,7 +117,7 @@ public class Util {
 	}
 
 	/**
-	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
+	 * Retorna <b>true</b> se o perï¿½odo de datas for vï¿½lido (data inicial deve
 	 * ser menor que a final).
 	 * 
 	 * @param dataInicial
@@ -134,7 +135,7 @@ public class Util {
 	}
 
 	/**
-	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
+	 * Retorna <b>true</b> se o perï¿½odo de datas for vï¿½lido (data inicial deve
 	 * ser menor que a final).
 	 * 
 	 * @param dataInicial
@@ -155,7 +156,7 @@ public class Util {
 	}
 
 	/**
-	 * Retorna <b>true</b> se o período de datas for válido (data inicial deve
+	 * Retorna <b>true</b> se o perï¿½odo de datas for vï¿½lido (data inicial deve
 	 * ser menor que a final).
 	 * 
 	 * @param data_inicio
@@ -200,14 +201,14 @@ public class Util {
 	}
 
 	public static String formatNumberReal(double number) {
-		return FormatNumber.format(number, "¤ #,##0.00;¤ (#,##0.00)");
+		return FormatNumber.format(number, "ï¿½ #,##0.00;ï¿½ (#,##0.00)");
 	}
 
 	public static double convercaoPorcentagem(String valor) throws Exception {
 		valor = extrairNumerosPontoVirgula(valor);
 
 		if (valor.indexOf('.') != -1) {
-			throw new Exception("Ponto não acito em porcentagens.");
+			throw new Exception("Ponto nï¿½o acito em porcentagens.");
 		}
 
 		valor = valor.replace(',', '.');
@@ -217,7 +218,7 @@ public class Util {
 
 	public static double convercaoMonetaria(String valor) throws Exception {
 		if (isNullOrEmpty(valor)) {
-			Logger.logar("Valor nulo na converção monetária");
+			Logger.logar("Valor nulo na converï¿½ï¿½o monetï¿½ria");
 
 			return 0;
 		}
@@ -250,7 +251,7 @@ public class Util {
 	}
 
 	/**
-	 * Recebe um valor como um tipo monetário 1.000,10 e retorna uma string com
+	 * Recebe um valor como um tipo monetï¿½rio 1.000,10 e retorna uma string com
 	 * o valor 100010
 	 * 
 	 * @param numero
@@ -274,7 +275,7 @@ public class Util {
 	}
 
 	/**
-	 * Recebe um valor como um tipo monetário R$1.000,10 e retorna uma string
+	 * Recebe um valor como um tipo monetï¿½rio R$1.000,10 e retorna uma string
 	 * com o valor 1.000,10
 	 * 
 	 * @param numero
@@ -356,7 +357,7 @@ public class Util {
 				digitoCPF = Integer.valueOf(
 						strCpf.substring(nCount - 1, nCount)).intValue();
 
-				// multiplique a última casa por 2, a seguinte por 3, a seguinte
+				// multiplique a ï¿½ltima casa por 2, a seguinte por 3, a seguinte
 				// por 4 e assim por diante.
 				d1 = d1 + ((11 - nCount) * digitoCPF);
 
@@ -367,11 +368,11 @@ public class Util {
 
 			;
 
-			// Primeiro resto da divisão por 11.
+			// Primeiro resto da divisï¿½o por 11.
 			resto = (d1 % 11);
 
-			// Se o resultado for 0 ou 1 o digito é 0 caso contrário o
-			// digito é 11 menos o resultado anterior.
+			// Se o resultado for 0 ou 1 o digito ï¿½ 0 caso contrï¿½rio o
+			// digito ï¿½ 11 menos o resultado anterior.
 			if (resto < 2) {
 				digito1 = 0;
 			} else {
@@ -380,18 +381,18 @@ public class Util {
 
 			d2 += (2 * digito1);
 
-			// Segundo resto da divisão por 11.
+			// Segundo resto da divisï¿½o por 11.
 			resto = (d2 % 11);
 
-			// Se o resultado for 0 ou 1 o digito é 0 caso contrário o
-			// digito é 11 menos o resultado anterior.
+			// Se o resultado for 0 ou 1 o digito ï¿½ 0 caso contrï¿½rio o
+			// digito ï¿½ 11 menos o resultado anterior.
 			if (resto < 2) {
 				digito2 = 0;
 			} else {
 				digito2 = 11 - resto;
 			}
 
-			// Digito verificador do CPF que está sendo validado.
+			// Digito verificador do CPF que estï¿½ sendo validado.
 			String nDigVerific = strCpf.substring(strCpf.length() - 2,
 					strCpf.length());
 
@@ -462,7 +463,7 @@ public class Util {
 	}
 
 	/**
-	 * Este método retorna o nome da tabela através do nome do VO. O VO deve ter
+	 * Este mï¿½todo retorna o nome da tabela atravï¿½s do nome do VO. O VO deve ter
 	 * o mesmo nome da tabela.
 	 * 
 	 * @param vo
@@ -476,7 +477,7 @@ public class Util {
 	}
 
 	/**
-	 * Se a String for nula ou vazia retorna 0 caso contrário retorna 1.
+	 * Se a String for nula ou vazia retorna 0 caso contrï¿½rio retorna 1.
 	 * 
 	 * @param valor
 	 * @return
@@ -493,7 +494,7 @@ public class Util {
 	}
 
 	/**
-	 * Se a String for nula ou vazia retorna 0 caso contrário retorna o numero.
+	 * Se a String for nula ou vazia retorna 0 caso contrï¿½rio retorna o numero.
 	 * 
 	 * @param valor
 	 * @return
@@ -514,7 +515,7 @@ public class Util {
 	}
 
 	/**
-	 * Se a String for nula ou vazia retorna 0 caso contrário retorna o numero.
+	 * Se a String for nula ou vazia retorna 0 caso contrï¿½rio retorna o numero.
 	 * 
 	 * @param valor
 	 * @return
@@ -547,7 +548,7 @@ public class Util {
 
 	/**
 	 * 
-	 * Se o valor for igual a 10 usar dd/MM/yyyy caso não, usar yyyy-MM-dd
+	 * Se o valor for igual a 10 usar dd/MM/yyyy caso nï¿½o, usar yyyy-MM-dd
 	 * HH:mm:ss.mmm
 	 */
 	public static Timestamp converteStringTimestamp(String valor)
@@ -601,7 +602,7 @@ public class Util {
 	}
 
 	/**
-	 * Formata parâmetros quem vem no formato de String[] para String.
+	 * Formata parï¿½metros quem vem no formato de String[] para String.
 	 */
 	public static void formataParametros(Map parametros, Map unLockedMap)
 			throws IllegalAccessException, InvocationTargetException {
@@ -620,7 +621,7 @@ public class Util {
 	}
 
 	/**
-	 * Lança uma Exceção caso o campo não seja numérico.
+	 * Lanï¿½a uma Exceï¿½ï¿½o caso o campo nï¿½o seja numï¿½rico.
 	 * 
 	 * @param campo
 	 *            - String a ser verificada
@@ -641,7 +642,7 @@ public class Util {
 	}
 
 	/**
-	 * Converte uma lista dinâmica em um array de String.
+	 * Converte uma lista dinï¿½mica em um array de String.
 	 * 
 	 * @param item
 	 * @return retorno
@@ -663,7 +664,7 @@ public class Util {
 			throws Exception {
 		if ((timeStamp != null) && !"".equals(timeStamp)) {
 			/**
-			 * Milésimos de segundos truncados 0000-00-00 00:00:00
+			 * Milï¿½simos de segundos truncados 0000-00-00 00:00:00
 			 */
 			if (timeStamp.length() == 19) {
 				timeStamp += ".000";
@@ -682,7 +683,7 @@ public class Util {
 	}
 
 	/**
-	 * Retorna o primeiro elemento de uma lista caso ela nõa estaja vazia
+	 * Retorna o primeiro elemento de uma lista caso ela nï¿½a estaja vazia
 	 * 
 	 * @param list
 	 * @return
@@ -870,5 +871,15 @@ public class Util {
 			}
 		}
 		return largura;
+	}
+
+	public static int criarCorAleatoria() {
+		Random random = new Random();
+		float hue = random.nextFloat();
+		// Saturation between 0.1 and 0.3
+		float saturation = (random.nextInt(2000) + 1000) / 10000f;
+		float luminance = 1.5f;
+		Color color = Color.getHSBColor(hue, saturation, luminance);
+		return color.getRGB();
 	}
 }
