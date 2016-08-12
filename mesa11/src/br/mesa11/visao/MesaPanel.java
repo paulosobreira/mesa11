@@ -318,6 +318,11 @@ public class MesaPanel extends JPanel {
 		if (botoes == null || controleJogo.isAnimando() || botoes.isEmpty()) {
 			botoes = controleJogo.getBotoesCopia();
 		}
+		if(controleJogo.isJogoOnlineCliente()){
+			desenhaBkg=false;
+//			controleJogo.atualizaBotoesCopia();
+//			botoes = controleJogo.getBotoesCopia();
+		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
 		desenhaCampo(g2d);
@@ -784,7 +789,7 @@ public class MesaPanel extends JPanel {
 		g2d.drawString(Lang.msg("precisao"), x, y);
 		corFundo = ImageUtil.gerarCorTransparente(cV2, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x + 60, y - 15, 30, 20,0, 0);
+		g2d.fillRoundRect(x + 60, y - 15, 30, 20, 0, 0);
 		valor = (cV2.getRed() + cV2.getGreen() + cV2.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -795,7 +800,7 @@ public class MesaPanel extends JPanel {
 		y += 22;
 		corFundo = ImageUtil.gerarCorTransparente(cV1, 200);
 		g2d.setColor(corFundo);
-		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 0,0);
+		g2d.fillRoundRect(x - 10, y - 15, 70, 20, 0, 0);
 		valor = (cV1.getRed() + cV1.getGreen() + cV1.getBlue()) / 2;
 		if (valor > 250) {
 			g2d.setColor(Color.BLACK);
@@ -1572,7 +1577,7 @@ public class MesaPanel extends JPanel {
 	public Point golBaixo() {
 		Point p = new Point(Util.inte(getPenaltyBaixo().x),
 				Util.inte(getPequenaAreaBaixo().getLocation().y
-						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2)-5));
+						+ getPequenaAreaBaixo().getHeight() + (LINHA * 2) - 5));
 		return p;
 	}
 

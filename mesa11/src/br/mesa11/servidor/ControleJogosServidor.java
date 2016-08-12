@@ -196,6 +196,7 @@ public class ControleJogosServidor {
 			dadosJogoSrvMesa11.setNumeroJogadasTimeVisita(controleJogo
 					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
 			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
+			dadosJogoSrvMesa11.setJogoIniciado(controleJogo.isJogoIniciado());
 			dadosJogoSrvMesa11.setDica(controleJogo.getDica());
 			dadosJogoSrvMesa11.setProcessando(controleJogo.isProcessando());
 			if (controleJogo.getGolsTempo().size() > mesa11to.getTamListaGols()) {

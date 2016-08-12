@@ -2,16 +2,16 @@ package br.hibernate;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "m11_campeonato")
 public class CampeonatoMesa11 extends Mesa11Dados {
 
 	@Column(unique = true, nullable = false)

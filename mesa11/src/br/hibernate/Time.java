@@ -10,11 +10,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import br.nnpe.Logger;
 import br.nnpe.Util;
 
 @Entity
+@Table(name = "m11_time")
 public class Time extends Mesa11Dados {
 
 	private String campo;

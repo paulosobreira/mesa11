@@ -37,7 +37,7 @@ public class Animador implements Runnable {
 	private void animar(Animacao anim) throws InterruptedException {
 		if (anim == null || anim.getObjetoAnimacao() == null)
 			return;
-		if (anim.isExecutou()) {
+		if (!controleJogo.isJogoOnlineCliente() && anim.isExecutou()) {
 			return;
 		}
 		Botao botao = (Botao) controleJogo.getBotoes()

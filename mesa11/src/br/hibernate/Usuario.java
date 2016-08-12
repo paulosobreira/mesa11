@@ -3,7 +3,7 @@ package br.hibernate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-@Entity
+@Entity(name = "usuario")
 public class Usuario extends Mesa11Dados {
 
 	private static final long serialVersionUID = -3266703548432479215L;

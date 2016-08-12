@@ -3,8 +3,10 @@ package br.hibernate;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "m11_timescampeonato")
 public class TimesCampeonatoMesa11 extends Mesa11Dados {
 
 	@ManyToOne

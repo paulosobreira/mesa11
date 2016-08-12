@@ -2,17 +2,14 @@ package br.hibernate;
 
 import java.awt.Point;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
@@ -20,6 +17,7 @@ import br.nnpe.Logger;
 import br.nnpe.Util;
 
 @Entity
+@Table(name = "m11_botao")
 public class Botao extends Mesa11Dados {
 
 	private int diamentro = ConstantesMesa11.DIAMENTRO_BOTAO;

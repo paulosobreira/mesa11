@@ -387,7 +387,6 @@ public class ControleJogo {
 				timeVisita);
 		bolaCentro();
 		setJogoIniciado(true);
-
 	}
 
 	public void centralizaBola() {
@@ -2526,7 +2525,7 @@ public class ControleJogo {
 
 	public boolean isJogoIniciado() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
-			return dadosJogoSrvMesa11.isJogoTerminado();
+			return dadosJogoSrvMesa11.isJogoIniciado();
 		}
 		return jogoIniciado;
 	}

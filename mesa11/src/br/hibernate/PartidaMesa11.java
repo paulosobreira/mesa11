@@ -3,8 +3,10 @@ package br.hibernate;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "m11_partida")
 public class PartidaMesa11 extends Mesa11Dados {
 	private String nomeJogadorCasa;
 	private String nomeTimeCasa;
