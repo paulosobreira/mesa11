@@ -1577,6 +1577,12 @@ public class ControleJogo {
 						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
 				setDica("penalti");
+			}else if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
+				limparPerimetroCirculo(
+						mesaPanel.getPenaltyCima().getLocation(),
+						mesaPanel.getGrandeAreaCima().getWidth() * 0.55);
+				metaCima(levouFalta.getTime());
+				setDica("falta");
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);
@@ -1601,6 +1607,12 @@ public class ControleJogo {
 						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
 				setDica("penalti");
+			}else if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
+				limparPerimetroCirculo(
+						mesaPanel.getPenaltyBaixo().getLocation(),
+						mesaPanel.getGrandeAreaBaixo().getWidth() * 0.55);
+				metaBaixo(levouFalta.getTime());
+				setDica("falta");
 			} else {
 				if (verificaBolaNoPerimetro(ponto)) {
 					limparPerimetroCirculo(ponto);

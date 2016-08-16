@@ -33,9 +33,9 @@ public class AtualizadorJogadaCPU extends Thread {
 				}
 
 				if (controleJogo.isJogoOnlineSrvidor()) {
-					sleep(Util.intervalo(500, 1000));
+					sleep(1000);
 				} else {
-					sleep(200);
+					sleep(500);
 				}
 				if ((System.currentTimeMillis() - ultJogada) < intervaloEntreJogadas) {
 					continue;
@@ -71,6 +71,15 @@ public class AtualizadorJogadaCPU extends Thread {
 										controleJogo.zeraBtnAssistido();
 										Logger.logar("Tempo Jogada Cpu "
 												+ (System.currentTimeMillis() - iniJogada));
+										String tempo = controleJogo.tempoJogadaRestanteJogoFormatado();
+										try {
+											Integer t = new Integer(tempo);
+											if(t>5){
+												sleep(2000);
+											}
+										} catch (Exception e) {
+											Logger.logarExept(e);
+										}
 									}
 								});
 								jogadaCpu.setPriority(MIN_PRIORITY);

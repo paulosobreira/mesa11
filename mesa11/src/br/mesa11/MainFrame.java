@@ -400,7 +400,7 @@ public class MainFrame {
 				controleJogo.inicializaVideo();
 				frame.setVisible(true);
 				controleJogo.centroCampo();
-				controleJogo.setZoom(0.3);
+				controleJogo.setZoom(0.4);
 				controleJogo.setCodeBase(codeBase);
 				controleJogo.iniciaJogoLivreAssistido();
 				frame.setSize(1000, frame.getHeight() - 15);
@@ -440,6 +440,6 @@ public class MainFrame {
 		controleJogo.setCodeBase(codeBase);
 		controleJogo.iniciaJogoLivre();
 		controleJogo.centroCampo();
-		controleJogo.setZoom(0.3);
+		controleJogo.setZoom(0.4);
 	}
 }

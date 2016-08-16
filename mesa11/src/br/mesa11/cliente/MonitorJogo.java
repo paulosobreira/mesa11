@@ -177,7 +177,7 @@ public class MonitorJogo extends Thread {
 		controleJogo.iniciaJogoOnline(dadosJogoSrvMesa11, timeCasa, timeVisita);
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
-		controleJogo.setZoom(0.3);
+		controleJogo.setZoom(0.4);
 		tempoDormir = 500;
 	}
 

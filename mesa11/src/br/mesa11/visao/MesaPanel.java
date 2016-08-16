@@ -320,8 +320,8 @@ public class MesaPanel extends JPanel {
 		}
 		if(controleJogo.isJogoOnlineCliente()){
 			desenhaBkg=false;
-//			controleJogo.atualizaBotoesCopia();
-//			botoes = controleJogo.getBotoesCopia();
+			controleJogo.atualizaBotoesCopia();
+			botoes = controleJogo.getBotoesCopia();
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
