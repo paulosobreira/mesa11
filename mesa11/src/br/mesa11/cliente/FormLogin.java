@@ -243,5 +243,17 @@ public class FormLogin extends JPanel {
 	public JTextField getEmailRegistrar() {
 		return emailRegistrar;
 	}
+	
+	public JTextField getResultadorConta() {
+		return resultadorConta;
+	}
+
+	public int getConta1() {
+		return conta1;
+	}
+
+	public int getConta2() {
+		return conta2;
+	}
 
 }

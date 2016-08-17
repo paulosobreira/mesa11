@@ -1,6 +1,5 @@
 package br.mesa11;
 
-import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,6 +19,7 @@ import br.nnpe.Util;
 public class BotaoUtils {
 	public final static Color lightBlack = new Color(0, 0, 0, 100);
 	public final static Color lightWhite = new Color(255, 255, 255, 100);
+	public final static Color black = Color.BLACK;
 	public final static BasicStroke bordaBotao = new BasicStroke(4f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
@@ -84,7 +84,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(10, Util.inte(60 * .5) - 20, largura + 15, 25,
 				5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 12, Util.inte(60 * .5));
 
 		Color corNumero = cor1;
@@ -110,7 +110,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .75) - 2, Util
 				.inte(60 * .5) - 21, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 24));
@@ -229,7 +229,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .55));
 
@@ -256,7 +256,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
@@ -353,7 +353,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
@@ -379,7 +379,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
@@ -456,7 +456,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
@@ -482,7 +482,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
@@ -560,7 +560,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
@@ -586,7 +586,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
 		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
@@ -657,7 +657,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .60) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .60));
 
@@ -684,7 +684,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
@@ -758,7 +758,7 @@ public class BotaoUtils {
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .60) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(corNome);
+		graphics.setColor(black);
 		graphics.drawString(botao.getNome(), 8, Util
 				.inte(botao.getDiamentro() * .60));
 
@@ -785,7 +785,7 @@ public class BotaoUtils {
 		}
 		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
 				.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(corNumero);
+		graphics.setColor(black);
 
 		graphics.setFont(new Font(graphics.getFont().getName(), graphics
 				.getFont().getStyle(), 30));
