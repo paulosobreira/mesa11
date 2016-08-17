@@ -136,7 +136,7 @@ public class ControleChatCliente {
 	}
 
 	private void lembrarSenha(String nome, String senha) {
-		if(Util.isNullOrEmpty(nome) || Util.isNullOrEmpty(senha)){
+		if (Util.isNullOrEmpty(nome) || Util.isNullOrEmpty(senha)) {
 			return;
 		}
 		try {
@@ -217,9 +217,27 @@ public class ControleChatCliente {
 		if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
 				&& !Util.isNullOrEmpty(clienteMesa11.getSenhaJogador())) {
 			mesa11to.setComando(ConstantesMesa11.LOGAR);
-		} else if (!Util.isNullOrEmpty(clienteMesa11.getNomeJogador())
-				&& !Util.isNullOrEmpty(clienteMesa11.getEmailJogador())
-				&& !clienteMesa11.isRecuperar()) {
+		} else if (!Util.isNullOrEmpty(formLogin.getNomeRegistrar().getText())
+				|| !Util.isNullOrEmpty(
+						formLogin.getEmailRegistrar().getText())) {
+			int resultado = 0;
+			try {
+				resultado = Integer
+						.parseInt(formLogin.getResultadorConta().getText());
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(mesa11Applet,
+						Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			if ((formLogin.getConta1()
+					+ formLogin.getConta2()) != resultado) {
+				JOptionPane.showMessageDialog(mesa11Applet,
+						Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
+						JOptionPane.ERROR_MESSAGE);
+				return false;
+
+			}
 			mesa11to.setComando(ConstantesMesa11.NOVO_USUARIO);
 		} else if (clienteMesa11.isRecuperar()) {
 			mesa11to.setComando(ConstantesMesa11.RECUPERA_SENHA);
