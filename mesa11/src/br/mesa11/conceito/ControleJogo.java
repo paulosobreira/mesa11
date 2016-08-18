@@ -330,6 +330,7 @@ public class ControleJogo {
 	public void iniciaJogoLivre() {
 		controlePartida = new ControlePartida(this);
 		controleDicas = new ControleDicas(this);
+		setDica("inicioJogo");
 		criarProgressBar();
 		boolean iniciaJogoLivre = controlePartida.iniciaJogoLivre();
 		if (iniciaJogoLivre) {

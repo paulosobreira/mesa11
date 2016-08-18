@@ -26,38 +26,39 @@ public class AtualizadorJogadaCPU extends Thread {
 		}
 		while (!controleJogo.isJogoTerminado()) {
 			try {
-				if ((System.currentTimeMillis() - iniJogada) > 1000) {
-					if ((jogadaCpu != null && jogadaCpu.isAlive())) {
-						jogadaCpu.interrupt();
-					}
-				}
+				final Time timeJogadaVez = controleJogo.timeJogadaVez();
+//				if (timeJogadaVez != null && timeJogadaVez.isControladoCPU()
+//						&& (System.currentTimeMillis() - iniJogada) > 10000) {
+//					if ((jogadaCpu != null && jogadaCpu.isAlive())) {
+//						jogadaCpu.interrupt();
+//					}
+//				}
 
 				if (controleJogo.isJogoOnlineSrvidor()) {
 					sleep(1000);
 				} else {
 					sleep(500);
 				}
-				if ((System.currentTimeMillis() - ultJogada) < intervaloEntreJogadas) {
+				if ((System.currentTimeMillis()
+						- ultJogada) < intervaloEntreJogadas) {
 					continue;
 				}
 				if (!controleJogo.isAnimando()) {
 					try {
-						final Time timeJogadaVez = controleJogo.timeJogadaVez();
 						if (controleJogo.isProcessando()) {
 							continue;
 						}
-						if (timeJogadaVez != null
-								&& (controleJogo.isAssistido() || timeJogadaVez
-										.isControladoCPU())) {
+						if (timeJogadaVez != null && (controleJogo.isAssistido()
+								|| timeJogadaVez.isControladoCPU())) {
 							controleJogo.setProcessando(true);
 							ultJogada = System.currentTimeMillis();
 							if ((jogadaCpu != null && jogadaCpu.isAlive())) {
-								jogadaCpu.interrupt();
+								continue;
 							} else {
 								jogadaCpu = new Thread(new Runnable() {
 									@Override
 									public void run() {
-										while(controleJogo.isAnimando()){
+										while (controleJogo.isAnimando()) {
 											try {
 												sleep(500);
 											} catch (InterruptedException e) {
@@ -67,19 +68,21 @@ public class AtualizadorJogadaCPU extends Thread {
 										iniJogada = System.currentTimeMillis();
 										Logger.logar("Inicia Jogada CPU "
 												+ timeJogadaVez.getNome());
+										String tempo = controleJogo
+												.tempoJogadaRestanteJogoFormatado();
 										controleJogo.jogadaCPU();
 										controleJogo.zeraBtnAssistido();
-										Logger.logar("Tempo Jogada Cpu "
-												+ (System.currentTimeMillis() - iniJogada));
-										String tempo = controleJogo.tempoJogadaRestanteJogoFormatado();
 										try {
 											Integer t = new Integer(tempo);
-											if(t>5){
+											if (t > 5) {
 												sleep(2000);
 											}
 										} catch (Exception e) {
 											Logger.logarExept(e);
 										}
+										Logger.logar("Tempo Jogada Cpu "
+												+ (System.currentTimeMillis()
+														- iniJogada));
 									}
 								});
 								jogadaCpu.setPriority(MIN_PRIORITY);
@@ -90,7 +93,7 @@ public class AtualizadorJogadaCPU extends Thread {
 						controleJogo.setProcessando(false);
 					}
 				} else {
-					sleep(Util.intervalo(1000, 2000));
+					sleep(1000);
 				}
 			} catch (Exception e) {
 				Logger.logarExept(e);

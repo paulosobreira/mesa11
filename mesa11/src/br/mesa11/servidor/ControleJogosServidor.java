@@ -136,6 +136,7 @@ public class ControleJogosServidor {
 		jogoSrvMesa11.setTimeCasa(timeCasa);
 		jogoSrvMesa11.setTimeVisita(timeVisita);
 		jogoSrvMesa11.setControleJogo(controleJogo);
+		controleJogo.setDica("inicioJogo");
 		controleJogo.iniciaJogoOnline(jogoSrvMesa11.getDadosJogoSrvMesa11(),
 				timeCasa, timeVisita);
 		if (dadosJogoSrvMesa11.isJogoVsCpu()) {
