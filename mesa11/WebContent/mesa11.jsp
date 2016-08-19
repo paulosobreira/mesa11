@@ -201,7 +201,7 @@ img {
 			<table style="text-align: center;padding-left: 35px">
 			<tr>
 			<td  style="text-align: center;padding-top: 10px;">
-				<a id="link" href="../../mesa11" style="text-align: center;" target="_BLANK">
+				<a id="link" href="../../f1mane" style="text-align: center;" target="_BLANK">
 					F1-mane 
 				</a><br>
 				<a href="./../f1mane/fm1.jpg" style="padding: 5px" onclick="return hs.expand(this)"> 
