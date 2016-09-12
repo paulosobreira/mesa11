@@ -376,7 +376,7 @@ public class MainFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controleJogo != null) {
-					controleJogo.limparJogo();
+					controleJogo.matarTodasThreads();
 				}
 				iniciaJogoLivre();
 			}
@@ -394,7 +394,7 @@ public class MainFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (controleJogo != null) {
-					controleJogo.limparJogo();
+					controleJogo.matarTodasThreads();
 				}
 				controleJogo = new ControleJogo(frame);
 				controleJogo.inicializaVideo();
@@ -432,7 +432,7 @@ public class MainFrame {
 
 	private void iniciaJogoLivre() {
 		if(controleJogo!=null){
-			controleJogo.limparJogo();
+			controleJogo.matarTodasThreads();
 		}
 		controleJogo = new ControleJogo(frame);
 		controleJogo.inicializaVideo();

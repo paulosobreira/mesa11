@@ -158,7 +158,7 @@ public class ControleJogo {
 				if (isJogoOnlineCliente()) {
 					sairJogoOnline();
 				}
-				limparJogo();
+				matarTodasThreads();
 				super.windowClosing(e);
 			}
 
@@ -224,7 +224,7 @@ public class ControleJogo {
 				if (isJogoOnlineCliente()) {
 					sairJogoOnline();
 				}
-				limparJogo();
+				matarTodasThreads();
 				super.windowClosing(e);
 				System.exit(0);
 			}
@@ -329,11 +329,11 @@ public class ControleJogo {
 
 	public void iniciaJogoLivre() {
 		controlePartida = new ControlePartida(this);
-		controleDicas = new ControleDicas(this);
-		setDica("inicioJogo");
-		criarProgressBar();
 		boolean iniciaJogoLivre = controlePartida.iniciaJogoLivre();
 		if (iniciaJogoLivre) {
+			criarProgressBar();
+			controleDicas = new ControleDicas(this);
+			setDica("inicioJogo");
 			AtualizadorJogadaCPU atualizadorJogadaCPU = new AtualizadorJogadaCPU(
 					this);
 			atualizadorJogadaCPU.start();
@@ -1578,9 +1578,8 @@ public class ControleJogo {
 						- Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroBaixo();
 				setDica("penalti");
-			}else if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
-				limparPerimetroCirculo(
-						mesaPanel.getPenaltyCima().getLocation(),
+			} else if (mesaPanel.getGrandeAreaCima().contains(ponto)) {
+				limparPerimetroCirculo(mesaPanel.getPenaltyCima().getLocation(),
 						mesaPanel.getGrandeAreaCima().getWidth() * 0.55);
 				metaCima(levouFalta.getTime());
 				setDica("falta");
@@ -1608,7 +1607,7 @@ public class ControleJogo {
 						+ Util.inte((levouFalta.getDiamentro() * 1.4))));
 				controlePartida.centralizaGoleiroCima();
 				setDica("penalti");
-			}else if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
+			} else if (mesaPanel.getGrandeAreaBaixo().contains(ponto)) {
 				limparPerimetroCirculo(
 						mesaPanel.getPenaltyBaixo().getLocation(),
 						mesaPanel.getGrandeAreaBaixo().getWidth() * 0.55);
@@ -1915,7 +1914,7 @@ public class ControleJogo {
 
 	}
 
-	public void limparJogo() {
+	public void matarTodasThreads() {
 		Logger.logar("matarTodasThreads");
 		frame.setVisible(false);
 		WindowListener[] windowListeners = frame.getWindowListeners();
