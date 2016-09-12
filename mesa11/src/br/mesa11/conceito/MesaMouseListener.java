@@ -37,8 +37,9 @@ public class MesaMouseListener extends MouseAdapter {
 		if (controleJogo.isJogoTerminado()) {
 			return;
 		}
-		if (controleJogo.isAnimando() || controleJogo.getPontoClicado() == null
-				&& controleJogo.getPontoPasando() == null
+		if (controleJogo.isAnimando()
+				|| controleJogo.getPontoClicado() == null
+						&& controleJogo.getPontoPasando() == null
 				|| (MouseEvent.BUTTON1 != e.getButton()) || botoes == null) {
 			controleJogo.setPontoClicado(null);
 			return;
@@ -70,16 +71,23 @@ public class MesaMouseListener extends MouseAdapter {
 		Point pontoClicado = new Point((int) (e.getPoint().x / mesaPanel.zoom),
 				(int) (e.getPoint().y / mesaPanel.zoom));
 		if (MouseEvent.BUTTON3 == e.getButton()) {
-			controleJogo.setPontoBtnDirClicado(new Point(pontoClicado.x,
-					pontoClicado.y));
+			controleJogo.setPontoBtnDirClicado(
+					new Point(pontoClicado.x, pontoClicado.y));
 		}
 		controleJogo.setPontoClicado(pontoClicado);
-		for (Iterator iterator = botoes.keySet().iterator(); iterator.hasNext();) {
+		for (Iterator iterator = botoes.keySet().iterator(); iterator
+				.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoes.get(id);
-			if (botao instanceof Bola) {
+			if (botao != null && botao instanceof Bola) {
 				boolean areaGoleiroCima = false;
 				Goleiro goleiroCima = controleJogo.obterGoleiroCima();
+				if (goleiroCima == null) {
+					return;
+				}
+				if (botao.getCentro() == null) {
+					return;
+				}
 				double distaciaEntrePontosCima = GeoUtil.distaciaEntrePontos(
 						botao.getCentro(), goleiroCima.getCentro());
 				if (distaciaEntrePontosCima < goleiroCima.getDiamentro()) {

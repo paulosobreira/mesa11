@@ -2114,6 +2114,9 @@ public class ControleJogo {
 		}
 		Point p1 = getPontoClicado();
 		Point p2 = getPontoPasando();
+		if(p1==null || p2==null){
+			return;
+		}
 		efetuaJogada(p1, p2);
 	}
 
