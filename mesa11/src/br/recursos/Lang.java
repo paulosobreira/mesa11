@@ -20,7 +20,6 @@ public class Lang {
 	private static PropertyResourceBundle bundle;
 	private static String sufix;
 	private static boolean srvgame;
-	private static String mutex = "";
 
 	public Lang() throws IOException {
 	}
@@ -36,108 +35,97 @@ public class Lang {
 	public static void main(String[] args) throws IOException {
 		new Lang();
 		// Logger.logar(msg("TesteFormat", new Object[] { 123, 312 }));
-		// String[] array = "asd¢111¢qweqw¢22¢werwer ¢3¢¢4¢".split("¢");
+		// String[] array = "asdÂ¢111Â¢qweqwÂ¢22Â¢werwer Â¢3Â¢Â¢4Â¢".split("Â¢");
 		// for (int i = 0; i < array.length; i++) {
 		// if (i % 2 == 1)
 		// Logger.logar(array[i]);
 		// }
 		srvgame = true;
-		String enc = Lang.msg("003", new String[] { "S.Vettel", "8.218", "0",
-				Lang.msg("TIPO_PNEU_MOLE") });
+		String enc = Lang.msg("003", new String[]{"S.Vettel", "8.218", "0",
+				Lang.msg("TIPO_PNEU_MOLE")});
 		Logger.logar("enc : " + enc);
 		sufix = "en";
 		srvgame = false;
 		Logger.logar("dec : " + decodeTexto(enc));
-		System.out
-				.println(decodeTexto("<b><font  color='#FF8C00'>¢003¬S.Vettel¬8.218¬0¬¢TIPO_PNEU_MOLE¢¢</font></b>"));
+		System.out.println(decodeTexto(
+				"<b><font  color='#FF8C00'>Â¢003Â¬S.VettelÂ¬8.218Â¬0Â¬Â¢TIPO_PNEU_MOLEÂ¢Â¢</font></b>"));
 		Locale locale = Locale.getDefault();
 
 		Logger.logar(locale.getLanguage());
 	}
 
 	public static void mudarIdioma(String sufix_) {
-		synchronized (mutex) {
-			sufix = sufix_;
-			synchronized (mutex) {
-				bundle = null;
-				iniciaBundle();
-			}
-		}
+		sufix = sufix_;
+		bundle = null;
+		iniciaBundle();
 	}
 
 	public static String msg(String key) {
-		synchronized (mutex) {
-			if (srvgame) {
-				return "¢" + key + "¢";
-			}
+		if (srvgame) {
+			return "Â¢" + key + "Â¢";
+		}
 
-			iniciaBundle();
-			if (key == null || "".equals(key)) {
-				return "";
-			}
-			try {
-				return bundle.getString(key);
-			} catch (Exception e) {
-				return key;
-			}
-
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			return bundle.getString(key);
+		} catch (Exception e) {
+			return key;
 		}
 	}
 
 	public static String msg(String key, Object[] strings) {
-		synchronized (mutex) {
-			if (srvgame) {
-				StringBuffer buffer = new StringBuffer();
-				buffer.append("¢" + key);
-				for (int i = 0; i < strings.length; i++) {
-					buffer.append("¬");
-					String stringIn = strings[i].toString();
-					if (stringIn.contains("¢")) {
-						buffer.append(stringIn.replace("¢", "£"));
-					} else {
-						buffer.append(stringIn);
-					}
+		if (srvgame) {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("Â¢" + key);
+			for (int i = 0; i < strings.length; i++) {
+				buffer.append("Â¬");
+				String stringIn = strings[i].toString();
+				if (stringIn.contains("Â¢")) {
+					buffer.append(stringIn.replace("Â¢", "Â¥"));
+				} else {
+					buffer.append(stringIn);
 				}
-				buffer.append("¢");
-				return buffer.toString();
 			}
-			iniciaBundle();
-			if (key == null || "".equals(key)) {
-				return "";
-			}
-			try {
-				MessageFormat messageFormat = new MessageFormat(bundle
-						.getString(key));
-				return messageFormat.format(strings);
-			} catch (Exception e) {
-				return key;
-			}
+			buffer.append("Â¢");
+			return buffer.toString();
+		}
+		iniciaBundle();
+		if (key == null || "".equals(key)) {
+			return "";
+		}
+		try {
+			MessageFormat messageFormat = new MessageFormat(
+					bundle.getString(key));
+			return messageFormat.format(strings);
+		} catch (Exception e) {
+			return key;
 		}
 	}
 
 	public static String decodeTexto(String string) {
-		synchronized (mutex) {
-			String[] array = string.split("¢");
-			StringBuffer retorno = new StringBuffer();
-			for (int i = 0; i < array.length; i++) {
-				if (i % 2 == 1)
-					retorno.append(microDecode(array[i]));
-				else
-					retorno.append((array[i]));
-			}
-			return retorno.toString();
+		String[] array = string.split("Â¢");
+		StringBuffer retorno = new StringBuffer();
+		for (int i = 0; i < array.length; i++) {
+			if (i % 2 == 1)
+				retorno.append(microDecode(array[i]));
+			else
+				retorno.append((array[i]));
 		}
+		return retorno.toString();
 	}
 
 	private static String microDecode(String string) {
-		if (string.contains("¬")) {
-			String[] sp = string.split("¬");
+		if (string.contains("Â¬")) {
+			String[] sp = string.split("Â¬");
 			String key = sp[0];
 			Object[] params = new Object[sp.length - 1];
 			for (int i = 1; i < sp.length; i++) {
 				String msp = sp[i];
-				if (msp.contains("£")) {
-					msp = Lang.decodeTexto(msp.replace("£", "¢"));
+				if (msp.contains("Â¥")) {
+					msp = Lang.decodeTexto(msp.replace("Â¥", "Â¢"));
 				}
 				params[i - 1] = msp;
 			}
@@ -148,18 +136,16 @@ public class Lang {
 	}
 
 	public static String key(String mensagen) {
-		synchronized (mutex) {
-			iniciaBundle();
-			Enumeration enumeration = bundle.getKeys();
-			while (enumeration.hasMoreElements()) {
-				String key = (String) enumeration.nextElement();
-				String msg = bundle.getString(key);
-				if (msg.equals(mensagen)) {
-					return key;
-				}
+		iniciaBundle();
+		Enumeration enumeration = bundle.getKeys();
+		while (enumeration.hasMoreElements()) {
+			String key = (String) enumeration.nextElement();
+			String msg = bundle.getString(key);
+			if (msg.equals(mensagen)) {
+				return key;
 			}
-			return "";
 		}
+		return "";
 	}
 
 	private static void iniciaBundle() {
@@ -173,7 +159,7 @@ public class Lang {
 				InputStream inputStream = CarregadorRecursos
 						.recursoComoStream(load);
 				if (inputStream == null) {
-					load = "idiomas/mensagens_en.properties";
+					load = "mensagens_en.properties";
 					inputStream = CarregadorRecursos.recursoComoStream(load);
 				}
 				validaProperties(inputStream);
@@ -185,6 +171,10 @@ public class Lang {
 					validaProperties(inputStream);
 					inputStream = CarregadorRecursos.recursoComoStream(load);
 					bundle = new PropertyResourceBundle(inputStream);
+				}
+				if (bundle == null) {
+					Logger.logar("inputStream == null para " + load);
+					return;
 				}
 			}
 		} catch (Exception e) {
@@ -201,7 +191,7 @@ public class Lang {
 		Set keys = new HashSet();
 		Set values = new HashSet();
 		String line = bufferedReader.readLine();
-		while (line != null) {
+		while (line != null && line.contains("=")) {
 			String[] splits = line.split("=");
 			if (keys.contains(splits[0])) {
 				throw new Exception("Repeated Key : " + splits[0]);
@@ -216,6 +206,10 @@ public class Lang {
 			line = bufferedReader.readLine();
 		}
 
+	}
+
+	public static String getSufix() {
+		return sufix;
 	}
 
 }
