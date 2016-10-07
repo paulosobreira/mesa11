@@ -3489,7 +3489,7 @@ public class ControleJogo {
 		if (mesa11Applet == null) {
 			return false;
 		}
-		return mesa11Applet.getLatenciaReal() > ConstantesMesa11.LATENCIA_MAX;
+		return mesa11Applet.getLatenciaReal() > 50;
 	}
 
 	public int getLag() {
