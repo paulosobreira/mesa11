@@ -285,12 +285,29 @@ public class ChatWindow {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("feitopor") + "  Paulo Sobreira \n "
 						+ "sowbreira@gmail.com \n"
-						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
+						+ "sowbreira.appspot.com/ \n" + "MarÃ§o de 2010 \n ";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);
+				verLogs();
 			}
 		});
+
+	}
+	
+	protected void verLogs() {
+		JTextArea area = new JTextArea(20, 50);
+		Set top = Logger.topExceptions.keySet();
+		for (Iterator iterator = top.iterator(); iterator.hasNext();) {
+			String exept = (String) iterator.next();
+			area.append("Qtde : " + Logger.topExceptions.get(exept));
+			area.append("\n");
+			area.append(exept.replaceAll("<br>", "\n"));
+			area.append("\n");
+		}
+		area.setCaretPosition(0);
+		JOptionPane.showMessageDialog(getMainPanel(), new JScrollPane(area),
+				Lang.msg("listaDeErros"), JOptionPane.INFORMATION_MESSAGE);
 
 	}
 
