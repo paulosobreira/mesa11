@@ -814,6 +814,9 @@ public class ControlePartida {
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
+		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
+				? ConstantesMesa11.CAMPO_CIMA
+				: ConstantesMesa11.CAMPO_BAIXO);
 	}
 
 	public void processarGolContra(Botao botao) {

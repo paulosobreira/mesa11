@@ -79,11 +79,6 @@ public class Dia implements Cloneable, Serializable {
 		}
 	}
 
-	/**
-	 * 
-	 * Se o valor for igual a 10 usar dd/MM/yyyy caso não, usar yyyy-MM-dd
-	 * HH:mm:ss.mmm
-	 */
 	public static Timestamp converteStringTimestamp(String valor)
 			throws Exception {
 		if (valor == null) {
@@ -106,9 +101,9 @@ public class Dia implements Cloneable, Serializable {
 			valor = buffer.toString();
 		}
 
-		return ((valor.length() == 10) ? new java.sql.Timestamp(
-				parseDate(valor).getTime()) : parseTimestamp(valor,
-				"yyyy-MM-dd HH:mm:ss"));
+		return ((valor.length() == 10)
+				? new java.sql.Timestamp(parseDate(valor).getTime())
+				: parseTimestamp(valor, "yyyy-MM-dd HH:mm:ss"));
 	}
 
 	public static java.sql.Date parseDate(String DATE) throws Exception {
@@ -225,8 +220,8 @@ public class Dia implements Cloneable, Serializable {
 	}
 
 	public int getCompetencia() {
-		return zeroOuInt(prec4.format(getYear()) + ""
-				+ prec2.format(getMonth()));
+		return zeroOuInt(
+				prec4.format(getYear()) + "" + prec2.format(getMonth()));
 	}
 
 	public static int zeroOuInt(Object obj) {
@@ -234,8 +229,9 @@ public class Dia implements Cloneable, Serializable {
 			if (obj instanceof String) {
 				String string = (String) obj;
 
-				return (((string == null) || "".equals(string)) ? 0 : Integer
-						.parseInt(string));
+				return (((string == null) || "".equals(string))
+						? 0
+						: Integer.parseInt(string));
 			}
 
 			return (((obj == null)) ? 0 : Integer.parseInt((String) obj));
@@ -381,7 +377,7 @@ public class Dia implements Cloneable, Serializable {
 		} else if (mes == 2) {
 			m = "FEVEREIRO";
 		} else if (mes == 3) {
-			m = "MARÇO";
+			m = "MARÃ‡O";
 		} else if (mes == 4) {
 			m = "ABRIL";
 		} else if (mes == 5) {
@@ -411,7 +407,7 @@ public class Dia implements Cloneable, Serializable {
 			m = 1;
 		} else if (desc.equalsIgnoreCase("FEVEREIRO")) {
 			m = 2;
-		} else if (desc.equalsIgnoreCase("MARÇO")) {
+		} else if (desc.equalsIgnoreCase("MARÃ‡O")) {
 			m = 3;
 		} else if (desc.equalsIgnoreCase("ABRIL")) {
 			m = 4;
@@ -504,16 +500,6 @@ public class Dia implements Cloneable, Serializable {
 		return df.format(day) + "/" + df.format(month) + "/" + year;
 	}
 
-	/**
-	 * Usar somente para pesquisa. Testado só no postgres.
-	 * 
-	 * @return
-	 */
-	public String getDataBanco() {
-		return "'" + year + "-" + prec2.format(month) + "-" + prec2.format(day)
-				+ "%'";
-	}
-
 	public String getDataBanco23h() {
 		return "'" + year + "-" + prec2.format(month) + "-" + prec2.format(day)
 				+ " 23:59:59.999'";
@@ -524,8 +510,8 @@ public class Dia implements Cloneable, Serializable {
 	}
 
 	public int toInt() {
-		return Integer.parseInt("" + year + prec2.format(month)
-				+ prec2.format(day));
+		return Integer
+				.parseInt("" + year + prec2.format(month) + prec2.format(day));
 	}
 
 	/**
@@ -581,13 +567,13 @@ public class Dia implements Cloneable, Serializable {
 	 *         year signifies A.D., negative year B.C. Remember that the year
 	 *         after 1 B.C. was 1 A.D.
 	 * 
-	 * A convenient reference point is that May 23, 1968 noon is Julian day
-	 * 2440000.
+	 *         A convenient reference point is that May 23, 1968 noon is Julian
+	 *         day 2440000.
 	 * 
-	 * Julian day 0 is a Monday.
+	 *         Julian day 0 is a Monday.
 	 * 
-	 * This algorithm is from Press et al., Numerical Recipes in C, 2nd ed.,
-	 * Cambridge University Press 1992
+	 *         This algorithm is from Press et al., Numerical Recipes in C, 2nd
+	 *         ed., Cambridge University Press 1992
 	 */
 	private int toJulian() {
 		int jy = year;
@@ -642,7 +628,7 @@ public class Dia implements Cloneable, Serializable {
 		if (j >= JGREG) /*
 						 * cross-over to Gregorian Calendar produces this
 						 * correction
-						 */{
+						 */ {
 			int jalpha = (int) (((float) (j - 1867216) - 0.25) / 36524.25);
 			ja += ((1 + jalpha) - (int) (0.25 * jalpha));
 		}

@@ -108,12 +108,12 @@ public class MonitorAtividade extends Thread {
 						}
 					} else {
 						/**
-						 * Apaga o jogo em 35 minutos apos criac„o
+						 * Apaga o jogo em 35 minutos apos criac√£o
 						 */
 
 						if ((timeNow - jogoServidor.getTempoCriacao()) > 2100000) {
 							Logger
-									.logar("Apaga o jogo em 35 minutos apos criac„o");
+									.logar("Apaga o jogo em 35 minutos apos criac√£o");
 							jogoRemover = key;
 						}
 					}

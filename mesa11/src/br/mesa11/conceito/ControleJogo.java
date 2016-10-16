@@ -530,7 +530,7 @@ public class ControleJogo {
 				}
 				botao.setCentro(point);
 				/**
-				 * Colis�o com bot�es
+				 * Colisão com botões
 				 */
 				for (Iterator iterator = botoes.keySet().iterator(); iterator
 						.hasNext();) {
@@ -577,14 +577,10 @@ public class ControleJogo {
 							eventoAtual.setUltimoContato(botao);
 							eventoAtual.setEventoCod(
 									ConstantesMesa11.CONTATO_BOTAO_BOLA);
-							// Logger.logar("Bot�o Acerta Bola");
 							detAtingido *= (1 - (i / detAtingido));
 							bolaIngnora.add(botao);
-							// Logger.logar("Bot�o Acerta Bola detAtingido="
-							// + detAtingido);
 						} else {
 							if ((botao instanceof Bola)) {
-								// Logger.logar("Bola Acerta Bot�o");
 								eventoAtual.setPonto(point);
 								eventoAtual.setUltimoContato(botaoAnalisado);
 								eventoAtual.setEventoCod(
@@ -1779,11 +1775,11 @@ public class ControleJogo {
 
 	public boolean verificaGol(Botao botao) {
 		if (mesaPanel == null)
-			return true;
+			return false;
 		return (mesaPanel.getAreaGolBaixo()
-				.contains(botao.getShape(1).getBounds2D())
+				.intersects(botao.getShape(1).getBounds2D())
 				|| mesaPanel.getAreaGolCima()
-						.contains(botao.getShape(1).getBounds2D()));
+						.intersects(botao.getShape(1).getBounds2D()));
 	}
 
 	public void setGol(Botao botao) {
@@ -1796,7 +1792,7 @@ public class ControleJogo {
 
 	public boolean verificaMetaEscanteio(Botao botao) {
 		if (mesaPanel == null)
-			return true;
+			return false;
 		if ((mesaPanel.getLinhaGolBaixo()
 				.intersects(botao.getShape(1).getBounds())
 				|| mesaPanel.getLinhaGolCima()
@@ -1908,7 +1904,6 @@ public class ControleJogo {
 
 	public void processarGol(Botao botao) {
 		controlePartida.processarGol(botao);
-		reversaoJogada();
 		Logger.logar("Gol " + botao.getTime());
 		setDica("gol");
 
@@ -2114,7 +2109,7 @@ public class ControleJogo {
 		}
 		Point p1 = getPontoClicado();
 		Point p2 = getPontoPasando();
-		if(p1==null || p2==null){
+		if (p1 == null || p2 == null) {
 			return;
 		}
 		efetuaJogada(p1, p2);
@@ -2689,7 +2684,7 @@ public class ControleJogo {
 		}
 
 		/**
-		 * Jogada Bot�o mais proximo chutar gol
+		 * Jogada Botão mais proximo chutar gol
 		 */
 
 		int contBtn = 0;
@@ -2898,7 +2893,7 @@ public class ControleJogo {
 	private Botao obterBtnJogadaCPU(List botoesTimeVez, Set descartados) {
 		Botao btnPrximo = obterBtnProximoLivre(botoesTimeVez, descartados);
 		/**
-		 * Bot�o mais proximo
+		 * Botão mais proximo
 		 */
 		if (btnPrximo == null) {
 			btnPrximo = obterBtnProximoAntesLinhaBola(botoesTimeVez,
@@ -3428,12 +3423,12 @@ public class ControleJogo {
 			return null;
 		}
 		HashMap<Long, Botao> botoesCopy2 = new HashMap<Long, Botao>();
-		try {
-			while (botoesCopy2.isEmpty()) {
+		while (botoesCopy2.isEmpty()) {
+			try {
 				botoesCopy2.putAll(botoesCopy);
+			} catch (Exception e) {
+				Logger.logarExept(e);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 		return botoesCopy2;
 	}

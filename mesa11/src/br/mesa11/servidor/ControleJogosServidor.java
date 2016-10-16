@@ -81,22 +81,19 @@ public class ControleJogosServidor {
 				.get(dadosJogoSrvMesa11.getNomeJogo());
 		if (jogoSrvMesa11.isJogoCampeonato()) {
 			RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = controlePersistencia
-					.pesquisarRodadaPorId(jogoSrvMesa11
-							.getRodadaCampeonatoMesa11());
+					.pesquisarRodadaPorId(
+							jogoSrvMesa11.getRodadaCampeonatoMesa11());
 
-			if (!dadosJogoSrvMesa11.getNomeCriador().equals(
-					jogoSrvMesa11.getJogadorCampeonatoCasa())) {
-				return new MsgSrv(
-						Lang.msg("jogadorCasaDeveSer",
-								new String[] { jogoSrvMesa11
-										.getJogadorCampeonatoCasa() }));
+			if (!dadosJogoSrvMesa11.getNomeCriador()
+					.equals(jogoSrvMesa11.getJogadorCampeonatoCasa())) {
+				return new MsgSrv(Lang.msg("jogadorCasaDeveSer", new String[]{
+						jogoSrvMesa11.getJogadorCampeonatoCasa()}));
 			}
 
-			if (!dadosJogoSrvMesa11.getNomeVisitante().equals(
-					jogoSrvMesa11.getJogadorCampeonatoVisita())) {
-				return new MsgSrv(Lang.msg("jogadorVisitaDeveSer",
-						new String[] { jogoSrvMesa11
-								.getJogadorCampeonatoVisita() }));
+			if (!dadosJogoSrvMesa11.getNomeVisitante()
+					.equals(jogoSrvMesa11.getJogadorCampeonatoVisita())) {
+				return new MsgSrv(Lang.msg("jogadorVisitaDeveSer", new String[]{
+						jogoSrvMesa11.getJogadorCampeonatoVisita()}));
 			}
 
 		} else if (jogoSrvMesa11.getDadosJogoSrvMesa11() != null
@@ -108,8 +105,8 @@ public class ControleJogosServidor {
 			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			dadosMesa11.getJogosCriados().remove(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
-			dadosMesa11.getJogosAndamento().add(
-					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			dadosMesa11.getJogosAndamento()
+					.add(jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
 			dadosJogoSrvMesa11.setJogoCampeonatoIniciado(true);
@@ -123,16 +120,16 @@ public class ControleJogosServidor {
 		ControleJogo controleJogo = new ControleJogo(jogoSrvMesa11);
 		DadosJogoSrvMesa11 dadosJogoSrvMesa11 = jogoSrvMesa11
 				.getDadosJogoSrvMesa11();
-		Time timeCasa = controlePersistencia.obterTime(dadosJogoSrvMesa11
-				.getTimeCasa());
-		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
-				.isSegundoUniformeTimeCasa());
-		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
-				.getTimeVisita());
-		timeCasa.setSegundoUniforme(dadosJogoSrvMesa11
-				.isSegundoUniformeTimeCasa());
-		timeVisita.setSegundoUniforme(dadosJogoSrvMesa11
-				.isSegundoUniformeTimeVisita());
+		Time timeCasa = controlePersistencia
+				.obterTime(dadosJogoSrvMesa11.getTimeCasa());
+		timeCasa.setSegundoUniforme(
+				dadosJogoSrvMesa11.isSegundoUniformeTimeCasa());
+		Time timeVisita = controlePersistencia
+				.obterTime(dadosJogoSrvMesa11.getTimeVisita());
+		timeCasa.setSegundoUniforme(
+				dadosJogoSrvMesa11.isSegundoUniformeTimeCasa());
+		timeVisita.setSegundoUniforme(
+				dadosJogoSrvMesa11.isSegundoUniformeTimeVisita());
 		jogoSrvMesa11.setTimeCasa(timeCasa);
 		jogoSrvMesa11.setTimeVisita(timeVisita);
 		jogoSrvMesa11.setControleJogo(controleJogo);
@@ -180,27 +177,28 @@ public class ControleJogosServidor {
 				.getDadosJogoSrvMesa11();
 		ControleJogo controleJogo = jogoSrvMesa11.getControleJogo();
 		if (controleJogo != null) {
-			dadosJogoSrvMesa11.setTimeVez(controleJogo.timeJogadaVez()
-					.getNome());
-			dadosJogoSrvMesa11.setGolsCasa(controleJogo
-					.verGolsInt(jogoSrvMesa11.getTimeCasa()));
-			dadosJogoSrvMesa11.setGolsVisita(controleJogo
-					.verGolsInt(jogoSrvMesa11.getTimeVisita()));
-			dadosJogoSrvMesa11.setTempoJogoFormatado(controleJogo
-					.tempoJogoFormatado());
-			dadosJogoSrvMesa11.setTempoRestanteJogoFormatado(controleJogo
-					.tempoRestanteJogoFormatado());
-			dadosJogoSrvMesa11.setTempoJogadaRestanteJogoFormatado(controleJogo
-					.tempoJogadaRestanteJogoFormatado());
-			dadosJogoSrvMesa11.setNumeroJogadasTimeCasa(controleJogo
-					.obterNumJogadas(jogoSrvMesa11.getTimeCasa()));
+			dadosJogoSrvMesa11
+					.setTimeVez(controleJogo.timeJogadaVez().getNome());
+			dadosJogoSrvMesa11.setGolsCasa(
+					controleJogo.verGolsInt(jogoSrvMesa11.getTimeCasa()));
+			dadosJogoSrvMesa11.setGolsVisita(
+					controleJogo.verGolsInt(jogoSrvMesa11.getTimeVisita()));
+			dadosJogoSrvMesa11
+					.setTempoJogoFormatado(controleJogo.tempoJogoFormatado());
+			dadosJogoSrvMesa11.setTempoRestanteJogoFormatado(
+					controleJogo.tempoRestanteJogoFormatado());
+			dadosJogoSrvMesa11.setTempoJogadaRestanteJogoFormatado(
+					controleJogo.tempoJogadaRestanteJogoFormatado());
+			dadosJogoSrvMesa11.setNumeroJogadasTimeCasa(
+					controleJogo.obterNumJogadas(jogoSrvMesa11.getTimeCasa()));
 			dadosJogoSrvMesa11.setNumeroJogadasTimeVisita(controleJogo
 					.obterNumJogadas(jogoSrvMesa11.getTimeVisita()));
 			dadosJogoSrvMesa11.setJogoTerminado(controleJogo.isJogoTerminado());
 			dadosJogoSrvMesa11.setJogoIniciado(controleJogo.isJogoIniciado());
 			dadosJogoSrvMesa11.setDica(controleJogo.getDica());
 			dadosJogoSrvMesa11.setProcessando(controleJogo.isProcessando());
-			if (controleJogo.getGolsTempo().size() > mesa11to.getTamListaGols()) {
+			if (controleJogo.getGolsTempo().size() > mesa11to
+					.getTamListaGols()) {
 				dadosJogoSrvMesa11.setGolJogador(controleJogo.getGolsTempo()
 						.get(mesa11to.getTamListaGols()));
 			}
@@ -211,8 +209,8 @@ public class ControleJogosServidor {
 	}
 
 	public Object jogada(JogadaMesa11 jogadaMesa11) {
-		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(jogadaMesa11
-				.getDadosJogoSrvMesa11().getNomeJogo());
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
+				.get(jogadaMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 		if (jogoSrvMesa11 == null) {
 			return null;
 		}
@@ -238,7 +236,10 @@ public class ControleJogosServidor {
 			return null;
 		}
 		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setData(jogoSrvMesa11.getControleJogo().obterUltimaJogada());
+		Animacao animacao = (Animacao) jogoSrvMesa11.getControleJogo()
+				.obterUltimaJogada();
+		animacao.setExecutou(false);
+		mesa11to.setData(animacao);
 		return mesa11to;
 	}
 
@@ -251,8 +252,8 @@ public class ControleJogosServidor {
 			return null;
 		}
 		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
-		jogoSrvMesa11.getControleJogo().setTempoUltimaJogadaSrvCliente(
-				tempoUltimaJogada);
+		jogoSrvMesa11.getControleJogo()
+				.setTempoUltimaJogadaSrvCliente(tempoUltimaJogada);
 		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
 				.getAnimacaoCliente();
 		boolean pulaPosicaoBotoes = false;
@@ -303,8 +304,9 @@ public class ControleJogosServidor {
 				.hasNext();) {
 			String nomeJogo = (String) iterator.next();
 			JogoServidor jogoServidor = mapaJogos.get(nomeJogo);
-			if (nomeJogador.equals(jogoServidor.getDadosJogoSrvMesa11()
-					.getNomeCriador())
+			if (nomeJogador
+					.equals(jogoServidor.getDadosJogoSrvMesa11()
+							.getNomeCriador())
 					|| nomeJogador.equals(jogoServidor.getDadosJogoSrvMesa11()
 							.getNomeVisitante())) {
 				jogoServidor.jogadorSaiuJogo(nomeJogador);
@@ -345,8 +347,8 @@ public class ControleJogosServidor {
 			return new MsgSrv("imagemExistente");
 		}
 		try {
-			Util.byteArray2file(mesa11to.getDataBytes(), ServletMesa11.mediaDir
-					+ mesa11to.getData());
+			Util.byteArray2file(mesa11to.getDataBytes(),
+					ServletMesa11.mediaDir + mesa11to.getData());
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -382,8 +384,8 @@ public class ControleJogosServidor {
 			jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			dadosMesa11.getJogosCriados().remove(
 					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
-			dadosMesa11.getJogosAndamento().add(
-					jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
+			dadosMesa11.getJogosAndamento()
+					.add(jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
 			dadosJogoSrvMesa11.setJogoVsCpu(true);
@@ -409,28 +411,29 @@ public class ControleJogosServidor {
 				classificacaoTime.setTime(time);
 				mapaCassificTime.put(time, classificacaoTime);
 			}
-			List partidasCasa = controlePersistencia.obterPartidasTimeCasa(
-					time, campeonato);
+			List partidasCasa = controlePersistencia.obterPartidasTimeCasa(time,
+					campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
 				classificacaoTime.setJogos(classificacaoTime.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoTime.setVitorias(classificacaoTime
-							.getVitorias() + 1);
+					classificacaoTime
+							.setVitorias(classificacaoTime.getVitorias() + 1);
 				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoTime
 							.setEmpates(classificacaoTime.getEmpates() + 1);
 				} else {
-					classificacaoTime.setDerrotas(classificacaoTime
-							.getDerrotas() + 1);
+					classificacaoTime
+							.setDerrotas(classificacaoTime.getDerrotas() + 1);
 				}
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeCasa());
-				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+				classificacaoTime
+						.setGolsContra(classificacaoTime.getGolsContra()
+								+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -444,28 +447,29 @@ public class ControleJogosServidor {
 				classificacaoTime.setTime(time);
 				mapaCassificTime.put(time, classificacaoTime);
 			}
-			List partidasCasa = controlePersistencia.obterPartidasTimeVisita(
-					time, campeonato);
+			List partidasCasa = controlePersistencia
+					.obterPartidasTimeVisita(time, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
 				classificacaoTime.setJogos(classificacaoTime.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoTime.setVitorias(classificacaoTime
-							.getVitorias() + 1);
+					classificacaoTime
+							.setVitorias(classificacaoTime.getVitorias() + 1);
 				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
 						.getGolsTimeVisita()) {
 					classificacaoTime
 							.setEmpates(classificacaoTime.getEmpates() + 1);
 				} else {
-					classificacaoTime.setDerrotas(classificacaoTime
-							.getDerrotas() + 1);
+					classificacaoTime
+							.setDerrotas(classificacaoTime.getDerrotas() + 1);
 				}
 				classificacaoTime.setGolsFavor(classificacaoTime.getGolsFavor()
 						+ partidaMesa11.getGolsTimeVisita());
-				classificacaoTime.setGolsContra(classificacaoTime
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+				classificacaoTime
+						.setGolsContra(classificacaoTime.getGolsContra()
+								+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
@@ -502,8 +506,8 @@ public class ControleJogosServidor {
 				classificacaoUsuario.setLogin(usuario);
 				mapaCassificJogador.put(usuario, classificacaoUsuario);
 			}
-			List partidasCasa = controlePersistencia.obterPartidasJogadorCasa(
-					usuario, campeonato);
+			List partidasCasa = controlePersistencia
+					.obterPartidasJogadorCasa(usuario, campeonato);
 			for (Iterator iterator2 = partidasCasa.iterator(); iterator2
 					.hasNext();) {
 				PartidaMesa11 partidaMesa11 = (PartidaMesa11) iterator2.next();
@@ -511,20 +515,22 @@ public class ControleJogosServidor {
 						.setJogos(classificacaoUsuario.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() > partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoUsuario.setVitorias(classificacaoUsuario
-							.getVitorias() + 1);
+					classificacaoUsuario.setVitorias(
+							classificacaoUsuario.getVitorias() + 1);
 				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoUsuario.setEmpates(classificacaoUsuario
-							.getEmpates() + 1);
+					classificacaoUsuario
+							.setEmpates(classificacaoUsuario.getEmpates() + 1);
 				} else {
-					classificacaoUsuario.setDerrotas(classificacaoUsuario
-							.getDerrotas() + 1);
+					classificacaoUsuario.setDerrotas(
+							classificacaoUsuario.getDerrotas() + 1);
 				}
-				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeCasa());
-				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeVisita());
+				classificacaoUsuario
+						.setGolsFavor(classificacaoUsuario.getGolsFavor()
+								+ partidaMesa11.getGolsTimeCasa());
+				classificacaoUsuario
+						.setGolsContra(classificacaoUsuario.getGolsContra()
+								+ partidaMesa11.getGolsTimeVisita());
 			}
 
 		}
@@ -547,26 +553,28 @@ public class ControleJogosServidor {
 						.setJogos(classificacaoUsuario.getJogos() + 1);
 				if (partidaMesa11.getGolsTimeCasa() < partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoUsuario.setVitorias(classificacaoUsuario
-							.getVitorias() + 1);
+					classificacaoUsuario.setVitorias(
+							classificacaoUsuario.getVitorias() + 1);
 				} else if (partidaMesa11.getGolsTimeCasa() == partidaMesa11
 						.getGolsTimeVisita()) {
-					classificacaoUsuario.setEmpates(classificacaoUsuario
-							.getEmpates() + 1);
+					classificacaoUsuario
+							.setEmpates(classificacaoUsuario.getEmpates() + 1);
 				} else {
-					classificacaoUsuario.setDerrotas(classificacaoUsuario
-							.getDerrotas() + 1);
+					classificacaoUsuario.setDerrotas(
+							classificacaoUsuario.getDerrotas() + 1);
 				}
-				classificacaoUsuario.setGolsFavor(classificacaoUsuario
-						.getGolsFavor() + partidaMesa11.getGolsTimeVisita());
-				classificacaoUsuario.setGolsContra(classificacaoUsuario
-						.getGolsContra() + partidaMesa11.getGolsTimeCasa());
+				classificacaoUsuario
+						.setGolsFavor(classificacaoUsuario.getGolsFavor()
+								+ partidaMesa11.getGolsTimeVisita());
+				classificacaoUsuario
+						.setGolsContra(classificacaoUsuario.getGolsContra()
+								+ partidaMesa11.getGolsTimeCasa());
 			}
 
 		}
 		List dadosJogadores = new ArrayList();
-		for (Iterator iterator = mapaCassificJogador.keySet().iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = mapaCassificJogador.keySet()
+				.iterator(); iterator.hasNext();) {
 			String loginKey = (String) iterator.next();
 			dadosJogadores.add(mapaCassificJogador.get(loginKey));
 		}
@@ -622,8 +630,8 @@ public class ControleJogosServidor {
 
 		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
 				&& !Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())
-				&& dadosJogoSrvMesa11.getNomeCriador().equals(
-						dadosJogoSrvMesa11.getNomeVisitante())) {
+				&& dadosJogoSrvMesa11.getNomeCriador()
+						.equals(dadosJogoSrvMesa11.getNomeVisitante())) {
 			return new MsgSrv(Lang.msg("jogadoresIguais"));
 
 		}
@@ -632,49 +640,48 @@ public class ControleJogosServidor {
 		for (Iterator iterator = keySet.iterator(); iterator.hasNext();) {
 			String key = (String) iterator.next();
 			JogoServidor jogoServidor = mapaJogos.get(key);
-			if (jogoServidor.isJogoCampeonato()
-					&& dadosJogoSrvMesa11.getIdRodadaCampeonato() == jogoServidor
+			if (jogoServidor.isJogoCampeonato() && dadosJogoSrvMesa11
+					.getIdRodadaCampeonato() == jogoServidor
 							.getRodadaCampeonatoMesa11()) {
 				return new MsgSrv(Lang.msg("jogoRodadaJaEmAdamento",
-						new String[] { dadosJogoSrvMesa11.getTimeCasa(),
-								dadosJogoSrvMesa11.getTimeVisita() }));
+						new String[]{dadosJogoSrvMesa11.getTimeCasa(),
+								dadosJogoSrvMesa11.getTimeVisita()}));
 			}
 
 		}
 
-		if (!controlePersistencia.verificaUsuarioCampeonato(mesa11TO
-				.getSessaoCliente().getNomeJogador(), dadosJogoSrvMesa11
-				.getIdRodadaCampeonato())) {
+		if (!controlePersistencia.verificaUsuarioCampeonato(
+				mesa11TO.getSessaoCliente().getNomeJogador(),
+				dadosJogoSrvMesa11.getIdRodadaCampeonato())) {
 			return new MsgSrv(
-					Lang.msg("usuarioNaoParticipaCampeonato",
-							new String[] { mesa11TO.getSessaoCliente()
-									.getNomeJogador() }));
+					Lang.msg("usuarioNaoParticipaCampeonato", new String[]{
+							mesa11TO.getSessaoCliente().getNomeJogador()}));
 		}
 
-		if (controlePersistencia.verificaRodadaFinalizada(dadosJogoSrvMesa11
-				.getIdRodadaCampeonato())) {
+		if (controlePersistencia.verificaRodadaFinalizada(
+				dadosJogoSrvMesa11.getIdRodadaCampeonato())) {
 			return new MsgSrv(Lang.msg("jogoRodadaJaAconteceu",
-					new String[] { dadosJogoSrvMesa11.getTimeCasa(),
-							dadosJogoSrvMesa11.getTimeVisita() }));
+					new String[]{dadosJogoSrvMesa11.getTimeCasa(),
+							dadosJogoSrvMesa11.getTimeVisita()}));
 		}
 
 		if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
 				&& Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
-			return jogoCampeonatoCPUvsCPU(dadosJogoSrvMesa11, mesa11TO
-					.getSessaoCliente().getNomeJogador());
+			return jogoCampeonatoCPUvsCPU(dadosJogoSrvMesa11,
+					mesa11TO.getSessaoCliente().getNomeJogador());
 		}
 
 		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())) {
-			if (proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-					.getNomeCriador()))
+			if (proxyComandos
+					.verificaSemSessao(dadosJogoSrvMesa11.getNomeCriador()))
 				return new MsgSrv(Lang.msg("usuarioNaoLogado",
-						new String[] { dadosJogoSrvMesa11.getNomeCriador() }));
+						new String[]{dadosJogoSrvMesa11.getNomeCriador()}));
 		}
 		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
-			if (proxyComandos.verificaSemSessao(dadosJogoSrvMesa11
-					.getNomeVisitante()))
+			if (proxyComandos
+					.verificaSemSessao(dadosJogoSrvMesa11.getNomeVisitante()))
 				return new MsgSrv(Lang.msg("usuarioNaoLogado",
-						new String[] { dadosJogoSrvMesa11.getNomeVisitante() }));
+						new String[]{dadosJogoSrvMesa11.getNomeVisitante()}));
 		}
 
 		if (!Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
@@ -688,16 +695,16 @@ public class ControleJogosServidor {
 		dadosMesa11.getJogosCriados().add(dadosJogoSrvMesa11.getNomeJogo());
 		JogoServidor jogoServidor = new JogoServidor(dadosJogoSrvMesa11,
 				proxyComandos);
-		jogoServidor.setRodadaCampeonatoMesa11(dadosJogoSrvMesa11
-				.getIdRodadaCampeonato());
+		jogoServidor.setRodadaCampeonatoMesa11(
+				dadosJogoSrvMesa11.getIdRodadaCampeonato());
 		mapaJogos.put(dadosJogoSrvMesa11.getNomeJogo(), jogoServidor);
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
 				.get(dadosJogoSrvMesa11.getNomeJogo());
 		if (jogoSrvMesa11 != null) {
 			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(dadosJogoSrvMesa11);
-			if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador())
-					|| Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
+			if (Util.isNullOrEmpty(dadosJogoSrvMesa11.getNomeCriador()) || Util
+					.isNullOrEmpty(dadosJogoSrvMesa11.getNomeVisitante())) {
 				jogoSrvMesa11.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 				dadosMesa11.getJogosCriados().remove(
 						jogoSrvMesa11.getDadosJogoSrvMesa11().getNomeJogo());
@@ -706,22 +713,22 @@ public class ControleJogosServidor {
 				dadosJogoSrvMesa11.setJogoCampeonatoIniciado(true);
 				inciaJogoServidor(jogoSrvMesa11);
 			} else {
-				jogoServidor.setJogadorCampeonatoCasa(dadosJogoSrvMesa11
-						.getNomeCriador());
-				jogoServidor.setJogadorCampeonatoVisita(dadosJogoSrvMesa11
-						.getNomeVisitante());
+				jogoServidor.setJogadorCampeonatoCasa(
+						dadosJogoSrvMesa11.getNomeCriador());
+				jogoServidor.setJogadorCampeonatoVisita(
+						dadosJogoSrvMesa11.getNomeVisitante());
 			}
 			return mesa11to;
 		}
 		return null;
 	}
 
-	private Object jogoCampeonatoCPUvsCPU(
-			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String criador) {
-		Time timeCasa = controlePersistencia.obterTime(dadosJogoSrvMesa11
-				.getTimeCasa());
-		Time timeVisita = controlePersistencia.obterTime(dadosJogoSrvMesa11
-				.getTimeVisita());
+	private Object jogoCampeonatoCPUvsCPU(DadosJogoSrvMesa11 dadosJogoSrvMesa11,
+			String criador) {
+		Time timeCasa = controlePersistencia
+				.obterTime(dadosJogoSrvMesa11.getTimeCasa());
+		Time timeVisita = controlePersistencia
+				.obterTime(dadosJogoSrvMesa11.getTimeVisita());
 		int gols = Util.intervalo(0, 5);
 		RodadaCampeonatoMesa11 rodadaCampeonatoMesa11 = null;
 		PartidaMesa11 partidaMesa11 = new PartidaMesa11();
@@ -735,7 +742,8 @@ public class ControleJogosServidor {
 		double fatorCasa = 0;
 		double fatorVisita = 0;
 		List<Botao> botoesCasaList = timeCasa.getBotoes();
-		for (Iterator iterator = botoesCasaList.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = botoesCasaList.iterator(); iterator
+				.hasNext();) {
 			Botao botao = (Botao) iterator.next();
 			fatorCasa += botao.getDefesa() + botao.getPrecisao()
 					+ botao.getForca();
@@ -757,19 +765,18 @@ public class ControleJogosServidor {
 						.setGolsTimeCasa(partidaMesa11.getGolsTimeCasa() + 1);
 			}
 			if (Math.random() < fatorVisita) {
-				partidaMesa11.setGolsTimeVisita(partidaMesa11
-						.getGolsTimeVisita() + 1);
+				partidaMesa11.setGolsTimeVisita(
+						partidaMesa11.getGolsTimeVisita() + 1);
 			}
 		}
 		if (dadosJogoSrvMesa11.getIdRodadaCampeonato() != 0) {
-			rodadaCampeonatoMesa11 = proxyComandos
-					.pesquisarRodadaPorId(dadosJogoSrvMesa11
-							.getIdRodadaCampeonato());
-			partidaMesa11.setCampeonato(rodadaCampeonatoMesa11
-					.getCampeonatoMesa11().getNome());
+			rodadaCampeonatoMesa11 = proxyComandos.pesquisarRodadaPorId(
+					dadosJogoSrvMesa11.getIdRodadaCampeonato());
+			partidaMesa11.setCampeonato(
+					rodadaCampeonatoMesa11.getCampeonatoMesa11().getNome());
 			rodadaCampeonatoMesa11.setGolsCasa(partidaMesa11.getGolsTimeCasa());
-			rodadaCampeonatoMesa11.setGolsVisita(partidaMesa11
-					.getGolsTimeVisita());
+			rodadaCampeonatoMesa11
+					.setGolsVisita(partidaMesa11.getGolsTimeVisita());
 
 			rodadaCampeonatoMesa11.setRodadaEfetuda(true);
 		}
@@ -782,17 +789,16 @@ public class ControleJogosServidor {
 		} finally {
 			HibernateUtil.closeSession();
 		}
-		return new MsgSrv(Lang.msg(
-				"resultadoJogoCampeonato",
-				new String[] { partidaMesa11.getNomeTimeCasa(),
+		return new MsgSrv(Lang.msg("resultadoJogoCampeonato",
+				new String[]{partidaMesa11.getNomeTimeCasa(),
 						"" + partidaMesa11.getGolsTimeCasa(),
 						"" + partidaMesa11.getGolsTimeVisita(),
-						partidaMesa11.getNomeTimeVisita() }));
+						partidaMesa11.getNomeTimeVisita()}));
 	}
 
 	public Object jogadaAssitida(JogadaMesa11 jogadaMesa11) {
-		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(jogadaMesa11
-				.getDadosJogoSrvMesa11().getNomeJogo());
+		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos
+				.get(jogadaMesa11.getDadosJogoSrvMesa11().getNomeJogo());
 		if (jogoSrvMesa11 == null) {
 			return null;
 		}
@@ -800,8 +806,8 @@ public class ControleJogosServidor {
 		if (controleJogo.timeJogadaVez().getNome()
 				.equals(jogadaMesa11.getTimeClienteOnline())
 				&& !controleJogo.isAnimando()) {
-			controleJogo.setBotaoSelecionado(controleJogo.getBotoes().get(
-					jogadaMesa11.getIdBtnJogadaAssitida()));
+			controleJogo.setBotaoSelecionado(controleJogo.getBotoes()
+					.get(jogadaMesa11.getIdBtnJogadaAssitida()));
 			controleJogo.setarBtnAssistido();
 		}
 		return null;

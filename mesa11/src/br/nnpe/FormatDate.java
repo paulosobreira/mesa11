@@ -1,6 +1,5 @@
 package br.nnpe;
 
-
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -363,7 +362,8 @@ public class FormatDate extends Object {
 	 * @throws Exception
 	 * 
 	 */
-	public static java.sql.Timestamp parseTimestamp(Date DATE) throws Exception {
+	public static java.sql.Timestamp parseTimestamp(Date DATE)
+			throws Exception {
 		java.sql.Timestamp date = null;
 		date = parseTimestamp(DATE, Constantes.DATA_FORMATO);
 
@@ -438,7 +438,8 @@ public class FormatDate extends Object {
 	 * Method for getting the number of days between two dates.
 	 */
 	public static int subDate(java.util.Date BEFORE, java.util.Date AFTER) {
-		long dif = (((((AFTER.getTime() - BEFORE.getTime()) / 1000) / 24) / 60) / 60);
+		long dif = (((((AFTER.getTime() - BEFORE.getTime()) / 1000) / 24) / 60)
+				/ 60);
 
 		return (new Long(dif)).intValue();
 	}
@@ -447,7 +448,8 @@ public class FormatDate extends Object {
 	 * Method for getting the number of days between a date and today.
 	 */
 	public static int subDateToday(java.util.Date DATE) {
-		long dif = ((((((new java.util.Date()).getTime() - DATE.getTime()) / 1000) / 24) / 60) / 60);
+		long dif = ((((((new java.util.Date()).getTime() - DATE.getTime())
+				/ 1000) / 24) / 60) / 60);
 
 		return (new Long(dif)).intValue();
 	}
@@ -461,21 +463,6 @@ public class FormatDate extends Object {
 		calendar.add(Calendar.DATE, DAYS);
 
 		return FormatDate.parseDate(calendar.getTime());
-	}
-
-	/**
-	 * * Retorna data resultado da some dos dias com a data passada como
-	 * parâmetro
-	 */
-	public static java.util.Date anoAnterior(java.util.Date DATA) {
-		java.util.Date resultado = null;
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(DATA);
-		int year = calendar.get(Calendar.YEAR);
-		calendar.set(Calendar.YEAR, year - 1);
-		resultado = (java.util.Date) FormatDate.parseDate(calendar.getTime());
-
-		return resultado;
 	}
 
 	/**

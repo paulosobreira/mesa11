@@ -146,8 +146,8 @@ public class GeoUtil {
 		// Logger.logar("Tangete" + tan);
 		// return tan;
 		return tan;
-		// 2 quadrantes, -pi/2 até pi/2
-		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
+		// 2 quadrantes, -pi/2 atÃ© pi/2
+		// return Math.atan2(dy, dx); // 4 quadrantes, -pi atÃ© pi
 	}
 
 	public static double calculaAngulo(Point a, Point b, double fator) {
@@ -158,8 +158,8 @@ public class GeoUtil {
 		// Logger.logar("Tangete" + tan);
 		// return tan;
 		return Math.toDegrees(tan) + fator;
-		// 2 quadrantes, -pi/2 até pi/2
-		// return Math.atan2(dy, dx); // 4 quadrantes, -pi até pi
+		// 2 quadrantes, -pi/2 atÃ© pi/2
+		// return Math.atan2(dy, dx); // 4 quadrantes, -pi atÃ© pi
 	}
 
 	public static List fillCircle(int centerX, int centerY, int raio) {

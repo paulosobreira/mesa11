@@ -36,7 +36,7 @@ public class PassGenerator {
 
 		for (int i = 0; i < 6; i++) {
 
-			// Gerar password somente com números
+			// Gerar password somente com nÃºmeros
 
 			// if ((contL == 1) || ((contU) == 2)) {
 			arrTam = 9;

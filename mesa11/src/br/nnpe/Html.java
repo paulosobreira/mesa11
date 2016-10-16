@@ -26,14 +26,6 @@ public class Html {
 		return ("on".equalsIgnoreCase(value) || "1".equalsIgnoreCase(value));
 	}
 
-	/**
-	 * Este método recebe uma String como parâmetro e retorna uma String com uma
-	 * tag HTML center (centralizando-a).
-	 * 
-	 * @param -
-	 *            str.
-	 * @return - String com código HTML.
-	 */
 	public static String center(String str) {
 		StringBuffer buffer = new StringBuffer();
 
@@ -42,26 +34,10 @@ public class Html {
 		return buffer.toString();
 	}
 
-	/**
-	 * Este método recebe um int como parâmetro e retorna uma String com uma tag
-	 * HTML center (centralizando-a).
-	 * 
-	 * @param -
-	 *            str.
-	 * @return - String com código HTML.
-	 */
 	public static String center(int str) {
 		return center(String.valueOf(str));
 	}
 
-	/**
-	 * Este método recebe uma String como parâmetro e retorna uma String com uma
-	 * tag HTML bold (negrito).
-	 * 
-	 * @param -
-	 *            str.
-	 * @return - String com código HTML.
-	 */
 	public static String bold(String str) {
 		StringBuffer buffer = new StringBuffer();
 
@@ -70,20 +46,11 @@ public class Html {
 		return buffer.toString();
 	}
 
-	/**
-	 * Método que recebe duas Strings por parâmetro e retorna a tag HTML maito.
-	 * 
-	 * @param email -
-	 *            E-mail
-	 * @param nome -
-	 *            Pode ser tanto o próprio e-mail como qualquer outro nome
-	 * @return
-	 */
 	public static String mailto(String email, String nome) {
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("<a href=\"").append(email).append("\"").append(
-				" target=\"_blank\">").append(nome).append("</a>");
+		buffer.append("<a href=\"").append(email).append("\"")
+				.append(" target=\"_blank\">").append(nome).append("</a>");
 
 		return null;
 	}
@@ -91,10 +58,10 @@ public class Html {
 	/**
 	 * Tag HTML font color
 	 * 
-	 * @param cor -
-	 *            cor da fonte
-	 * @param texto -
-	 *            texto para a cor
+	 * @param cor
+	 *            - cor da fonte
+	 * @param texto
+	 *            - texto para a cor
 	 * @return
 	 */
 	public static String fontColor(String cor, String texto) {
@@ -125,8 +92,8 @@ public class Html {
 	/**
 	 * Tag HTML blink
 	 * 
-	 * @param texto -
-	 *            texto dentro da tag blink
+	 * @param texto
+	 *            - texto dentro da tag blink
 	 * @return
 	 */
 	public static String blink(String texto) {
@@ -140,33 +107,21 @@ public class Html {
 	/**
 	 * Tag HTML font size
 	 * 
-	 * @param tamanho -
-	 *            tamanho da fonte
-	 * @param texto -
-	 *            texto ao ser alterado
+	 * @param tamanho
+	 *            - tamanho da fonte
+	 * @param texto
+	 *            - texto ao ser alterado
 	 * @return
 	 */
 	public static String fontSize(int tamanho, String texto) {
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("<font size=\"").append(tamanho).append("\">").append(
-				texto).append("</font>");
+		buffer.append("<font size=\"").append(tamanho).append("\">")
+				.append(texto).append("</font>");
 
 		return buffer.toString();
 	}
 
-	/**
-	 * Gera um componete de seleção unica do tipo combobox
-	 * 
-	 * @param nomeComponente -
-	 *            propriedade name
-	 * @param conteudo -
-	 *            Uma lista contendo arrays de String onde
-	 *            String[]{"Label","valor"};
-	 * @param selected -
-	 *            posição da lista conteudo que vea estar slecionada.
-	 * @return
-	 */
 	public static String comboBox(String nomeComponente, List conteudo,
 			int selected) {
 		return comboBox(nomeComponente, conteudo, selected, true);
@@ -208,8 +163,8 @@ public class Html {
 	public static String superRed(String texto) {
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("<font size='").append(superSize)
-				.append("' color='red'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize).append("' color='red'>")
+				.append(texto).append("</font>");
 
 		return buffer.toString();
 	}
@@ -217,8 +172,8 @@ public class Html {
 	public static String superOrange(String texto) {
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("<font size='").append(superSize).append(
-				"' color='#FF8C00'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='#FF8C00'>").append(texto).append("</font>");
 
 		return buffer.toString();
 
@@ -230,15 +185,15 @@ public class Html {
 
 	public static String superBlack(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font size='").append(superSize).append(
-				"' color='black'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='black'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String superGreen(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font size='").append(superSize).append(
-				"' color='green'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='green'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
@@ -248,8 +203,8 @@ public class Html {
 
 	public static String superDarkRed(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font size='").append(superSize).append(
-				"' color='#8B0000'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='#8B0000'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
@@ -261,23 +216,23 @@ public class Html {
 
 	public static String msgClima(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font size='").append(superSize).append(
-				"' color='#4682B4'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='#4682B4'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String superBlue(String texto) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("<font size='").append(superSize).append(
-				"' color='blue'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='blue'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 
 	public static String saftyCar(String texto) {
 		StringBuffer buffer = new StringBuffer();
 
-		buffer.append("<font size='").append(superSize).append(
-				"' color='#F53D00'>").append(texto).append("</font>");
+		buffer.append("<font size='").append(superSize)
+				.append("' color='#F53D00'>").append(texto).append("</font>");
 		return buffer.toString();
 	}
 }
