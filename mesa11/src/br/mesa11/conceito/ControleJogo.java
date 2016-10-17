@@ -77,7 +77,6 @@ public class ControleJogo {
 	private Map<Long, Botao> botoes = new HashMap<Long, Botao>();
 	private Map botoesImagens = new HashMap();
 	private Map<Long, Thread> botoesComThread = new HashMap<Long, Thread>();
-	private List<Animacao> listaAnimacoes = new LinkedList<Animacao>();
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
@@ -271,10 +270,6 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		bola = new Bola(0);
 		botoes.put(bola.getId(), bola);
-	}
-
-	public List<Animacao> getListaAnimacoes() {
-		return listaAnimacoes;
 	}
 
 	public Map getBotoesImagens() {
@@ -2125,9 +2120,6 @@ public class ControleJogo {
 
 	public boolean efetuaJogada(Point p1, Point p2) {
 		dica = null;
-		if (isJogoOnlineSrvidor()) {
-			mudarDica();
-		}
 		if (bola != null) {
 			posicaoBolaJogada = bola.getCentro();
 		}
@@ -2369,12 +2361,6 @@ public class ControleJogo {
 	}
 
 	public Object obterUltimaJogada() {
-		// int size = listaAnimacoes.size() - 1;
-		// if (size < 0) {
-		// return null;
-		// }
-		// Animacao animacao = listaAnimacoes.get(size);
-		// animacao.setIndex(size);
 		return animacaoCliente;
 	}
 
@@ -2387,49 +2373,13 @@ public class ControleJogo {
 			}
 		}
 		thread.start();
-		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					int cont = 0;
-					while (isAnimando()) {
-						try {
-							Thread.sleep(5);
-							cont++;
-							if (cont > 50000) {
-								Logger.logar(
-										"threadAtualizaBotoesClienteOnline cont  "
-												+ cont);
-								return;
-							}
-						} catch (InterruptedException e) {
-							Logger.logarExept(e);
-						}
-					}
-					if ("gol".equals(dadosJogoSrvMesa11.getDica())
-							|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
-							|| "golContra".equals(dadosJogoSrvMesa11.getDica())
-							|| "meta".equals(dadosJogoSrvMesa11.getDica())
-							|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
-							|| "penalti".equals(dadosJogoSrvMesa11.getDica())
-							|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
-								true);
-					} else {
-						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
-								false);
-					}
-				} finally {
-					esperandoJogadaOnline = false;
-				}
-
-			}
-		});
-		threadAtualizaBotoesClienteOnline.start();
 	}
 
 	public void atualizaBotoesClienteOnline(long timeStampAnimacao,
 			boolean centralizaBola) {
+		if (isAnimando()) {
+			return;
+		}
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
 		mesa11to.setData(
@@ -2483,9 +2433,14 @@ public class ControleJogo {
 		return esperandoJogadaOnline;
 	}
 
+	
+	
+	public void setEsperandoJogadaOnline(boolean esperandoJogadaOnline) {
+		this.esperandoJogadaOnline = esperandoJogadaOnline;
+	}
+
 	public void configuraAnimacaoServidor() {
 		if (isJogoOnlineSrvidor()) {
-			listaAnimacoes.add(animacaoJogada);
 			animacaoCliente = animacaoJogada;
 			animacaoCliente.setTimeStamp(System.currentTimeMillis());
 			try {
@@ -2586,25 +2541,25 @@ public class ControleJogo {
 	}
 
 	public void jogadaCPU() {
-		if (isJogoOnlineSrvidor() && getAnimacaoCliente() != null
-				&& tempoUltimaJogadaSrvCliente < getAnimacaoCliente()
-						.getTimeStamp()) {
-			return;
-		}
-
 		if (isAnimando()) {
+			Logger.logar("jogadaCPU() isAnimando()");
 			return;
 		}
 		Time timeJogadaVez = timeJogadaVez();
 		if (timeJogadaVez == null) {
+			Logger.logar("jogadaCPU() timeJogadaVez == null");
 			return;
 		}
 
 		if (!autoMira && !timeJogadaVez.isControladoCPU()) {
+			Logger.logar(
+					"jogadaCPU() !autoMira && !timeJogadaVez.isControladoCPU()");
 			return;
 		}
 		if (autoMira && !timeJogadaVez.isControladoCPU()
 				&& btnAssistido == null) {
+			Logger.logar(
+					"jogadaCPU() autoMira && !timeJogadaVez.isControladoCPU()&& btnAssistido == null");
 			return;
 		}
 

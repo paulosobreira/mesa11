@@ -70,7 +70,8 @@ public class MesaPanel extends JPanel {
 
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
-	private static boolean debug = false;
+	private static boolean debug = true;
+	private boolean desenhaBkg = false;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -136,7 +137,6 @@ public class MesaPanel extends JPanel {
 	public long lastZoomChange;
 	private int contMostraLag;
 	private Map botoes;
-	private boolean desenhaBkg = true;
 	private Botao botaoInfo;
 
 	public MesaPanel(ControleJogo controleJogo) {

@@ -837,9 +837,13 @@ public class ControlePartida {
 		golJogador.setTempoGol(tempoRestanteJogoFormatado());
 		golJogador.setContra(true);
 		golJogadors.add(golJogador);
+		centralizaGoleiroBaixo();
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
+		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
+				? ConstantesMesa11.CAMPO_CIMA
+				: ConstantesMesa11.CAMPO_BAIXO);
 	}
 
 	public List<GolJogador> getGolJogadors() {
@@ -1008,7 +1012,7 @@ public class ControlePartida {
 	}
 
 	public void verificaFimJogo() {
-		if (!controleJogo.isJogoOnlineSrvidor() && controleJogo.isAnimando()) {
+		if (controleJogo.isAnimando()) {
 			return;
 		}
 		if (System.currentTimeMillis() > fimJogoMilis
