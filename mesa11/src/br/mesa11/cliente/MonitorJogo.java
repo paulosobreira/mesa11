@@ -16,12 +16,9 @@ public class MonitorJogo extends Thread {
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
-	private String timeVez;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
 	private boolean jogoTerminado;
-	private int erroComunic = 0;
-	private Thread threadGol;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -46,9 +43,6 @@ public class MonitorJogo extends Thread {
 				if (controleJogo != null) {
 					atualizaDadosJogoSrvMesa11();
 					jogoTerminado = controleJogo.isJogoTerminado();
-					if (erroComunic > 20) {
-						jogoTerminado = true;
-					}
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
 					}
@@ -95,12 +89,18 @@ public class MonitorJogo extends Thread {
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);
 		if (ret == null) {
-			jogoTerminado = true;
+			Logger.logar(
+					"atualizaDadosJogoSrvMesa11 ConstantesMesa11.OBTER_DADOS_JOGO == null");
 			return;
 		}
 		if (ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
+			if (dadosJogoSrvMesa11 == null) {
+				Logger.logar(
+						"atualizaDadosJogoSrvMesa11 dadosJogoSrvMesa11 == null");
+				return;
+			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			if (dadosJogoSrvMesa11.getGolJogador() != null
 					&& !controleJogo.getGolsTempo()
@@ -109,6 +109,8 @@ public class MonitorJogo extends Thread {
 						.add(dadosJogoSrvMesa11.getGolJogador());
 			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
+			Logger.logar("dadosJogoSrvMesa11.getDica() "
+					+ dadosJogoSrvMesa11.getDica());
 			if ("gol".equals(dadosJogoSrvMesa11.getDica())
 					|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
 					|| "golContra".equals(dadosJogoSrvMesa11.getDica())
@@ -118,16 +120,8 @@ public class MonitorJogo extends Thread {
 					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
 				controleJogo.centralizaBola();
 			}
-			timeVez = dadosJogoSrvMesa11.getTimeVez();
-			if (erroComunic >= 0) {
-				erroComunic--;
-			}
-		} else {
-			erroComunic++;
 		}
-		if (dadosJogoSrvMesa11 == null) {
-			return;
-		}
+
 		dormir(tempoDormir);
 		mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_ULTIMA_JOGADA);
@@ -137,7 +131,7 @@ public class MonitorJogo extends Thread {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
 			while (controleJogo.isAnimando()) {
-				dormir(50);
+				dormir(100);
 			}
 			if (!controleJogo.isAnimando() && animacao != null
 					&& animacao.getTimeStamp() > timeStampAnimacao) {
@@ -145,13 +139,7 @@ public class MonitorJogo extends Thread {
 				controleJogo.executaAnimacao(animacao);
 				controleJogo.zeraBtnAssistido();
 			}
-			if (erroComunic >= 0) {
-				erroComunic--;
-			}
-		} else {
-			erroComunic++;
 		}
-
 	}
 
 	private void iniciaJogo() {

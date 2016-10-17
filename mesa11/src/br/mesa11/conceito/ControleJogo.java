@@ -77,7 +77,6 @@ public class ControleJogo {
 	private Map<Long, Botao> botoes = new HashMap<Long, Botao>();
 	private Map botoesImagens = new HashMap();
 	private Map<Long, Thread> botoesComThread = new HashMap<Long, Thread>();
-	private List<Animacao> listaAnimacoes = new LinkedList<Animacao>();
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
@@ -271,10 +270,6 @@ public class ControleJogo {
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		bola = new Bola(0);
 		botoes.put(bola.getId(), bola);
-	}
-
-	public List<Animacao> getListaAnimacoes() {
-		return listaAnimacoes;
 	}
 
 	public Map getBotoesImagens() {
@@ -2125,9 +2120,6 @@ public class ControleJogo {
 
 	public boolean efetuaJogada(Point p1, Point p2) {
 		dica = null;
-		if (isJogoOnlineSrvidor()) {
-			mudarDica();
-		}
 		if (bola != null) {
 			posicaoBolaJogada = bola.getCentro();
 		}
@@ -2387,45 +2379,6 @@ public class ControleJogo {
 			}
 		}
 		thread.start();
-		Thread threadAtualizaBotoesClienteOnline = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					int cont = 0;
-					while (isAnimando()) {
-						try {
-							Thread.sleep(5);
-							cont++;
-							if (cont > 50000) {
-								Logger.logar(
-										"threadAtualizaBotoesClienteOnline cont  "
-												+ cont);
-								return;
-							}
-						} catch (InterruptedException e) {
-							Logger.logarExept(e);
-						}
-					}
-					if ("gol".equals(dadosJogoSrvMesa11.getDica())
-							|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
-							|| "golContra".equals(dadosJogoSrvMesa11.getDica())
-							|| "meta".equals(dadosJogoSrvMesa11.getDica())
-							|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
-							|| "penalti".equals(dadosJogoSrvMesa11.getDica())
-							|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
-								true);
-					} else {
-						atualizaBotoesClienteOnline(animacao.getTimeStamp(),
-								false);
-					}
-				} finally {
-					esperandoJogadaOnline = false;
-				}
-
-			}
-		});
-		threadAtualizaBotoesClienteOnline.start();
 	}
 
 	public void atualizaBotoesClienteOnline(long timeStampAnimacao,
@@ -2485,7 +2438,6 @@ public class ControleJogo {
 
 	public void configuraAnimacaoServidor() {
 		if (isJogoOnlineSrvidor()) {
-			listaAnimacoes.add(animacaoJogada);
 			animacaoCliente = animacaoJogada;
 			animacaoCliente.setTimeStamp(System.currentTimeMillis());
 			try {
@@ -2586,25 +2538,25 @@ public class ControleJogo {
 	}
 
 	public void jogadaCPU() {
-		if (isJogoOnlineSrvidor() && getAnimacaoCliente() != null
-				&& tempoUltimaJogadaSrvCliente < getAnimacaoCliente()
-						.getTimeStamp()) {
-			return;
-		}
-
 		if (isAnimando()) {
+			Logger.logar("jogadaCPU() isAnimando()");
 			return;
 		}
 		Time timeJogadaVez = timeJogadaVez();
 		if (timeJogadaVez == null) {
+			Logger.logar("jogadaCPU() timeJogadaVez == null");
 			return;
 		}
 
 		if (!autoMira && !timeJogadaVez.isControladoCPU()) {
+			Logger.logar(
+					"jogadaCPU() !autoMira && !timeJogadaVez.isControladoCPU()");
 			return;
 		}
 		if (autoMira && !timeJogadaVez.isControladoCPU()
 				&& btnAssistido == null) {
+			Logger.logar(
+					"jogadaCPU() autoMira && !timeJogadaVez.isControladoCPU()&& btnAssistido == null");
 			return;
 		}
 
@@ -3524,6 +3476,27 @@ public class ControleJogo {
 		synchronized (botoesComThread) {
 			return botoesComThread.get(objetoAnimacao);
 		}
+	}
+
+	public void atualizaBotoesClienteOnline(Animacao animacao) {
+		if (!isJogoOnlineCliente()) {
+			return;
+		}
+		Logger.logar(
+				" atualizaBotoesClienteOnline dadosJogoSrvMesa11.getDica() "
+						+ dadosJogoSrvMesa11.getDica());
+		if ("gol".equals(dadosJogoSrvMesa11.getDica())
+				|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
+				|| "golContra".equals(dadosJogoSrvMesa11.getDica())
+				|| "meta".equals(dadosJogoSrvMesa11.getDica())
+				|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
+				|| "penalti".equals(dadosJogoSrvMesa11.getDica())
+				|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+			atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
+		} else {
+			atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
+		}
+		esperandoJogadaOnline = false;
 	}
 
 }

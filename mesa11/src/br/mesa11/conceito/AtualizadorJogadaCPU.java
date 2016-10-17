@@ -27,18 +27,7 @@ public class AtualizadorJogadaCPU extends Thread {
 		while (!controleJogo.isJogoTerminado()) {
 			try {
 				final Time timeJogadaVez = controleJogo.timeJogadaVez();
-//				if (timeJogadaVez != null && timeJogadaVez.isControladoCPU()
-//						&& (System.currentTimeMillis() - iniJogada) > 10000) {
-//					if ((jogadaCpu != null && jogadaCpu.isAlive())) {
-//						jogadaCpu.interrupt();
-//					}
-//				}
-
-				if (controleJogo.isJogoOnlineSrvidor()) {
-					sleep(1000);
-				} else {
-					sleep(500);
-				}
+				sleep(500);
 				if ((System.currentTimeMillis()
 						- ultJogada) < intervaloEntreJogadas) {
 					continue;

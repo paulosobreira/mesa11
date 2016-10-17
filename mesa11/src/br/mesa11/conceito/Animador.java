@@ -24,6 +24,7 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 			animacao.setExecutou(true);
+			controleJogo.atualizaBotoesClienteOnline(animacao);
 			controleJogo.atualizaBotoesCopia();
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);
@@ -37,12 +38,12 @@ public class Animador implements Runnable {
 	private void animar(Animacao anim) throws InterruptedException {
 		if (anim == null || anim.getObjetoAnimacao() == null)
 			return;
-		// if (!controleJogo.isJogoOnlineCliente() && anim.isExecutou()) {
-		// return;
-		// }
-		if (anim.isExecutou()) {
+		if (!controleJogo.isJogoOnlineCliente() && anim.isExecutou()) {
 			return;
 		}
+		// if (anim.isExecutou()) {
+		// return;
+		// }
 		Botao botao = (Botao) controleJogo.getBotoes()
 				.get(anim.getObjetoAnimacao());
 		List elements = anim.getPontosAnimacao();
@@ -86,33 +87,24 @@ public class Animador implements Runnable {
 					if (porcent - porcentOld > 1 - index) {
 						porcentOld = porcent;
 						controleJogo.centralizaBotao(controleJogo.getBola());
-						if (!controleJogo.isJogoOnlineSrvidor()) {
-							int porcentDiv10 = Util.inte(porcent / 10);
-							int sleep = 5 + porcentDiv10 - porcentOldDiv10;
-							if (sleep > 15) {
-								sleep = 15;
-							}
-							Thread.sleep(sleep);
-							porcentOldDiv10 = porcentDiv10;
-						} else {
-							Thread.sleep(5);
+						int porcentDiv10 = Util.inte(porcent / 10);
+						int sleep = 5 + porcentDiv10 - porcentOldDiv10;
+						if (sleep > 15) {
+							sleep = 15;
 						}
+						Thread.sleep(sleep);
+						porcentOldDiv10 = porcentDiv10;
 					}
-
 				} else {
 					if (porcent - porcentOld > 1 - index) {
 						porcentOld = porcent;
-						if (!controleJogo.isJogoOnlineSrvidor()) {
-							int porcentDiv10 = Util.inte(porcent / 10);
-							int sleep = 7 + porcentDiv10 - porcentOldDiv10;
-							if (sleep > 17) {
-								sleep = 17;
-							}
-							Thread.sleep(sleep);
-							porcentOldDiv10 = porcentDiv10;
-						} else {
-							Thread.sleep(7);
+						int porcentDiv10 = Util.inte(porcent / 10);
+						int sleep = 7 + porcentDiv10 - porcentOldDiv10;
+						if (sleep > 17) {
+							sleep = 17;
 						}
+						Thread.sleep(sleep);
+						porcentOldDiv10 = porcentDiv10;
 					}
 				}
 

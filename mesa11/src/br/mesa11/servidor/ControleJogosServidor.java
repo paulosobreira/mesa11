@@ -231,8 +231,17 @@ public class ControleJogosServidor {
 	}
 
 	public Object obterUltimaJogada(String nomejogo) {
+		if (mapaJogos == null) {
+			return null;
+		}
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
+			return null;
+		}
+		if (jogoSrvMesa11.getControleJogo() == null) {
+			return null;
+		}
+		if (jogoSrvMesa11.getControleJogo().obterUltimaJogada() == null) {
 			return null;
 		}
 		NnpeTO mesa11to = new NnpeTO();
@@ -264,11 +273,11 @@ public class ControleJogosServidor {
 		NnpeTO mesa11to = new NnpeTO();
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
 		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
-		for (Iterator iterator = jogoSrvMesa11.getControleJogo().getBotoes()
-				.keySet().iterator(); iterator.hasNext();) {
+		Map botoesCopia = jogoSrvMesa11.getControleJogo().getBotoesCopia();
+		for (Iterator iterator = botoesCopia.keySet().iterator(); iterator
+				.hasNext();) {
 			Long id = (Long) iterator.next();
-			Botao botao = (Botao) jogoSrvMesa11.getControleJogo().getBotoes()
-					.get(id);
+			Botao botao = (Botao) botoesCopia.get(id);
 			if (!(botao instanceof Goleiro) && pulaPosicaoBotoes) {
 				continue;
 			}
@@ -326,11 +335,11 @@ public class ControleJogosServidor {
 		int sumx = 0;
 		int sumy = 0;
 		int sumAng = 0;
-		for (Iterator iterator = jogoSrvMesa11.getControleJogo().getBotoes()
-				.keySet().iterator(); iterator.hasNext();) {
+		Map botoesCopia = jogoSrvMesa11.getControleJogo().getBotoesCopia();
+		for (Iterator iterator = botoesCopia.keySet().iterator(); iterator
+				.hasNext();) {
 			Long id = (Long) iterator.next();
-			Botao botao = (Botao) jogoSrvMesa11.getControleJogo().getBotoes()
-					.get(id);
+			Botao botao = (Botao) botoesCopia.get(id);
 			sumx += botao.getCentro().x;
 			sumy += botao.getCentro().y;
 			sumAng += botao.getAngulo();
