@@ -4,7 +4,6 @@ import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.conceito.Animacao;
-import br.mesa11.conceito.ControleEvento;
 import br.mesa11.conceito.ControleJogo;
 import br.nnpe.Logger;
 import br.nnpe.Util;

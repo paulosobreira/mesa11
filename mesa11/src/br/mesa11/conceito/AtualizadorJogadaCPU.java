@@ -20,6 +20,7 @@ public class AtualizadorJogadaCPU extends Thread {
 
 	public void run() {
 		try {
+			
 			sleep(2000);
 		} catch (InterruptedException e1) {
 			Logger.logarExept(e1);

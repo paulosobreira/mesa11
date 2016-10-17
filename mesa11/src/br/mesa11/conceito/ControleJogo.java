@@ -29,7 +29,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -3479,6 +3478,27 @@ public class ControleJogo {
 		synchronized (botoesComThread) {
 			return botoesComThread.get(objetoAnimacao);
 		}
+	}
+
+	public void atualizaBotoesClienteOnline(Animacao animacao) {
+		if (!isJogoOnlineCliente()) {
+			return;
+		}
+		Logger.logar(
+				" atualizaBotoesClienteOnline dadosJogoSrvMesa11.getDica() "
+						+ dadosJogoSrvMesa11.getDica());
+		if ("gol".equals(dadosJogoSrvMesa11.getDica())
+				|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
+				|| "golContra".equals(dadosJogoSrvMesa11.getDica())
+				|| "meta".equals(dadosJogoSrvMesa11.getDica())
+				|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
+				|| "penalti".equals(dadosJogoSrvMesa11.getDica())
+				|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+			atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
+		} else {
+			atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
+		}
+		esperandoJogadaOnline = false;
 	}
 
 }
