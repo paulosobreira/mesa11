@@ -36,12 +36,15 @@ public class MonitorJogo extends Thread {
 		boolean interrrupt = false;
 		while (!jogoTerminado && !interrrupt) {
 			try {
-				dormir(tempoDormir);
-				if (timesSelecionados() && controleJogo == null) {
+				if (controleJogo == null && timesSelecionados()) {
 					iniciaJogo();
+				}else{
+					dormir(tempoDormir);
 				}
 				if (controleJogo != null) {
-					atualizaDadosJogoSrvMesa11();
+					obterDadosJogo();
+					dormir(tempoDormir);
+					obterUltimaJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
@@ -82,7 +85,7 @@ public class MonitorJogo extends Thread {
 		sleep(i);
 	}
 
-	private void atualizaDadosJogoSrvMesa11() throws InterruptedException {
+	private void obterDadosJogo() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
@@ -111,33 +114,17 @@ public class MonitorJogo extends Thread {
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
 			Logger.logar("dadosJogoSrvMesa11.getDica() "
 					+ dadosJogoSrvMesa11.getDica());
-			if ("gol".equals(dadosJogoSrvMesa11.getDica())
-					|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
-					|| "lateral".equals(dadosJogoSrvMesa11.getDica())
-					|| "reversao".equals(dadosJogoSrvMesa11.getDica())
-					|| "golContra".equals(dadosJogoSrvMesa11.getDica())
-					|| "meta".equals(dadosJogoSrvMesa11.getDica())
-					|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
-					|| "penalti".equals(dadosJogoSrvMesa11.getDica())
-					|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-				Logger.logar(
-						"atualizaDadosJogoSrvMesa11 controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao, true)");
-				controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao,
-						true);
-			}
 		}
+	}
 
-		dormir(tempoDormir);
-		mesa11to = new NnpeTO();
+	private void obterUltimaJogada() throws InterruptedException {
+		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_ULTIMA_JOGADA);
 		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
-		ret = enviarObjeto(mesa11to);
+		Object ret = enviarObjeto(mesa11to);
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
-			while (controleJogo.isAnimando()) {
-				dormir(100);
-			}
 			if (!controleJogo.isAnimando() && animacao != null
 					&& animacao.getTimeStamp() > timeStampAnimacao) {
 				timeStampAnimacao = animacao.getTimeStamp();
@@ -146,6 +133,8 @@ public class MonitorJogo extends Thread {
 				controleJogo.zeraBtnAssistido();
 			} else {
 				controleJogo.setEsperandoJogadaOnline(false);
+				controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao,
+						true);
 			}
 		}
 	}

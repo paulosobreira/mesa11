@@ -25,7 +25,6 @@ public class Animador implements Runnable {
 		try {
 			animar(animacao);
 			animacao.setExecutou(true);
-			controleJogo.atualizaBotoesClienteOnline(animacao);
 			controleJogo.atualizaBotoesCopia();
 		} catch (InterruptedException e) {
 			Logger.logarExept(e);

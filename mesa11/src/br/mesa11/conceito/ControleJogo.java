@@ -2392,9 +2392,6 @@ public class ControleJogo {
 				List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
 				synchronized (botoes) {
 					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
-						if (isAnimando()) {
-							continue;
-						}
 						Botao botao = (Botao) botoes
 								.get(botaoPosSrvMesa11.getId());
 						botao.setCentroTodos(
@@ -2412,15 +2409,16 @@ public class ControleJogo {
 			Logger.logar("atualizaBotoesClienteOnline -> centralizaBola");
 			centralizaBola();
 		}
+		Logger.logar("atualizaBotoesClienteOnline -> fim");
 	}
 
 	public int getNumeroJogadas() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
 			return dadosJogoSrvMesa11.getNumeroJogadas();
 		}
-		if (isJogoOnlineSrvidor()) {
-			return jogoServidor.getDadosJogoSrvMesa11().getNumeroJogadas();
-		}
+		// if (isJogoOnlineSrvidor()) {
+		// return jogoServidor.getDadosJogoSrvMesa11().getNumeroJogadas();
+		// }
 		return numeroJogadas;
 	}
 
@@ -2432,8 +2430,6 @@ public class ControleJogo {
 		return esperandoJogadaOnline;
 	}
 
-	
-	
 	public void setEsperandoJogadaOnline(boolean esperandoJogadaOnline) {
 		this.esperandoJogadaOnline = esperandoJogadaOnline;
 	}

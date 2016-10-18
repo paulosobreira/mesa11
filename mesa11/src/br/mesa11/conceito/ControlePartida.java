@@ -636,12 +636,8 @@ public class ControlePartida {
 
 	public void zerarTimerJogada() {
 		tempoJogadaAtualMilis = System.currentTimeMillis();
-		if (controleJogo.isJogoOnlineSrvidor()) {
-		} else {
-		}
 		tempoJogadaFimMilis = tempoJogadaAtualMilis
 				+ (tempoJogadaSegundos * 1000);
-		// Logger.logar("zerarTimerJogada");
 	}
 
 	public void verificaIntervalo() {
@@ -739,13 +735,18 @@ public class ControlePartida {
 				controleJogo.posicionaBotaoAleatoriamenteNoSeuCampo(botao);
 			}
 		}
-		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
-				? ConstantesMesa11.CAMPO_CIMA
-				: ConstantesMesa11.CAMPO_BAIXO);
+		campoTimeComBola();
 		Logger.logar("reversaoJogada");
 		zerarJogadas();
 		zerarTimerJogada();
 		controleJogo.centralizaBola();
+	}
+
+	private void campoTimeComBola() {
+		campoTimeComBola = (ConstantesMesa11.CAMPO_BAIXO
+				.equals(campoTimeComBola)
+						? ConstantesMesa11.CAMPO_CIMA
+						: ConstantesMesa11.CAMPO_BAIXO);
 	}
 
 	public void zeraJogadaTime(Time time) {
@@ -812,9 +813,7 @@ public class ControlePartida {
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
-		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
-				? ConstantesMesa11.CAMPO_CIMA
-				: ConstantesMesa11.CAMPO_BAIXO);
+		campoTimeComBola();
 	}
 
 	public void processarGolContra(Botao botao) {
@@ -839,9 +838,7 @@ public class ControlePartida {
 		centralizaGoleiroCima();
 		zerarJogadas();
 		controleJogo.bolaCentro();
-		campoTimeComBola = (campoTimeComBola == ConstantesMesa11.CAMPO_BAIXO
-				? ConstantesMesa11.CAMPO_CIMA
-				: ConstantesMesa11.CAMPO_BAIXO);
+		campoTimeComBola();
 	}
 
 	public List<GolJogador> getGolJogadors() {
