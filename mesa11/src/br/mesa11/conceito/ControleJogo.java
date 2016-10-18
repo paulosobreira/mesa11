@@ -3476,10 +3476,7 @@ public class ControleJogo {
 		}
 	}
 
-	public void atualizaBotoesClienteOnline(Animacao animacao) {
-		if (!isJogoOnlineCliente()) {
-			return;
-		}
+	public void atualizaBotoesClienteOnline(long timestamp) {
 		Logger.logar(
 				" atualizaBotoesClienteOnline dadosJogoSrvMesa11.getDica() "
 						+ dadosJogoSrvMesa11.getDica());
@@ -3490,9 +3487,9 @@ public class ControleJogo {
 				|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
 				|| "penalti".equals(dadosJogoSrvMesa11.getDica())
 				|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
-			atualizaBotoesClienteOnline(animacao.getTimeStamp(), true);
+			atualizaBotoesClienteOnline(timestamp, true);
 		} else {
-			atualizaBotoesClienteOnline(animacao.getTimeStamp(), false);
+			atualizaBotoesClienteOnline(timestamp, false);
 		}
 		esperandoJogadaOnline = false;
 	}

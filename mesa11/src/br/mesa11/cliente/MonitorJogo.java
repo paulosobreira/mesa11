@@ -45,6 +45,9 @@ public class MonitorJogo extends Thread {
 					obterDadosJogo();
 					dormir(tempoDormir);
 					obterUltimaJogada();
+					dormir(tempoDormir);
+					atualizaBotoesClienteOnline();
+
 					jogoTerminado = controleJogo.isJogoTerminado();
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
@@ -79,6 +82,10 @@ public class MonitorJogo extends Thread {
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();
+	}
+
+	private void atualizaBotoesClienteOnline() {
+		controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao);
 	}
 
 	private void dormir(long i) throws InterruptedException {
@@ -133,8 +140,6 @@ public class MonitorJogo extends Thread {
 				controleJogo.zeraBtnAssistido();
 			} else {
 				controleJogo.setEsperandoJogadaOnline(false);
-				controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao,
-						true);
 			}
 		}
 	}
