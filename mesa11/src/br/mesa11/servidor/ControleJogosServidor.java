@@ -248,7 +248,6 @@ public class ControleJogosServidor {
 		NnpeTO mesa11to = new NnpeTO();
 		Animacao animacao = (Animacao) jogoSrvMesa11.getControleJogo()
 				.obterUltimaJogada();
-		animacao.setExecutou(false);
 		mesa11to.setData(animacao);
 		return mesa11to;
 	}

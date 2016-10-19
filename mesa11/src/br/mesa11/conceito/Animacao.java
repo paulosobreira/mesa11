@@ -60,4 +60,26 @@ public class Animacao implements Serializable {
 		this.executou = executou;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (timeStamp ^ (timeStamp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Animacao other = (Animacao) obj;
+		if (timeStamp != other.timeStamp)
+			return false;
+		return true;
+	}
+
 }

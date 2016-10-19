@@ -318,8 +318,8 @@ public class MesaPanel extends JPanel {
 		if (botoes == null || controleJogo.isAnimando() || botoes.isEmpty()) {
 			botoes = controleJogo.getBotoesCopia();
 		}
-		if(controleJogo.isJogoOnlineCliente()){
-			desenhaBkg=false;
+		if (controleJogo.isJogoOnlineCliente()) {
+			desenhaBkg = false;
 			controleJogo.atualizaBotoesCopia();
 			botoes = controleJogo.getBotoesCopia();
 		}
@@ -338,7 +338,7 @@ public class MesaPanel extends JPanel {
 		desenhaGolsJogo(g2d);
 		desenhaProblemaRede(g2d);
 		desenhaLag(g2d);
-		desenhaDebug(g2d);
+		desenhaDebugJogadaCpu(g2d);
 		Toolkit.getDefaultToolkit().sync();
 	}
 
@@ -355,29 +355,27 @@ public class MesaPanel extends JPanel {
 		}
 	}
 
-	private void desenhaDebug(Graphics2D g2d) {
+	private void desenhaDebugJogadaCpu(Graphics2D g2d) {
 		if (!controleJogo.isJogoIniciado()) {
 			return;
 		}
 		if (debug) {
 			if (controleJogo.ptDstBola != null
-					&& controleJogo.getBola() != null) {
+					&& controleJogo.timeJogadaVez() != null
+					&& controleJogo.getBola() != null
+					&& controleJogo.timeJogadaVez().isControladoCPU()) {
 				g2d.setColor(vermelho);
-				if (controleJogo.ptDstBola != null)
-					g2d.fillOval(
-							Util.inte((controleJogo.ptDstBola.x
-									- controleJogo.getBola().getRaio()) * zoom),
-							Util.inte((controleJogo.ptDstBola.y
-									- controleJogo.getBola().getRaio()) * zoom),
-							5, 5);
-				if (controleJogo.golJogadaCpu != null)
-					g2d.drawLine(
-							Util.inte(controleJogo.getBola().getCentro().x
-									* zoom),
-							Util.inte(controleJogo.getBola().getCentro().y
-									* zoom),
-							Util.inte(controleJogo.golJogadaCpu.x * zoom),
-							Util.inte(controleJogo.golJogadaCpu.y * zoom));
+				g2d.fillOval(
+						Util.inte((controleJogo.ptDstBola.x
+								- controleJogo.getBola().getRaio()) * zoom),
+						Util.inte((controleJogo.ptDstBola.y
+								- controleJogo.getBola().getRaio()) * zoom),
+						5, 5);
+				g2d.drawLine(
+						Util.inte(controleJogo.getBola().getCentro().x * zoom),
+						Util.inte(controleJogo.getBola().getCentro().y * zoom),
+						Util.inte(controleJogo.golJogadaCpu.x * zoom),
+						Util.inte(controleJogo.golJogadaCpu.y * zoom));
 			}
 			g2d.draw(controleJogo.miniViewPort());
 		}

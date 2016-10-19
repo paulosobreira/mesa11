@@ -1,6 +1,5 @@
 package br.mesa11.conceito;
 
-
 import java.awt.Point;
 import java.util.List;
 
@@ -92,7 +91,9 @@ public class Animador implements Runnable {
 						if (sleep > 15) {
 							sleep = 15;
 						}
-						Thread.sleep(sleep);
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							Thread.sleep(sleep);
+						}
 						porcentOldDiv10 = porcentDiv10;
 					}
 				} else {
@@ -103,7 +104,9 @@ public class Animador implements Runnable {
 						if (sleep > 17) {
 							sleep = 17;
 						}
-						Thread.sleep(sleep);
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							Thread.sleep(sleep);
+						}
 						porcentOldDiv10 = porcentDiv10;
 					}
 				}

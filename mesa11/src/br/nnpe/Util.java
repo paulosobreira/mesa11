@@ -377,4 +377,13 @@ public class Util {
 		Color color = Color.getHSBColor(hue, saturation, luminance);
 		return color.getRGB();
 	}
+
+	public static void dormir(int ms) {
+		try {
+			Thread.sleep(ms);
+		} catch (InterruptedException e) {
+			Logger.logarExept(e);
+		}
+
+	}
 }

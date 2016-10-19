@@ -893,8 +893,8 @@ public class ControleJogo {
 						Util.intervalo(
 								mesaPanel.getGrandeAreaCima().x + (mesaPanel
 										.getGrandeAreaCima().getWidth() / 2),
-						mesaPanel.getGrandeAreaCima().x
-								+ mesaPanel.getGrandeAreaCima().getWidth()),
+								mesaPanel.getGrandeAreaCima().x + mesaPanel
+										.getGrandeAreaCima().getWidth()),
 						Util.intervalo(mesaPanel.getGrandeAreaCima().y,
 								mesaPanel.getGrandeAreaCima().y + mesaPanel
 										.getGrandeAreaCima().getHeight()));
@@ -964,8 +964,8 @@ public class ControleJogo {
 						Util.intervalo(
 								mesaPanel.getGrandeAreaBaixo().x + (mesaPanel
 										.getGrandeAreaBaixo().getWidth() / 2),
-						mesaPanel.getGrandeAreaBaixo().x
-								+ mesaPanel.getGrandeAreaBaixo().getWidth()),
+								mesaPanel.getGrandeAreaBaixo().x + mesaPanel
+										.getGrandeAreaBaixo().getWidth()),
 						Util.intervalo(mesaPanel.getGrandeAreaBaixo().y,
 								mesaPanel.getGrandeAreaBaixo().y + mesaPanel
 										.getGrandeAreaBaixo().getHeight()));
@@ -2376,9 +2376,6 @@ public class ControleJogo {
 
 	public void atualizaBotoesClienteOnline(long timeStampAnimacao,
 			boolean centralizaBola) {
-		if (isAnimando()) {
-			return;
-		}
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
 		mesa11to.setData(
@@ -2390,16 +2387,12 @@ public class ControleJogo {
 					.getData();
 			if (posicaoBtnsSrvMesa11 != null) {
 				List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
-				synchronized (botoes) {
-					for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
-						Botao botao = (Botao) botoes
-								.get(botaoPosSrvMesa11.getId());
-						botao.setCentroTodos(
-								new Point(botaoPosSrvMesa11.getPos()));
-						if (botao instanceof Goleiro) {
-							Goleiro goleiro = (Goleiro) botao;
-							goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
-						}
+				for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
+					Botao botao = (Botao) botoes.get(botaoPosSrvMesa11.getId());
+					botao.setCentroTodos(new Point(botaoPosSrvMesa11.getPos()));
+					if (botao instanceof Goleiro) {
+						Goleiro goleiro = (Goleiro) botao;
+						goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
 					}
 				}
 			}
@@ -2953,8 +2946,9 @@ public class ControleJogo {
 						Util.intervalo(mesaPanel.getCampoCima().x,
 								mesaPanel.getCampoCima().x
 										+ mesaPanel.getCampoCima().width),
-						Util.intervalo(mesaPanel.getCampoCima().y
-								+ mesaPanel.getCampoCima().height / 2,
+						Util.intervalo(
+								mesaPanel.getCampoCima().y
+										+ mesaPanel.getCampoCima().height / 2,
 								mesaPanel.getCampoCima().y
 										+ mesaPanel.getCampoCima().height));
 			}
@@ -3476,17 +3470,11 @@ public class ControleJogo {
 		}
 	}
 
-	public void atualizaBotoesClienteOnline(long timestamp) {
-		Logger.logar(
-				" atualizaBotoesClienteOnline dadosJogoSrvMesa11.getDica() "
-						+ dadosJogoSrvMesa11.getDica());
-		if ("gol".equals(dadosJogoSrvMesa11.getDica())
-				|| "intervalo".equals(dadosJogoSrvMesa11.getDica())
-				|| "golContra".equals(dadosJogoSrvMesa11.getDica())
-				|| "meta".equals(dadosJogoSrvMesa11.getDica())
-				|| "escanteio".equals(dadosJogoSrvMesa11.getDica())
-				|| "penalti".equals(dadosJogoSrvMesa11.getDica())
-				|| "falta".equals(dadosJogoSrvMesa11.getDica())) {
+	public void atualizaBotoesClienteOnline(long timestamp, String dica) {
+		if ("gol".equals(dica) || "intervalo".equals(dica)
+				|| "golContra".equals(dica) || "meta".equals(dica)
+				|| "escanteio".equals(dica) || "penalti".equals(dica)
+				|| "falta".equals(dica)) {
 			atualizaBotoesClienteOnline(timestamp, true);
 		} else {
 			atualizaBotoesClienteOnline(timestamp, false);

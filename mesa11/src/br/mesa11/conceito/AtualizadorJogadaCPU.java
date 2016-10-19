@@ -26,83 +26,71 @@ public class AtualizadorJogadaCPU extends Thread {
 			Logger.logarExept(e1);
 		}
 		while (!controleJogo.isJogoTerminado()) {
-			try {
-				final Time timeJogadaVez = controleJogo.timeJogadaVez();
-				if ((System.currentTimeMillis()
-						- ultJogada) < intervaloEntreJogadas) {
+			final Time timeJogadaVez = controleJogo.timeJogadaVez();
+			if ((System.currentTimeMillis()
+					- ultJogada) < intervaloEntreJogadas) {
+				Util.dormir(1000);
+				continue;
+			}
+			if (controleJogo.isAnimando()) {
+				Util.dormir(1000);
+				continue;
+			}
+			if (controleJogo.isProcessando()) {
+				Util.dormir(1000);
+				continue;
+			}
+			if (timeJogadaVez != null && (controleJogo.isAssistido()
+					|| timeJogadaVez.isControladoCPU())) {
+				controleJogo.setProcessando(true);
+				ultJogada = System.currentTimeMillis();
+				if (jogadaCpuAtivo) {
+					Util.dormir(1000);
 					continue;
-				}
-				if (controleJogo.isAnimando()) {
-					sleep(1000);
-					continue;
-				}
-				if (controleJogo.isProcessando()) {
-					sleep(1000);
-					continue;
-				}
-				if (timeJogadaVez != null && (controleJogo.isAssistido()
-						|| timeJogadaVez.isControladoCPU())) {
-					controleJogo.setProcessando(true);
-					ultJogada = System.currentTimeMillis();
-					if (jogadaCpuAtivo) {
-						sleep(1000);
-						continue;
-					} else {
-						jogadaCpu = new Thread(new Runnable() {
-							@Override
-							public void run() {
-								jogadaCpuAtivo = true;
-								while (controleJogo.isAnimando()
-										|| controleJogo.isProcessando()) {
-									try {
-										if (controleJogo
-												.isJogoOnlineSrvidor()) {
-											sleep(2000);
-											Logger.logar(
-													"isAnimando Jogada CPU  sleep(2000);");
-										} else {
-											sleep(1000);
-											Logger.logar(
-													"isAnimando Jogada CPU  sleep(1000);");
-										}
-									} catch (InterruptedException e) {
-										Logger.logarExept(e);
-										jogadaCpuAtivo = false;
-									}
-								}
-								iniJogada = System.currentTimeMillis();
-								Logger.logar("Inicia Jogada CPU "
-										+ timeJogadaVez.getNome());
-								controleJogo.jogadaCPU();
-								Logger.logar("Tempo Jogada Cpu "
-										+ (System.currentTimeMillis()
-												- iniJogada));
-								String tempo = controleJogo
-										.tempoJogadaRestanteJogoFormatado();
-								try {
-									Integer t = new Integer(tempo);
-									if (t > 5) {
-										sleep(2000);
-										Logger.logar(
-												"isAnimando Jogada CPU  t > 5 sleep(2000);");
-									}
-								} catch (Exception e) {
-									Logger.logarExept(e);
-								}
-								controleJogo.zeraBtnAssistido();
-								controleJogo.setProcessando(false);
-								jogadaCpuAtivo = false;
-							}
-						});
-						jogadaCpu.setPriority(MIN_PRIORITY);
-						jogadaCpu.start();
+				} else {
+					try {
+						jogadaCPU(timeJogadaVez);
+					} finally {
+						controleJogo.setProcessando(false);
+						jogadaCpuAtivo = false;
 					}
 				}
-				controleJogo.setProcessando(false);
-			} catch (Exception e) {
-				Logger.logarExept(e);
 			}
+			controleJogo.setProcessando(false);
 
 		}
+	}
+
+	private void jogadaCPU(final Time timeJogadaVez) {
+		jogadaCpu = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				if (controleJogo.isJogoOnlineSrvidor()) {
+					Logger.logar("Dormindo Jogada CPU ");
+					Util.dormir(10000);
+				}
+				jogadaCpuAtivo = true;
+				while (controleJogo.isAnimando()
+						|| controleJogo.isProcessando()) {
+					Util.dormir(1000);
+				}
+				iniJogada = System.currentTimeMillis();
+				Logger.logar("Inicia Jogada CPU " + timeJogadaVez.getNome());
+				controleJogo.jogadaCPU();
+				Logger.logar("Tempo Jogada Cpu "
+						+ (System.currentTimeMillis() - iniJogada));
+				String tempo = controleJogo.tempoJogadaRestanteJogoFormatado();
+				Integer t = new Integer(tempo);
+				if (t > 5) {
+					Util.dormir(2000);
+					Logger.logar("isAnimando Jogada CPU  t > 5 sleep(2000);");
+				}
+				controleJogo.zeraBtnAssistido();
+				controleJogo.setProcessando(false);
+				jogadaCpuAtivo = false;
+			}
+		});
+		jogadaCpu.setPriority(MIN_PRIORITY);
+		jogadaCpu.start();
 	}
 }

@@ -1,5 +1,7 @@
 package br.mesa11.cliente;
 
+import java.util.Vector;
+
 import br.applet.Mesa11Applet;
 import br.hibernate.Time;
 import br.mesa11.ConstantesMesa11;
@@ -19,6 +21,9 @@ public class MonitorJogo extends Thread {
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
 	private boolean jogoTerminado;
+	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
+	private Vector<String> bufferDica = new Vector<String>();
+	private long ultimaAtualizaBotoesClienteOnline;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -38,16 +43,15 @@ public class MonitorJogo extends Thread {
 			try {
 				if (controleJogo == null && timesSelecionados()) {
 					iniciaJogo();
-				}else{
+				} else {
 					dormir(tempoDormir);
 				}
 				if (controleJogo != null) {
 					obterDadosJogo();
 					dormir(tempoDormir);
-					obterUltimaJogada();
-					dormir(tempoDormir);
 					atualizaBotoesClienteOnline();
-
+					dormir(tempoDormir);
+					obterUltimaJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
@@ -85,7 +89,27 @@ public class MonitorJogo extends Thread {
 	}
 
 	private void atualizaBotoesClienteOnline() {
-		controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao);
+		if (controleJogo.getDica() != null
+				&& !Util.isNullOrEmpty(controleJogo.getDica())
+				&& !controleJogo.getDica().startsWith("dica")
+				&& !bufferDica.contains(controleJogo.getDica())) {
+			Logger.logar(
+					"atualizaBotoesClienteOnline bufferDica.add(controleJogo.getDica());");
+			bufferDica.add(controleJogo.getDica());
+		}
+		if (controleJogo.isAnimando()) {
+			Logger.logar(
+					"atualizaBotoesClienteOnline controleJogo.isAnimando()");
+			return;
+		}
+		if (!bufferDica.isEmpty() && System.currentTimeMillis()
+				- ultimaAtualizaBotoesClienteOnline > 5000) {
+			String dica = bufferDica.remove(0);
+			Logger.logar("atualizaBotoesClienteOnline bufferDica.remove(0); "
+					+ dica);
+			controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao, dica);
+			ultimaAtualizaBotoesClienteOnline = System.currentTimeMillis();
+		}
 	}
 
 	private void dormir(long i) throws InterruptedException {
@@ -119,8 +143,6 @@ public class MonitorJogo extends Thread {
 						.add(dadosJogoSrvMesa11.getGolJogador());
 			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
-			Logger.logar("dadosJogoSrvMesa11.getDica() "
-					+ dadosJogoSrvMesa11.getDica());
 		}
 	}
 
@@ -132,10 +154,17 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
-			if (!controleJogo.isAnimando() && animacao != null
-					&& animacao.getTimeStamp() > timeStampAnimacao) {
-				timeStampAnimacao = animacao.getTimeStamp();
-				controleJogo.executaAnimacao(animacao);
+			if (!bufferAnimacao.contains(animacao)) {
+				bufferAnimacao.addElement(animacao);
+			}
+			Animacao animacaoVez = null;
+			if (!bufferAnimacao.isEmpty()) {
+				animacaoVez = bufferAnimacao.remove(bufferAnimacao.size() - 1);
+			}
+			if (!controleJogo.isAnimando() && animacaoVez != null
+					&& animacaoVez.getTimeStamp() > timeStampAnimacao) {
+				timeStampAnimacao = animacaoVez.getTimeStamp();
+				controleJogo.executaAnimacao(animacaoVez);
 				controleJogo.setPontoClicado(null);
 				controleJogo.zeraBtnAssistido();
 			} else {
@@ -168,7 +197,7 @@ public class MonitorJogo extends Thread {
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
 		controleJogo.setZoom(0.4);
-		tempoDormir = 500;
+		tempoDormir = 250;
 	}
 
 	private boolean timesSelecionados() {
