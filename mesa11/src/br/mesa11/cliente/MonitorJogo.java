@@ -103,7 +103,7 @@ public class MonitorJogo extends Thread {
 			return;
 		}
 		if (!bufferDica.isEmpty() && System.currentTimeMillis()
-				- ultimaAtualizaBotoesClienteOnline > 5000) {
+				- ultimaAtualizaBotoesClienteOnline > 2000) {
 			String dica = bufferDica.remove(0);
 			Logger.logar("atualizaBotoesClienteOnline bufferDica.remove(0); "
 					+ dica);

@@ -100,11 +100,10 @@ public class ControleJogo {
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
-	private long stampUltimaJogadaOnline;
+	private long timeStampUltimaJogadaOnline;
 	private String dica;
 	private boolean jogoTerminado;
 	private long tempoTerminado;
-	private long tempoUltimaJogadaSrvCliente;
 	private boolean jogoIniciado;
 	private long tempoIniciado;
 	private String nomeJogadorOnline;
@@ -893,8 +892,8 @@ public class ControleJogo {
 						Util.intervalo(
 								mesaPanel.getGrandeAreaCima().x + (mesaPanel
 										.getGrandeAreaCima().getWidth() / 2),
-								mesaPanel.getGrandeAreaCima().x + mesaPanel
-										.getGrandeAreaCima().getWidth()),
+						mesaPanel.getGrandeAreaCima().x
+								+ mesaPanel.getGrandeAreaCima().getWidth()),
 						Util.intervalo(mesaPanel.getGrandeAreaCima().y,
 								mesaPanel.getGrandeAreaCima().y + mesaPanel
 										.getGrandeAreaCima().getHeight()));
@@ -964,8 +963,8 @@ public class ControleJogo {
 						Util.intervalo(
 								mesaPanel.getGrandeAreaBaixo().x + (mesaPanel
 										.getGrandeAreaBaixo().getWidth() / 2),
-								mesaPanel.getGrandeAreaBaixo().x + mesaPanel
-										.getGrandeAreaBaixo().getWidth()),
+						mesaPanel.getGrandeAreaBaixo().x
+								+ mesaPanel.getGrandeAreaBaixo().getWidth()),
 						Util.intervalo(mesaPanel.getGrandeAreaBaixo().y,
 								mesaPanel.getGrandeAreaBaixo().y + mesaPanel
 										.getGrandeAreaBaixo().getHeight()));
@@ -2123,7 +2122,6 @@ public class ControleJogo {
 			posicaoBolaJogada = bola.getCentro();
 		}
 		Evento evento = new Evento();
-		animacaoCliente = null;
 		animacaoJogada = null;
 		double distaciaEntrePontos = GeoUtil.distaciaEntrePontos(p1, p2);
 
@@ -2337,7 +2335,7 @@ public class ControleJogo {
 		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
 				|| jogadaMesa11.getPontoSolto() == null
-				|| (stampUltimaJogadaOnline + 500) > System
+				|| (timeStampUltimaJogadaOnline + 500) > System
 						.currentTimeMillis()) {
 			setDica(ConstantesMesa11.JOGADA_INVALIDA);
 			setPontoClicado(null);
@@ -2348,7 +2346,7 @@ public class ControleJogo {
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
 		esperandoJogadaOnline = true;
-		stampUltimaJogadaOnline = System.currentTimeMillis();
+		timeStampUltimaJogadaOnline = System.currentTimeMillis();
 		Object ret = enviarObjeto(mesa11to);
 		Logger.logar("JOGADA ret" + ret);
 		if (!ConstantesMesa11.OK.equals(ret)) {
@@ -2381,22 +2379,24 @@ public class ControleJogo {
 		mesa11to.setData(
 				dadosJogoSrvMesa11.getNomeJogo() + "-" + timeStampAnimacao);
 		Object ret = enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof NnpeTO) {
-			mesa11to = (NnpeTO) ret;
-			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
-					.getData();
-			if (posicaoBtnsSrvMesa11 != null) {
-				List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
-				for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
-					Botao botao = (Botao) botoes.get(botaoPosSrvMesa11.getId());
-					botao.setCentroTodos(new Point(botaoPosSrvMesa11.getPos()));
-					if (botao instanceof Goleiro) {
-						Goleiro goleiro = (Goleiro) botao;
-						goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
-					}
+		if (ret == null || !(ret instanceof NnpeTO)) {
+			return;
+		}
+		mesa11to = (NnpeTO) ret;
+		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
+				.getData();
+		if (posicaoBtnsSrvMesa11 != null) {
+			List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
+			for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
+				Botao botao = (Botao) botoes.get(botaoPosSrvMesa11.getId());
+				botao.setCentroTodos(new Point(botaoPosSrvMesa11.getPos()));
+				if (botao instanceof Goleiro) {
+					Goleiro goleiro = (Goleiro) botao;
+					goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
 				}
 			}
 		}
+
 		esperandoJogadaOnline = false;
 		if (centralizaBola) {
 			Logger.logar("atualizaBotoesClienteOnline -> centralizaBola");
@@ -2946,9 +2946,8 @@ public class ControleJogo {
 						Util.intervalo(mesaPanel.getCampoCima().x,
 								mesaPanel.getCampoCima().x
 										+ mesaPanel.getCampoCima().width),
-						Util.intervalo(
-								mesaPanel.getCampoCima().y
-										+ mesaPanel.getCampoCima().height / 2,
+						Util.intervalo(mesaPanel.getCampoCima().y
+								+ mesaPanel.getCampoCima().height / 2,
 								mesaPanel.getCampoCima().y
 										+ mesaPanel.getCampoCima().height));
 			}
@@ -3261,15 +3260,6 @@ public class ControleJogo {
 		this.codeBase = codeBase;
 	}
 
-	public long getTempoUltimaJogadaSrvCliente() {
-		return tempoUltimaJogadaSrvCliente;
-	}
-
-	public void setTempoUltimaJogadaSrvCliente(
-			long tempoUltimaJogadaSrvCliente) {
-		this.tempoUltimaJogadaSrvCliente = tempoUltimaJogadaSrvCliente;
-	}
-
 	public Botao obterBotao(Point p) {
 		if (p == null) {
 			return null;
@@ -3407,7 +3397,7 @@ public class ControleJogo {
 			mesa11to.setData(jogadaMesa11);
 			mesa11to.setComando(ConstantesMesa11.JOGADA_ASSITIDA);
 			esperandoJogadaOnline = true;
-			stampUltimaJogadaOnline = System.currentTimeMillis();
+			timeStampUltimaJogadaOnline = System.currentTimeMillis();
 			Object ret = enviarObjeto(mesa11to);
 		}
 		Logger.logar("setarBtnAssistido() " + botaoSelecionado);

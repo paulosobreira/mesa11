@@ -71,7 +71,7 @@ public class MesaPanel extends JPanel {
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
 	private static boolean debug = true;
-	private boolean desenhaBkg = false;
+	private boolean desenhaBkg = true;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -356,13 +356,14 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaDebugJogadaCpu(Graphics2D g2d) {
-		if (!controleJogo.isJogoIniciado()) {
+		if (controleJogo == null || !controleJogo.isJogoIniciado()) {
 			return;
 		}
 		if (debug) {
 			if (controleJogo.ptDstBola != null
 					&& controleJogo.timeJogadaVez() != null
 					&& controleJogo.getBola() != null
+					&& controleJogo.golJogadaCpu != null
 					&& controleJogo.timeJogadaVez().isControladoCPU()) {
 				g2d.setColor(vermelho);
 				g2d.fillOval(
@@ -377,7 +378,10 @@ public class MesaPanel extends JPanel {
 						Util.inte(controleJogo.golJogadaCpu.x * zoom),
 						Util.inte(controleJogo.golJogadaCpu.y * zoom));
 			}
-			g2d.draw(controleJogo.miniViewPort());
+			Shape miniViewPort = controleJogo.miniViewPort();
+			if (miniViewPort != null) {
+				g2d.draw(miniViewPort);
+			}
 		}
 
 	}

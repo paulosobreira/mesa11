@@ -1,6 +1,5 @@
 package br.mesa11.servidor;
 
-
 import java.io.File;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -261,14 +260,11 @@ public class ControleJogosServidor {
 			return null;
 		}
 		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
-		jogoSrvMesa11.getControleJogo()
-				.setTempoUltimaJogadaSrvCliente(tempoUltimaJogada);
 		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
 				.getAnimacaoCliente();
-		boolean pulaPosicaoBotoes = false;
-		if (animacaoCliente != null
-				&& tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
-			pulaPosicaoBotoes = true;
+		if (animacaoCliente == null
+				|| tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
+			return null;
 		}
 		NnpeTO mesa11to = new NnpeTO();
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
@@ -278,9 +274,6 @@ public class ControleJogosServidor {
 				.hasNext();) {
 			Long id = (Long) iterator.next();
 			Botao botao = (Botao) botoesCopia.get(id);
-			if (!(botao instanceof Goleiro) && pulaPosicaoBotoes) {
-				continue;
-			}
 			BotaoPosSrvMesa11 botaoPosSrvMesa11 = new BotaoPosSrvMesa11();
 			botaoPosSrvMesa11.setId(id);
 			botaoPosSrvMesa11.setPos(botao.getCentro());

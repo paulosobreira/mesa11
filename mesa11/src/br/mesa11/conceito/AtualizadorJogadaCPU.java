@@ -16,6 +16,9 @@ public class AtualizadorJogadaCPU extends Thread {
 		super();
 		this.controleJogo = controleJogo;
 		intervaloEntreJogadas = Util.intervalo(3000, 5000);
+		if (controleJogo.isJogoOnlineSrvidor()) {
+			intervaloEntreJogadas = Util.intervalo(10000, 15000);
+		}
 		setPriority(Thread.MIN_PRIORITY);
 	}
 
@@ -43,13 +46,13 @@ public class AtualizadorJogadaCPU extends Thread {
 			if (timeJogadaVez != null && (controleJogo.isAssistido()
 					|| timeJogadaVez.isControladoCPU())) {
 				controleJogo.setProcessando(true);
-				ultJogada = System.currentTimeMillis();
 				if (jogadaCpuAtivo) {
 					Util.dormir(1000);
 					continue;
 				} else {
 					try {
 						jogadaCPU(timeJogadaVez);
+						ultJogada = System.currentTimeMillis();
 					} finally {
 						controleJogo.setProcessando(false);
 						jogadaCpuAtivo = false;
@@ -65,15 +68,11 @@ public class AtualizadorJogadaCPU extends Thread {
 		jogadaCpu = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				if (controleJogo.isJogoOnlineSrvidor()) {
-					Logger.logar("Dormindo Jogada CPU ");
-					Util.dormir(10000);
-				}
-				jogadaCpuAtivo = true;
 				while (controleJogo.isAnimando()
 						|| controleJogo.isProcessando()) {
 					Util.dormir(1000);
 				}
+				jogadaCpuAtivo = true;
 				iniJogada = System.currentTimeMillis();
 				Logger.logar("Inicia Jogada CPU " + timeJogadaVez.getNome());
 				controleJogo.jogadaCPU();
