@@ -20,6 +20,7 @@ public class MonitorJogo extends Thread {
 	private String timeClienteOnline;
 	private long tempoDormir = 1000;
 	private long timeStampAnimacao;
+	private Integer indexProxJogada;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
 	private Vector<String> bufferDica = new Vector<String>();
@@ -149,11 +150,13 @@ public class MonitorJogo extends Thread {
 	private void obterUltimaJogada() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_ULTIMA_JOGADA);
-		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setData(
+				dadosJogoSrvMesa11.getNomeJogo() + "-" + indexProxJogada);
 		Object ret = enviarObjeto(mesa11to);
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
+			indexProxJogada = animacao.getIndex() + 1;
 			if (!bufferAnimacao.contains(animacao)) {
 				bufferAnimacao.addElement(animacao);
 			}

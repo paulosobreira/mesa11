@@ -230,9 +230,17 @@ public class ControleJogosServidor {
 		return null;
 	}
 
-	public Object obterUltimaJogada(String nomejogo) {
+	public Object obterUltimaJogada(String data) {
 		if (mapaJogos == null) {
 			return null;
+		}
+
+		String nomejogo = data.split("-")[0];
+		String indexUltimaJogadaStr = data.split("-")[1];
+		Integer indexUltimaJogada = 0;
+		if (indexUltimaJogadaStr != null
+				&& !"null".equals(indexUltimaJogadaStr)) {
+			indexUltimaJogada = new Integer(indexUltimaJogadaStr);
 		}
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
@@ -241,12 +249,25 @@ public class ControleJogosServidor {
 		if (jogoSrvMesa11.getControleJogo() == null) {
 			return null;
 		}
-		if (jogoSrvMesa11.getControleJogo().obterUltimaJogada() == null) {
+		if (jogoSrvMesa11.getControleJogo().getAnimacoesCliente() == null) {
 			return null;
 		}
+		if (jogoSrvMesa11.getControleJogo().getAnimacoesCliente().isEmpty()) {
+			return null;
+		}
+
 		NnpeTO mesa11to = new NnpeTO();
-		Animacao animacao = (Animacao) jogoSrvMesa11.getControleJogo()
-				.obterUltimaJogada();
+		Animacao animacao = null;
+		Integer size = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
+				.size() - 1;
+
+		if (indexUltimaJogada <= size) {
+			size = indexUltimaJogada;
+
+		}
+		animacao = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
+				.get(size);
+		animacao.setIndex(size);
 		mesa11to.setData(animacao);
 		return mesa11to;
 	}
@@ -260,8 +281,12 @@ public class ControleJogosServidor {
 			return null;
 		}
 		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
-		Animacao animacaoCliente = jogoSrvMesa11.getControleJogo()
-				.getAnimacaoCliente();
+		Animacao animacaoCliente = null;
+		if (!jogoSrvMesa11.getControleJogo().getAnimacoesCliente().isEmpty()) {
+			animacaoCliente = jogoSrvMesa11.getControleJogo()
+					.getAnimacoesCliente().get(jogoSrvMesa11.getControleJogo()
+							.getAnimacoesCliente().size() - 1);
+		}
 		if (animacaoCliente == null
 				|| tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
 			return null;

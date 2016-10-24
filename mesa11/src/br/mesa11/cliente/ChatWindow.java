@@ -285,7 +285,7 @@ public class ChatWindow {
 			public void actionPerformed(ActionEvent e) {
 				String msg = Lang.msg("feitopor") + "  Paulo Sobreira \n "
 						+ "sowbreira@gmail.com \n"
-						+ "sowbreira.appspot.com/ \n" + "Março de 2010 \n ";
+						+ "sowbreira.appspot.com/ \n" + "Maio de 2010 \n ";
 
 				JOptionPane.showMessageDialog(getMainPanel(), msg, Lang
 						.msg("autor"), JOptionPane.INFORMATION_MESSAGE);

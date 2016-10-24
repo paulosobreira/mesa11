@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.hibernate.Botao;
 import br.nnpe.Util;
+import br.tos.PosicaoBtnsSrvMesa11;
 
 public class Animacao implements Serializable {
 
@@ -12,6 +13,7 @@ public class Animacao implements Serializable {
 	private int index;
 	private long timeStamp;
 	private boolean executou;
+	private PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11;
 
 	public static void main(String[] args) {
 		int variancia = 10 - 687 / 100;
@@ -80,6 +82,15 @@ public class Animacao implements Serializable {
 		if (timeStamp != other.timeStamp)
 			return false;
 		return true;
+	}
+
+	public PosicaoBtnsSrvMesa11 getPosicaoBtnsSrvMesa11() {
+		return posicaoBtnsSrvMesa11;
+	}
+
+	public void setPosicaoBtnsSrvMesa11(
+			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11) {
+		this.posicaoBtnsSrvMesa11 = posicaoBtnsSrvMesa11;
 	}
 
 }

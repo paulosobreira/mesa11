@@ -96,7 +96,7 @@ public class ControleJogo {
 	private AtualizadorVisual atualizadorTela;
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
-	private Animacao animacaoCliente = null;
+	private List<Animacao> animacoesCliente = new ArrayList<Animacao>();
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
@@ -2195,9 +2195,10 @@ public class ControleJogo {
 					}
 					setPontoClicado(null);
 					if (isJogoOnlineSrvidor() && returnGoleiro) {
-						animacaoCliente = new Animacao();
+						Animacao animacaoCliente = new Animacao();
 						animacaoCliente
 								.setTimeStamp(System.currentTimeMillis());
+						animacoesCliente.add(animacaoCliente);
 					}
 
 					return returnGoleiro;
@@ -2357,10 +2358,6 @@ public class ControleJogo {
 		setPontoPasando(null);
 	}
 
-	public Object obterUltimaJogada() {
-		return animacaoCliente;
-	}
-
 	public void executaAnimacao(final Animacao animacao) {
 		Animador animador = new Animador(animacao, this);
 		Thread thread = new Thread(animador);
@@ -2429,8 +2426,8 @@ public class ControleJogo {
 
 	public void configuraAnimacaoServidor() {
 		if (isJogoOnlineSrvidor()) {
-			animacaoCliente = animacaoJogada;
-			animacaoCliente.setTimeStamp(System.currentTimeMillis());
+			animacaoJogada.setTimeStamp(System.currentTimeMillis());
+			animacoesCliente.add(animacaoJogada);
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -2440,13 +2437,6 @@ public class ControleJogo {
 
 	}
 
-	public Animacao getAnimacaoCliente() {
-		return animacaoCliente;
-	}
-
-	public void setAnimacaoCliente(Animacao animacaoCliente) {
-		this.animacaoCliente = animacaoCliente;
-	}
 
 	public String getDica() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
@@ -3470,6 +3460,10 @@ public class ControleJogo {
 			atualizaBotoesClienteOnline(timestamp, false);
 		}
 		esperandoJogadaOnline = false;
+	}
+
+	public List<Animacao> getAnimacoesCliente() {
+		return animacoesCliente;
 	}
 
 }

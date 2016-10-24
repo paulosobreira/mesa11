@@ -680,7 +680,7 @@ public class ControlePartida {
 				}
 				Animacao animacao = new Animacao();
 				animacao.setTimeStamp(System.currentTimeMillis());
-				controleJogo.setAnimacaoCliente(animacao);
+				controleJogo.getAnimacoesCliente().add(animacao);
 			}
 		}
 	}
