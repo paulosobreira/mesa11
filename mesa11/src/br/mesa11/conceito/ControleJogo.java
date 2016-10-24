@@ -2198,6 +2198,8 @@ public class ControleJogo {
 						Animacao animacaoCliente = new Animacao();
 						animacaoCliente
 								.setTimeStamp(System.currentTimeMillis());
+						animacaoCliente.setPosicaoBtnsSrvMesa11(
+								gerarDadosPosicaoBotoes());
 						animacoesCliente.add(animacaoCliente);
 					}
 
@@ -2382,17 +2384,7 @@ public class ControleJogo {
 		mesa11to = (NnpeTO) ret;
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
 				.getData();
-		if (posicaoBtnsSrvMesa11 != null) {
-			List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
-			for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
-				Botao botao = (Botao) botoes.get(botaoPosSrvMesa11.getId());
-				botao.setCentroTodos(new Point(botaoPosSrvMesa11.getPos()));
-				if (botao instanceof Goleiro) {
-					Goleiro goleiro = (Goleiro) botao;
-					goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
-				}
-			}
-		}
+		atualizaPosicoesBotoes(posicaoBtnsSrvMesa11);
 
 		esperandoJogadaOnline = false;
 		if (centralizaBola) {
@@ -2436,7 +2428,6 @@ public class ControleJogo {
 		}
 
 	}
-
 
 	public String getDica() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
@@ -3464,6 +3455,44 @@ public class ControleJogo {
 
 	public List<Animacao> getAnimacoesCliente() {
 		return animacoesCliente;
+	}
+
+	public PosicaoBtnsSrvMesa11 gerarDadosPosicaoBotoes() {
+		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
+		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
+		Map botoesCopia = getBotoesCopia();
+		for (Iterator iterator = botoesCopia.keySet().iterator(); iterator
+				.hasNext();) {
+			Long id = (Long) iterator.next();
+			Botao botao = (Botao) botoesCopia.get(id);
+			BotaoPosSrvMesa11 botaoPosSrvMesa11 = new BotaoPosSrvMesa11();
+			botaoPosSrvMesa11.setId(id);
+			botaoPosSrvMesa11.setPos(botao.getCentro());
+			if (botao instanceof Goleiro) {
+				Goleiro goleiro = (Goleiro) botao;
+				botaoPosSrvMesa11.setRotacao(goleiro.getRotacao());
+			}
+			botaoPosSrvMesa11List.add(botaoPosSrvMesa11);
+
+		}
+		posicaoBtnsSrvMesa11.setBotoes(botaoPosSrvMesa11List);
+		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
+		return posicaoBtnsSrvMesa11;
+	}
+	
+	public void atualizaPosicoesBotoes(
+			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11) {
+		if (posicaoBtnsSrvMesa11 != null) {
+			List<BotaoPosSrvMesa11> btns = posicaoBtnsSrvMesa11.getBotoes();
+			for (BotaoPosSrvMesa11 botaoPosSrvMesa11 : btns) {
+				Botao botao = (Botao) botoes.get(botaoPosSrvMesa11.getId());
+				botao.setCentroTodos(new Point(botaoPosSrvMesa11.getPos()));
+				if (botao instanceof Goleiro) {
+					Goleiro goleiro = (Goleiro) botao;
+					goleiro.setRotacao(botaoPosSrvMesa11.getRotacao());
+				}
+			}
+		}
 	}
 
 }

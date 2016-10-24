@@ -234,9 +234,9 @@ public class ControleJogosServidor {
 		if (mapaJogos == null) {
 			return null;
 		}
-
-		String nomejogo = data.split("-")[0];
-		String indexUltimaJogadaStr = data.split("-")[1];
+		String[] split = data.split("-");
+		String nomejogo = split[0];
+		String indexUltimaJogadaStr = split[1];
 		Integer indexUltimaJogada = 0;
 		if (indexUltimaJogadaStr != null
 				&& !"null".equals(indexUltimaJogadaStr)) {
@@ -292,28 +292,11 @@ public class ControleJogosServidor {
 			return null;
 		}
 		NnpeTO mesa11to = new NnpeTO();
-		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
-		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
-		Map botoesCopia = jogoSrvMesa11.getControleJogo().getBotoesCopia();
-		for (Iterator iterator = botoesCopia.keySet().iterator(); iterator
-				.hasNext();) {
-			Long id = (Long) iterator.next();
-			Botao botao = (Botao) botoesCopia.get(id);
-			BotaoPosSrvMesa11 botaoPosSrvMesa11 = new BotaoPosSrvMesa11();
-			botaoPosSrvMesa11.setId(id);
-			botaoPosSrvMesa11.setPos(botao.getCentro());
-			if (botao instanceof Goleiro) {
-				Goleiro goleiro = (Goleiro) botao;
-				botaoPosSrvMesa11.setRotacao(goleiro.getRotacao());
-			}
-			botaoPosSrvMesa11List.add(botaoPosSrvMesa11);
-
-		}
-		posicaoBtnsSrvMesa11.setBotoes(botaoPosSrvMesa11List);
-		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
+		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = jogoSrvMesa11.getControleJogo().gerarDadosPosicaoBotoes();
 		mesa11to.setData(posicaoBtnsSrvMesa11);
 		return mesa11to;
 	}
+
 
 	public Map<String, JogoServidor> getMapaJogos() {
 		return mapaJogos;

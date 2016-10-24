@@ -50,7 +50,7 @@ public class MonitorJogo extends Thread {
 				if (controleJogo != null) {
 					obterDadosJogo();
 					dormir(tempoDormir);
-					atualizaBotoesClienteOnline();
+					//atualizaBotoesClienteOnline();
 					dormir(tempoDormir);
 					obterUltimaJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
@@ -156,6 +156,9 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
+			if(animacao.getPosicaoBtnsSrvMesa11()!=null){
+				controleJogo.atualizaPosicoesBotoes(animacao.getPosicaoBtnsSrvMesa11());
+			}
 			indexProxJogada = animacao.getIndex() + 1;
 			if (!bufferAnimacao.contains(animacao)) {
 				bufferAnimacao.addElement(animacao);
