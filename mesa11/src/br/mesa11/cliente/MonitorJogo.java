@@ -23,8 +23,6 @@ public class MonitorJogo extends Thread {
 	private Integer indexProxJogada;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
-	private Vector<String> bufferDica = new Vector<String>();
-	private long ultimaAtualizaBotoesClienteOnline;
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -89,29 +87,6 @@ public class MonitorJogo extends Thread {
 		thread.start();
 	}
 
-	private void atualizaBotoesClienteOnline() {
-		if (controleJogo.getDica() != null
-				&& !Util.isNullOrEmpty(controleJogo.getDica())
-				&& !controleJogo.getDica().startsWith("dica")
-				&& !bufferDica.contains(controleJogo.getDica())) {
-			Logger.logar(
-					"atualizaBotoesClienteOnline bufferDica.add(controleJogo.getDica());");
-			bufferDica.add(controleJogo.getDica());
-		}
-		if (controleJogo.isAnimando()) {
-			Logger.logar(
-					"atualizaBotoesClienteOnline controleJogo.isAnimando()");
-			return;
-		}
-		if (!bufferDica.isEmpty() && System.currentTimeMillis()
-				- ultimaAtualizaBotoesClienteOnline > 2000) {
-			String dica = bufferDica.remove(0);
-			Logger.logar("atualizaBotoesClienteOnline bufferDica.remove(0); "
-					+ dica);
-			controleJogo.atualizaBotoesClienteOnline(timeStampAnimacao, dica);
-			ultimaAtualizaBotoesClienteOnline = System.currentTimeMillis();
-		}
-	}
 
 	private void dormir(long i) throws InterruptedException {
 		sleep(i);

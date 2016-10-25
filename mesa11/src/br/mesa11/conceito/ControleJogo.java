@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -96,7 +97,7 @@ public class ControleJogo {
 	private AtualizadorVisual atualizadorTela;
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
-	private List<Animacao> animacoesCliente = new ArrayList<Animacao>();
+	private Vector<Animacao> animacoesCliente = new Vector<Animacao>();
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
@@ -2195,10 +2196,10 @@ public class ControleJogo {
 					}
 					setPontoClicado(null);
 					if (isJogoOnlineSrvidor() && returnGoleiro) {
-						Animacao animacaoCliente = new Animacao();
-						animacaoCliente
-								.setTimeStamp(System.currentTimeMillis());
-						getAnimacoesCliente().add(animacaoCliente);
+						// Animacao animacaoCliente = new Animacao();
+						// animacaoCliente
+						// .setTimeStamp(System.currentTimeMillis());
+						// getAnimacoesCliente().add(animacaoCliente);
 					}
 
 					return returnGoleiro;
@@ -2369,29 +2370,6 @@ public class ControleJogo {
 		thread.start();
 	}
 
-	public void atualizaBotoesClienteOnline(long timeStampAnimacao,
-			boolean centralizaBola) {
-		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setComando(ConstantesMesa11.OBTER_POSICAO_BOTOES);
-		mesa11to.setData(
-				dadosJogoSrvMesa11.getNomeJogo() + "-" + timeStampAnimacao);
-		Object ret = enviarObjeto(mesa11to);
-		if (ret == null || !(ret instanceof NnpeTO)) {
-			return;
-		}
-		mesa11to = (NnpeTO) ret;
-		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = (PosicaoBtnsSrvMesa11) mesa11to
-				.getData();
-		atualizaPosicoesBotoes(posicaoBtnsSrvMesa11);
-
-		esperandoJogadaOnline = false;
-		if (centralizaBola) {
-			Logger.logar("atualizaBotoesClienteOnline -> centralizaBola");
-			centralizaBola();
-		}
-		Logger.logar("atualizaBotoesClienteOnline -> fim");
-	}
-
 	public int getNumeroJogadas() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
 			return dadosJogoSrvMesa11.getNumeroJogadas();
@@ -2422,11 +2400,8 @@ public class ControleJogo {
 		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
 			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
 		}
-		getAnimacoesCliente().add(animacaoJogada);
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if(getAnimacoesCliente()!=null && !getAnimacoesCliente().contains(animacaoJogada)){
+			getAnimacoesCliente().add(animacaoJogada);
 		}
 	}
 	public String getDica() {
@@ -3439,18 +3414,6 @@ public class ControleJogo {
 		synchronized (botoesComThread) {
 			return botoesComThread.get(objetoAnimacao);
 		}
-	}
-
-	public void atualizaBotoesClienteOnline(long timestamp, String dica) {
-		if ("gol".equals(dica) || "intervalo".equals(dica)
-				|| "golContra".equals(dica) || "meta".equals(dica)
-				|| "escanteio".equals(dica) || "penalti".equals(dica)
-				|| "falta".equals(dica)) {
-			atualizaBotoesClienteOnline(timestamp, true);
-		} else {
-			atualizaBotoesClienteOnline(timestamp, false);
-		}
-		esperandoJogadaOnline = false;
 	}
 
 	public List<Animacao> getAnimacoesCliente() {

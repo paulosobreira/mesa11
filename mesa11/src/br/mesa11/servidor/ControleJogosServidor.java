@@ -278,32 +278,6 @@ public class ControleJogosServidor {
 		return mesa11to;
 	}
 
-	public Object obterPosicaoBotoes(String... dadosJogo) {
-		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(dadosJogo[0]);
-		if (jogoSrvMesa11 == null) {
-			return null;
-		}
-		if (jogoSrvMesa11.getControleJogo().isAnimando()) {
-			return null;
-		}
-		long tempoUltimaJogada = Long.parseLong(dadosJogo[1]);
-		Animacao animacaoCliente = null;
-		if (!jogoSrvMesa11.getControleJogo().getAnimacoesCliente().isEmpty()) {
-			animacaoCliente = jogoSrvMesa11.getControleJogo()
-					.getAnimacoesCliente().get(jogoSrvMesa11.getControleJogo()
-							.getAnimacoesCliente().size() - 1);
-		}
-		if (animacaoCliente == null
-				|| tempoUltimaJogada < animacaoCliente.getTimeStamp()) {
-			return null;
-		}
-		NnpeTO mesa11to = new NnpeTO();
-		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = jogoSrvMesa11
-				.getControleJogo().gerarDadosPosicaoBotoes();
-		mesa11to.setData(posicaoBtnsSrvMesa11);
-		return mesa11to;
-	}
-
 	public Map<String, JogoServidor> getMapaJogos() {
 		return mapaJogos;
 	}

@@ -58,10 +58,6 @@ public class ProxyComandos {
 				.getComando())) {
 			return controleJogosServidor.obterUltimaJogada((String) mesa11TO
 					.getData());
-		} else if (ConstantesMesa11.OBTER_POSICAO_BOTOES.equals(mesa11TO
-				.getComando())) {
-			return controleJogosServidor.obterPosicaoBotoes(((String) mesa11TO
-					.getData()).split("-"));
 		} else if (ConstantesMesa11.JOGADA.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.jogada((JogadaMesa11) mesa11TO
 					.getData());

@@ -93,7 +93,6 @@ public class ConstantesMesa11 {
 	public static final String VERIFICA_VEZ = "VERIFICA_VEZ";
 	public static final String JOGADA = "JOGADA";
 	public static final String OBTER_ULTIMA_JOGADA = "OBTER_ULTIMA_JOGADA";
-	public static final String OBTER_POSICAO_BOTOES = "OBTER_POSICAO_BOTOES";
 	public static final String SAIR_JOGO = "SAIR_JOGO";
 	public static final int TAMANHO_MAX_NOME_ABREV_TIME = 3;
 	public static final int TAMANHO_MAX_NOME_TIME = 50;
