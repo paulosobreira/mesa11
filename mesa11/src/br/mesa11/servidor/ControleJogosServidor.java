@@ -268,6 +268,12 @@ public class ControleJogosServidor {
 		animacao = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
 				.get(size);
 		animacao.setIndex(size);
+		if (size > 0) {
+			Animacao animacaoAterior = jogoSrvMesa11.getControleJogo()
+					.getAnimacoesCliente().get(size - 1);
+			animacao.setPosicaoBtnsSrvMesa11(
+					animacaoAterior.getPosicaoBtnsSrvMesa11());
+		}
 		mesa11to.setData(animacao);
 		return mesa11to;
 	}
@@ -292,11 +298,11 @@ public class ControleJogosServidor {
 			return null;
 		}
 		NnpeTO mesa11to = new NnpeTO();
-		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = jogoSrvMesa11.getControleJogo().gerarDadosPosicaoBotoes();
+		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = jogoSrvMesa11
+				.getControleJogo().gerarDadosPosicaoBotoes();
 		mesa11to.setData(posicaoBtnsSrvMesa11);
 		return mesa11to;
 	}
-
 
 	public Map<String, JogoServidor> getMapaJogos() {
 		return mapaJogos;

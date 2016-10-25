@@ -2198,9 +2198,7 @@ public class ControleJogo {
 						Animacao animacaoCliente = new Animacao();
 						animacaoCliente
 								.setTimeStamp(System.currentTimeMillis());
-						animacaoCliente.setPosicaoBtnsSrvMesa11(
-								gerarDadosPosicaoBotoes());
-						animacoesCliente.add(animacaoCliente);
+						getAnimacoesCliente().add(animacaoCliente);
 					}
 
 					return returnGoleiro;
@@ -2417,18 +2415,20 @@ public class ControleJogo {
 	}
 
 	public void configuraAnimacaoServidor() {
-		if (isJogoOnlineSrvidor()) {
-			animacaoJogada.setTimeStamp(System.currentTimeMillis());
-			animacoesCliente.add(animacaoJogada);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		if (!isJogoOnlineSrvidor()) {
+			return;
 		}
-
+		animacaoJogada.setTimeStamp(System.currentTimeMillis());
+		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
+			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
+		}
+		getAnimacoesCliente().add(animacaoJogada);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
-
 	public String getDica() {
 		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
 			return dadosJogoSrvMesa11.getDica();
@@ -3479,7 +3479,7 @@ public class ControleJogo {
 		posicaoBtnsSrvMesa11.setTimeStamp(System.currentTimeMillis());
 		return posicaoBtnsSrvMesa11;
 	}
-	
+
 	public void atualizaPosicoesBotoes(
 			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11) {
 		if (posicaoBtnsSrvMesa11 != null) {

@@ -31,13 +31,13 @@ public class ControleEvento implements Runnable {
 		Time timeCima = controleJogo.getTimeCima();
 		Time timeBaixo = controleJogo.getTimeBaixo();
 		if ((ConstantesMesa11.CONTATO_BOTAO_BOLA.equals(evento.getEventoCod())
-				|| ConstantesMesa11.CONTATO_BOLA_BOTAO.equals(evento
-						.getEventoCod()) || ConstantesMesa11.CHUTE_GOLEIRO
-				.equals(evento.getEventoCod()))
+				|| ConstantesMesa11.CONTATO_BOLA_BOTAO
+						.equals(evento.getEventoCod())
+				|| ConstantesMesa11.CHUTE_GOLEIRO.equals(evento.getEventoCod()))
 				&& evento.getUltimoContato().getId() != 0) {
 			if (controleJogo.incrementaJogada()) {
-				if (!controleJogo.timeJogadaVez().equals(
-						evento.getUltimoContato().getTime())) {
+				if (!controleJogo.timeJogadaVez()
+						.equals(evento.getUltimoContato().getTime())) {
 					controleJogo.zerarJogadas();
 				}
 				controleJogo
@@ -47,10 +47,10 @@ public class ControleEvento implements Runnable {
 				controleJogo.reversaoJogada();
 
 			}
-		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO.equals(evento
-				.getEventoCod()) && !evento.isNaBola() && !evento
-				.getBotaoEvento().getTime()
-				.equals(evento.getUltimoContato().getTime()))) {
+		} else if ((ConstantesMesa11.CONTATO_BOTAO_BOTAO
+				.equals(evento.getEventoCod()) && !evento.isNaBola()
+				&& !evento.getBotaoEvento().getTime()
+						.equals(evento.getUltimoContato().getTime()))) {
 			controleJogo.zerarJogadas();
 			controleJogo.falta(evento.getPonto(), evento.getUltimoContato());
 			if (Util.isNullOrEmpty(controleJogo.getDica())
@@ -71,8 +71,8 @@ public class ControleEvento implements Runnable {
 			if (evento.getUltimoContato() != null
 					&& !(evento.getUltimoContato() instanceof Goleiro)
 					&& evento.getUltimoContato().getTime() != null
-					&& !controleJogo.verificaBolaPertoGoleiroTime(evento
-							.getUltimoContato().getTime())) {
+					&& !controleJogo.verificaBolaPertoGoleiroTime(
+							evento.getUltimoContato().getTime())) {
 				controleJogo.reversaoJogada();
 				controleJogo.setDica("reversao");
 			}
@@ -85,31 +85,23 @@ public class ControleEvento implements Runnable {
 				.equals(evento.getEventoCod())) {
 			Time time = evento.getUltimoContato().getTime();
 			if (timeCima.equals(time)) {
-				if (controleJogo
-						.getMesaPanel()
-						.getAreaEscateioCima()
-						.intersects(
-								controleJogo.getUltMetaEscanteio().getBounds())) {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima()
+						.intersects(controleJogo.getUltMetaEscanteio()
+								.getBounds())) {
 					controleJogo.processarEscanteio(timeBaixo);
-				} else if (controleJogo
-						.getMesaPanel()
-						.getAreaEscateioBaixo()
-						.intersects(
-								controleJogo.getUltMetaEscanteio().getBounds())) {
+				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
+						.intersects(controleJogo.getUltMetaEscanteio()
+								.getBounds())) {
 					controleJogo.processarMeta(timeBaixo);
 				}
 			} else {
-				if (controleJogo
-						.getMesaPanel()
-						.getAreaEscateioCima()
-						.intersects(
-								controleJogo.getUltMetaEscanteio().getBounds())) {
+				if (controleJogo.getMesaPanel().getAreaEscateioCima()
+						.intersects(controleJogo.getUltMetaEscanteio()
+								.getBounds())) {
 					controleJogo.processarMeta(timeCima);
-				} else if (controleJogo
-						.getMesaPanel()
-						.getAreaEscateioBaixo()
-						.intersects(
-								controleJogo.getUltMetaEscanteio().getBounds())) {
+				} else if (controleJogo.getMesaPanel().getAreaEscateioBaixo()
+						.intersects(controleJogo.getUltMetaEscanteio()
+								.getBounds())) {
 					controleJogo.processarEscanteio(timeCima);
 				}
 			}
