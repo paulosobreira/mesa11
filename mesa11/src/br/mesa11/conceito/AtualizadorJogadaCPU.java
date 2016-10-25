@@ -16,9 +16,6 @@ public class AtualizadorJogadaCPU extends Thread {
 		super();
 		this.controleJogo = controleJogo;
 		intervaloEntreJogadas = Util.intervalo(3000, 5000);
-		if (controleJogo.isJogoOnlineSrvidor()) {
-			intervaloEntreJogadas = Util.intervalo(10000, 15000);
-		}
 		setPriority(Thread.MIN_PRIORITY);
 	}
 

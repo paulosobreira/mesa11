@@ -91,9 +91,7 @@ public class Animador implements Runnable {
 						if (sleep > 15) {
 							sleep = 15;
 						}
-						if (!controleJogo.isJogoOnlineSrvidor()) {
-							Thread.sleep(sleep);
-						}
+						Thread.sleep(sleep);
 						porcentOldDiv10 = porcentDiv10;
 					}
 				} else {
@@ -104,9 +102,7 @@ public class Animador implements Runnable {
 						if (sleep > 17) {
 							sleep = 17;
 						}
-						if (!controleJogo.isJogoOnlineSrvidor()) {
-							Thread.sleep(sleep);
-						}
+						Thread.sleep(sleep);
 						porcentOldDiv10 = porcentDiv10;
 					}
 				}

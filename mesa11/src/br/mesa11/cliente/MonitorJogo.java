@@ -87,7 +87,6 @@ public class MonitorJogo extends Thread {
 		thread.start();
 	}
 
-
 	private void dormir(long i) throws InterruptedException {
 		sleep(i);
 	}
@@ -137,15 +136,17 @@ public class MonitorJogo extends Thread {
 			}
 			Animacao animacaoVez = null;
 			if (!bufferAnimacao.isEmpty()) {
-				animacaoVez = bufferAnimacao.remove(bufferAnimacao.size() - 1);
+				animacaoVez = bufferAnimacao.remove(0);
 			}
 			if (!controleJogo.isAnimando() && animacaoVez != null
 					&& animacaoVez.getTimeStamp() > timeStampAnimacao) {
 				timeStampAnimacao = animacaoVez.getTimeStamp();
-				if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
+				if (animacaoVez.getPosicaoBtnsSrvMesa11() != null
+						&& !animacaoVez.isExecutou()) {
 					controleJogo.atualizaPosicoesBotoes(
 							animacaoVez.getPosicaoBtnsSrvMesa11());
 					controleJogo.centralizaBola();
+					animacaoVez.setExecutou(true);
 				}
 				controleJogo.executaAnimacao(animacaoVez);
 				controleJogo.setPontoClicado(null);

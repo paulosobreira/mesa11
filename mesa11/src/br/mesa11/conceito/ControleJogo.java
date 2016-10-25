@@ -2195,13 +2195,6 @@ public class ControleJogo {
 						}
 					}
 					setPontoClicado(null);
-					if (isJogoOnlineSrvidor() && returnGoleiro) {
-						// Animacao animacaoCliente = new Animacao();
-						// animacaoCliente
-						// .setTimeStamp(System.currentTimeMillis());
-						// getAnimacoesCliente().add(animacaoCliente);
-					}
-
 					return returnGoleiro;
 				}
 			}
