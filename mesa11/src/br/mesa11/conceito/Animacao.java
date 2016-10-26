@@ -66,6 +66,7 @@ public class Animacao implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + index;
 		result = prime * result + (int) (timeStamp ^ (timeStamp >>> 32));
 		return result;
 	}
@@ -79,6 +80,8 @@ public class Animacao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Animacao other = (Animacao) obj;
+		if (index != other.index)
+			return false;
 		if (timeStamp != other.timeStamp)
 			return false;
 		return true;

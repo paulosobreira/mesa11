@@ -843,8 +843,9 @@ public class ControleJogo {
 		if (bola == null || mesaPanel == null) {
 			return;
 		}
-		Animacao animacaoJogada = new Animacao();
+		animacaoJogada = new Animacao();
 		animacaoJogada.setObjetoAnimacao(bola.getId());
+		adicionaAnimacaoCliente();
 		Animador animador = new Animador(animacaoJogada, this);
 		Thread thread = new Thread(animador);
 		synchronized (botoesComThread) {
@@ -2262,6 +2263,7 @@ public class ControleJogo {
 				evento.setPonto(p1);
 				evento.setBotaoEvento(botao);
 				animacaoJogada = new Animacao();
+				adicionaAnimacaoCliente();
 				if (botao.getCentroInicio() == null)
 					botao.setCentroInicio(botao.getCentro());
 				animacaoJogada.setObjetoAnimacao(botao.getId());
@@ -2389,11 +2391,20 @@ public class ControleJogo {
 		if (!isJogoOnlineSrvidor()) {
 			return;
 		}
+		animacaoJogada = new Animacao();
+		adicionaAnimacaoCliente();
+	}
+
+	private void adicionaAnimacaoCliente() {
+		if (!isJogoOnlineSrvidor()) {
+			return;
+		}
 		animacaoJogada.setTimeStamp(System.currentTimeMillis());
 		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
 			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
 		}
-		if(getAnimacoesCliente()!=null && !getAnimacoesCliente().contains(animacaoJogada)){
+		if (getAnimacoesCliente() != null
+				&& !getAnimacoesCliente().contains(animacaoJogada)) {
 			getAnimacoesCliente().add(animacaoJogada);
 		}
 	}
@@ -3414,9 +3425,15 @@ public class ControleJogo {
 	}
 
 	public PosicaoBtnsSrvMesa11 gerarDadosPosicaoBotoes() {
+		if (!isJogoOnlineSrvidor()) {
+			return null;
+		}
 		PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11 = new PosicaoBtnsSrvMesa11();
 		List<BotaoPosSrvMesa11> botaoPosSrvMesa11List = new ArrayList();
 		Map botoesCopia = getBotoesCopia();
+		if (botoesCopia == null) {
+			return null;
+		}
 		for (Iterator iterator = botoesCopia.keySet().iterator(); iterator
 				.hasNext();) {
 			Long id = (Long) iterator.next();

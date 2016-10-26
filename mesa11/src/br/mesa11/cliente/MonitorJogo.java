@@ -19,10 +19,10 @@ public class MonitorJogo extends Thread {
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
 	private long tempoDormir = 1000;
-	private long timeStampAnimacao;
 	private Integer indexProxJogada;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
+	private Vector<Animacao> animacoesExecutadas = new Vector<Animacao>();
 
 	public MonitorJogo(ControleChatCliente controleChatCliente,
 			ControleJogosCliente controleJogosCliente,
@@ -48,7 +48,7 @@ public class MonitorJogo extends Thread {
 				if (controleJogo != null) {
 					obterDadosJogo();
 					dormir(tempoDormir);
-					// atualizaBotoesClienteOnline();
+					consumirAnimacao();
 					dormir(tempoDormir);
 					obterUltimaJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
@@ -130,31 +130,34 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
+			if (bufferAnimacao.contains(animacao)
+					|| animacoesExecutadas.contains(animacao)) {
+				return;
+			}
+			bufferAnimacao.addElement(animacao);
 			indexProxJogada = animacao.getIndex() + 1;
-			if (!bufferAnimacao.contains(animacao)) {
-				bufferAnimacao.addElement(animacao);
-			}
-			Animacao animacaoVez = null;
-			if (!bufferAnimacao.isEmpty()) {
-				animacaoVez = bufferAnimacao.remove(0);
-			}
-			if (!controleJogo.isAnimando() && animacaoVez != null
-					&& animacaoVez.getTimeStamp() > timeStampAnimacao) {
-				timeStampAnimacao = animacaoVez.getTimeStamp();
-				if (animacaoVez.getPosicaoBtnsSrvMesa11() != null
-						&& !animacaoVez.isExecutou()) {
-					controleJogo.atualizaPosicoesBotoes(
-							animacaoVez.getPosicaoBtnsSrvMesa11());
-					controleJogo.centralizaBola();
-					animacaoVez.setExecutou(true);
-				}
-				controleJogo.executaAnimacao(animacaoVez);
-				controleJogo.setPontoClicado(null);
-				controleJogo.zeraBtnAssistido();
-			} else {
-				controleJogo.setEsperandoJogadaOnline(false);
-			}
 		}
+	}
+
+	private void consumirAnimacao() {
+		if (controleJogo.isAnimando()) {
+			return;
+		}
+		if (bufferAnimacao.isEmpty()) {
+			controleJogo.setEsperandoJogadaOnline(false);
+			return;
+		}
+		Animacao animacaoVez = bufferAnimacao.remove(0);
+		animacoesExecutadas.addElement(animacaoVez);
+		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
+			controleJogo.atualizaPosicoesBotoes(
+					animacaoVez.getPosicaoBtnsSrvMesa11());
+			controleJogo.centralizaBola();
+		}
+		controleJogo.executaAnimacao(animacaoVez);
+		controleJogo.setPontoClicado(null);
+		controleJogo.zeraBtnAssistido();
+		controleJogo.setEsperandoJogadaOnline(true);
 	}
 
 	private void iniciaJogo() {

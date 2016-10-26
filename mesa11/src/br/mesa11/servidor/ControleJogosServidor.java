@@ -261,19 +261,13 @@ public class ControleJogosServidor {
 		Integer size = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
 				.size() - 1;
 
-		if (indexUltimaJogada <= size) {
-			size = indexUltimaJogada;
+		if (indexUltimaJogada > size) {
+			indexUltimaJogada = size;
 
 		}
 		animacao = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
-				.get(size);
-		animacao.setIndex(size);
-		if (size > 0) {
-			Animacao animacaoAterior = jogoSrvMesa11.getControleJogo()
-					.getAnimacoesCliente().get(size - 1);
-			animacao.setPosicaoBtnsSrvMesa11(
-					animacaoAterior.getPosicaoBtnsSrvMesa11());
-		}
+				.get(indexUltimaJogada);
+		animacao.setIndex(indexUltimaJogada);
 		mesa11to.setData(animacao);
 		return mesa11to;
 	}
