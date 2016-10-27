@@ -843,6 +843,8 @@ public class ControleJogo {
 		if (bola == null || mesaPanel == null) {
 			return;
 		}
+		bola.setCentroTodos(mesaPanel.getCentro().getLocation());
+		centralizaBola();
 		animacaoJogada = new Animacao();
 		animacaoJogada.setObjetoAnimacao(bola.getId());
 		adicionaAnimacaoCliente();
@@ -852,8 +854,7 @@ public class ControleJogo {
 			botoesComThread.put(animacaoJogada.getObjetoAnimacao(), thread);
 		}
 		thread.start();
-		bola.setCentroTodos(mesaPanel.getCentro().getLocation());
-		centralizaBola();
+
 	}
 
 	private Botao obterUmCobrador(Time time) {

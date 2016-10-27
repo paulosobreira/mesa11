@@ -230,7 +230,7 @@ public class ControleJogosServidor {
 		return null;
 	}
 
-	public Object obterUltimaJogada(String data) {
+	public Object obterJogada(String data) {
 		if (mapaJogos == null) {
 			return null;
 		}

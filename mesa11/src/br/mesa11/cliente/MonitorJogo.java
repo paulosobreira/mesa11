@@ -19,7 +19,7 @@ public class MonitorJogo extends Thread {
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
 	private long tempoDormir = 1000;
-	private Integer indexProxJogada;
+	private Integer indexProxJogada = 0;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
 	private Vector<Animacao> animacoesExecutadas = new Vector<Animacao>();
@@ -48,9 +48,9 @@ public class MonitorJogo extends Thread {
 				if (controleJogo != null) {
 					obterDadosJogo();
 					dormir(tempoDormir);
-					consumirAnimacao();
+					consumirJogada();
 					dormir(tempoDormir);
-					obterUltimaJogada();
+					obterJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
@@ -121,9 +121,10 @@ public class MonitorJogo extends Thread {
 		}
 	}
 
-	private void obterUltimaJogada() throws InterruptedException {
+	private void obterJogada() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setComando(ConstantesMesa11.OBTER_ULTIMA_JOGADA);
+		mesa11to.setComando(ConstantesMesa11.OBTER_JOGADA);
+		Logger.logar("Pedio jogada " + indexProxJogada);
 		mesa11to.setData(
 				dadosJogoSrvMesa11.getNomeJogo() + "-" + indexProxJogada);
 		Object ret = enviarObjeto(mesa11to);
@@ -135,11 +136,11 @@ public class MonitorJogo extends Thread {
 				return;
 			}
 			bufferAnimacao.addElement(animacao);
-			indexProxJogada = animacao.getIndex() + 1;
+			indexProxJogada++;
 		}
 	}
 
-	private void consumirAnimacao() {
+	private void consumirJogada() {
 		if (controleJogo.isAnimando()) {
 			return;
 		}
@@ -153,6 +154,7 @@ public class MonitorJogo extends Thread {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
 			controleJogo.centralizaBola();
+			Logger.logar("Centralizou animacao " + animacaoVez.getIndex());
 		}
 		controleJogo.executaAnimacao(animacaoVez);
 		controleJogo.setPontoClicado(null);
