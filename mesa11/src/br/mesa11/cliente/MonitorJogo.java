@@ -153,16 +153,16 @@ public class MonitorJogo extends Thread {
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
-			//controleJogo.centralizaBotao(controleJogo.getBola());
+			// controleJogo.centralizaBotao(controleJogo.getBola());
 			controleJogo.bolaCentro();
-			Logger.logar("Centralizou animacao " + animacaoVez.getIndex());
+			Logger.logar("Centralizou animacao " + animacaoVez.getSequencia());
 		}
 		controleJogo.setDica(animacaoVez.getDica());
 		controleJogo.executaAnimacao(animacaoVez);
 		controleJogo.setPontoClicado(null);
 		controleJogo.zeraBtnAssistido();
 		controleJogo.setEsperandoJogadaOnline(true);
-		Logger.logar("Executado animacao " + animacaoVez.getIndex());
+		Logger.logar("Executado animacao " + animacaoVez.getSequencia());
 	}
 
 	private void iniciaJogo() {

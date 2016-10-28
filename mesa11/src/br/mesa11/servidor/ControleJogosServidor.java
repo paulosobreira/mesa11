@@ -236,10 +236,10 @@ public class ControleJogosServidor {
 		String[] split = data.split("-");
 		String nomejogo = split[0];
 		String indexUltimaJogadaStr = split[1];
-		Integer indexUltimaJogada = 0;
+		Long indexUltimaJogada = null;
 		if (indexUltimaJogadaStr != null
 				&& !"null".equals(indexUltimaJogadaStr)) {
-			indexUltimaJogada = new Integer(indexUltimaJogadaStr);
+			indexUltimaJogada = new Long(indexUltimaJogadaStr);
 		}
 		JogoServidor jogoSrvMesa11 = (JogoServidor) mapaJogos.get(nomejogo);
 		if (jogoSrvMesa11 == null) {
@@ -256,17 +256,12 @@ public class ControleJogosServidor {
 		}
 
 		NnpeTO mesa11to = new NnpeTO();
-		Animacao animacao = null;
-		Integer size = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
-				.size() - 1;
-
-		if (indexUltimaJogada > size) {
-			indexUltimaJogada = size;
+		if (indexUltimaJogada==null) {
+			indexUltimaJogada = jogoSrvMesa11.getControleJogo().getSequenciaAnimacao();
 
 		}
-		animacao = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
+		Animacao animacao = jogoSrvMesa11.getControleJogo().getAnimacoesCliente()
 				.get(indexUltimaJogada);
-		animacao.setIndex(indexUltimaJogada);
 		mesa11to.setData(animacao);
 		return mesa11to;
 	}

@@ -75,8 +75,9 @@ public class ControleJogo {
 	private JogoServidor jogoServidor;
 	private JFrame frame;
 	private Map<Long, Botao> botoes = new HashMap<Long, Botao>();
-	private Map botoesImagens = new HashMap();
 	private Map<Long, Thread> botoesComThread = new HashMap<Long, Thread>();
+	private Map<Long, Animacao> animacoesCliente = new HashMap<Long, Animacao>();
+	private Map botoesImagens = new HashMap();
 	private Botao bola;
 	private MesaPanel mesaPanel;
 	private JScrollPane scrollPane;
@@ -97,7 +98,7 @@ public class ControleJogo {
 	private AtualizadorVisual atualizadorTela;
 	private String timeClienteOnline;
 	private DadosJogoSrvMesa11 dadosJogoSrvMesa11;
-	private Vector<Animacao> animacoesCliente = new Vector<Animacao>();
+
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
@@ -119,6 +120,7 @@ public class ControleJogo {
 	private boolean autoMira;
 	private Botao btnAssistido;
 	Map<Long, Botao> botoesCopy;
+	private Long sequenciaAnimacao = 0l;
 
 	public ControleJogo(Mesa11Applet mesa11Applet, String timeClienteOnline,
 			DadosJogoSrvMesa11 dadosJogoSrvMesa11, String nomeJogadorOnline) {
@@ -2395,14 +2397,14 @@ public class ControleJogo {
 			return;
 		}
 		animacaoJogada = new Animacao();
-		animacaoJogada.setTimeStamp(System.currentTimeMillis());
+		animacaoJogada.setSequencia(sequenciaAnimacao++);
 		animacaoJogada.setDica(getDica());
 		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
 			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
 		}
-		if (getAnimacoesCliente() != null
-				&& !getAnimacoesCliente().contains(animacaoJogada)) {
-			getAnimacoesCliente().add(animacaoJogada);
+		if (getAnimacoesCliente() != null) {
+			getAnimacoesCliente().put(animacaoJogada.getSequencia(),
+					animacaoJogada);
 		}
 	}
 	public String getDica() {
@@ -3413,7 +3415,7 @@ public class ControleJogo {
 		}
 	}
 
-	public List<Animacao> getAnimacoesCliente() {
+	public Map<Long, Animacao> getAnimacoesCliente() {
 		return animacoesCliente;
 	}
 
@@ -3459,6 +3461,10 @@ public class ControleJogo {
 				}
 			}
 		}
+	}
+
+	public Long getSequenciaAnimacao() {
+		return sequenciaAnimacao;
 	}
 
 }
