@@ -670,20 +670,7 @@ public class ControlePartida {
 
 			Logger.logar("Intervalo");
 			controleJogo.setDica("intervalo");
-			if (controleJogo.isJogoOnlineSrvidor()) {
-				while (controleJogo.isAnimando()) {
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						Logger.logarExept(e);
-					}
-				}
-				Animacao animacao = new Animacao();
-				if (controleJogo.getAnimacoesCliente() != null && !controleJogo
-						.getAnimacoesCliente().contains(animacao)) {
-					controleJogo.getAnimacoesCliente().add(animacao);
-				}
-			}
+			controleJogo.adicionaJogadaCliente();
 		}
 	}
 

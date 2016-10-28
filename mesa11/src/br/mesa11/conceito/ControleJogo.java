@@ -101,7 +101,6 @@ public class ControleJogo {
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
 	private int numeroJogadas;
-	private long timeStampUltimaJogadaOnline;
 	private String dica;
 	private boolean jogoTerminado;
 	private long tempoTerminado;
@@ -845,16 +844,7 @@ public class ControleJogo {
 		}
 		bola.setCentroTodos(mesaPanel.getCentro().getLocation());
 		centralizaBola();
-		animacaoJogada = new Animacao();
-		animacaoJogada.setObjetoAnimacao(bola.getId());
-		adicionaAnimacaoCliente();
-		Animador animador = new Animador(animacaoJogada, this);
-		Thread thread = new Thread(animador);
-		synchronized (botoesComThread) {
-			botoesComThread.put(animacaoJogada.getObjetoAnimacao(), thread);
-		}
-		thread.start();
-
+		adicionaJogadaCliente();
 	}
 
 	private Botao obterUmCobrador(Time time) {
@@ -1899,9 +1889,9 @@ public class ControleJogo {
 	}
 
 	public void processarGol(Botao botao) {
+		setDica("gol");
 		controlePartida.processarGol(botao);
 		Logger.logar("Gol " + botao.getTime());
-		setDica("gol");
 
 	}
 
@@ -2197,6 +2187,7 @@ public class ControleJogo {
 						}
 					}
 					setPontoClicado(null);
+					adicionaJogadaCliente();
 					return returnGoleiro;
 				}
 			}
@@ -2310,6 +2301,21 @@ public class ControleJogo {
 		return true;
 	}
 
+	public void adicionaJogadaCliente() {
+		if (!isJogoOnlineSrvidor()) {
+			return;
+		}
+		animacaoJogada = new Animacao();
+		animacaoJogada.setObjetoAnimacao(bola.getId());
+		adicionaAnimacaoCliente();
+		Animador animador = new Animador(animacaoJogada, this);
+		Thread thread = new Thread(animador);
+		synchronized (botoesComThread) {
+			botoesComThread.put(animacaoJogada.getObjetoAnimacao(), thread);
+		}
+		thread.start();
+	}
+
 	public void sairJogoOnline() {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
@@ -2332,9 +2338,7 @@ public class ControleJogo {
 		jogadaMesa11.setPontoClicado(p1);
 		jogadaMesa11.setPontoSolto(p2);
 		if (jogadaMesa11.getPontoClicado() == null
-				|| jogadaMesa11.getPontoSolto() == null
-				|| (timeStampUltimaJogadaOnline + 500) > System
-						.currentTimeMillis()) {
+				|| jogadaMesa11.getPontoSolto() == null) {
 			setDica(ConstantesMesa11.JOGADA_INVALIDA);
 			setPontoClicado(null);
 			setPontoPasando(null);
@@ -2344,11 +2348,9 @@ public class ControleJogo {
 		mesa11to.setData(jogadaMesa11);
 		mesa11to.setComando(ConstantesMesa11.JOGADA);
 		esperandoJogadaOnline = true;
-		timeStampUltimaJogadaOnline = System.currentTimeMillis();
 		Object ret = enviarObjeto(mesa11to);
 		Logger.logar("JOGADA ret" + ret);
 		if (!ConstantesMesa11.OK.equals(ret)) {
-			setDica(ConstantesMesa11.PROBLEMA_REDE);
 			esperandoJogadaOnline = false;
 		}
 		setPontoClicado(null);
@@ -2388,19 +2390,13 @@ public class ControleJogo {
 		this.esperandoJogadaOnline = esperandoJogadaOnline;
 	}
 
-	public void configuraAnimacaoServidor() {
+	public void adicionaAnimacaoCliente() {
 		if (!isJogoOnlineSrvidor()) {
 			return;
 		}
 		animacaoJogada = new Animacao();
-		adicionaAnimacaoCliente();
-	}
-
-	private void adicionaAnimacaoCliente() {
-		if (!isJogoOnlineSrvidor()) {
-			return;
-		}
 		animacaoJogada.setTimeStamp(System.currentTimeMillis());
+		animacaoJogada.setDica(getDica());
 		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
 			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
 		}
@@ -2410,9 +2406,6 @@ public class ControleJogo {
 		}
 	}
 	public String getDica() {
-		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
-			return dadosJogoSrvMesa11.getDica();
-		}
 		return dica;
 	}
 
@@ -3358,7 +3351,6 @@ public class ControleJogo {
 			mesa11to.setData(jogadaMesa11);
 			mesa11to.setComando(ConstantesMesa11.JOGADA_ASSITIDA);
 			esperandoJogadaOnline = true;
-			timeStampUltimaJogadaOnline = System.currentTimeMillis();
 			Object ret = enviarObjeto(mesa11to);
 		}
 		Logger.logar("setarBtnAssistido() " + botaoSelecionado);

@@ -74,7 +74,7 @@ public class MonitorJogo extends Thread {
 			public void run() {
 				for (int i = 0; i < 50; i++) {
 					if (controleJogo != null)
-						controleJogo.getDadosJogoSrvMesa11().setDica("fimJogo");
+						controleJogo.setDica("fimJogo");
 					try {
 						dormir(150);
 					} catch (InterruptedException e) {
@@ -124,7 +124,6 @@ public class MonitorJogo extends Thread {
 	private void obterJogada() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_JOGADA);
-		Logger.logar("Pedio jogada " + indexProxJogada);
 		mesa11to.setData(
 				dadosJogoSrvMesa11.getNomeJogo() + "-" + indexProxJogada);
 		Object ret = enviarObjeto(mesa11to);
@@ -136,6 +135,7 @@ public class MonitorJogo extends Thread {
 				return;
 			}
 			bufferAnimacao.addElement(animacao);
+			Logger.logar("Obteve jogada " + indexProxJogada);
 			indexProxJogada++;
 		}
 	}
@@ -153,13 +153,16 @@ public class MonitorJogo extends Thread {
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
-			controleJogo.centralizaBola();
+			//controleJogo.centralizaBotao(controleJogo.getBola());
+			controleJogo.bolaCentro();
 			Logger.logar("Centralizou animacao " + animacaoVez.getIndex());
 		}
+		controleJogo.setDica(animacaoVez.getDica());
 		controleJogo.executaAnimacao(animacaoVez);
 		controleJogo.setPontoClicado(null);
 		controleJogo.zeraBtnAssistido();
 		controleJogo.setEsperandoJogadaOnline(true);
+		Logger.logar("Executado animacao " + animacaoVez.getIndex());
 	}
 
 	private void iniciaJogo() {

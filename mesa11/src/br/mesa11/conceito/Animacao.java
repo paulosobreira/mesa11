@@ -13,6 +13,7 @@ public class Animacao implements Serializable {
 	private int index;
 	private long timeStamp;
 	private boolean executou;
+	private String dica;
 	private PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11;
 
 	public static void main(String[] args) {
@@ -94,6 +95,14 @@ public class Animacao implements Serializable {
 	public void setPosicaoBtnsSrvMesa11(
 			PosicaoBtnsSrvMesa11 posicaoBtnsSrvMesa11) {
 		this.posicaoBtnsSrvMesa11 = posicaoBtnsSrvMesa11;
+	}
+
+	public String getDica() {
+		return dica;
+	}
+
+	public void setDica(String dica) {
+		this.dica = dica;
 	}
 
 }

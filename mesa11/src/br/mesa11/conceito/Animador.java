@@ -40,9 +40,6 @@ public class Animador implements Runnable {
 		if (!controleJogo.isJogoOnlineCliente() && anim.isExecutou()) {
 			return;
 		}
-		// if (anim.isExecutou()) {
-		// return;
-		// }
 		Botao botao = (Botao) controleJogo.getBotoes()
 				.get(anim.getObjetoAnimacao());
 		List elements = anim.getPontosAnimacao();
@@ -91,7 +88,9 @@ public class Animador implements Runnable {
 						if (sleep > 15) {
 							sleep = 15;
 						}
-						Thread.sleep(sleep);
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							Thread.sleep(sleep);
+						}
 						porcentOldDiv10 = porcentDiv10;
 					}
 				} else {
@@ -102,7 +101,9 @@ public class Animador implements Runnable {
 						if (sleep > 17) {
 							sleep = 17;
 						}
-						Thread.sleep(sleep);
+						if (!controleJogo.isJogoOnlineSrvidor()) {
+							Thread.sleep(sleep);
+						}
 						porcentOldDiv10 = porcentDiv10;
 					}
 				}

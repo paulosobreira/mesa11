@@ -70,8 +70,8 @@ public class MesaPanel extends JPanel {
 
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
-	private static boolean debug = true;
-	private boolean desenhaBkg = true;
+	private static boolean debug = false;
+	private boolean desenhaBkg = false;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -132,7 +132,6 @@ public class MesaPanel extends JPanel {
 	public BufferedImage mesa11Bkg;
 
 	private boolean problemasRede;
-	private boolean desenhaProblemaRede;
 	private int contProblemaRede;
 	public long lastZoomChange;
 	private int contMostraLag;
@@ -150,7 +149,7 @@ public class MesaPanel extends JPanel {
 				Logger.logarExept(e);
 			}
 		}
-		if (debug) {
+		if (!desenhaBkg) {
 			grama1 = null;
 			grama2 = null;
 			green2 = new Color(240, 240, 240);
@@ -336,7 +335,6 @@ public class MesaPanel extends JPanel {
 		desenhaInfoBotao(g2d);
 		desenhaDica(g2d);
 		desenhaGolsJogo(g2d);
-		desenhaProblemaRede(g2d);
 		desenhaLag(g2d);
 		desenhaDebugJogadaCpu(g2d);
 		Toolkit.getDefaultToolkit().sync();
@@ -409,29 +407,6 @@ public class MesaPanel extends JPanel {
 
 		}
 		desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
-	}
-
-	private void desenhaProblemaRede(Graphics2D g2d) {
-		if (!controleJogo.isJogoIniciado()) {
-			return;
-		}
-		if (!problemasRede) {
-			return;
-		}
-		int y = limitesViewPort.getBounds().y + 40;
-		int largura = Util.larguraTexto(Lang.msg("problemaRede"), g2d);
-		int newx = limitesViewPort.getBounds().x
-				+ (limitesViewPort.getBounds().width / 2) - largura / 3;
-		if (desenhaProblemaRede && contProblemaRede > 0) {
-			g2d.setColor(Color.yellow);
-			g2d.fillRoundRect(newx, y, largura + 10, 20, 0, 0);
-			g2d.setColor(Color.BLACK);
-			g2d.drawString(Lang.msg("problemaRede"), newx + 5, y + 15);
-			contProblemaRede = 10;
-		}
-		desenhaProblemaRede = !desenhaProblemaRede;
-		contProblemaRede--;
-
 	}
 
 	public boolean isProblemasRede() {
@@ -837,13 +812,9 @@ public class MesaPanel extends JPanel {
 		}
 
 		Color corTexto = null;
-		if (ConstantesMesa11.PROBLEMA_REDE.equals(dica)) {
-			g2d.setColor(vermelho);
-			corTexto = Color.WHITE;
-		} else {
-			g2d.setColor(brancoClaro);
-			corTexto = Color.BLACK;
-		}
+
+		g2d.setColor(brancoClaro);
+		corTexto = Color.BLACK;
 		fontOri = g2d.getFont();
 		if (!Util.isNullOrEmpty(dica) && !dica.startsWith("dica"))
 			g2d.setFont(new Font(fontOri.getName(), fontOri.getStyle(), 48));

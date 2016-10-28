@@ -125,6 +125,6 @@ public class ControleEvento implements Runnable {
 				}
 			}
 		}
-		controleJogo.configuraAnimacaoServidor();
+		controleJogo.adicionaAnimacaoCliente();
 	}
 }

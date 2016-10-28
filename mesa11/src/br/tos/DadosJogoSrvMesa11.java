@@ -37,7 +37,6 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoJogoFormatado;
 	private String tempoRestanteJogoFormatado;
 	private String tempoJogadaRestanteJogoFormatado;
-	private String dica;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
 
@@ -97,14 +96,6 @@ public class DadosJogoSrvMesa11 implements Serializable {
 		this.processando = processando;
 	}
 
-	public String getDica() {
-		return dica;
-	}
-
-	public void setDica(String dica) {
-		this.dica = dica;
-	}
-
 	public String getTempoJogadaRestanteJogoFormatado() {
 		return tempoJogadaRestanteJogoFormatado;
 	}
@@ -118,7 +109,8 @@ public class DadosJogoSrvMesa11 implements Serializable {
 		return tempoRestanteJogoFormatado;
 	}
 
-	public void setTempoRestanteJogoFormatado(String tempoRestanteJogoFormatado) {
+	public void setTempoRestanteJogoFormatado(
+			String tempoRestanteJogoFormatado) {
 		this.tempoRestanteJogoFormatado = tempoRestanteJogoFormatado;
 	}
 
@@ -222,7 +214,8 @@ public class DadosJogoSrvMesa11 implements Serializable {
 		return SegundoUniformeTimeVisita;
 	}
 
-	public void setSegundoUniformeTimeVisita(boolean segundoUniformeTimeVisita) {
+	public void setSegundoUniformeTimeVisita(
+			boolean segundoUniformeTimeVisita) {
 		SegundoUniformeTimeVisita = segundoUniformeTimeVisita;
 	}
 
@@ -327,11 +320,10 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	public String toString() {
 		return "DadosJogoSrvMesa11 [SegundoUniformeTimeCasa="
 				+ SegundoUniformeTimeCasa + ", SegundoUniformeTimeVisita="
-				+ SegundoUniformeTimeVisita + ", bolaCampoCasa="
-				+ bolaCampoCasa + ", bolaCampoVisita=" + bolaCampoVisita
-				+ ", dica=" + dica + ", golJogador=" + golJogador
-				+ ", golsCasa=" + golsCasa + ", golsVisita=" + golsVisita
-				+ ", idRodadaCampeonato=" + idRodadaCampeonato
+				+ SegundoUniformeTimeVisita + ", bolaCampoCasa=" + bolaCampoCasa
+				+ ", bolaCampoVisita=" + bolaCampoVisita + ", golJogador="
+				+ golJogador + ", golsCasa=" + golsCasa + ", golsVisita="
+				+ golsVisita + ", idRodadaCampeonato=" + idRodadaCampeonato
 				+ ", jogoCampeonatoIniciado=" + jogoCampeonatoIniciado
 				+ ", jogoIniciado=" + jogoIniciado + ", jogoTerminado="
 				+ jogoTerminado + ", jogoVsCpu=" + jogoVsCpu + ", nomeCriador="

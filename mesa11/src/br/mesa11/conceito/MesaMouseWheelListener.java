@@ -23,7 +23,9 @@ public class MesaMouseWheelListener implements MouseWheelListener {
 		if (controleJogo.isAnimando()) {
 			return;
 		}
-
+		if(controleJogo.isJogoOnlineCliente()){
+			return;
+		}
 		double newzoom = mesaPanel.mouseZoom;
 		newzoom += e.getWheelRotation() / 150.0;
 

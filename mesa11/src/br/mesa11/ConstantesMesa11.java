@@ -96,7 +96,6 @@ public class ConstantesMesa11 {
 	public static final String SAIR_JOGO = "SAIR_JOGO";
 	public static final int TAMANHO_MAX_NOME_ABREV_TIME = 3;
 	public static final int TAMANHO_MAX_NOME_TIME = 50;
-	public static final String PROBLEMA_REDE = "problemaRede";
 	public static final String JOGADA_INVALIDA = "jogadaInvalida";
 	public static final String CHUTE_GOLEIRO = "CHUTE_GOLEIRO";
 	public static final String VERIFICA_POSICAO_DIFF_BOTOES = "VERIFICA_POSICAO_DIFF_BOTOES";
