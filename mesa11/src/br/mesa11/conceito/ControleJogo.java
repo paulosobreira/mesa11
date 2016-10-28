@@ -2396,15 +2396,18 @@ public class ControleJogo {
 		if (!isJogoOnlineSrvidor()) {
 			return;
 		}
-		animacaoJogada = new Animacao();
-		animacaoJogada.setSequencia(sequenciaAnimacao++);
-		animacaoJogada.setDica(getDica());
-		if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
-			animacaoJogada.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
-		}
-		if (getAnimacoesCliente() != null) {
-			getAnimacoesCliente().put(animacaoJogada.getSequencia(),
-					animacaoJogada);
+		synchronized (sequenciaAnimacao) {
+			animacaoJogada = new Animacao();
+			animacaoJogada.setSequencia(sequenciaAnimacao++);
+			animacaoJogada.setDica(getDica());
+			if (animacaoJogada.getPosicaoBtnsSrvMesa11() == null) {
+				animacaoJogada
+						.setPosicaoBtnsSrvMesa11(gerarDadosPosicaoBotoes());
+			}
+			if (getAnimacoesCliente() != null) {
+				getAnimacoesCliente().put(animacaoJogada.getSequencia(),
+						animacaoJogada);
+			}
 		}
 	}
 	public String getDica() {
