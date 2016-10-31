@@ -414,6 +414,21 @@ public class ControleJogo {
 		novoPontoTela = p;
 		// pontoPasando = bola.getCentro();
 	}
+	
+	public boolean isCetralizadoBola(){
+		if(novoPontoTela==null){
+			return true;
+		}
+		if (bola == null || bola.getCentro() == null) {
+			return true;
+		}
+		Point p = new Point(
+				(int) (bola.getCentro().x * mesaPanel.zoom)
+						- (scrollPane.getViewport().getWidth() / 2),
+				(int) (bola.getCentro().y * mesaPanel.zoom)
+						- (scrollPane.getViewport().getHeight() / 2));
+		return novoPontoTela.equals(p);
+	}
 
 	public Shape limitesViewPort() {
 		if (velhoPontoTela == null) {

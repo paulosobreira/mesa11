@@ -130,6 +130,9 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
+			if(animacao==null){
+				return;
+			}
 			if (bufferAnimacao.contains(animacao)
 					|| animacoesExecutadas.contains(animacao)) {
 				return;
@@ -150,11 +153,19 @@ public class MonitorJogo extends Thread {
 		}
 		Animacao animacaoVez = bufferAnimacao.remove(0);
 		animacoesExecutadas.addElement(animacaoVez);
+		Logger.logar("animacaoVez " + animacaoVez);
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
-			// controleJogo.centralizaBotao(controleJogo.getBola());
-			controleJogo.bolaCentro();
+			while (!controleJogo.isCetralizadoBola()) {
+				try {
+					Thread.sleep(17);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				controleJogo.centralizaBotao(controleJogo.getBola());
+			}
+			//controleJogo.centralizaBola();
 			Logger.logar("Centralizou animacao " + animacaoVez.getSequencia());
 		}
 		controleJogo.setDica(animacaoVez.getDica());
