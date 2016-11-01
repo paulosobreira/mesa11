@@ -414,9 +414,9 @@ public class ControleJogo {
 		novoPontoTela = p;
 		// pontoPasando = bola.getCentro();
 	}
-	
-	public boolean isCetralizadoBola(){
-		if(novoPontoTela==null){
+
+	public boolean isCetralizadoBola() {
+		if (novoPontoTela == null) {
 			return true;
 		}
 		if (bola == null || bola.getCentro() == null) {
@@ -427,7 +427,7 @@ public class ControleJogo {
 						- (scrollPane.getViewport().getWidth() / 2),
 				(int) (bola.getCentro().y * mesaPanel.zoom)
 						- (scrollPane.getViewport().getHeight() / 2));
-		return novoPontoTela.equals(p);
+		return GeoUtil.distaciaEntrePontos(novoPontoTela, p) < 10;
 	}
 
 	public Shape limitesViewPort() {

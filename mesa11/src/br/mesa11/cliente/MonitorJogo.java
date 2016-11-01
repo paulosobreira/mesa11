@@ -158,6 +158,7 @@ public class MonitorJogo extends Thread {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
 			while (!controleJogo.isCetralizadoBola()) {
+				Logger.logar(" !controleJogo.isCetralizadoBola() ");
 				try {
 					Thread.sleep(17);
 				} catch (InterruptedException e) {
