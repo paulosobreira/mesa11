@@ -18,7 +18,6 @@ public class MonitorJogo extends Thread {
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
-	private long tempoDormir = 1000;
 	private Integer indexProxJogada = 0;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
@@ -43,17 +42,19 @@ public class MonitorJogo extends Thread {
 				if (controleJogo == null && timesSelecionados()) {
 					iniciaJogo();
 				} else {
-					dormir(tempoDormir);
+					dormir(1000);
 				}
 				if (controleJogo != null) {
 					obterDadosJogo();
-					dormir(tempoDormir);
-					consumirJogada();
-					dormir(tempoDormir);
-					obterJogada();
 					jogoTerminado = controleJogo.isJogoTerminado();
 					if (jogoTerminado) {
 						controleJogo.setDica("fimJogo");
+						controleJogo.setEsperandoJogadaOnline(false);
+					}else{
+						dormir(500);
+						consumirJogada();
+						dormir(500);
+						obterJogada();						
 					}
 				}
 				if (controleChatCliente.getLatenciaReal() > 500
@@ -153,20 +154,23 @@ public class MonitorJogo extends Thread {
 		}
 		Animacao animacaoVez = bufferAnimacao.remove(0);
 		animacoesExecutadas.addElement(animacaoVez);
-		Logger.logar("animacaoVez " + animacaoVez);
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
+			int count = 0;
 			while (!controleJogo.isCetralizadoBola()) {
-				Logger.logar(" !controleJogo.isCetralizadoBola() ");
 				try {
 					Thread.sleep(17);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				controleJogo.centralizaBotao(controleJogo.getBola());
+				count++;
+				if(count>50){
+					Logger.logar("count>50 ");
+					break;
+				}
 			}
-			//controleJogo.centralizaBola();
 			Logger.logar("Centralizou animacao " + animacaoVez.getSequencia());
 		}
 		controleJogo.setDica(animacaoVez.getDica());
@@ -201,7 +205,6 @@ public class MonitorJogo extends Thread {
 		controleJogo.inicializaVideo();
 		controleJogo.centroCampo();
 		controleJogo.setZoom(0.4);
-		tempoDormir = 250;
 	}
 
 	private boolean timesSelecionados() {

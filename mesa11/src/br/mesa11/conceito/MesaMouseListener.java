@@ -37,6 +37,9 @@ public class MesaMouseListener extends MouseAdapter {
 		if (controleJogo.isJogoTerminado()) {
 			return;
 		}
+		if(controleJogo.isEsperandoJogadaOnline()){
+			return;
+		}
 		if (controleJogo.isAnimando()
 				|| controleJogo.getPontoClicado() == null
 						&& controleJogo.getPontoPasando() == null
@@ -61,11 +64,17 @@ public class MesaMouseListener extends MouseAdapter {
 		if (controleJogo.isAssistido()) {
 			return;
 		}
+		if(controleJogo.isEsperandoJogadaOnline()){
+			return;
+		}
 		selecionaBotao(e);
 	}
 
 	private void selecionaBotao(MouseEvent e) {
 		if (controleJogo.isJogoTerminado()) {
+			return;
+		}
+		if(controleJogo.isEsperandoJogadaOnline()){
 			return;
 		}
 		Point pontoClicado = new Point((int) (e.getPoint().x / mesaPanel.zoom),
