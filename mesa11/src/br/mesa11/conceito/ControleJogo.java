@@ -118,6 +118,7 @@ public class ControleJogo {
 	private Point posicaoBolaJogada;
 	private Thread autoCloseProgressBar;
 	private boolean autoMira;
+	private boolean controleEventosRodando;
 	private Botao btnAssistido;
 	Map<Long, Botao> botoesCopy;
 	private Long sequenciaAnimacao = 0l;
@@ -2127,6 +2128,9 @@ public class ControleJogo {
 	}
 
 	public boolean efetuaJogada(Point p1, Point p2) {
+		if(isControleEventosRodando()){
+			return false;
+		}
 		dica = null;
 		if (bola != null) {
 			posicaoBolaJogada = bola.getCentro();
@@ -2437,9 +2441,6 @@ public class ControleJogo {
 	}
 
 	public boolean isJogoTerminado() {
-		if (isJogoOnlineCliente() && dadosJogoSrvMesa11 != null) {
-			return dadosJogoSrvMesa11.isJogoTerminado();
-		}
 		return jogoTerminado;
 	}
 
@@ -3483,6 +3484,14 @@ public class ControleJogo {
 
 	public Long getSequenciaAnimacao() {
 		return sequenciaAnimacao;
+	}
+
+	public boolean isControleEventosRodando() {
+		return controleEventosRodando;
+	}
+
+	public void setControleEventosRodando(boolean controleEventosRodando) {
+		this.controleEventosRodando = controleEventosRodando;
 	}
 
 }

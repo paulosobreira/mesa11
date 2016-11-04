@@ -18,6 +18,12 @@ public class ControleEvento implements Runnable {
 
 	@Override
 	public void run() {
+		controleJogo.setControleEventosRodando(true);
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		while (controleJogo.isAnimando()) {
 			try {
 				Thread.sleep(100);
@@ -126,5 +132,6 @@ public class ControleEvento implements Runnable {
 			}
 		}
 		controleJogo.adicionaAnimacaoCliente();
+		controleJogo.setControleEventosRodando(false);
 	}
 }

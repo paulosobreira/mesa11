@@ -37,6 +37,7 @@ public class MonitorJogo extends Thread {
 	@Override
 	public void run() {
 		boolean interrrupt = false;
+		int contJogoTerminado = 0;
 		while (!jogoTerminado && !interrrupt) {
 			try {
 				if (controleJogo == null && timesSelecionados()) {
@@ -46,10 +47,15 @@ public class MonitorJogo extends Thread {
 				}
 				if (controleJogo != null) {
 					obterDadosJogo();
-					jogoTerminado = controleJogo.isJogoTerminado();
-					if (jogoTerminado) {
+					if (dadosJogoSrvMesa11.isJogoTerminado()) {
+						Logger.logar("Fim de jogo");
 						controleJogo.setDica("fimJogo");
 						controleJogo.setEsperandoJogadaOnline(false);
+						if(contJogoTerminado>5){
+							jogoTerminado = true;
+							controleJogo.setJogoTerminado(true);
+						}
+						contJogoTerminado++;
 					}else{
 						dormir(500);
 						consumirJogada();
@@ -69,23 +75,7 @@ public class MonitorJogo extends Thread {
 				Logger.logarExept(e);
 			}
 		}
-		Logger.logar("Fim de jogo");
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				for (int i = 0; i < 50; i++) {
-					if (controleJogo != null)
-						controleJogo.setDica("fimJogo");
-					try {
-						dormir(150);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		};
-		Thread thread = new Thread(runnable);
-		thread.start();
+		
 	}
 
 	private void dormir(long i) throws InterruptedException {
@@ -148,8 +138,8 @@ public class MonitorJogo extends Thread {
 		if (controleJogo.isAnimando()) {
 			return;
 		}
+		controleJogo.setEsperandoJogadaOnline(false);
 		if (bufferAnimacao.isEmpty()) {
-			controleJogo.setEsperandoJogadaOnline(false);
 			return;
 		}
 		Animacao animacaoVez = bufferAnimacao.remove(0);
