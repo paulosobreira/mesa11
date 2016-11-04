@@ -37,7 +37,6 @@ public class MonitorJogo extends Thread {
 	@Override
 	public void run() {
 		boolean interrrupt = false;
-		int contJogoTerminado = 0;
 		while (!jogoTerminado && !interrrupt) {
 			try {
 				if (controleJogo == null && timesSelecionados()) {
@@ -51,11 +50,8 @@ public class MonitorJogo extends Thread {
 						Logger.logar("Fim de jogo");
 						controleJogo.setDica("fimJogo");
 						controleJogo.setEsperandoJogadaOnline(false);
-						if(contJogoTerminado>5){
-							jogoTerminado = true;
-							controleJogo.setJogoTerminado(true);
-						}
-						contJogoTerminado++;
+						jogoTerminado = true;
+						controleJogo.setJogoTerminado(true);
 					}else{
 						dormir(500);
 						consumirJogada();
