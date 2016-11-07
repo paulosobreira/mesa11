@@ -1,5 +1,6 @@
 package br.mesa11.cliente;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 import br.applet.Mesa11Applet;
@@ -52,11 +53,11 @@ public class MonitorJogo extends Thread {
 						controleJogo.setEsperandoJogadaOnline(false);
 						jogoTerminado = true;
 						controleJogo.setJogoTerminado(true);
-					}else{
+					} else {
 						dormir(500);
 						consumirJogada();
 						dormir(500);
-						obterJogada();						
+						obterJogada();
 					}
 				}
 				if (controleChatCliente.getLatenciaReal() > 500
@@ -71,7 +72,7 @@ public class MonitorJogo extends Thread {
 				Logger.logarExept(e);
 			}
 		}
-		
+
 	}
 
 	private void dormir(long i) throws InterruptedException {
@@ -85,16 +86,12 @@ public class MonitorJogo extends Thread {
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);
 		if (ret == null) {
-			Logger.logar(
-					"atualizaDadosJogoSrvMesa11 ConstantesMesa11.OBTER_DADOS_JOGO == null");
 			return;
 		}
 		if (ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			dadosJogoSrvMesa11 = (DadosJogoSrvMesa11) mesa11to.getData();
 			if (dadosJogoSrvMesa11 == null) {
-				Logger.logar(
-						"atualizaDadosJogoSrvMesa11 dadosJogoSrvMesa11 == null");
 				return;
 			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
@@ -117,7 +114,7 @@ public class MonitorJogo extends Thread {
 		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			Animacao animacao = (Animacao) mesa11to.getData();
-			if(animacao==null){
+			if (animacao == null) {
 				return;
 			}
 			if (bufferAnimacao.contains(animacao)
@@ -143,18 +140,12 @@ public class MonitorJogo extends Thread {
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
-			int count = 0;
-			while (!controleJogo.isCetralizadoBola()) {
+			for (int i = 0; i < 30; i++) {
+				controleJogo.centralizaBotao(controleJogo.getBola());
 				try {
-					Thread.sleep(17);
+					Thread.sleep(10);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-				}
-				controleJogo.centralizaBotao(controleJogo.getBola());
-				count++;
-				if(count>50){
-					Logger.logar("count>50 ");
-					break;
 				}
 			}
 			Logger.logar("Centralizou animacao " + animacaoVez.getSequencia());

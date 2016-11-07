@@ -37,17 +37,17 @@ public class AtualizadorVisual extends Thread {
 								&& controleJogo.getScrollPane()
 										.getViewport() != null
 								&& controleJogo.getNovoPontoTela() != null) {
-							List drawBresenhamLine = GeoUtil.drawBresenhamLine(
+							List linha = GeoUtil.drawBresenhamLine(
 									controleJogo.getScrollPane().getViewport()
 											.getViewPosition(),
 									controleJogo.getNovoPontoTela());
-							if (drawBresenhamLine.isEmpty()) {
+							if (linha.isEmpty()) {
 								controleJogo.getScrollPane().getViewport()
 										.setViewPosition(controleJogo
 												.getNovoPontoTela());
 							} else {
-								Point point = (Point) drawBresenhamLine
-										.get(drawBresenhamLine.size() - 1);
+								Point point = (Point) linha
+										.get(linha.size() - 1);
 								controleJogo.getScrollPane().getViewport()
 										.setViewPosition(point);
 							}

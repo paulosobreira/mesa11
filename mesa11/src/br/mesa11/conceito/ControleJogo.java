@@ -416,21 +416,6 @@ public class ControleJogo {
 		// pontoPasando = bola.getCentro();
 	}
 
-	public boolean isCetralizadoBola() {
-		if (novoPontoTela == null) {
-			return true;
-		}
-		if (bola == null || bola.getCentro() == null) {
-			return true;
-		}
-		Point p = new Point(
-				(int) (bola.getCentro().x * mesaPanel.zoom)
-						- (scrollPane.getViewport().getWidth() / 2),
-				(int) (bola.getCentro().y * mesaPanel.zoom)
-						- (scrollPane.getViewport().getHeight() / 2));
-		return GeoUtil.distaciaEntrePontos(novoPontoTela, p) < 10;
-	}
-
 	public Shape limitesViewPort() {
 		if (velhoPontoTela == null) {
 			return null;
@@ -2128,7 +2113,7 @@ public class ControleJogo {
 	}
 
 	public boolean efetuaJogada(Point p1, Point p2) {
-		if(isControleEventosRodando()){
+		if (isControleEventosRodando()) {
 			return false;
 		}
 		dica = null;
