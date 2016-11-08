@@ -1,6 +1,5 @@
 package br.mesa11.cliente;
 
-import java.util.Iterator;
 import java.util.Vector;
 
 import br.applet.Mesa11Applet;
@@ -19,7 +18,7 @@ public class MonitorJogo extends Thread {
 	private ControleJogo controleJogo;
 	private Mesa11Applet mesa11Applet;
 	private String timeClienteOnline;
-	private Integer indexProxJogada = 0;
+	private Long indexProxJogada = 0l;
 	private boolean jogoTerminado;
 	private Vector<Animacao> bufferAnimacao = new Vector<Animacao>();
 	private Vector<Animacao> animacoesExecutadas = new Vector<Animacao>();
@@ -54,11 +53,9 @@ public class MonitorJogo extends Thread {
 						jogoTerminado = true;
 						controleJogo.setJogoTerminado(true);
 					} else {
-						dormir(500);
 						consumirJogada();
-						dormir(500);
-						obterJogada();
 					}
+					dormir(200);
 				}
 				if (controleChatCliente.getLatenciaReal() > 500
 						&& controleJogo != null) {
@@ -82,7 +79,9 @@ public class MonitorJogo extends Thread {
 	private void obterDadosJogo() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
-		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setData(
+				dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setIndexProxJogada(indexProxJogada);
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);
 		if (ret == null) {
@@ -102,18 +101,8 @@ public class MonitorJogo extends Thread {
 						.add(dadosJogoSrvMesa11.getGolJogador());
 			}
 			controleJogo.setDadosJogoSrvMesa11(dadosJogoSrvMesa11);
-		}
-	}
 
-	private void obterJogada() throws InterruptedException {
-		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setComando(ConstantesMesa11.OBTER_JOGADA);
-		mesa11to.setData(
-				dadosJogoSrvMesa11.getNomeJogo() + "-" + indexProxJogada);
-		Object ret = enviarObjeto(mesa11to);
-		if (ret != null && ret instanceof NnpeTO) {
-			mesa11to = (NnpeTO) ret;
-			Animacao animacao = (Animacao) mesa11to.getData();
+			Animacao animacao = dadosJogoSrvMesa11.getAnimacao();
 			if (animacao == null) {
 				return;
 			}
@@ -131,8 +120,8 @@ public class MonitorJogo extends Thread {
 		if (controleJogo.isAnimando()) {
 			return;
 		}
-		controleJogo.setEsperandoJogadaOnline(false);
 		if (bufferAnimacao.isEmpty()) {
+			controleJogo.setEsperandoJogadaOnline(false);
 			return;
 		}
 		Animacao animacaoVez = bufferAnimacao.remove(0);
@@ -140,12 +129,16 @@ public class MonitorJogo extends Thread {
 		if (animacaoVez.getPosicaoBtnsSrvMesa11() != null) {
 			controleJogo.atualizaPosicoesBotoes(
 					animacaoVez.getPosicaoBtnsSrvMesa11());
-			for (int i = 0; i < 30; i++) {
-				controleJogo.centralizaBotao(controleJogo.getBola());
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+			if (controleJogo.verificaBolaCentro()) {
+				controleJogo.centralizaBola();
+			} else {
+				for (int i = 0; i < 30; i++) {
+					controleJogo.centralizaBotao(controleJogo.getBola());
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			Logger.logar("Centralizou animacao " + animacaoVez.getSequencia());

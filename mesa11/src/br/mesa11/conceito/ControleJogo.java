@@ -2419,9 +2419,6 @@ public class ControleJogo {
 	}
 
 	public void setDica(String dica) {
-		if (isJogoOnlineCliente() && "fimJogo".equals(dica)) {
-			return;
-		}
 		this.dica = dica;
 	}
 

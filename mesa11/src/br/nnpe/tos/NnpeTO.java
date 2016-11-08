@@ -15,6 +15,8 @@ public class NnpeTO implements Serializable {
 
 	private int tamListaGols;
 
+	private Long indexProxJogada;
+
 	private byte[] dataBytes;
 
 	public byte[] getDataBytes() {
@@ -63,6 +65,14 @@ public class NnpeTO implements Serializable {
 				+ ", sessaoCliente=" + sessaoCliente + ", tamListaGols="
 				+ tamListaGols + ", dataBytes=" + Arrays.toString(dataBytes)
 				+ "]";
+	}
+
+	public Long getIndexProxJogada() {
+		return indexProxJogada;
+	}
+
+	public void setIndexProxJogada(Long indexProxJogada) {
+		this.indexProxJogada = indexProxJogada;
 	}
 
 }

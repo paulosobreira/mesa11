@@ -39,6 +39,7 @@ public class DadosJogoSrvMesa11 implements Serializable {
 	private String tempoJogadaRestanteJogoFormatado;
 	private GolJogador golJogador;
 	private long idRodadaCampeonato;
+	private Animacao animacao;
 
 	public boolean isAutoMira() {
 		return autoMira;
@@ -341,6 +342,14 @@ public class DadosJogoSrvMesa11 implements Serializable {
 				+ ", tempoRestanteJogoFormatado=" + tempoRestanteJogoFormatado
 				+ ", timeCasa=" + timeCasa + ", timeVez=" + timeVez
 				+ ", timeVisita=" + timeVisita + ", wo=" + wo + "]";
+	}
+
+	public Animacao getAnimacao() {
+		return animacao;
+	}
+
+	public void setAnimacao(Animacao animacao) {
+		this.animacao = animacao;
 	}
 
 }
