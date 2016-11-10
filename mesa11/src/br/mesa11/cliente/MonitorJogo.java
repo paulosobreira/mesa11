@@ -55,14 +55,7 @@ public class MonitorJogo extends Thread {
 					} else {
 						consumirJogada();
 					}
-					dormir(200);
-				}
-				if (controleChatCliente.getLatenciaReal() > 500
-						&& controleJogo != null) {
-					Logger.logar("controleJogo.setProblemasRede(true);");
-					controleJogo.setProblemasRede(true);
-				} else if (controleJogo != null) {
-					controleJogo.setProblemasRede(false);
+					dormir(150);
 				}
 			} catch (InterruptedException e) {
 				interrrupt = true;

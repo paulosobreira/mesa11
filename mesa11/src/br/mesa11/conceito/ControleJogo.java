@@ -3274,13 +3274,6 @@ public class ControleJogo {
 
 	}
 
-	public void setProblemasRede(boolean b) {
-		if (mesaPanel != null) {
-			mesaPanel.setProblemasRede(b);
-		}
-
-	}
-
 	public Point2D getPontoPasandoZoom() {
 		if (pontoPasando == null) {
 			return null;

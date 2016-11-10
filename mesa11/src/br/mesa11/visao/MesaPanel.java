@@ -409,14 +409,6 @@ public class MesaPanel extends JPanel {
 		desenhaBotao((Botao) botoes.get(new Long(0)), g2d);
 	}
 
-	public boolean isProblemasRede() {
-		return problemasRede;
-	}
-
-	public void setProblemasRede(boolean problemasRede) {
-		this.problemasRede = problemasRede;
-	}
-
 	private void desenhaSombraGoleiro(Graphics2D g2d, Map botoes) {
 		if (!controleJogo.isJogoIniciado()) {
 			return;
