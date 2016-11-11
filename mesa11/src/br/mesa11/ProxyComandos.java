@@ -36,8 +36,8 @@ public class ProxyComandos {
 		controlePersistencia = new ControlePersistencia(webDir, webInfDir);
 		controleJogosServidor = new ControleJogosServidor(dadosMesa11,
 				controlePersistencia, this);
-		controleCampeonatoServidor = new ControleCampeonatoServidor(
-				dadosMesa11, controlePersistencia, this, controleJogosServidor);
+		controleCampeonatoServidor = new ControleCampeonatoServidor(dadosMesa11,
+				controlePersistencia, this, controleJogosServidor);
 		monitorAtividade = new MonitorAtividade(this);
 		monitorAtividade.start();
 	}
@@ -48,85 +48,86 @@ public class ProxyComandos {
 			return atualizarDadosVisao(mesa11TO);
 		} else if (ConstantesMesa11.VERIFICA_POSICAO_DIFF_BOTOES
 				.equals(mesa11TO.getComando())) {
-			return controleJogosServidor
-					.verificaPosicaoDiffBotoes(((String) mesa11TO.getData())
-							.split("-"));
-		} else if (ConstantesMesa11.OBTER_DADOS_JOGO.equals(mesa11TO
-				.getComando())) {
+			return controleJogosServidor.verificaPosicaoDiffBotoes(
+					((String) mesa11TO.getData()).split("-"));
+		} else if (ConstantesMesa11.OBTER_DADOS_JOGO
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.obterDadosJogo(mesa11TO);
 		} else if (ConstantesMesa11.JOGADA.equals(mesa11TO.getComando())) {
-			return controleJogosServidor.jogada((JogadaMesa11) mesa11TO
-					.getData());
-		} else if (ConstantesMesa11.JOGADA_ASSITIDA.equals(mesa11TO.getComando())) {
-			return controleJogosServidor.jogadaAssitida((JogadaMesa11) mesa11TO
-					.getData());
+			return controleJogosServidor
+					.jogada((JogadaMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.JOGADA_ASSITIDA
+				.equals(mesa11TO.getComando())) {
+			return controleJogosServidor
+					.jogadaAssitida((JogadaMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.SAIR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.sairJogo((String) mesa11TO.getData());
 		} else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
 			return controleLogin.logar((ClienteMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.NOVO_USUARIO.equals(mesa11TO.getComando())) {
-			return controleLogin.cadastrarUsuario((ClienteMesa11) mesa11TO
-					.getData());
+		} else if (ConstantesMesa11.NOVO_USUARIO
+				.equals(mesa11TO.getComando())) {
+			return controleLogin
+					.cadastrarUsuario((ClienteMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.RECUPERA_SENHA
 				.equals(mesa11TO.getComando())) {
-			return controleLogin.recuperaSenha((ClienteMesa11) mesa11TO
-					.getData());
-		} else if (ConstantesMesa11.NOVO_CAPCHA.equals(mesa11TO.getComando())) {
-			return controleLogin.novoCapcha();
-		} else if (ConstantesMesa11.ENVIAR_TEXTO.equals(mesa11TO.getComando())) {
-			return controleChatServidor.receberTexto((ClienteMesa11) mesa11TO
-					.getData());
+			return controleLogin
+					.recuperaSenha((ClienteMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.ENVIAR_TEXTO
+				.equals(mesa11TO.getComando())) {
+			return controleChatServidor
+					.receberTexto((ClienteMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.SALVAR_TIME.equals(mesa11TO.getComando())) {
 			return controlePersistencia.salvarTime((Time) mesa11TO.getData());
-		} else if (ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR.equals(mesa11TO
-				.getComando())) {
-			return controlePersistencia.obterTimesJogador((String) mesa11TO
-					.getData());
+		} else if (ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR
+				.equals(mesa11TO.getComando())) {
+			return controlePersistencia
+					.obterTimesJogador((String) mesa11TO.getData());
 		} else if (ConstantesMesa11.OBTER_TIME.equals(mesa11TO.getComando())) {
-			Time time = controlePersistencia.obterTime((String) mesa11TO
-					.getData());
+			Time time = controlePersistencia
+					.obterTime((String) mesa11TO.getData());
 			NnpeTO mesa11to = new NnpeTO();
 			mesa11to.setData(time);
 			return mesa11to;
-		} else if (ConstantesMesa11.OBTER_TODOS_TIMES.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.OBTER_TODOS_TIMES
+				.equals(mesa11TO.getComando())) {
 			return controlePersistencia.obterTodosTimes();
-		} else if (ConstantesMesa11.OBTER_TODOS_JOGADORES.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.OBTER_TODOS_JOGADORES
+				.equals(mesa11TO.getComando())) {
 			return controlePersistencia.obterTodosJogadores();
 		} else if (ConstantesMesa11.CRIAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.CRIAR_CAMPEONATO.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.CRIAR_CAMPEONATO
+				.equals(mesa11TO.getComando())) {
 			return controleCampeonatoServidor.criarCampeonato(mesa11TO);
-		} else if (ConstantesMesa11.LISTAR_CAMPEONATOS.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.LISTAR_CAMPEONATOS
+				.equals(mesa11TO.getComando())) {
 			return controleCampeonatoServidor.listarCampeonatos();
 		} else if (ConstantesMesa11.CRIAR_JOGO_CPU
 				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.criarJogoCpu((DadosJogoSrvMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.CRIAR_JOGO_CAMPEONATO.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.CRIAR_JOGO_CAMPEONATO
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.criarJogoCampeonato(mesa11TO);
 		} else if (ConstantesMesa11.ENTRAR_JOGO.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.entrarJogo((DadosJogoSrvMesa11) mesa11TO.getData());
-		} else if (ConstantesMesa11.ENVIAR_IMAGEM.equals(mesa11TO.getComando())) {
+		} else if (ConstantesMesa11.ENVIAR_IMAGEM
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.gravarImagem(mesa11TO);
-		} else if (ConstantesMesa11.OBTER_TODAS_IMAGENS.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.OBTER_TODAS_IMAGENS
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor.obterTodasImagens();
-		} else if (ConstantesMesa11.OBTER_JOGADORES_CAMPEONATO.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.OBTER_JOGADORES_CAMPEONATO
+				.equals(mesa11TO.getComando())) {
 			return controleJogosServidor
 					.obterJogadoresCampeonato((String) mesa11TO.getData());
 		} else if (ConstantesMesa11.VER_RODADA.equals(mesa11TO.getComando())) {
-			return controleJogosServidor.verRodada((CampeonatoMesa11) mesa11TO
-					.getData());
-		} else if (ConstantesMesa11.VER_CLASSIFICACAO.equals(mesa11TO
-				.getComando())) {
+			return controleJogosServidor
+					.verRodada((CampeonatoMesa11) mesa11TO.getData());
+		} else if (ConstantesMesa11.VER_CLASSIFICACAO
+				.equals(mesa11TO.getComando())) {
 			try {
 				return controleJogosServidor.obterClassificacao();
 			} finally {
@@ -135,11 +136,11 @@ public class ProxyComandos {
 
 		} else if (ConstantesMesa11.VER_CAMPEONATO
 				.equals(mesa11TO.getComando())) {
-			return controleCampeonatoServidor.verCampeonato((String) mesa11TO
-					.getData());
+			return controleCampeonatoServidor
+					.verCampeonato((String) mesa11TO.getData());
 
-		} else if (ConstantesMesa11.DADOS_CAMPEONATO.equals(mesa11TO
-				.getComando())) {
+		} else if (ConstantesMesa11.DADOS_CAMPEONATO
+				.equals(mesa11TO.getComando())) {
 			try {
 				return controleCampeonatoServidor
 						.dadosCampeonato((String) mesa11TO.getData());
@@ -154,8 +155,8 @@ public class ProxyComandos {
 
 	private Object atualizarDadosVisao(NnpeTO mesa11to) {
 		if (mesa11to.getSessaoCliente() != null) {
-			controleChatServidor.atualizaSessaoCliente(mesa11to
-					.getSessaoCliente());
+			controleChatServidor
+					.atualizaSessaoCliente(mesa11to.getSessaoCliente());
 		}
 		mesa11to.setData(dadosMesa11);
 		return mesa11to;
@@ -183,7 +184,8 @@ public class ProxyComandos {
 		controlePersistencia.gravarDados(mesa11Dados);
 	}
 
-	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(long idRodadaCampeonato) {
+	public RodadaCampeonatoMesa11 pesquisarRodadaPorId(
+			long idRodadaCampeonato) {
 		return controlePersistencia.pesquisarRodadaPorId(idRodadaCampeonato);
 	}
 

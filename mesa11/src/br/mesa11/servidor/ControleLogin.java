@@ -150,12 +150,6 @@ public class ControleLogin {
 		}
 
 	}
-	@Deprecated
-	public Object novoCapcha() {
-
-		return new ErroServ(Lang.msg("erroCapcha"));
-	}
-
 	public Object recuperaSenha(ClienteMesa11 clienteMesa11) {
 		Usuario usuario = new Usuario();
 		Session session = ControlePersistencia.getSession();

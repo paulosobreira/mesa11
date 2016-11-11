@@ -23,7 +23,8 @@ public class BotaoUtils {
 	public final static BasicStroke bordaBotao = new BasicStroke(4f,
 			BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 
-	public static BufferedImage desenhaUniformeGoleiro(Time time, int uniforme) {
+	public static BufferedImage desenhaUniformeGoleiro(Time time,
+			int uniforme) {
 		return desenhaUniformeGoleiro(time, uniforme, null);
 	}
 
@@ -54,68 +55,50 @@ public class BotaoUtils {
 		graphics.setColor(cor1);
 		graphics.fillRect(0, 0, Util.inte(botao.getDiamentro() * .7), 60);
 		graphics.setColor(cor2);
-		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
-				.inte(botao.getDiamentro() * .35), 60);
+		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0,
+				Util.inte(botao.getDiamentro() * .35), 60);
 		graphics.setColor(cor3);
 		graphics.setStroke(new BasicStroke(3.0f));
 		graphics.drawRect(5, 5, botao.getDiamentro() - 10, 50);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 20));
-		Color corNome = cor2;
-		if (cor2.equals(cor1)) {
-			corNome = cor3;
-		}
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 20));
+		Color corNome = cor1;
 		if ((uniforme == 1 && time.isCorMeiaNumero1())
 				|| (uniforme == 2 && time.isCorMeiaNumero2())) {
-			corNome = cor3;
+			corNome = cor2;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
-		if (valor > 250) {
-			graphics.setColor(lightBlack);
-		} else {
-			graphics.setColor(lightWhite);
-		}
+		graphics.setColor(cor3);
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
-		graphics.fillRoundRect(10, Util.inte(60 * .5) - 20, largura + 15, 25,
-				5, 5);
+		graphics.fillRoundRect(10, Util.inte(60 * .5) - 20, largura + 15, 25, 5,
+				5);
 
-		graphics.setColor(black);
+		graphics.setColor(corNome);
 		graphics.drawString(botao.getNome(), 12, Util.inte(60 * .5));
 
 		Color corNumero = cor1;
-		if (cor2.equals(cor1)) {
-			corNumero = cor3;
-		}
 		if ((uniforme == 1 && time.isCorMeiaNumero1())
 				|| (uniforme == 2 && time.isCorMeiaNumero2())) {
-			corNumero = cor3;
+			corNumero = cor2;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
-		if (valor > 250) {
-			graphics.setColor(lightBlack);
-		} else {
-			graphics.setColor(lightWhite);
-		}
+		graphics.setColor(cor3);
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .75) - 2, Util
-				.inte(60 * .5) - 21, largura + 15, 25, 5, 5);
-		graphics.setColor(black);
-
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .75), Util.inte(60 * .5));
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .75) - 2,
+				Util.inte(60 * .5) - 21, largura + 15, 25, 5, 5);
+		graphics.setColor(corNome);
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .75), Util.inte(60 * .5));
 
 		graphics.dispose();
 		return botaoImg;
@@ -127,8 +110,9 @@ public class BotaoUtils {
 
 	public static BufferedImage desenhaUniforme(Time time, int uniforme,
 			Botao botao) {
-		int tipoUniforme = (uniforme == 1) ? time.getTipoUniforme1() : time
-				.getTipoUniforme2();
+		int tipoUniforme = (uniforme == 1)
+				? time.getTipoUniforme1()
+				: time.getTipoUniforme2();
 		if (tipoUniforme == 0) {
 			return desenhaUniforme0(time, uniforme, botao);
 		} else if (tipoUniforme == 1) {
@@ -177,12 +161,12 @@ public class BotaoUtils {
 				graphics.setColor(cor1);
 			} else {
 				graphics.setColor(cor3);
-				graphics.fillRect(0, y - 2, botao.getDiamentro(), Util
-						.inte(botao.getDiamentro() * .35));
+				graphics.fillRect(0, y - 2, botao.getDiamentro(),
+						Util.inte(botao.getDiamentro() * .35));
 				graphics.setColor(cor2);
 			}
-			graphics.fillRect(0, y, botao.getDiamentro(), Util.inte(botao
-					.getDiamentro() * .35));
+			graphics.fillRect(0, y, botao.getDiamentro(),
+					Util.inte(botao.getDiamentro() * .35));
 
 			y += Util.inte(botao.getDiamentro() * .2);
 
@@ -192,9 +176,9 @@ public class BotaoUtils {
 
 			if (i % 2 == 0) {
 				graphics.setColor(cor3);
-				graphics.fillRect(0, 4 + y
-						+ Util.inte(botao.getDiamentro() * .35), botao
-						.getDiamentro(), 2);
+				graphics.fillRect(0,
+						4 + y + Util.inte(botao.getDiamentro() * .35),
+						botao.getDiamentro(), 2);
 			}
 			y += Util.inte(botao.getDiamentro() * .2);
 
@@ -204,8 +188,8 @@ public class BotaoUtils {
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
 		if (cor2.equals(cor1)) {
 			corNome = cor3;
@@ -215,7 +199,8 @@ public class BotaoUtils {
 			corNome = cor3;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
+		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue())
+				/ 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -223,15 +208,15 @@ public class BotaoUtils {
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
 		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .55));
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .55));
 
 		Color corNumero = cor1;
 		if (cor2.equals(cor1)) {
@@ -242,8 +227,8 @@ public class BotaoUtils {
 			corNumero = cor3;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
+		valor = (corNumero.getRed() + corNumero.getGreen()
+				+ corNumero.getBlue()) / 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -251,16 +236,18 @@ public class BotaoUtils {
 		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5,
+				5);
 		graphics.setColor(black);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .77));
 
 		graphics.dispose();
 		return botaoImg;
@@ -298,10 +285,9 @@ public class BotaoUtils {
 				graphics.setColor(cor1);
 			} else {
 				graphics.setColor(cor3);
-				graphics
-						.fillRect(x - 2, 0, Util
-								.inte(botao.getDiamentro() * .35), botao
-								.getDiamentro());
+				graphics.fillRect(x - 2, 0,
+						Util.inte(botao.getDiamentro() * .35),
+						botao.getDiamentro());
 				graphics.setColor(cor2);
 			}
 			graphics.fillRect(x, 0, Util.inte(botao.getDiamentro() * .35),
@@ -316,9 +302,8 @@ public class BotaoUtils {
 
 			if (i % 2 == 0) {
 				graphics.setColor(cor3);
-				graphics.fillRect(
-						4 + x + Util.inte(botao.getDiamentro() * .35), 0, 2,
-						botao.getDiamentro());
+				graphics.fillRect(4 + x + Util.inte(botao.getDiamentro() * .35),
+						0, 2, botao.getDiamentro());
 			}
 			x += Util.inte(botao.getDiamentro() * .2);
 
@@ -328,8 +313,8 @@ public class BotaoUtils {
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
 		if (cor2.equals(cor1)) {
 			corNome = cor3;
@@ -339,7 +324,8 @@ public class BotaoUtils {
 			corNome = cor3;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
+		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue())
+				/ 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -347,15 +333,15 @@ public class BotaoUtils {
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
 		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .55));
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
 		if (cor2.equals(cor1)) {
 			corNumero = cor3;
@@ -365,8 +351,8 @@ public class BotaoUtils {
 			corNumero = cor3;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
+		valor = (corNumero.getRed() + corNumero.getGreen()
+				+ corNumero.getBlue()) / 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -374,16 +360,18 @@ public class BotaoUtils {
 		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5,
+				5);
 		graphics.setColor(black);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .77));
 		graphics.dispose();
 		return botaoImg;
 	}
@@ -431,8 +419,8 @@ public class BotaoUtils {
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
 		if (cor2.equals(cor1)) {
 			corNome = cor3;
@@ -442,7 +430,8 @@ public class BotaoUtils {
 			corNome = cor3;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
+		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue())
+				/ 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -450,15 +439,15 @@ public class BotaoUtils {
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
 		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .55));
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
 		if (cor2.equals(cor1)) {
 			corNumero = cor3;
@@ -468,8 +457,8 @@ public class BotaoUtils {
 			corNumero = cor3;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
+		valor = (corNumero.getRed() + corNumero.getGreen()
+				+ corNumero.getBlue()) / 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -477,16 +466,18 @@ public class BotaoUtils {
 		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5,
+				5);
 		graphics.setColor(black);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .77));
 
 		graphics.dispose();
 		return botaoImg;
@@ -525,8 +516,8 @@ public class BotaoUtils {
 			} else {
 				graphics.setColor(cor2);
 			}
-			graphics.fillRect(0, y, botao.getDiamentro(), Util.inte(botao
-					.getDiamentro() * .35));
+			graphics.fillRect(0, y, botao.getDiamentro(),
+					Util.inte(botao.getDiamentro() * .35));
 
 			y += Util.inte(botao.getDiamentro() * .2);
 
@@ -535,8 +526,8 @@ public class BotaoUtils {
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
 		if (cor2.equals(cor1)) {
 			corNome = cor3;
@@ -546,7 +537,8 @@ public class BotaoUtils {
 			corNome = cor3;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
+		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue())
+				/ 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -554,15 +546,15 @@ public class BotaoUtils {
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .55) - 20,
 				largura + 15, 25, 5, 5);
 
 		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .55));
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .55));
 		Color corNumero = cor1;
 		if (cor2.equals(cor1)) {
 			corNumero = cor3;
@@ -572,8 +564,8 @@ public class BotaoUtils {
 			corNumero = cor3;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
+		valor = (corNumero.getRed() + corNumero.getGreen()
+				+ corNumero.getBlue()) / 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -581,16 +573,18 @@ public class BotaoUtils {
 		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5, 5);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .77) - 23, largura + 15, 25, 5,
+				5);
 		graphics.setColor(black);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .77));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .77));
 
 		graphics.dispose();
 		return botaoImg;
@@ -623,17 +617,17 @@ public class BotaoUtils {
 		graphics.setClip(externo);
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		graphics.setColor(cor1);
-		graphics.fillRect(0, 0, Util.inte(botao.getDiamentro() * .7), botao
-				.getDiamentro());
+		graphics.fillRect(0, 0, Util.inte(botao.getDiamentro() * .7),
+				botao.getDiamentro());
 		graphics.setColor(cor2);
-		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0, Util
-				.inte(botao.getDiamentro() * .35), botao.getDiamentro());
+		graphics.fillRect(Util.inte(botao.getDiamentro() * .7), 0,
+				Util.inte(botao.getDiamentro() * .35), botao.getDiamentro());
 		graphics.setColor(cor3);
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
 		if (cor2.equals(cor1)) {
 			corNome = cor3;
@@ -643,7 +637,8 @@ public class BotaoUtils {
 			corNome = cor3;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
+		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue())
+				/ 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -651,15 +646,15 @@ public class BotaoUtils {
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .60) - 20,
 				largura + 15, 25, 5, 5);
 
 		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .60));
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .60));
 
 		Color corNumero = cor1;
 		if (cor2.equals(cor1)) {
@@ -670,8 +665,8 @@ public class BotaoUtils {
 			corNumero = cor3;
 
 		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
+		valor = (corNumero.getRed() + corNumero.getGreen()
+				+ corNumero.getBlue()) / 2;
 		if (valor > 250) {
 			graphics.setColor(lightBlack);
 		} else {
@@ -679,17 +674,19 @@ public class BotaoUtils {
 		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5, 5);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5,
+				5);
 		graphics.setColor(black);
 
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .9));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .9));
 
 		graphics.dispose();
 		return botaoImg;
@@ -721,77 +718,58 @@ public class BotaoUtils {
 				(botao.getDiamentro()));
 		graphics.setClip(externo);
 
-		
 		graphics.fillOval(0, 0, botao.getDiamentro(), botao.getDiamentro());
 		graphics.setColor(cor1);
-		graphics.fillRect(0, 0, botao.getDiamentro(), Util.inte(botao
-				.getDiamentro() * .7));
+		graphics.fillRect(0, 0, botao.getDiamentro(),
+				Util.inte(botao.getDiamentro() * .7));
 		graphics.setColor(cor2);
-		graphics.fillRect(0, Util.inte(botao.getDiamentro() * .7), botao
-				.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
+		graphics.fillRect(0, Util.inte(botao.getDiamentro() * .7),
+				botao.getDiamentro(), Util.inte(botao.getDiamentro() * .35));
 		graphics.setColor(cor3);
 		graphics.setStroke(bordaBotao);
 		graphics.drawOval(1, 1, botao.getDiamentro() - 2,
 				botao.getDiamentro() - 2);
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 24));
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 24));
 		Color corNome = cor2;
-		if (cor2.equals(cor1)) {
-			corNome = cor3;
-		}
 		if ((uniforme == 1 && time.isCorMeiaNumero1())
 				|| (uniforme == 2 && time.isCorMeiaNumero2())) {
-			corNome = cor3;
+			corNome = cor2;
 
 		}
-		int valor = (corNome.getRed() + corNome.getGreen() + corNome.getBlue()) / 2;
-		if (valor > 250) {
-			graphics.setColor(lightBlack);
-		} else {
-			graphics.setColor(lightWhite);
+		graphics.setColor(cor3);
+		Color corNumero = cor1;
+		if ((uniforme == 1 && time.isCorMeiaNumero1())
+				|| (uniforme == 2 && time.isCorMeiaNumero2())) {
+			corNumero = cor2;
 		}
 		int largura = 0;
 		for (int i = 0; i < botao.getNome().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNome().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNome().charAt(i));
 		}
 		graphics.fillRoundRect(2, Util.inte(botao.getDiamentro() * .60) - 20,
 				largura + 15, 25, 5, 5);
 
-		graphics.setColor(black);
-		graphics.drawString(botao.getNome(), 8, Util
-				.inte(botao.getDiamentro() * .60));
+		graphics.setColor(corNumero);
+		graphics.drawString(botao.getNome(), 8,
+				Util.inte(botao.getDiamentro() * .60));
 
-		Color corNumero = cor1;
-		if (cor2.equals(cor1)) {
-			corNumero = cor3;
-		}
-		if ((uniforme == 1 && time.isCorMeiaNumero1())
-				|| (uniforme == 2 && time.isCorMeiaNumero2())) {
-			corNumero = cor3;
-
-		}
-		valor = (corNumero.getRed() + corNumero.getGreen() + corNumero
-				.getBlue()) / 2;
-		if (valor > 250) {
-			graphics.setColor(lightBlack);
-		} else {
-			graphics.setColor(lightWhite);
-		}
 		largura = 0;
 		for (int i = 0; i < botao.getNumero().toString().length(); i++) {
-			largura += graphics.getFontMetrics().charWidth(
-					botao.getNumero().toString().charAt(i));
+			largura += graphics.getFontMetrics()
+					.charWidth(botao.getNumero().toString().charAt(i));
 		}
-		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2, Util
-				.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5, 5);
-		graphics.setColor(black);
-
-		graphics.setFont(new Font(graphics.getFont().getName(), graphics
-				.getFont().getStyle(), 30));
-		graphics.drawString(botao.getNumero().toString(), Util.inte(botao
-				.getDiamentro() * .4), Util.inte(botao.getDiamentro() * .9));
-
+		graphics.setColor(cor3);
+		graphics.fillRoundRect(Util.inte(botao.getDiamentro() * .4) - 2,
+				Util.inte(botao.getDiamentro() * .9) - 23, largura + 15, 25, 5,
+				5);
+		graphics.setColor(corNumero);
+		graphics.setFont(new Font(graphics.getFont().getName(),
+				graphics.getFont().getStyle(), 30));
+		graphics.drawString(botao.getNumero().toString(),
+				Util.inte(botao.getDiamentro() * .4),
+				Util.inte(botao.getDiamentro() * .9));
 		graphics.dispose();
 		return botaoImg;
 	}

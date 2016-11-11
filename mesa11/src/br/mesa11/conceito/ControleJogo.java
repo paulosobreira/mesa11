@@ -101,6 +101,7 @@ public class ControleJogo {
 
 	private Animacao animacaoJogada = null;
 	private boolean esperandoJogadaOnline;
+	private boolean saiuJogoOnline;
 	private int numeroJogadas;
 	private String dica;
 	private boolean jogoTerminado;
@@ -156,6 +157,7 @@ public class ControleJogo {
 					return;
 				}
 				if (isJogoOnlineCliente()) {
+					Logger.logar("isJogoOnlineCliente()");
 					sairJogoOnline();
 				}
 				matarTodasThreads();
@@ -176,6 +178,14 @@ public class ControleJogo {
 				}
 			}
 		});
+	}
+
+	public boolean isSaiuJogoOnline() {
+		return saiuJogoOnline;
+	}
+
+	public void setSaiuJogoOnline(boolean saiuJogoOnline) {
+		this.saiuJogoOnline = saiuJogoOnline;
 	}
 
 	private String getVersao() {
@@ -2323,6 +2333,7 @@ public class ControleJogo {
 	}
 
 	public void sairJogoOnline() {
+		setSaiuJogoOnline(true);
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.SAIR_JOGO);
 		mesa11to.setData(nomeJogadorOnline);

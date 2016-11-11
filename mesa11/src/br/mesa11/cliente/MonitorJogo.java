@@ -45,6 +45,9 @@ public class MonitorJogo extends Thread {
 					dormir(1000);
 				}
 				if (controleJogo != null) {
+					if (controleJogo.isSaiuJogoOnline()) {
+						jogoTerminado = true;
+					}
 					obterDadosJogo();
 					if (dadosJogoSrvMesa11.isJogoTerminado()) {
 						Logger.logar("Fim de jogo");
@@ -72,8 +75,7 @@ public class MonitorJogo extends Thread {
 	private void obterDadosJogo() throws InterruptedException {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_DADOS_JOGO);
-		mesa11to.setData(
-				dadosJogoSrvMesa11.getNomeJogo());
+		mesa11to.setData(dadosJogoSrvMesa11.getNomeJogo());
 		mesa11to.setIndexProxJogada(indexProxJogada);
 		mesa11to.setTamListaGols(controleJogo.getGolsTempo().size());
 		Object ret = enviarObjeto(mesa11to);

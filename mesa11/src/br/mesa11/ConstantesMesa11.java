@@ -78,7 +78,6 @@ public class ConstantesMesa11 {
 	public static final String GOL = "GOL";
 	public static final String CONTATO_BOLA_BOTAO = "CONTATO_BOLA_BOTAO";
 	public static final String META_ESCANTEIO = "META_ESCANTEIO";
-	public static final String NOVO_CAPCHA = "NOVO_CAPCHA";
 	public static final String RECUPERA_SENHA = "RECUPERA_SENHA";
 	public static final String ATUALIZAR_VISAO = "ATUALIZAR_VISAO";
 	public static final String ENVIAR_TEXTO = "ENVIAR_TEXTO";
