@@ -127,8 +127,11 @@ public class ControleChatCliente {
 		if (JOptionPane.OK_OPTION == result) {
 			registrarUsuario();
 			atualizaVisao();
+			Logger.logar("formLogin.getLembrar().isSelected() "
+					+ formLogin.getLembrar().isSelected());
+			Logger.logar("formLogin.getNome().getText() " + formLogin.getNome().getText());
 			if (formLogin.getLembrar().isSelected()) {
-				lembrarSenha(formLogin.getName(),
+				lembrarSenha(formLogin.getNome().getText(),
 						String.valueOf((formLogin.getSenha().getPassword())));
 			}
 		}
@@ -164,7 +167,7 @@ public class ControleChatCliente {
 					fileContents.getOutputStream(true));
 			stream.writeObject(map);
 			stream.flush();
-
+			Logger.logar("Senha Gravada");
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -230,8 +233,7 @@ public class ControleChatCliente {
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
-			if ((formLogin.getConta1()
-					+ formLogin.getConta2()) != resultado) {
+			if ((formLogin.getConta1() + formLogin.getConta2()) != resultado) {
 				JOptionPane.showMessageDialog(mesa11Applet,
 						Lang.msg("resultadoContaErrado"), Lang.msg("erro"),
 						JOptionPane.ERROR_MESSAGE);

@@ -406,28 +406,30 @@ public class EditorTime extends JPanel {
 		NnpeTO mesa11to = new NnpeTO();
 		mesa11to.setComando(ConstantesMesa11.OBTER_TODAS_IMAGENS);
 		Object ret = controleJogo.enviarObjeto(mesa11to);
-		if (ret instanceof NnpeTO) {
+		if (ret != null && ret instanceof NnpeTO) {
 			mesa11to = (NnpeTO) ret;
 			String[] imagens = (String[]) mesa11to.getData();
+			if (imagens == null) {
+				Logger.logar("imagens == null");
+				return;
+			}
 			Arrays.sort(imagens);
-			if (imagens != null) {
-				if (comboBoxNomeImgsTabela != null) {
-					comboBoxNomeImgsTabela.removeAllItems();
-					for (int i = 0; i < imagens.length; i++) {
-						if (!imagens[i].endsWith("jpg")) {
-							continue;
-						}
-						comboBoxNomeImgsTabela.addItem(imagens[i]);
+			if (comboBoxNomeImgsTabela != null) {
+				comboBoxNomeImgsTabela.removeAllItems();
+				for (int i = 0; i < imagens.length; i++) {
+					if (!imagens[i].endsWith("jpg")) {
+						continue;
 					}
+					comboBoxNomeImgsTabela.addItem(imagens[i]);
 				}
-				if (comboBoxNomeImgs != null) {
-					comboBoxNomeImgs.removeAllItems();
-					for (int i = 0; i < imagens.length; i++) {
-						if (!imagens[i].endsWith("jpg")) {
-							continue;
-						}
-						comboBoxNomeImgs.addItem(imagens[i]);
+			}
+			if (comboBoxNomeImgs != null) {
+				comboBoxNomeImgs.removeAllItems();
+				for (int i = 0; i < imagens.length; i++) {
+					if (!imagens[i].endsWith("jpg")) {
+						continue;
 					}
+					comboBoxNomeImgs.addItem(imagens[i]);
 				}
 			}
 		}

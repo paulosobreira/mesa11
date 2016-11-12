@@ -18,7 +18,7 @@
 
 	  <applet-desc 
 	      documentBase="http://{host}/mesa11" 
-	      name="Mesa11 Concentracao" 
+	      name="Mesa11 " 
 	      main-class="br.applet.Mesa11Applet" 
 	      width="820" 
 	      height="380"> 

@@ -5,12 +5,8 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.FileNotFoundException;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -22,10 +18,8 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import br.applet.Mesa11Applet;
-import br.mesa11.ConstantesMesa11;
 import br.nnpe.Logger;
 import br.nnpe.Util;
-import br.nnpe.tos.NnpeTO;
 import br.recursos.Lang;
 
 public class FormLogin extends JPanel {
@@ -111,7 +105,9 @@ public class FormLogin extends JPanel {
 	}
 
 	private Component gerarLembrar() {
-		lembrar = new JCheckBox();
+		if (lembrar == null) {
+			lembrar = new JCheckBox();
+		}
 		JPanel langPanel = new JPanel();
 		langPanel.add(lembrar);
 		langPanel.add(new JLabel() {
@@ -243,7 +239,7 @@ public class FormLogin extends JPanel {
 	public JTextField getEmailRegistrar() {
 		return emailRegistrar;
 	}
-	
+
 	public JTextField getResultadorConta() {
 		return resultadorConta;
 	}
