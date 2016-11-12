@@ -369,13 +369,36 @@ public class Util {
 	}
 
 	public static int criarCorAleatoria() {
-		Random random = new Random();
-		float hue = random.nextFloat();
-		// Saturation between 0.1 and 0.3
-		float saturation = (random.nextInt(2000) + 1000) / 10000f;
-		float luminance = 1.5f;
-		Color color = Color.getHSBColor(hue, saturation, luminance);
-		return color.getRGB();
+
+		int intervalo = Util.intervalo(1, 10);
+
+		switch (intervalo) {
+			case 1 :
+				return Color.RED.getRGB();
+			case 2 :
+				return Color.BLUE.getRGB();
+			case 3 :
+				return Color.GREEN.getRGB();
+			case 4 :
+				return Color.YELLOW.getRGB();
+			case 5 :
+				return Color.ORANGE.getRGB();
+			case 6 :
+				return Color.BLACK.getRGB();
+			case 7 :
+				return Color.GRAY.getRGB();
+			case 8 :
+				return Color.DARK_GRAY.getRGB();
+			case 9 :
+				return Color.LIGHT_GRAY.getRGB();
+			case 10 :
+				return Color.WHITE.getRGB();
+
+			default :
+				break;
+		}
+
+		return Color.WHITE.getRGB();
 	}
 
 	public static void dormir(int ms) {
