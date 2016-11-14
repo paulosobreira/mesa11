@@ -13,6 +13,7 @@ import br.mesa11.servidor.ControlePersistencia;
 import br.mesa11.servidor.MonitorAtividade;
 import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
+import br.nnpe.tos.MsgSrv;
 import br.nnpe.tos.NnpeTO;
 import br.nnpe.tos.SessaoCliente;
 import br.tos.ClienteMesa11;
@@ -77,7 +78,11 @@ public class ProxyComandos {
 			return controleChatServidor
 					.receberTexto((ClienteMesa11) mesa11TO.getData());
 		} else if (ConstantesMesa11.SALVAR_TIME.equals(mesa11TO.getComando())) {
-			return controlePersistencia.salvarTime((Time) mesa11TO.getData());
+			Time time = (Time) mesa11TO.getData();
+			if(controleJogosServidor.verificaJogoEmAndamento(time)){
+				return new MsgSrv("salvarTimeComjogoEmAndamento");
+			}
+			return controlePersistencia.salvarTime(time);
 		} else if (ConstantesMesa11.OBTER_LISTA_TIMES_JOGADOR
 				.equals(mesa11TO.getComando())) {
 			return controlePersistencia

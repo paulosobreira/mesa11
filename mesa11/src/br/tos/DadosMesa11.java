@@ -15,15 +15,15 @@ public class DadosMesa11 implements Serializable {
 	private static final long serialVersionUID = 2200481566401284586L;
 	private Long dataTime;
 	private Collection<SessaoCliente> clientes = new HashSet<SessaoCliente>();
-	private Collection jogosCriados = new HashSet();
-	private Collection jogosAndamento = new HashSet();
+	private Collection<String> jogosCriados = new HashSet<String>();
+	private Collection<String> jogosAndamento = new HashSet<String>();
 	private String linhaChat = "";
 
-	public Collection getJogosAndamento() {
+	public Collection<String> getJogosAndamento() {
 		return jogosAndamento;
 	}
 
-	public void setJogosAndamento(Collection jogosAndamento) {
+	public void setJogosAndamento(Collection<String> jogosAndamento) {
 		this.jogosAndamento = jogosAndamento;
 	}
 

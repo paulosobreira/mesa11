@@ -22,13 +22,17 @@
 		<pathelement location="build" />
 	</path>
 
-	<target name="targetPadraoLocal" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarLocalJnlp,criarWar">
+	<target name="targetPadraoLocal" depends="atualizaVersao,imagemTimes,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarLocalJnlp,criarWar">
+	</target>
+	
+	<target name="targetPadrao" depends="atualizaVersao,imagemTimes,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarJnlp,criarWar">
 	</target>
 
 	
-	<target name="targetPadrao" depends="atualizaVersao,copiaRecursos,compilarClasses,criarJarRecursos,criarJar,atualizaLib,sign_jar,atualizarJnlp,criarWar">
-	</target>
-
+    <target name="imagemTimes">
+        <java classpath="build" classname="br.recursos.ImagemTimes" />
+    </target>
+	
 	<target name="atualizaVersao">
 		<propertyfile file="src/br/applet/client.properties">
 			<entry operation="+" key="versao" type="int" value="1" />

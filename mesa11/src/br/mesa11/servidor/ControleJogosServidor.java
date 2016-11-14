@@ -1,6 +1,8 @@
 package br.mesa11.servidor;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +16,6 @@ import java.util.Set;
 
 import br.hibernate.Botao;
 import br.hibernate.CampeonatoMesa11;
-import br.hibernate.Goleiro;
 import br.hibernate.JogadoresCampeonatoMesa11;
 import br.hibernate.PartidaMesa11;
 import br.hibernate.RodadaCampeonatoMesa11;
@@ -31,15 +32,14 @@ import br.nnpe.tos.ErroServ;
 import br.nnpe.tos.MsgSrv;
 import br.nnpe.tos.NnpeTO;
 import br.nnpe.tos.SessaoCliente;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import br.servlet.ServletMesa11;
-import br.tos.BotaoPosSrvMesa11;
 import br.tos.ClassificacaoTime;
 import br.tos.ClassificacaoUsuario;
 import br.tos.DadosJogoSrvMesa11;
 import br.tos.DadosMesa11;
 import br.tos.JogadaMesa11;
-import br.tos.PosicaoBtnsSrvMesa11;
 
 public class ControleJogosServidor {
 	private int contadorJogos;
@@ -331,10 +331,21 @@ public class ControleJogosServidor {
 	}
 
 	public Object obterTodasImagens() {
-		File file = new File(ServletMesa11.mediaDir);
 		try {
+			BufferedReader input = new BufferedReader(new InputStreamReader(
+					CarregadorRecursos.recursoComoStream("imagens_times.txt")));
+			List<String> times = new ArrayList<String>();
+			String line;
+			while ((line = input.readLine()) != null) {
+				times.add(line);
+			}
+			input.close();
 			NnpeTO mesa11to = new NnpeTO();
-			mesa11to.setData(file.list());
+			String[] timesArr = new String[times.size()];
+			for (int i = 0; i < timesArr.length; i++) {
+				timesArr[i] = times.get(i);
+			}
+			mesa11to.setData(timesArr);
 			return mesa11to;
 		} catch (Exception e) {
 			Logger.logarExept(e);
@@ -786,5 +797,19 @@ public class ControleJogosServidor {
 			controleJogo.setarBtnAssistido();
 		}
 		return null;
+	}
+
+	public boolean verificaJogoEmAndamento(Time time) {
+		Collection jogosAndamento = dadosMesa11.getJogosAndamento();
+		for (Iterator iterator = jogosAndamento.iterator(); iterator
+				.hasNext();) {
+			String jogo = (String) iterator.next();
+			JogoServidor jogoServidor = mapaJogos.get(jogo);
+			if (jogoServidor.getTimeCasa().equals(time)
+					|| jogoServidor.getTimeVisita().equals(time)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

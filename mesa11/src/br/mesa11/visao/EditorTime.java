@@ -210,6 +210,11 @@ public class EditorTime extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(true){
+					JOptionPane.showMessageDialog(EditorTime.this, Lang.msg("manadarImagemPara"), Lang
+							.msg("naoSuportado"), JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				JFileChooser fileChooser = new JFileChooser();
 				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -269,6 +274,11 @@ public class EditorTime extends JPanel {
 		enviarImagem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(true){
+					JOptionPane.showMessageDialog(EditorTime.this, Lang.msg("manadarImagemPara"), Lang
+							.msg("naoSuportado"), JOptionPane.INFORMATION_MESSAGE);
+					return;
+				}
 				NnpeTO mesa11to = new NnpeTO();
 				if (Util.isNullOrEmpty(nomeImgIconLabel)
 						|| imagemEnviar == null) {
