@@ -11,6 +11,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
@@ -18,17 +23,16 @@ import br.nnpe.Util;
 
 @Entity
 @Table(name = "m11_botao")
+@JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Botao extends Mesa11Dados {
 
 	private int diamentro = ConstantesMesa11.DIAMENTRO_BOTAO;
-	private Point position;
-	private Point centroInicio;
-	private Point destino;
 	private String nome;
 	private String imagem;
 	private Integer numero;
 	private double angulo;
-	@ManyToOne
+	@ManyToOne	
 	@JoinColumn(nullable = false)
 	private Time time;
 	private Integer precisao;
@@ -37,6 +41,13 @@ public class Botao extends Mesa11Dados {
 	private boolean titular;
 	private boolean goleiro;
 
+	@JsonIgnore
+	private Point position;
+	@JsonIgnore
+	private Point centroInicio;
+	@JsonIgnore
+	private Point destino;
+	
 	public Integer getNumero() {
 		if (numero == null) {
 			return new Integer(0);
