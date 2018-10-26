@@ -10,7 +10,8 @@
      ====================================================================== -->
 <project name="mesa11" default="targetPadrao">
 
-	<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-8.0.28"/>
+	<!--<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-8.0.28"/>-->
+	<property name="TOMCAT_HOME"       value="C:\Java\apache-tomcat-7.0.73"/>
 	<property name="HOST" value="games-sowbreira.rhcloud.com" />
 	<path id="classpath.compilacao">
 		<fileset dir="${TOMCAT_HOME}/lib">
@@ -40,7 +41,7 @@
 	</target>
 
 	<target name="compilarClasses">
-		<javac destdir="build" srcdir="src" nowarn="true" optimize="true">
+		<javac destdir="build" srcdir="src" nowarn="true" debug="true">
 			<classpath refid="classpath.compilacao" />
 		</javac>
 	</target>
@@ -78,8 +79,6 @@
 				<exclude name="**/*.java" />
 				<exclude name="build.xml" />
 				<exclude name="log4j.properties" />
-				<exclude name="**/*.jpg" />
-				<exclude name="**/*.png" />
 				<exclude name="**/*.wav" />
 			</fileset>
 		</jar>

@@ -26,6 +26,7 @@ public class ErroServ implements Serializable {
 	public ErroServ(Exception exception) {
 		erroInfo = formataErro(exception);
 	}
+	
 
 	public String obterErroFormatado() {
 		return erroInfo;

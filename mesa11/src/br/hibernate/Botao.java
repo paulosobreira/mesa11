@@ -224,6 +224,7 @@ public class Botao extends Mesa11Dados {
 	public static void main(String[] args) {
 	}
 
+	@JsonIgnore
 	public List getTrajetoria() {
 		List reta = GeoUtil.drawBresenhamLine(getCentro(), getDestino());
 		if (reta.size() > 1500) {

@@ -71,7 +71,7 @@ public class MesaPanel extends JPanel {
 	public double zoom = 0.5;
 	public double mouseZoom = 0.5;
 	private static boolean debug = false;
-	private boolean desenhaBkg = true;
+	private boolean desenhaSplash = true;
 	private Rectangle campoCima;
 	private Rectangle campoCimaSemLinhas;
 	private Rectangle campoBaixo;
@@ -149,7 +149,7 @@ public class MesaPanel extends JPanel {
 				Logger.logarExept(e);
 			}
 		}
-		if (!desenhaBkg) {
+		if (!desenhaSplash) {
 			grama1 = null;
 			grama2 = null;
 			green2 = new Color(240, 240, 240);
@@ -290,6 +290,19 @@ public class MesaPanel extends JPanel {
 		return areaEscateioBaixo;
 	}
 
+	public BufferedImage desenhaCampo() {
+		BufferedImage image = new BufferedImage(LARGURA_MESA, ALTURA_MESA,
+				BufferedImage.TYPE_INT_RGB);
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		limitesViewPort();
+		desenhaSplash = false;
+		zoom  = 1;
+		desenhaCampo(g2d);
+		desenhaTravesGol(g2d);
+		return image;
+
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -306,24 +319,18 @@ public class MesaPanel extends JPanel {
 			lastZoomChange = System.currentTimeMillis();
 			controleJogo.centralizaBola();
 		}
-		limitesViewPort = controleJogo.limitesViewPort();
-		if (limitesViewPort == null) {
-			limitesViewPort = new Rectangle(0, 0, LARGURA_MESA, ALTURA_MESA);
-		}
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(limitesViewPort.getBounds().x, limitesViewPort.getBounds().y,
-				(int) limitesViewPort.getBounds().getWidth(),
-				(int) limitesViewPort.getBounds().getHeight());
+		limitesViewPort();
 		if (botoes == null || controleJogo.isAnimando() || botoes.isEmpty()) {
 			botoes = controleJogo.getBotoesCopia();
 		}
 		if (controleJogo.isJogoOnlineCliente()) {
-			desenhaBkg = false;
+			desenhaSplash = false;
 			controleJogo.atualizaBotoesCopia();
 			botoes = controleJogo.getBotoesCopia();
 		}
 		Graphics2D g2d = (Graphics2D) g;
 		setarHints(g2d);
+		desenhaBordaCinza(g2d);
 		desenhaCampo(g2d);
 		desenhaMesa11Bkg(g2d);
 		desenhaTravesGol(g2d);
@@ -340,8 +347,22 @@ public class MesaPanel extends JPanel {
 		Toolkit.getDefaultToolkit().sync();
 	}
 
+	public void limitesViewPort() {
+		limitesViewPort = controleJogo.limitesViewPort();
+		if (limitesViewPort == null) {
+			limitesViewPort = new Rectangle(0, 0, LARGURA_MESA, ALTURA_MESA);
+		}
+	}
+
+	public void desenhaBordaCinza(Graphics g) {
+		g.setColor(Color.LIGHT_GRAY);
+		g.fillRect(limitesViewPort.getBounds().x, limitesViewPort.getBounds().y,
+				(int) limitesViewPort.getBounds().getWidth(),
+				(int) limitesViewPort.getBounds().getHeight());
+	}
+
 	private void desenhaMesa11Bkg(Graphics2D g2d) {
-		if (!desenhaBkg) {
+		if (!desenhaSplash) {
 			return;
 		}
 		if (mesa11Bkg != null) {
@@ -996,7 +1017,7 @@ public class MesaPanel extends JPanel {
 	}
 
 	private void desenhaCampo(Graphics2D g) {
-		if (desenhaBkg) {
+		if (desenhaSplash) {
 			return;
 		}
 		int x = 0;
@@ -1023,8 +1044,6 @@ public class MesaPanel extends JPanel {
 				((LARGURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom),
 				((ALTURA_MESA - DOBRO_BORDA_CAMPO - DOBRO_LINHA) * zoom));
 
-		// if (limitesViewPort.intersects(zoomedGrama))
-		// g.fill(zoomedGrama);
 		int alturaBordaAtual = (BORDA_CAMPO + LINHA);
 		int contFaixas = 0;
 		AffineTransform affineTransform = AffineTransform.getScaleInstance(zoom,
@@ -1464,50 +1483,6 @@ public class MesaPanel extends JPanel {
 			return;
 		}
 		g.setColor(Color.cyan);
-
-		// campoCima.setBounds((int) (BORDA_CAMPO * ZOOM),
-		// (int) (BORDA_CAMPO * ZOOM),
-		// (int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
-		// (int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * ZOOM));
-		// campoBaixo.setBounds((int) (BORDA_CAMPO * ZOOM),
-		// (int) (((ALTURA_MESA / 2)) * ZOOM),
-		// (int) ((LARGURA_MESA - DOBRO_BORDA_CAMPO) * ZOOM),
-		// (int) (((ALTURA_MESA / 2) - BORDA_CAMPO) * ZOOM));
-		// grandeAreaCima.setBounds((int) (ALTURA_GDE_AREA * ZOOM),
-		// (int) (BORDA_CAMPO * ZOOM), (int) ((LARGURA_GDE_AREA) * ZOOM),
-		// (int) ((ALTURA_GDE_AREA) * ZOOM));
-		//
-		// grandeAreaBaixo.setBounds((int) (ALTURA_GDE_AREA * ZOOM),
-		// (int) ((ALTURA_MESA - BORDA_CAMPO - ALTURA_GDE_AREA) * ZOOM),
-		// (int) ((LARGURA_GDE_AREA) * ZOOM),
-		// (int) ((ALTURA_GDE_AREA) * ZOOM));
-
-		// centro.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
-		// (int) ((ALTURA_MESA / 2) * ZOOM), (int) (DOBRO_LINHA * ZOOM),
-		// (int) (DOBRO_LINHA * ZOOM));
-		//
-		// penaltyCima.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
-		// (int) ((BORDA_CAMPO + PENALTI) * ZOOM),
-		// (int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
-		// penaltyBaixo.setBounds((int) ((LARGURA_MESA / 2) * ZOOM),
-		// (int) ((ALTURA_MESA - BORDA_CAMPO - PENALTI) * ZOOM),
-		// (int) (DOBRO_LINHA * ZOOM), (int) (DOBRO_LINHA * ZOOM));
-
-		// g.fill(campoCima);
-		// g.fill(campoBaixo);
-		// g.fill(grandeAreaCima);
-		// g.fill(grandeAreaBaixo);
-		// g.fill(pequenaAreaCima);
-		// g.fill(pequenaAreaBaixo);
-		// g.fill(centro);
-		// g.fill(penaltyCima);
-		// g.fill(penaltyBaixo);
-		// g.setColor(Color.cyan);
-		// g.fill(areaGolBaixo);
-		// g.fill(areaGolCima);
-		// g.fill(areaEscateioBaixo);
-		// g.fill(areaEscateioCima);
-		// g.fill(campoBaixoSemLinhas);
 		g.fill(linhaGolBaixo);
 		g.fill(linhaGolCima);
 
@@ -1670,12 +1645,12 @@ public class MesaPanel extends JPanel {
 
 	}
 
-	public boolean isDesenhaBkg() {
-		return desenhaBkg;
+	public boolean isDesenhaSplash() {
+		return desenhaSplash;
 	}
 
-	public void setDesenhaBkg(boolean desenhaBkg) {
-		this.desenhaBkg = desenhaBkg;
+	public void setDesenhaSplash(boolean desenhaBkg) {
+		this.desenhaSplash = desenhaBkg;
 	}
 
 }

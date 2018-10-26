@@ -283,6 +283,9 @@ public class ControleJogo {
 		botoes.put(bola.getId(), bola);
 	}
 
+	public ControleJogo() {
+	}
+
 	public Map getBotoesImagens() {
 		return botoesImagens;
 	}
@@ -3398,7 +3401,7 @@ public class ControleJogo {
 
 	public void removeBkg() {
 		if (mesaPanel != null) {
-			mesaPanel.setDesenhaBkg(false);
+			mesaPanel.setDesenhaSplash(false);
 		}
 	}
 
