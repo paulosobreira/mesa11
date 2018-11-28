@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import br.mesa11.ConstantesMesa11;
 import br.nnpe.GeoUtil;
 import br.nnpe.Logger;
+import br.nnpe.Ponto;
 import br.nnpe.Util;
 
 @Entity
@@ -32,7 +33,7 @@ public class Botao extends Mesa11Dados {
 	private String imagem;
 	private Integer numero;
 	private double angulo;
-	@ManyToOne	
+	@ManyToOne
 	@JoinColumn(nullable = false)
 	private Time time;
 	private Integer precisao;
@@ -47,7 +48,19 @@ public class Botao extends Mesa11Dados {
 	private Point centroInicio;
 	@JsonIgnore
 	private Point destino;
-	
+
+	public Ponto getPositionJS() {
+		return new Ponto(position);
+	}
+
+	public Ponto getCentroInicioJS() {
+		return new Ponto(centroInicio);
+	}
+
+	public Ponto getDestinoJS() {
+		return new Ponto(destino);
+	}
+
 	public Integer getNumero() {
 		if (numero == null) {
 			return new Integer(0);
@@ -176,8 +189,8 @@ public class Botao extends Mesa11Dados {
 	}
 
 	public void setCentro(Point p) {
-		position = new Point(p.x - (getDiamentro() / 2), p.y
-				- (getDiamentro() / 2));
+		position = new Point(p.x - (getDiamentro() / 2),
+				p.y - (getDiamentro() / 2));
 	}
 
 	public void setCentroTodos(Point2D p) {
@@ -238,23 +251,20 @@ public class Botao extends Mesa11Dados {
 
 	@Override
 	public String toString() {
-		return "Id :"
-				+ getId()
-				+ " "
-				+ getClass().getSimpleName()
-				+ " Time "
-				+ (getTime() == null ? "Bola" : getTime().getNome() + " "
-						+ getNumero());
+		return "Id :" + getId() + " " + getClass().getSimpleName() + " Time "
+				+ (getTime() == null
+						? "Bola"
+						: getTime().getNome() + " " + getNumero());
 	}
 
 	public Shape getShape(double zoom) {
 		if (getPosition() == null) {
-			Logger.logar("getShape getPosition null id " + id + " "
-					+ getClass());
+			Logger.logar(
+					"getShape getPosition null id " + id + " " + getClass());
 		}
 		Ellipse2D e2D = new Ellipse2D.Double(getPosition().x * zoom,
-				getPosition().y * zoom, getDiamentro() * zoom, getDiamentro()
-						* zoom);
+				getPosition().y * zoom, getDiamentro() * zoom,
+				getDiamentro() * zoom);
 		return e2D;
 	}
 
