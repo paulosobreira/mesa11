@@ -66,7 +66,6 @@ public class ControleLogin {
 		String senha = null;
 		try {
 			senha = geraSenhaMandaMail(usuario);
-			System.out.println("Senha Gerada Mesa11 " + senha);
 		} catch (Exception e) {
 			return new ErroServ(e);
 		}

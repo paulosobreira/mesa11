@@ -86,13 +86,14 @@ public class ControleChatCliente {
 				this);
 		atualizaVisao();
 		mesa11Applet.getFrame().setLayout(new BorderLayout());
-		mesa11Applet.getFrame().add(chatWindow.getMainPanel(), BorderLayout.CENTER);
+		mesa11Applet.getFrame().add(chatWindow.getMainPanel(),
+				BorderLayout.CENTER);
 		mesa11Applet.getFrame().setSize(800, 410);
 		mesa11Applet.getFrame().pack();
 		mesa11Applet.getFrame().setTitle(ConstantesMesa11.TITULO + getVersao());
 		mesa11Applet.getFrame().setResizable(false);
 		mesa11Applet.getFrame().setVisible(true);
-		
+
 		threadAtualizadora.start();
 	}
 
@@ -106,23 +107,24 @@ public class ControleChatCliente {
 		formLogin = new FormLogin(mesa11Applet);
 		formLogin.setToolTipText(Lang.msg("formularioLogin"));
 		try {
-//			PersistenceService persistenceService = (PersistenceService) ServiceManager
-//					.lookup("javax.jnlp.PersistenceService");
-//			FileContents fileContents = persistenceService
-//					.get(mesa11Applet.getCodeBase());
-//			if (fileContents == null) {
-//				Logger.logar(" fileContents == null  ");
-//			}
-//			ObjectInputStream ois = new ObjectInputStream(
-//					fileContents.getInputStream());
-//			Map map = (Map) ois.readObject();
-//			String login = (String) map.get("login");
-//			String pass = (String) map.get("pass");
-//			if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
-//				formLogin.getNome().setText(login);
-//				formLogin.getSenha().setText(pass);
-//				formLogin.getLembrar().setSelected(true);
-//			}
+			// PersistenceService persistenceService = (PersistenceService)
+			// ServiceManager
+			// .lookup("javax.jnlp.PersistenceService");
+			// FileContents fileContents = persistenceService
+			// .get(mesa11Applet.getCodeBase());
+			// if (fileContents == null) {
+			// Logger.logar(" fileContents == null ");
+			// }
+			// ObjectInputStream ois = new ObjectInputStream(
+			// fileContents.getInputStream());
+			// Map map = (Map) ois.readObject();
+			// String login = (String) map.get("login");
+			// String pass = (String) map.get("pass");
+			// if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
+			// formLogin.getNome().setText(login);
+			// formLogin.getSenha().setText(pass);
+			// formLogin.getLembrar().setSelected(true);
+			// }
 		} catch (Exception e) {
 			Logger.logarExept(e);
 		}
@@ -135,7 +137,8 @@ public class ControleChatCliente {
 			atualizaVisao();
 			Logger.logar("formLogin.getLembrar().isSelected() "
 					+ formLogin.getLembrar().isSelected());
-			Logger.logar("formLogin.getNome().getText() " + formLogin.getNome().getText());
+			Logger.logar("formLogin.getNome().getText() "
+					+ formLogin.getNome().getText());
 			if (formLogin.getLembrar().isSelected()) {
 				lembrarSenha(formLogin.getNome().getText(),
 						String.valueOf((formLogin.getSenha().getPassword())));
@@ -262,6 +265,8 @@ public class ControleChatCliente {
 			if (cliente.getSenhaCriada() != null) {
 				lembrarSenha(cliente.getNomeJogador(),
 						cliente.getSenhaCriada());
+				System.out.println("Usuario/senha :" + cliente.getNomeJogador()
+						+ "/" + cliente.getSenhaCriada());
 				JOptionPane.showMessageDialog(mesa11Applet.getFrame(),
 						Lang.msg("senhaGerada",
 								new String[]{cliente.getNomeJogador(),
@@ -434,8 +439,9 @@ public class ControleChatCliente {
 				.get(ConstantesMesa11.VER_CLASSIFICACAO_JOGADORES);
 		JPanel classificacaoPanel = gerarPanelClassificacao(dadosTimes,
 				dadosJogadores);
-		JOptionPane.showMessageDialog(this.mesa11Applet.getFrame(), classificacaoPanel,
-				Lang.msg("classificacao"), JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this.mesa11Applet.getFrame(),
+				classificacaoPanel, Lang.msg("classificacao"),
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public JPanel gerarPanelClassificacao(final List dadosTimes,
