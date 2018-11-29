@@ -66,6 +66,7 @@ public class ControleLogin {
 		String senha = null;
 		try {
 			senha = geraSenhaMandaMail(usuario);
+			System.out.println("Senha Gerada Mesa11 " + senha);
 		} catch (Exception e) {
 			return new ErroServ(e);
 		}
@@ -82,13 +83,13 @@ public class ControleLogin {
 			return new ErroServ(e.getMessage());
 		}
 		Logger.logar("cadastrarUsuario " + usuario);
-		return criarSessao(usuario,senha);
+		return criarSessao(usuario, senha);
 	}
 
 	private Object criarSessao(Usuario usuario) {
 		return criarSessao(usuario, null);
 	}
-	
+
 	private Object criarSessao(Usuario usuario, String senha) {
 		SessaoCliente sessaoCliente = null;
 		Collection clientes = dadosMesa11.getClientes();

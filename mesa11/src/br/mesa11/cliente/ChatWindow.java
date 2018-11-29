@@ -170,8 +170,9 @@ public class ChatWindow {
 			protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Graphics2D graphics2d = (Graphics2D) g;
-				if (img != null && Logger.desenhaBG)
+				if (img != null && Logger.desenhaBG){
 					graphics2d.drawImage(img, null, 0, 0);
+				}
 			}
 		};
 		if (controleChatCliente != null) {

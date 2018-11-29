@@ -5,15 +5,6 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- 
-		<property name="hibernate.connection.driver_class">org.hsqldb.jdbcDriver</property> 
-		<property name="hibernate.connection.password"></property> <property name="hibernate.connection.url">jdbc:hsqldb:hsql://localhost/hsqldb</property> 
-		<property name="hibernate.connection.username">sa</property> <property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property> 
-		<property name="hibernate.connection.driver_class">org.gjt.mm.mysql.Driver</property>
-		<property name="hibernate.connection.url">jdbc:mysql://localhost:3306/sobreira_games</property>
-		<property name="hibernate.connection.username">sobreira_sowgame</property>
-		<property name="hibernate.connection.password">sowgame</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
-		
 		
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.connection.datasource">java:comp/env/jdbc/MySQLDS</property>
@@ -22,8 +13,8 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.HSQLDialect</property>
         <property name="hibernate.connection.datasource">java:comp/env/jdbc/MySQLDS</property>
 		
-		<property name="hibernate.show_sql">false</property>
-		<property name="hibernate.format_sql">false</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
 		
 		<mapping class="br.hibernate.Usuario" />
 		<mapping class="br.hibernate.Time" />

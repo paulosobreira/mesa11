@@ -13,13 +13,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
-import javax.swing.JApplet;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 
 import br.mesa11.ConstantesMesa11;
 import br.mesa11.cliente.ControleChatCliente;
@@ -30,7 +26,7 @@ import br.nnpe.tos.ErroServ;
 import br.nnpe.tos.MsgSrv;
 import br.recursos.Lang;
 
-public class Mesa11Applet extends JApplet {
+public class Mesa11Applet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -49,54 +45,53 @@ public class Mesa11Applet extends JApplet {
 
 	private Sequencer sequencer;
 
-	private LookAndFeelInfo[] looks;
 	DecimalFormat decimalFormat = new DecimalFormat("#,##");
 	private String versao;
 
+	URL codeBase;
+
+	private JFrame frame;
+
 	/**
 	 * @param args
+	 * @throws MalformedURLException
 	 */
-	public static void main(String[] args) {
-		// LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
-		// for (int i = 0; i < looks.length; i++) {
-		// Logger.logar(looks[i].getClassName());
-		// }
-		DecimalFormat decimalFormat = new DecimalFormat("#,#");
-		System.out.println(decimalFormat.format(233));
+
+	public static void main(String[] args) throws MalformedURLException {
+		Mesa11Applet mesa11Applet = new Mesa11Applet();
+		mesa11Applet.setCodeBase(new URL("http://localhost"));
+		mesa11Applet.init();
 	}
 
-	@Override
+	public URL getCodeBase() {
+		return codeBase;
+	}
+
+	public void setCodeBase(URL codeBase) {
+		this.codeBase = codeBase;
+	}
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
 	public void init() {
-		super.init();
 		try {
-			looks = UIManager.getInstalledLookAndFeels();
-			if (false) {
-				UIManager
-						.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-				SwingUtilities.updateComponentTreeUI(this);
-			}
-		} catch (Exception e) {
-			Logger.logarExept(e);
-			try {
-				UIManager.setLookAndFeel(UIManager
-						.getCrossPlatformLookAndFeelClassName());
-			} catch (Exception e1) {
-				Logger.logarExept(e1);
-			}
-		}
-
-		try {
-
+			frame = new JFrame();
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			url = getCodeBase();
 			properties = new Properties();
 
-			properties.load(this.getClass().getResourceAsStream(
-					"client.properties"));
+			properties.load(
+					this.getClass().getResourceAsStream("client.properties"));
 			this.urlSufix = properties.getProperty("servidor");
 			this.versao = properties.getProperty("versao");
 			controleChatCliente = new ControleChatCliente(this);
 			Thread thread = new Thread(new Runnable() {
-
 				@Override
 				public void run() {
 					controleChatCliente.logar();
@@ -110,8 +105,8 @@ public class Mesa11Applet extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, retorno.toString(),
+					Lang.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
@@ -145,18 +140,18 @@ public class Mesa11Applet extends JApplet {
 					connection.setReadTimeout(latenciaReal);
 				stream.writeObject(enviar);
 				stream.flush();
-				connection.setRequestProperty("Content-Length", String
-						.valueOf(byteArrayOutputStream.size()));
+				connection.setRequestProperty("Content-Length",
+						String.valueOf(byteArrayOutputStream.size()));
 				connection.setRequestProperty("Content-Length",
 						"application/x-www-form-urlencoded");
-				connection.getOutputStream().write(
-						byteArrayOutputStream.toByteArray());
+				connection.getOutputStream()
+						.write(byteArrayOutputStream.toByteArray());
 				if (Constantes.modoZip) {
-					retorno = ZipUtil.descompactarObjeto(connection
-							.getInputStream());
+					retorno = ZipUtil
+							.descompactarObjeto(connection.getInputStream());
 				} else {
-					ObjectInputStream ois = new ObjectInputStream(connection
-							.getInputStream());
+					ObjectInputStream ois = new ObjectInputStream(
+							connection.getInputStream());
 					retorno = ois.readObject();
 				}
 			} catch (Exception e) {
@@ -170,16 +165,17 @@ public class Mesa11Applet extends JApplet {
 			if (retorno instanceof ErroServ) {
 				ErroServ erroServ = (ErroServ) retorno;
 				Logger.logar(erroServ.obterErroFormatado());
-				JOptionPane.showMessageDialog(this, Lang.decodeTexto(erroServ
-						.obterErroFormatado()), Lang.msg("erroRecebendo"),
-						JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(frame,
+						Lang.decodeTexto(erroServ.obterErroFormatado()),
+						Lang.msg("erroRecebendo"), JOptionPane.ERROR_MESSAGE);
 				return erroServ;
 			}
 			if (retorno instanceof MsgSrv) {
 				MsgSrv msgSrv = (MsgSrv) retorno;
-				JOptionPane.showMessageDialog(this, Lang.msg(Lang
-						.decodeTexto(msgSrv.getMessageString())), Lang
-						.msg("msgServidor"), JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame,
+						Lang.msg(Lang.decodeTexto(msgSrv.getMessageString())),
+						Lang.msg("msgServidor"),
+						JOptionPane.INFORMATION_MESSAGE);
 				return msgSrv;
 			}
 			return retorno;
@@ -191,8 +187,8 @@ public class Mesa11Applet extends JApplet {
 
 			for (int i = 0; i < size; i++)
 				retorno.append(trace[i] + "\n");
-			JOptionPane.showMessageDialog(this, retorno.toString(), Lang
-					.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(frame, retorno.toString(),
+					Lang.msg("erroEnviando"), JOptionPane.ERROR_MESSAGE);
 			Logger.logarExept(e);
 		}
 
@@ -259,8 +255,8 @@ public class Mesa11Applet extends JApplet {
 			properties = new Properties();
 
 			try {
-				properties.load(this.getClass().getResourceAsStream(
-						"client.properties"));
+				properties.load(this.getClass()
+						.getResourceAsStream("client.properties"));
 			} catch (IOException e) {
 				Logger.logarExept(e);
 			}
