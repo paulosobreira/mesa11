@@ -16,5 +16,5 @@
 		1" timeBetweenEvictionRunsMillis="1800000" /> -->
 	<Resource auth="Container" driverClassName="org.hsqldb.jdbcDriver"
 		name="jdbc/MySQLDS" password="" type="javax.sql.DataSource"
-		url="jdbc:hsqldb:hsql://localhost/xdb" username="SA" />
+		url="jdbc:hsqldb:hsql://localhost/mesa11" username="SA" />
 </Context>

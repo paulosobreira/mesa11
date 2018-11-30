@@ -19,7 +19,7 @@ public class Logger {
 
 	public static boolean novaSession = false;
 
-	public static boolean desenhaBG = false;
+	public static boolean desenhaBG = true;
 
 	public static void topExecpts(Exception e) {
 		novaSession = true;
