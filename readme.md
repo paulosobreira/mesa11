@@ -1,13 +1,14 @@
 # Mesa-11
 
 ## Mesa-11 por Paulo Sobreira
+-Mesa 11 Futebol de bot&atilde;o
 
 ## Controles:
-
-
-# Informação Adicional
-
-
+- Use o mouse para palhetar os bot&otilde;es
+- Use a rolagem do mouse para ajustar o zoom
+- Use as setas para posicionar a tela
+- O goleiro pode ser movido na grande area
+- Para jogar com Goleiro palhete a bola
 
 ## Construção Maven e Docker
 
