@@ -6,16 +6,16 @@ import br.nnpe.Logger;
 
 public class MesaApplet extends JApplet {
 
-	public void init() {
-		initComponents();
-	}
+    public void init() {
+        initComponents();
+    }
 
-	private void initComponents() {
-		try {
-			final MainFrame frame = new MainFrame(this, null, null);
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
-	}
+    private void initComponents() {
+        try {
+            final MainFrame frame = new MainFrame(this, null);
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
+    }
 
 }
