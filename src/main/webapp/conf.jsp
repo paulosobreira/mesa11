@@ -156,12 +156,9 @@ A:hover {
 		<tr>
 			<td class="c1"><a href="mesa11?act=create_schema"> Create
 			Schema </a></td>
-			<td class="c2"><a href="mesa11?act=update_schema"> Update
-			Schema </a></td>
 		</tr>
 		<tr>
 			<td class="c1"><a href="mesa11?act=x"> Exceptions </a></td>
-			<td class="c1"><a href="mesa11?act=backup"> Imagens </a></td>
 		</tr>
 	</tbody>
 </table>

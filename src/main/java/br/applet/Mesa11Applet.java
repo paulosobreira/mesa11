@@ -88,7 +88,7 @@ public class Mesa11Applet {
 
 			properties.load(
 					this.getClass().getResourceAsStream("/application.properties"));
-			this.urlSufix = properties.getProperty("servidor");
+			this.urlSufix = "/mesa11/mesa11";
 			this.versao = properties.getProperty("versao");
 			controleChatCliente = new ControleChatCliente(this);
 			Thread thread = new Thread(new Runnable() {

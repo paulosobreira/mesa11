@@ -2,7 +2,9 @@ package br.servlet;
 
 
 import br.mesa11.ProxyComandos;
+import br.nnpe.Constantes;
 import br.nnpe.Logger;
+import br.nnpe.ZipUtil;
 import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
 import org.hibernate.boot.MetadataSources;
@@ -23,9 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -74,7 +74,77 @@ public class ServletMesa11 extends HttpServlet {
         doGet(arg0, arg1);
     }
 
-    public void doGet(HttpServletRequest request,
+
+    public void doGet(HttpServletRequest req, HttpServletResponse res)
+            throws ServletException, IOException {
+
+        try {
+            ObjectInputStream inputStream = null;
+            try {
+                inputStream = new ObjectInputStream(req.getInputStream());
+            } catch (Exception e) {
+                Logger.logar("inputStream null - > doGetHtml");
+            }
+
+            if (inputStream != null) {
+                Object object = null;
+
+                object = inputStream.readObject();
+
+                Object escrever = proxyComandos.processarObjeto(object);
+
+                if (Constantes.modoZip) {
+                    dumparDadosZip(ZipUtil.compactarObjeto(Logger.debug,
+                            escrever, res.getOutputStream()));
+                }else{
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    dumparDados(escrever);
+                    ObjectOutputStream oos = new ObjectOutputStream(bos);
+                    oos.writeObject(escrever);
+                    oos.flush();
+                    res.getOutputStream().write(bos.toByteArray());
+                }
+
+                return;
+            } else {
+                doGetHtml(req, res);
+                return;
+            }
+        } catch (Exception e) {
+            Logger.topExecpts(e);
+        }
+    }
+
+    private void dumparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
+            throws IOException {
+        if (Logger.debug) {
+            String basePath = getServletContext().getRealPath("")
+                    + File.separator + "WEB-INF" + File.separator + "dump"
+                    + File.separator;
+            FileOutputStream fileOutputStream = new FileOutputStream(basePath
+                    + "Pack-" + System.currentTimeMillis() + ".zip");
+            fileOutputStream.write(byteArrayOutputStream.toByteArray());
+            fileOutputStream.close();
+        }
+
+    }
+    private void dumparDados(Object escrever) throws IOException {
+        if (Logger.debug) {
+            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
+                    arrayOutputStream);
+            objectOutputStream.writeObject(escrever);
+            String basePath = getServletContext().getRealPath("")
+                    + File.separator + "WEB-INF" + File.separator + "dump"
+                    + File.separator;
+            FileOutputStream fileOutputStream = new FileOutputStream(
+                    basePath + escrever.getClass().getSimpleName() + "-"
+                            + System.currentTimeMillis() + ".txt");
+            fileOutputStream.write(arrayOutputStream.toByteArray());
+            fileOutputStream.close();
+        }
+    }
+    public void doGetHtml(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         String param = request.getParameter("act");
         response.setContentType("text/html");
