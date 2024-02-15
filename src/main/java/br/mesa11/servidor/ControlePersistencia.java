@@ -26,18 +26,13 @@ import java.util.zip.ZipOutputStream;
  * @author Paulo Sobreira Criado em 23/02/2010
  */
 public class ControlePersistencia {
-	private String webInfDir;
-
-	private String webDir;
 
 	public static Session getSession() {
 		return HibernateUtil.getSession();
 	}
 
-	public ControlePersistencia(String webDir, String webInfDir) {
+	public ControlePersistencia() {
 		super();
-		this.webInfDir = webInfDir;
-		this.webDir = webDir;
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -142,22 +137,26 @@ public class ControlePersistencia {
 
 	public Object obterTodosTimes() {
 		Session session = ControlePersistencia.getSession();
-		String hql = "select obj.nome from Time obj";
-		Query qry = session.createQuery(hql);
-		List times = qry.list();
-		if(times==null || times.isEmpty()){
-			return new ErroServ(Lang.msg("naoExisteTimes"));
+		try {
+			String hql = "select obj.nome from Time obj";
+			Query qry = session.createQuery(hql);
+			List times = qry.list();
+			if(times==null || times.isEmpty()){
+				return new ErroServ(Lang.msg("naoExisteTimes"));
+			}
+			String[] retorno = new String[times.size()];
+			int i = 0;
+			for (Iterator iterator = times.iterator(); iterator.hasNext();) {
+				String nome = (String) iterator.next();
+				retorno[i] = nome;
+				i++;
+			}
+			NnpeTO mesa11to = new NnpeTO();
+			mesa11to.setData(retorno);
+			return mesa11to;
+		}finally {
+			session.close();
 		}
-		String[] retorno = new String[times.size()];
-		int i = 0;
-		for (Iterator iterator = times.iterator(); iterator.hasNext();) {
-			String nome = (String) iterator.next();
-			retorno[i] = nome;
-			i++;
-		}
-		NnpeTO mesa11to = new NnpeTO();
-		mesa11to.setData(retorno);
-		return mesa11to;
 	}
 
 	public void gravarDados(Mesa11Dados... mesa11Dados) throws Exception {
@@ -171,43 +170,61 @@ public class ControlePersistencia {
 		} catch (Exception e) {
 			transaction.rollback();
 			throw e;
+		}finally {
+			session.close();
 		}
 
 	}
 
 	public List obterPartidasTimeCasa(String timeCasa, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		if (Util.isNullOrEmpty(campeonato)) {
-			return session.createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("nomeTimeCasa", timeCasa)).list();
-		} else {
-			return session.createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("nomeTimeCasa", timeCasa))
-					.add(Restrictions.eq("campeonato", campeonato)).list();
+		try {
+			if (Util.isNullOrEmpty(campeonato)) {
+				return session.createCriteria(PartidaMesa11.class)
+						.add(Restrictions.eq("nomeTimeCasa", timeCasa)).list();
+			} else {
+				return session.createCriteria(PartidaMesa11.class)
+						.add(Restrictions.eq("nomeTimeCasa", timeCasa))
+						.add(Restrictions.eq("campeonato", campeonato)).list();
+			}
+		}finally {
+			session.close();
 		}
+
 	}
 
 	public List obterPartidasTimeVisita(String timeVisita, String campeonato) {
 		Session session = ControlePersistencia.getSession();
-		if (Util.isNullOrEmpty(campeonato)) {
-			return session.createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("nomeTimeVisita", timeVisita)).list();
-		} else {
-			return session.createCriteria(PartidaMesa11.class)
-					.add(Restrictions.eq("nomeTimeVisita", timeVisita))
-					.add(Restrictions.eq("campeonato", campeonato)).list();
+		try {
+			if (Util.isNullOrEmpty(campeonato)) {
+				return session.createCriteria(PartidaMesa11.class)
+						.add(Restrictions.eq("nomeTimeVisita", timeVisita)).list();
+			} else {
+				return session.createCriteria(PartidaMesa11.class)
+						.add(Restrictions.eq("nomeTimeVisita", timeVisita))
+						.add(Restrictions.eq("campeonato", campeonato)).list();
+			}
+		}finally {
+			session.close();
 		}
-
 	}
 
 	public List obterTimes() {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(Time.class).list();
+		try {
+			return session.createCriteria(Time.class).list();
+		}finally {
+			session.close();
+		}
 	}
 
 	public List obterJogadores() {
 		Session session = ControlePersistencia.getSession();
-		return session.createCriteria(Usuario.class).list();
+		try {
+			return session.createCriteria(Usuario.class).list();
+		}finally {
+			session.close();
+		}
 	}
 
 	public List obterPartidasJogadorCasa(String login, String campeonato) {

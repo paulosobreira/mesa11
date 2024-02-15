@@ -30,11 +30,11 @@ public class ProxyComandos {
     private DadosMesa11 dadosMesa11;
     private MonitorAtividade monitorAtividade;
 
-    public ProxyComandos(String webDir, String webInfDir) {
+    public ProxyComandos() {
         dadosMesa11 = new DadosMesa11();
         controleLogin = new ControleLogin(dadosMesa11);
         controleChatServidor = new ControleChatServidor(dadosMesa11);
-        controlePersistencia = new ControlePersistencia(webDir, webInfDir);
+        controlePersistencia = new ControlePersistencia();
         controleJogosServidor = new ControleJogosServidor(dadosMesa11,
                 controlePersistencia, this);
         controleCampeonatoServidor = new ControleCampeonatoServidor(dadosMesa11,

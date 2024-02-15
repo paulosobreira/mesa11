@@ -2,20 +2,35 @@ package br.servlet;
 
 
 import br.mesa11.ProxyComandos;
-import br.nnpe.Constantes;
-import br.nnpe.HibernateUtil;
 import br.nnpe.Logger;
-import br.nnpe.ZipUtil;
+import br.recursos.CarregadorRecursos;
 import br.recursos.Lang;
-import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -24,21 +39,30 @@ import java.util.Set;
  */
 public class ServletMesa11 extends HttpServlet {
 
-    public static String webInfDir;
-    public static String webDir;
     private ProxyComandos proxyComandos;
-
-    public static String mediaDir;
     private static SimpleDateFormat dateFormat = new SimpleDateFormat(
             "dd/MM/yyyy");
 
     public void init() throws ServletException {
         super.init();
-        webDir = getServletContext().getRealPath("") + File.separator;
-        webInfDir = webDir + "WEB-INF" + File.separator;
-        mediaDir = webDir + "midia" + File.separator;
-        proxyComandos = new ProxyComandos(webDir, webInfDir);
+        proxyComandos = new ProxyComandos();
         Lang.setSrvgame(true);
+        try {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(10000);
+                        createSchema(null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.run();
+        } catch (Exception e) {
+            Logger.logarExept(e);
+        }
     }
 
     public void destroy() {
@@ -50,92 +74,7 @@ public class ServletMesa11 extends HttpServlet {
         doGet(arg0, arg1);
     }
 
-    public void doGet(HttpServletRequest req, HttpServletResponse res)
-            throws ServletException, IOException {
-
-        try {
-            ObjectInputStream inputStream = null;
-            try {
-                inputStream = new ObjectInputStream(req.getInputStream());
-            } catch (Exception e) {
-                Logger.logar("inputStream null - > doGetHtml");
-            }
-
-            if (inputStream != null) {
-                Object object = null;
-
-                object = inputStream.readObject();
-
-                Object escrever = proxyComandos.processarObjeto(object);
-
-                if (Constantes.modoZip) {
-                    dumaparDadosZip(ZipUtil.compactarObjeto(Logger.debug,
-                            escrever, res.getOutputStream()));
-                } else {
-                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                    dumaparDados(escrever);
-                    ObjectOutputStream oos = new ObjectOutputStream(bos);
-                    oos.writeObject(escrever);
-                    oos.flush();
-                    res.getOutputStream().write(bos.toByteArray());
-                }
-
-                return;
-            } else {
-                doGetHtml(req, res);
-                return;
-            }
-        } catch (Exception e) {
-            Logger.topExecpts(e);
-        }
-    }
-
-    private void dumaparDadosZip(ByteArrayOutputStream byteArrayOutputStream)
-            throws IOException {
-        if (Logger.debug) {
-            // String basePath = getServletContext().getRealPath("")
-            // + File.separator + "WEB-INF" + File.separator + "dump"
-            // + File.separator;
-            // FileOutputStream fileOutputStream = new FileOutputStream(basePath
-            // + "Pack-" + System.currentTimeMillis() + ".zip");
-            // fileOutputStream.write(byteArrayOutputStream.toByteArray());
-            // fileOutputStream.close();
-
-        }
-
-    }
-
-    private void dumaparDados(Object escrever) throws IOException {
-        if (false && (escrever != null)) {
-            ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(
-                    arrayOutputStream);
-            objectOutputStream.writeObject(escrever);
-            String basePath = getServletContext().getRealPath("")
-                    + File.separator + "WEB-INF" + File.separator + "dump"
-                    + File.separator;
-            FileOutputStream fileOutputStream = new FileOutputStream(
-                    basePath + escrever.getClass().getSimpleName() + "-"
-                            + System.currentTimeMillis() + ".txt");
-            fileOutputStream.write(arrayOutputStream.toByteArray());
-            fileOutputStream.close();
-
-        }
-
-    }
-
-    public static void main(String[] args) {
-        // Enumeration e = System.getProperties().propertyNames();
-        // while (e.hasMoreElements()) {
-        // String element = (String) e.nextElement();
-        // System.out.print(element + " - ");
-        // Logger.logar(System.getProperties().getProperty(element));
-        //
-        // }
-
-    }
-
-    public void doGetHtml(HttpServletRequest request,
+    public void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         String param = request.getParameter("act");
         response.setContentType("text/html");
@@ -144,7 +83,7 @@ public class ServletMesa11 extends HttpServlet {
             printWriter.println("<html><body>");
 
             if ("create_schema".equals(param)) {
-            } else if ("update_schema".equals(param)) {
+                createSchema(printWriter);
             } else if ("x".equals(param)) {
                 topExceptions(response, printWriter);
             }
@@ -155,6 +94,88 @@ public class ServletMesa11 extends HttpServlet {
         printWriter.println("<br/><a href='conf.jsp'>back</a>");
         printWriter.println("</body></html>");
         response.flushBuffer();
+    }
+
+    private void createSchema(PrintWriter printWriter)
+            throws Exception {
+        SchemaExport export = new SchemaExport();
+        export.create(EnumSet.of(TargetType.DATABASE), getMetaData().buildMetadata());
+    }
+
+    private MetadataSources getMetaData() throws Exception {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document doc = db.parse(CarregadorRecursos.recursoComoStream("META-INF/persistence.xml"));
+        NodeList list = doc.getElementsByTagName("property");
+        String url = null, pass = null, user = null, driver = null;
+        for (int temp = 0; temp < list.getLength(); temp++) {
+            Node node = list.item(temp);
+            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                Element element = (Element) node;
+                String attr = element.getAttribute("name");
+                if ("javax.persistence.jdbc.url".equals(attr)) {
+                    url = element.getAttribute("value");
+                } else if ("javax.persistence.jdbc.user".equals(attr)) {
+                    user = element.getAttribute("value");
+                } else if ("javax.persistence.jdbc.password".equals(attr)) {
+                    pass = element.getAttribute("value");
+                } else if ("javax.persistence.jdbc.driver".equals(attr)) {
+                    driver = element.getAttribute("value");
+                }
+            }
+        }
+        Class.forName(driver);
+        Connection connection =
+                DriverManager.getConnection(url, user, pass);
+        MetadataSources metadata = new MetadataSources(
+                new StandardServiceRegistryBuilder()
+                        .applySetting("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
+                        .applySetting(AvailableSettings.CONNECTION_PROVIDER, new MyConnectionProvider(connection))
+                        .build());
+
+        metadata.addAnnotatedClass(br.hibernate.Usuario.class);
+        metadata.addAnnotatedClass(br.hibernate.Time.class);
+        metadata.addAnnotatedClass(br.hibernate.Botao.class);
+        metadata.addAnnotatedClass(br.hibernate.Goleiro.class);
+        metadata.addAnnotatedClass(br.hibernate.PartidaMesa11.class);
+        metadata.addAnnotatedClass(br.hibernate.CampeonatoMesa11.class);
+        metadata.addAnnotatedClass(br.hibernate.TimesCampeonatoMesa11.class);
+        metadata.addAnnotatedClass(br.hibernate.JogadoresCampeonatoMesa11.class);
+        metadata.addAnnotatedClass(br.hibernate.RodadaCampeonatoMesa11.class);
+        return metadata;
+    }
+
+    private static class MyConnectionProvider implements ConnectionProvider {
+        private final Connection connection;
+
+        public MyConnectionProvider(Connection connection) {
+            this.connection = connection;
+        }
+
+        @Override
+        public boolean isUnwrappableAs(Class unwrapType) {
+            return false;
+        }
+
+        @Override
+        public <T> T unwrap(Class<T> unwrapType) {
+            return null;
+        }
+
+        @Override
+        public Connection getConnection() {
+            return connection; // Interesting part here
+        }
+
+        @Override
+        public void closeConnection(Connection conn) throws SQLException {
+        }
+
+        @Override
+        public boolean supportsAggressiveRelease() {
+            return true;
+        }
     }
 
 
