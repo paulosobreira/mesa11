@@ -117,4 +117,6 @@ public class ConstantesMesa11 {
 	public static final int LATENCIA_MAX = 240;
 	public static final int LATENCIA_MIN = 120;
 
+	public static final String GUEST_LOGIN_APPLET = "51";
+
 }

@@ -65,6 +65,8 @@ public class ProxyComandos {
             return controleJogosServidor.sairJogo((String) mesa11TO.getData());
         } else if (ConstantesMesa11.LOGAR.equals(mesa11TO.getComando())) {
             return controleLogin.logar((ClienteMesa11) mesa11TO.getData());
+        } else if (ConstantesMesa11.GUEST_LOGIN_APPLET.equals(mesa11TO.getComando())) {
+            return controleLogin.criarSessaoVisitante((ClienteMesa11) mesa11TO.getData());
         } else if (ConstantesMesa11.NOVO_USUARIO
                 .equals(mesa11TO.getComando())) {
             return controleLogin

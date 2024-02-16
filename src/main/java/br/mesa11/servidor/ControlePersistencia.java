@@ -77,6 +77,8 @@ public class ControlePersistencia {
             return new MsgSrv(Lang.msg("nomeJaEstaSendoUsado", new String[]{
                     time.getNomeAbrev(), t.getNome()}));
         }
+        session.close();
+        session = ControlePersistencia.getSession();
         Transaction transaction = session.beginTransaction();
         try {
             if (time.getId() == null) {

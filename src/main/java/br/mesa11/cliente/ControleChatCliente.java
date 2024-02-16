@@ -103,28 +103,6 @@ public class ControleChatCliente {
 	public void logar() {
 		formLogin = new FormLogin(mesa11Applet);
 		formLogin.setToolTipText(Lang.msg("formularioLogin"));
-		try {
-			// PersistenceService persistenceService = (PersistenceService)
-			// ServiceManager
-			// .lookup("javax.jnlp.PersistenceService");
-			// FileContents fileContents = persistenceService
-			// .get(mesa11Applet.getCodeBase());
-			// if (fileContents == null) {
-			// Logger.logar(" fileContents == null ");
-			// }
-			// ObjectInputStream ois = new ObjectInputStream(
-			// fileContents.getInputStream());
-			// Map map = (Map) ois.readObject();
-			// String login = (String) map.get("login");
-			// String pass = (String) map.get("pass");
-			// if (!Util.isNullOrEmpty(pass) && !Util.isNullOrEmpty(login)) {
-			// formLogin.getNome().setText(login);
-			// formLogin.getSenha().setText(pass);
-			// formLogin.getLembrar().setSelected(true);
-			// }
-		} catch (Exception e) {
-			Logger.logarExept(e);
-		}
 		int result = JOptionPane.showConfirmDialog(chatWindow.getMainPanel(),
 				formLogin, Lang.msg("formularioLogin"),
 				JOptionPane.OK_CANCEL_OPTION);
@@ -139,6 +117,17 @@ public class ControleChatCliente {
 		}
 
 	}
+	public void logarGuest() {
+		NnpeTO mesa11to = new NnpeTO();
+		mesa11to.setComando(ConstantesMesa11.GUEST_LOGIN_APPLET);
+		Object ret = mesa11Applet.enviarObjeto(mesa11to);
+		if (ret instanceof NnpeTO) {
+			mesa11to = (NnpeTO) ret;
+			this.sessaoCliente = (SessaoCliente) mesa11to.getData();
+		}
+		atualizaVisao();
+	}
+
 
 	private void atualizaVisao() {
 		if (chatWindow == null) {

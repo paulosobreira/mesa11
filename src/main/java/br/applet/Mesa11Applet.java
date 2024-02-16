@@ -94,7 +94,7 @@ public class Mesa11Applet {
 			Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					controleChatCliente.logar();
+					controleChatCliente.logarGuest();
 				}
 			});
 			thread.start();
