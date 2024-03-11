@@ -61,13 +61,15 @@ public class ControleLogin {
         usuario.setLogin(clienteMesa11.getNomeJogador());
         usuario.setLoginCriador(clienteMesa11.getNomeJogador());
         usuario.setEmail(clienteMesa11.getEmailJogador());
-        String senha = null;
+        PassGenerator generator = new PassGenerator();
+        String senha = generator.generateIt();
 
         Transaction transaction = session.beginTransaction();
         try {
             if (Util.isNullOrEmpty(usuario.getLoginCriador())) {
                 usuario.setLoginCriador(usuario.getLogin());
             }
+            usuario.setSenha(Util.md5(senha));
             session.saveOrUpdate(usuario);
             transaction.commit();
         } catch (Exception e) {
@@ -99,6 +101,7 @@ public class ControleLogin {
         }
 
         sessaoCliente.setUlimaAtividade(System.currentTimeMillis());
+        sessaoCliente.setSenhaCriada(senha);
         NnpeTO mesa11to = new NnpeTO();
         mesa11to.setData(sessaoCliente);
         return mesa11to;

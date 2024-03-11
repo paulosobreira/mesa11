@@ -33,7 +33,6 @@ public class FormLogin extends JPanel {
 	private int conta1;
 	private int conta2;
 	private JTextField resultadorConta = new JTextField(20);
-	private JCheckBox lembrar = new JCheckBox();
 
 	private JLabel senhaLabel = new JLabel("Senha") {
 		public String getText() {
@@ -53,14 +52,6 @@ public class FormLogin extends JPanel {
 		}
 	};
 
-	public JCheckBox getLembrar() {
-		return lembrar;
-	}
-
-	public void setLembrar(JCheckBox lembrar) {
-		this.lembrar = lembrar;
-	}
-
 	public FormLogin(Mesa11Applet mesa11Applet) {
 		this.mesa11Applet = mesa11Applet;
 
@@ -69,7 +60,6 @@ public class FormLogin extends JPanel {
 		JPanel panelAba1 = new JPanel(new BorderLayout(15, 15));
 		JPanel sulaba1 = new JPanel(new BorderLayout());
 		sulaba1.add(gerarLogin(), BorderLayout.CENTER);
-		sulaba1.add(gerarLembrar(), BorderLayout.SOUTH);
 		panelAba1.add(sulaba1, BorderLayout.CENTER);
 		jTabbedPane.addTab(Lang.msg("entrar"), panelAba1);
 		JPanel panelAba2 = new JPanel(new BorderLayout());
@@ -77,46 +67,8 @@ public class FormLogin extends JPanel {
 		jTabbedPane.addTab(Lang.msg("registrar"), panelAba2);
 		add(jTabbedPane, BorderLayout.CENTER);
 		add(gerarIdiomas(), BorderLayout.SOUTH);
-		JPanel panelAba3 = new JPanel(new BorderLayout());
-		panelAba3.add(gerarRecuperar(), BorderLayout.CENTER);
-		jTabbedPane.addTab(Lang.msg("recuperar"), panelAba3);
 		setSize(300, 300);
 		setVisible(true);
-	}
-
-	private JPanel gerarRecuperar() {
-		JPanel newPanel = new JPanel(new GridLayout(3, 1));
-		newPanel.add(new JLabel("mensagemRecuperarSenha1") {
-			public String getText() {
-				return Lang.msg("mensagemRecuperarSenha1");
-			}
-		});
-		newPanel.add(new JLabel("mensagemRecuperarSenha2") {
-			public String getText() {
-				return Lang.msg("mensagemRecuperarSenha2");
-			}
-		});
-		newPanel.add(new JLabel("mensagemRecuperarSenha3") {
-			public String getText() {
-				return Lang.msg("mensagemRecuperarSenha3");
-			}
-		});
-		return newPanel;
-	}
-
-	private Component gerarLembrar() {
-		if (lembrar == null) {
-			lembrar = new JCheckBox();
-		}
-		JPanel langPanel = new JPanel();
-		langPanel.add(lembrar);
-		langPanel.add(new JLabel() {
-			@Override
-			public String getText() {
-				return Lang.msg("lembrar");
-			}
-		});
-		return langPanel;
 	}
 
 	private JPanel gerarIdiomas() {

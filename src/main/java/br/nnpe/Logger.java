@@ -15,9 +15,9 @@ public class Logger {
 
 	public static Map topExceptions = new HashMap();
 
-	public static boolean debug = true;
+	public static boolean debug = false;
 
-	public static boolean desenhaBG = true;
+	public static boolean desenhaBG = false;
 
 	public static void topExecpts(Exception e) {
 		if (debug) {

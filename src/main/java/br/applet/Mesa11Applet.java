@@ -21,6 +21,7 @@ import br.mesa11.ConstantesMesa11;
 import br.mesa11.cliente.ControleChatCliente;
 import br.nnpe.Constantes;
 import br.nnpe.Logger;
+import br.nnpe.Util;
 import br.nnpe.ZipUtil;
 import br.nnpe.tos.ErroServ;
 import br.nnpe.tos.MsgSrv;
@@ -59,7 +60,11 @@ public class Mesa11Applet {
 
 	public static void main(String[] args) throws MalformedURLException {
 		Mesa11Applet mesa11Applet = new Mesa11Applet();
-		mesa11Applet.setCodeBase(new URL("http://localhost"));
+		String host = JOptionPane.showInputDialog("Host");
+		if(Util.isNullOrEmpty(host)){
+			host = "http://localhost";
+		}
+		mesa11Applet.setCodeBase(new URL(host));
 		mesa11Applet.init();
 	}
 
@@ -94,7 +99,7 @@ public class Mesa11Applet {
 			Thread thread = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					controleChatCliente.logarGuest();
+					controleChatCliente.logar();
 				}
 			});
 			thread.start();
