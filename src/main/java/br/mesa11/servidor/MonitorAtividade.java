@@ -36,7 +36,7 @@ public class MonitorAtividade extends Thread {
 				for (Iterator iter = clientes.iterator(); iter.hasNext();) {
 					SessaoCliente sessaoCliente = (SessaoCliente) iter.next();
 					if ((timeNow
-							- sessaoCliente.getUlimaAtividade()) > 100000) {
+							- sessaoCliente.getUlimaAtividade()) > 10000) {
 						sessaoClienteRemover = sessaoCliente;
 						break;
 					}
