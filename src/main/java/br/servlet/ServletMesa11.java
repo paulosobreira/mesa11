@@ -59,7 +59,7 @@ public class ServletMesa11 extends HttpServlet {
                     }
                 }
             });
-            thread.run();
+            thread.start();
         } catch (Exception e) {
             Logger.logarExept(e);
         }
